@@ -1,1 +1,1 @@
-# AllYouCanExercise
+Had to install Debugger for Java and Language Support for Java(TM) by Red Hat to be able to do. Run ->Run without debugging. Or can just do ./mvnw spring-boot:run
