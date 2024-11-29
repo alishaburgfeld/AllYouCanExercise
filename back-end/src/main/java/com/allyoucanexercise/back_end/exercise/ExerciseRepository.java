@@ -2,6 +2,7 @@ package com.allyoucanexercise.back_end.exercise;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +14,11 @@ public class ExerciseRepository {
 
     List<Exercise> findAll() {
         return exercises;
+    }
+
+    Optional<Exercise> findById(Integer id) {
+        Integer index = id-1;
+        return Optional.of(exercises.get(index));
     }
 
     @PostConstruct
