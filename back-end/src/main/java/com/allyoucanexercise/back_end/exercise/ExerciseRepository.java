@@ -17,8 +17,9 @@ public class ExerciseRepository {
     }
 
     Optional<Exercise> findById(Integer id) {
-        Integer index = id-1;
-        return Optional.of(exercises.get(index));
+        // Integer index = id-1;
+        // return Optional.of(exercises.get(index));
+        return exercises.stream().filter(exercise->exercise.id()==id).findFirst();
     }
 
     @PostConstruct

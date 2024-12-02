@@ -32,6 +32,7 @@ public class ExerciseController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Exercise not found.");
         }
         return exercise.get();
+        // I don't understand why the .get is needed here
     }
 
     // 1:08 in the video
