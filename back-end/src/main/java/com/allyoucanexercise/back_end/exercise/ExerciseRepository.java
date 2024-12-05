@@ -20,6 +20,7 @@ public class ExerciseRepository {
 
 
     List<Exercise> findAll() {
+        log.info("inside the findall inside repository");
         return exercises;
     }
 
@@ -28,6 +29,7 @@ public class ExerciseRepository {
     }
 
     void create (Exercise exercise) {
+        log.info("in the create repository method");
         try {
             exercises.add(exercise);
         }
