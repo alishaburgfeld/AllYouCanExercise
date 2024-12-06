@@ -35,7 +35,7 @@ public class ExerciseController {
 
     @GetMapping("")
     List<Exercise> findAll() {
-        log.info("inside find all controller");
+        // log.info("inside find all controller");
         return exerciseRepository.findAll();
     }
 
