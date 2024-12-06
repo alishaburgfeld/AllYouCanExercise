@@ -19,23 +19,36 @@ public class ExerciseRepository {
     private static final Logger log = LoggerFactory.getLogger(ExerciseApplication.class);
 
 
-    List<Exercise> findAll() {
+    public List<Exercise> findAll() {
         log.info("inside the findall inside repository");
         return exercises;
     }
 
-    Optional<Exercise> findById(Integer id) {
+    public Optional<Exercise> findById(Integer id) {
         return exercises.stream().filter(exercise->exercise.id()==id).findFirst();
     }
 
-    void create (Exercise exercise) {
-        log.info("in the create repository method");
+    public void create (Exercise exercise) {
+        // log.info("in the create repository method");
         try {
             exercises.add(exercise);
         }
         catch (Exception e) {
             log.info("error adding", e);
         }
+    }
+
+    public void update(Exercise newExercise, Integer id) {
+        Optional<Exercise> existingExercise = findById(id);
+        if(existingExercise.isPresent()) {
+            var r = existingExercise.get();
+            log.info("Updating Existing Exercise: " + existingExercise.get());
+            exercises.set(exercises.indexOf(r),newExercise);
+        }
+    }
+
+    public void delete(Integer id) {
+        exercises.removeIf(exercise->exercise.id().equals(id));
     }
 
     @PostConstruct

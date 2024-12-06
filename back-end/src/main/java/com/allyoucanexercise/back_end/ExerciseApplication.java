@@ -21,12 +21,12 @@ public class ExerciseApplication {
 		
 	}
 
-	@Bean
-	CommandLineRunner runner () {
-		return args -> {
-			Exercise exercise = new Exercise(1, "bicep curls", Group.UPPERBODY, "Hold dumbbells in your hand and pull them to your chest");
-			// log.info("Your exercise is" + exercise);
-		};
-	}
+	// @Bean
+	// CommandLineRunner runner () {
+	// 	return args -> {
+	// 		Exercise exercise = new Exercise(1, "bicep curls", Group.UPPERBODY, "Hold dumbbells in your hand and pull them to your chest");
+	// 		log.info("Your exercise is" + exercise);
+	// 	};
+	// }
 
 }
