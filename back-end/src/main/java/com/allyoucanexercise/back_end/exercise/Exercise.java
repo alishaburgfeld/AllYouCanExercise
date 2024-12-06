@@ -6,7 +6,7 @@ public record Exercise(
     Integer id, 
     @NotEmpty
     String name, 
-    Group group, 
+    ExerciseType ExerciseType, 
     String description) {
     
     // eventually add equipment, but not sure what type it would be since something like pushups would be none, home gym, and full gym

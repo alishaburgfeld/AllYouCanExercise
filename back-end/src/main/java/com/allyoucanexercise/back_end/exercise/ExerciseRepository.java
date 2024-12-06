@@ -53,7 +53,8 @@ public class ExerciseRepository {
 
     @PostConstruct
     private void init() {
-        exercises.add(new Exercise(1, "bicep curls", Group.UPPERBODY, "Hold dumbbells in your hand and pull them to your chest"));
-        exercises.add(new Exercise(2, "hammer curls", Group.UPPERBODY, "Hold dumbbells in your hands, palms facing each other and pull them to your shoulders"));
+        exercises.add(new Exercise(1,"bicep curls", ExerciseType.UPPERBODY, "hold dumbbells in your hands and curl to your shoulders"));
+        exercises.add(new Exercise(2, "hammer curls", ExerciseType.UPPERBODY, "Hold dumbbells in your hands, palms facing each other and pull them to your shoulders"));
+
     }
 }
