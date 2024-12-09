@@ -73,5 +73,5 @@ public class ExerciseController {
         exerciseRepository.delete(id);
     }
 
-    // 1:08 in the video
+    // 1:49 in the video
 }

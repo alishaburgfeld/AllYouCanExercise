@@ -1,0 +1,35 @@
+{
+    "exercises": [
+      {
+        "id": 1,
+        "name": "Incline Dumbbell Curl",
+        "exerciseType": "UPPERBODY",
+        "description": "Incline the bench. Hold the dumbbells below your shoulders with your arms straight using an underahnd grip. Perform the curl by bending your elbows and raising the dumbbells until they touch your chest. Return to the starting position in a slow and controlled manner."
+      },
+      {
+        "id": 2,
+        "name": "Seated Dumbbell Overhead Press",
+        "exerciseType": "UPPERBODY",
+        "description": "Pin your shoulder blades into the bench and plant you feet firmly on the ground. Engage the core and then press the dumbbells up by extending both arms straight up overhead. Slowly lower the dumbbells back to the starting position."
+      },
+      {
+        "id": 3,
+        "name": "Decline Situps",
+        "exerciseType": "ABS",
+        "description": "Set a decline bench to a 30-45 degree angle. Sit on the bench with your knees bent and feet hooked under the padded bar. Lie flat with your back against the bench. Brace your core and pull your belly button towards your spine. Flex your spine to bring your torso off the bench until you're sitting upright. Pause briefly, then slowly lower yourself back down to the bench"
+      },
+      {
+        "id": 4,
+        "name": "Plank",
+        "exerciseType": "ABS",
+        "description": "Get into a push up position, with your elbows under your shoulders and your feet hip-width apart. Bend your elbows and rest your weight on your forearms and on your toes, keeping your body in a straight line. Hold the position."
+      },
+      {
+        "id": 5,
+        "name": "Walk",
+        "exerciseType": "CARDIO",
+        "description": "Walk"
+      }
+
+    ]
+  }
