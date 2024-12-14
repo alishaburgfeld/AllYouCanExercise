@@ -8,3 +8,10 @@ services:
       - 'MYSQL_USER=alisha'
     ports:
       - '3306:3306'
+    volumes:
+      - ./back-end/src/main/resources/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+
+# exec into the container then run this to connect to mysql: mysql -u alisha -psecret
+# then show databases
+# use <db name>
+# show tables
