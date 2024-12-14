@@ -1,59 +1,73 @@
 package com.allyoucanexercise.back_end.exercise;
 
-import java.util.ArrayList;
+import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
+
 import java.util.List;
 import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Repository;
-
-import com.allyoucanexercise.back_end.ExerciseApplication;
-
-import jakarta.annotation.PostConstruct;
-
 @Repository
 public class ExerciseRepository {
-    private List<Exercise> exercises = new ArrayList<>();
 
-    private static final Logger log = LoggerFactory.getLogger(ExerciseApplication.class);
+    private final JdbcClient jdbcClient;
 
+    public ExerciseRepository(JdbcClient jdbcClient) {
+        this.jdbcClient = jdbcClient;
+    }
 
     public List<Exercise> findAll() {
-        log.info("inside the findall inside repository");
-        return exercises;
+        return jdbcClient.sql("select * from exercise")
+                .query(Exercise.class)
+                .list();
     }
 
     public Optional<Exercise> findById(Integer id) {
-        return exercises.stream().filter(exercise->exercise.id()==id).findFirst();
+        return jdbcClient.sql("SELECT id,name,exercise_type,description FROM Exercise WHERE id = :id" )
+                .param("id", id)
+                .query(Exercise.class)
+                .optional();
     }
 
-    public void create (Exercise exercise) {
-        // log.info("in the create repository method");
-        try {
-            exercises.add(exercise);
-        }
-        catch (Exception e) {
-            log.info("error adding", e);
-        }
+    public void create(Exercise exercise) {
+        var updated = jdbcClient.sql("INSERT INTO Exercise(id,name,exercise_type,description) values(?,?,?,?)")
+                .params(List.of(exercise.id(),exercise.name(),exercise.exerciseType(),exercise.description().toString()))
+                .update();
+        
+        // the sql .update function returns the amount of rows affected.
+
+        Assert.state(updated == 1, "Failed to create exercise " + exercise.name());
     }
 
-    public void update(Exercise newExercise, Integer id) {
-        Optional<Exercise> existingExercise = findById(id);
-        if(existingExercise.isPresent()) {
-            var r = existingExercise.get();
-            log.info("Updating Existing Exercise: " + existingExercise.get());
-            exercises.set(exercises.indexOf(r),newExercise);
-        }
+    public void update(Exercise exercise, Integer id) {
+        var updated = jdbcClient.sql("update exercise set name = ?, exercise_type = ?, description = ? where id = ?")
+                .params(List.of(exercise.name(),exercise.exerciseType(),exercise.description().toString(), id))
+                .update();
+
+        Assert.state(updated == 1, "Failed to update exercise " + exercise.name());
     }
 
     public void delete(Integer id) {
-        exercises.removeIf(exercise->exercise.id().equals(id));
+        var updated = jdbcClient.sql("delete from exercise where id = :id")
+                .param("id", id)
+                .update();
+
+        Assert.state(updated == 1, "Failed to delete exercise " + id);
     }
 
-    @PostConstruct
-    private void init() {
-        exercises.add(new Exercise(1, "bicep curls", Group.UPPERBODY, "Hold dumbbells in your hand and pull them to your chest"));
-        exercises.add(new Exercise(2, "hammer curls", Group.UPPERBODY, "Hold dumbbells in your hands, palms facing each other and pull them to your shoulders"));
+    public int count() {
+        return jdbcClient.sql("select * from exercise").query().listOfRows().size();
     }
+
+    public void saveAll(List<Exercise> exercises) {
+        exercises.stream().forEach(this::create);
+    }
+
+    public List<Exercise> findByExerciseType(String exerciseType) {
+        return jdbcClient.sql("select * from exercise where exercise_type = :exerciseType")
+                .param("exercise_type", exerciseType)
+                .query(Exercise.class)
+                .list();
+    }
+
 }
