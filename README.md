@@ -1,5 +1,9 @@
-Had to install Debugger for Java and Language Support for Java(TM) by Red Hat to be able to do. Run ->Run without debugging. Or can just do ./mvnw spring-boot:run
+<!-- -------------------Decision Notes --------------------->
+1. Had to install Debugger for Java and Language Support for Java(TM) by Red Hat to be able to do. Run ->Run without debugging. Or can just do ./mvnw spring-boot:run
 
+<!-- -------------------REST --------------------->
+When have security dependency invoked it prints a password in the console to connect to the localhost:
+https://stackoverflow.com/questions/37285016/what-is-username-and-password-when-starting-spring-boot-with-tomcat
 
 When doing curl commands need to put in the user name and password (password is printed in the console) i.e:
 curl -u user:pass -X GET http://localhost:8080/api/exercises
@@ -14,7 +18,63 @@ its not working with the security dependency, so for now I comment that out when
 
 
 
-<!-- https://docs.oracle.com/javase/tutorial/reallybigindex.html -->
+<!-- Database -->
 
-<!-- trying to solve the issue where it appears I'm not getting the request body. tried creating a logger of the request body but I'm getting this error:
-java.lang.IllegalStateException: No primary or single unique constructor found for interface jakarta.servlet.FilterChain -->
+# exec into the container then run this to connect to mysql: mysql -u alisha -psecret
+# then show databases
+# use <db name>
+# show tables
+
+<!-- App Information -->
+
+minikube location: /opt/homebrew/bin/minikube
+
+Start Docker: Open Docker Desktop on mac -- possible way to hide the desktop, try this next time: https://stackoverflow.com/questions/64533789/how-to-start-docker-desktop-with-a-cli-command-on-macos-without-showing-dashboar Start Minikube: minikube start --driver=docker
+
+To start the front-end: cd into exercise_react_app and type npm start go to localhost:3000 to run tests: npm run test ( need to be in the react folder)
+
+To run application:
+
+Start Docker: Open Docker Desktop on mac -- possible way to hide the desktop, try this next time: https://stackoverflow.com/questions/64533789/how-to-start-docker-desktop-with-a-cli-command-on-macos-without-showing-dashboar
+<!-- Start Minikube: minikube start --driver=docker -->
+Build both images and container: docker-compose up --build
+get docker image id: docker images
+exec into your docker container: docker exec -it exercise_app-exercise-react-app-1 sh
+./mvnw spring-boot:run
+Things I have learned:
+
+Docker: -to delete docker image = docker rmi  -to delete docker containers: docker compose down -to delete docker container manually = first stop it. docker stop then docker rm -to see all containers (even stopped ones) = docker ps -a -to see logs: Docker container logs lb -“Dockerfile” is the instructions for building a container image. https://www.youtube.com/watch?v=LQjaJINkQXY
+
+-docker cheatsheet: https://www.javainuse.com/devOps/docker/docker-commands-cheat-sheet
+
+
+
+
+
+
+<!-- Helpful Videos and Tutorials-->
+Create React App: -https://www.freecodecamp.org/news/how-to-build-a-react-project-with-create-react-app-in-10-steps/
+
+Integrating React with Spring Boot: -https://stackoverflow.com/questions/69511990/how-to-integrate-spring-boot-with-react
+
+springboot tutorial: https://spring.io/guides/gs/spring-boot
+
+deploying a hello world in kubernetes: https://www.youtube.com/watch?v=XltFOyGanYE
+
+this will be helpful when setting up my initial mysql database and table: docker + mysql + docker: https://www.javainuse.com/devOps/docker/docker-mysql
+
+springboot + java + minikub k8s: https://www.youtube.com/watch?v=cvi3pMelCV0 https://www.youtube.com/watch?v=0GgBi8yNQT4
+
+https://docs.oracle.com/javase/tutorial/reallybigindex.html
+
+
+<!-- Helpful Articles/Information -->
+-which dockerfile to use? https://www.techtarget.com/searchitoperations/tip/Choose-the-best-Docker-image-for-the-job-at-hand
+
+-Info on what to copy into container: https://www.phind.com/search?cache=ahstmilr6cvk07axos43g6jk
+
+
+
+
+
+SpringBoot: -In Spring Boot, port 8080 is the default port that the embedded Tomcat server uses to serve web applications. When you run a Spring Boot application without specifying a port, it automatically starts on port 8080 by default

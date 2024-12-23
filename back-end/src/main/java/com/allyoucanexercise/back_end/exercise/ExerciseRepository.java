@@ -38,7 +38,7 @@ public class ExerciseRepository {
     public void create(Exercise exercise) {
         log.info("exercise is", exercise.id(), exercise.name(), "type", exercise.exerciseType(), "description", exercise.description());
         var updated = jdbcClient.sql("INSERT INTO exercise(id,name,exercise_type,description) values(?,?,?,?)")
-                .params(List.of(exercise.id(),exercise.name(),exercise.exerciseType(),exercise.description().toString()))
+                .params(List.of(exercise.id(),exercise.name(),exercise.exerciseType().toString(),exercise.description()))
                 .update();
         
         // the sql .update function returns the amount of rows affected.
@@ -48,7 +48,7 @@ public class ExerciseRepository {
 
     public void update(Exercise exercise, Integer id) {
         var updated = jdbcClient.sql("update exercise set name = ?, exercise_type = ?, description = ? where id = ?")
-                .params(List.of(exercise.name(),exercise.exerciseType(),exercise.description().toString(), id))
+                .params(List.of(exercise.name(),exercise.exerciseType().toString(),exercise.description(), id))
                 .update();
 
         Assert.state(updated == 1, "Failed to update exercise " + exercise.name());
