@@ -1,8 +1,12 @@
 package com.allyoucanexercise.back_end.exercise;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
+
+
 
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +15,8 @@ import java.util.Optional;
 public class ExerciseRepository {
 
     private final JdbcClient jdbcClient;
+
+    private static final Logger log = LoggerFactory.getLogger(ExerciseRepository.class);
 
     public ExerciseRepository(JdbcClient jdbcClient) {
         this.jdbcClient = jdbcClient;
@@ -23,15 +29,16 @@ public class ExerciseRepository {
     }
 
     public Optional<Exercise> findById(Integer id) {
-        return jdbcClient.sql("SELECT id,name,exercise_type,description FROM Exercise WHERE id = :id" )
+        return jdbcClient.sql("SELECT id,name,exercise_type,description FROM exercise WHERE id = :id" )
                 .param("id", id)
                 .query(Exercise.class)
                 .optional();
     }
 
     public void create(Exercise exercise) {
-        var updated = jdbcClient.sql("INSERT INTO Exercise(id,name,exercise_type,description) values(?,?,?,?)")
-                .params(List.of(exercise.id(),exercise.name(),exercise.exerciseType(),exercise.description().toString()))
+        log.info("exercise is", exercise.id(), exercise.name(), "type", exercise.exerciseType(), "description", exercise.description());
+        var updated = jdbcClient.sql("INSERT INTO exercise(id,name,exercise_type,description) values(?,?,?,?)")
+                .params(List.of(exercise.id(),exercise.name(),exercise.exerciseType().toString(),exercise.description()))
                 .update();
         
         // the sql .update function returns the amount of rows affected.
@@ -41,7 +48,7 @@ public class ExerciseRepository {
 
     public void update(Exercise exercise, Integer id) {
         var updated = jdbcClient.sql("update exercise set name = ?, exercise_type = ?, description = ? where id = ?")
-                .params(List.of(exercise.name(),exercise.exerciseType(),exercise.description().toString(), id))
+                .params(List.of(exercise.name(),exercise.exerciseType().toString(),exercise.description(), id))
                 .update();
 
         Assert.state(updated == 1, "Failed to update exercise " + exercise.name());

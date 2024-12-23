@@ -19,7 +19,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.allyoucanexercise.back_end.ExerciseApplication;
 
+
 import jakarta.validation.Valid;
+
 
 @RestController
 @RequestMapping("/api/exercises")
@@ -51,8 +53,8 @@ public class ExerciseController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
-    void create (@Valid @RequestBody Exercise exercise) {
-        log.info("we are in the create on the controller");
+    void create (@Valid @RequestBody Exercise exercise){
+        log.info("we are in the create on the controller, exercise is", exercise.id(), "name", exercise.name(), "type", exercise.exerciseType(), "description", exercise.description());
         exerciseRepository.create(exercise);
     }
 

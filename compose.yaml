@@ -8,3 +8,7 @@ services:
       - 'MYSQL_USER=alisha'
     ports:
       - '3306:3306'
+    volumes:
+      - ./back-end/src/main/resources/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+
+
