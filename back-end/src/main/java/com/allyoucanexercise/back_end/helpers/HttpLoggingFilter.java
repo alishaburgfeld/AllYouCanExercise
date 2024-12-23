@@ -9,7 +9,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
-import com.allyoucanexercise.back_end.ExerciseApplication;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

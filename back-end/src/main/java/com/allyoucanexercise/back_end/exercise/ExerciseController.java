@@ -1,6 +1,5 @@
 package com.allyoucanexercise.back_end.exercise;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,24 +18,19 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.allyoucanexercise.back_end.ExerciseApplication;
-import com.allyoucanexercise.back_end.helpers.HttpLoggingFilter;
+
 
 import jakarta.validation.Valid;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+
 
 @RestController
 @RequestMapping("/api/exercises")
 public class ExerciseController {
 
     private final ExerciseRepository exerciseRepository;
-    private final HttpLoggingFilter httpLoggingFilter;
 
-    public ExerciseController(ExerciseRepository exerciseRepository, HttpLoggingFilter httpLoggingFilter) {
+    public ExerciseController(ExerciseRepository exerciseRepository) {
         this.exerciseRepository = exerciseRepository;
-        this.httpLoggingFilter = httpLoggingFilter;
     }
 
     private static final Logger log = LoggerFactory.getLogger(ExerciseApplication.class);
@@ -59,9 +53,8 @@ public class ExerciseController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
-    void create (@Valid @RequestBody Exercise exercise, HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException{
-        httpLoggingFilter.doFilterInternal(request, response, filterChain);
-        // log.info("we are in the create on the controller, exercise is", exercise.id(), "name", exercise.name(), "type", exercise.exerciseType(), "description", exercise.description());
+    void create (@Valid @RequestBody Exercise exercise){
+        log.info("we are in the create on the controller, exercise is", exercise.id(), "name", exercise.name(), "type", exercise.exerciseType(), "description", exercise.description());
         exerciseRepository.create(exercise);
     }
 

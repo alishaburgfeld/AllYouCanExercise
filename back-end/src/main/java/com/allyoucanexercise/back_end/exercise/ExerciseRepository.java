@@ -36,7 +36,7 @@ public class ExerciseRepository {
     }
 
     public void create(Exercise exercise) {
-        // log.info("exercise is", exercise.id(), exercise.name(), "type", exercise.exerciseType(), "description", exercise.description());
+        log.info("exercise is", exercise.id(), exercise.name(), "type", exercise.exerciseType(), "description", exercise.description());
         var updated = jdbcClient.sql("INSERT INTO exercise(id,name,exercise_type,description) values(?,?,?,?)")
                 .params(List.of(exercise.id(),exercise.name(),exercise.exerciseType(),exercise.description().toString()))
                 .update();
