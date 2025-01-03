@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class ExerciseRepository {
+public class ExerciseRepository{
 
     private final JdbcClient jdbcClient;
 
