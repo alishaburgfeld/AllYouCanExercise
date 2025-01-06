@@ -201,4 +201,6 @@ public class ExerciseRepositoryTest {
         verify(statementSpec).update();
     }
 
+    
+
 }
