@@ -93,7 +93,6 @@ public class ExerciseRepositoryTest {
     void testCreate() {
         when(jdbcClient.sql("INSERT INTO exercise(id,name,exercise_type,description) values(?,?,?,?)")).thenReturn(statementSpec);
         when(statementSpec.params(List.of(exercise.id(),exercise.name(),exercise.exerciseType().toString(),exercise.description()))).thenReturn(statementSpec);
-        when(statementSpec.query(Exercise.class)).thenReturn(mappedQuerySpec);
         when(statementSpec.update()).thenReturn(1);
 
         exerciseRepository.create(exercise);
@@ -111,7 +110,6 @@ public class ExerciseRepositoryTest {
         when(jdbcClient.sql("INSERT INTO exercise(id,name,exercise_type,description) values(?,?,?,?)")).thenReturn(statementSpec);
         // missing the name
         when(statementSpec.params(List.of(exercise.id(),exercise.name(),exercise.exerciseType().toString(),exercise.description()))).thenReturn(statementSpec);
-        when(statementSpec.query(Exercise.class)).thenReturn(mappedQuerySpec);
         when(statementSpec.update()).thenReturn(0);
 
         try {
@@ -126,4 +124,81 @@ public class ExerciseRepositoryTest {
         verify(statementSpec).params(List.of(exercise.id(), exercise.name(), exercise.exerciseType().toString(), exercise.description()));
         verify(statementSpec).update();  
     }
+
+    @Test
+    @DisplayName("test update - Happy Path")
+    void testUpdate() {
+        exercise = new Exercise(1, "Push-up", ExerciseType.UPPERBODY, "New, Updated, Push-up description");
+
+        int id = exercise.id();
+        when(jdbcClient.sql("update exercise set name = ?, exercise_type = ?, description = ? where id = ?")).thenReturn(statementSpec);
+        when(statementSpec.params(List.of(exercise.name(),exercise.exerciseType().toString(),exercise.description(), id))).thenReturn(statementSpec);
+        when(statementSpec.update()).thenReturn(1);
+
+        exerciseRepository.update(exercise, id);
+
+        verify(jdbcClient).sql("update exercise set name = ?, exercise_type = ?, description = ? where id = ?");
+        verify(statementSpec).params(List.of(exercise.name(),exercise.exerciseType().toString(),exercise.description(), id));
+        verify(statementSpec).update(); 
+    }
+
+    @Test
+    @DisplayName("test update - Unhappy Path")
+    void testUpdateUnhappy() {
+        exercise = new Exercise(1, "Push-up", ExerciseType.UPPERBODY, "New, Updated, Push-up description");
+        int id = 2;
+
+        when(jdbcClient.sql("update exercise set name = ?, exercise_type = ?, description = ? where id = ?")).thenReturn(statementSpec);
+        when(statementSpec.params(List.of(exercise.name(),exercise.exerciseType().toString(),exercise.description(), id))).thenReturn(statementSpec);
+        when(statementSpec.update()).thenReturn(0);
+
+        try {
+            exerciseRepository.update(exercise, id);
+            fail("Expected an exception to be thrown due to unsuccessful creation");
+        } catch (IllegalStateException e) {
+        // Verify that the exception message contains the expected failure reason
+            assertTrue(e.getMessage().contains("Failed to update exercise"));
+        }
+
+        verify(jdbcClient).sql("update exercise set name = ?, exercise_type = ?, description = ? where id = ?");
+        verify(statementSpec).params(List.of(exercise.name(),exercise.exerciseType().toString(),exercise.description(), id));
+        verify(statementSpec).update(); 
+    }
+
+    @Test
+    @DisplayName("test delete - Happy Path")
+    void testDelete() {
+        int id = exercise.id();
+        when(jdbcClient.sql("delete from exercise where id = :id")).thenReturn(statementSpec);
+        when(statementSpec.param("id", id)).thenReturn(statementSpec);
+        when(statementSpec.update()).thenReturn(1);
+
+        exerciseRepository.delete(id);
+
+        verify(jdbcClient).sql("delete from exercise where id = :id");
+        verify(statementSpec).param("id", id);
+        verify(statementSpec).update(); 
+    }
+
+    @Test
+    @DisplayName("test delete - Unhappy Path")
+    void testDeleteUnhappy() {
+        int id = 0;
+        when(jdbcClient.sql("delete from exercise where id = :id")).thenReturn(statementSpec);
+        when(statementSpec.param("id", id)).thenReturn(statementSpec);
+        when(statementSpec.update()).thenReturn(0);
+
+        try {
+            exerciseRepository.delete(id);
+            fail("Expected an exception to be thrown due to unsuccessful creation");
+        } catch (IllegalStateException e) {
+        // Verify that the exception message contains the expected failure reason
+            assertTrue(e.getMessage().contains("Failed to delete exercise"));
+        }
+
+        verify(jdbcClient).sql("delete from exercise where id = :id");
+        verify(statementSpec).param("id", id);
+        verify(statementSpec).update();
+    }
+
 }

@@ -51,7 +51,7 @@ public class ExerciseRepository{
                 .params(List.of(exercise.name(),exercise.exerciseType().toString(),exercise.description(), id))
                 .update();
 
-        Assert.state(updated == 1, "Failed to update exercise " + exercise.name());
+        Assert.state(updated == 1, "Failed to update exercise");
     }
 
     public void delete(Integer id) {
@@ -59,7 +59,7 @@ public class ExerciseRepository{
                 .param("id", id)
                 .update();
 
-        Assert.state(updated == 1, "Failed to delete exercise " + id);
+        Assert.state(updated == 1, "Failed to delete exercise");
     }
 
     public int count() {
