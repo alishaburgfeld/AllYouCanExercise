@@ -8,7 +8,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -30,6 +32,7 @@ public class ExerciseRepositoryTest {
     // essential JdbcClient Mocks we'll use for most tests
     private JdbcClient.StatementSpec statementSpec;
     private JdbcClient.MappedQuerySpec<Exercise> mappedQuerySpec;
+    private JdbcClient.ResultQuerySpec resultQuerySpec;
     private Exercise exercise;
 
     @BeforeEach
@@ -39,7 +42,8 @@ public class ExerciseRepositoryTest {
         // Initializes mocks
         MockitoAnnotations.openMocks(this); 
         statementSpec = mock(JdbcClient.StatementSpec.class);
-        mappedQuerySpec = mock(JdbcClient.MappedQuerySpec.class);  // Mock MappedQuerySpec
+        mappedQuerySpec = mock(JdbcClient.MappedQuerySpec.class); 
+        resultQuerySpec = mock(JdbcClient.ResultQuerySpec.class);  // Mock MappedQuerySpec
     
         // alternate method:
         // outside of this function have a private JdbcClient jdbcClientMock, private ExerciseRepository exerciseRepository
@@ -201,6 +205,20 @@ public class ExerciseRepositoryTest {
         verify(statementSpec).update();
     }
 
+    @Test
+    void testCount() {
+
+        when(jdbcClient.sql("select * from exercise")).thenReturn(statementSpec);
+        when(statementSpec.query()).thenReturn(resultQuerySpec);
+        when(resultQuerySpec.listOfRows()).thenReturn(List.of(
+        Map.of("id", 1, "name", "Push-up", "exerciseType", "UPPERBODY", "description", "Push-up description"),
+        Map.of("id", 2, "name", "Squat", "exerciseType", "LOWERBODY", "description", "Squat Description")
+    ));
+
+        int count = exerciseRepository.count();
+        assertEquals(count,2);
+
+    }
     
 
 }
