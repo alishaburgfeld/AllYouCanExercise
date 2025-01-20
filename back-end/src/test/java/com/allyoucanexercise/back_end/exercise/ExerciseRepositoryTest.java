@@ -4,7 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -217,6 +219,27 @@ public class ExerciseRepositoryTest {
 
         int count = exerciseRepository.count();
         assertEquals(count,2);
+
+    }
+
+    @Test
+    void testSaveAll() {
+        Exercise exerciseTwo = new Exercise(2, "Squat", ExerciseType.LOWERBODY, "Squat description");
+        List<Exercise> exercises = List.of(exercise, exerciseTwo);
+
+        when(jdbcClient.sql("INSERT INTO exercise(id,name,exercise_type,description) values(?,?,?,?)")).thenReturn(statementSpec);
+        // when(statementSpec.params(anyList())).thenReturn(statementSpec);
+        when(statementSpec.params(List.of(exercise.id(),exercise.name(),exercise.exerciseType().toString(),exercise.description()))).thenReturn(statementSpec);
+        when(statementSpec.params(List.of(exerciseTwo.id(),exerciseTwo.name(),exerciseTwo.exerciseType().toString(),exerciseTwo.description()))).thenReturn(statementSpec);
+        
+        when(statementSpec.update()).thenReturn(1);
+
+        exerciseRepository.saveAll(exercises);
+
+        verify(jdbcClient, times(2)).sql("INSERT INTO exercise(id,name,exercise_type,description) values(?,?,?,?)");
+        verify(statementSpec).params(List.of(exercise.id(), exercise.name(), exercise.exerciseType().toString(), exercise.description()));
+        verify(statementSpec.params(List.of(exerciseTwo.id(),exerciseTwo.name(),exerciseTwo.exerciseType().toString(),exerciseTwo.description())));
+        verify(statementSpec, times(2)).update();
 
     }
     
