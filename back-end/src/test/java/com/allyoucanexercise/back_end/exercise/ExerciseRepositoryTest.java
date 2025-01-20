@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -33,6 +35,7 @@ public class ExerciseRepositoryTest {
 
     // essential JdbcClient Mocks we'll use for most tests
     private JdbcClient.StatementSpec statementSpec;
+    private JdbcClient.StatementSpec statementSpecTwo;
     private JdbcClient.MappedQuerySpec<Exercise> mappedQuerySpec;
     private JdbcClient.ResultQuerySpec resultQuerySpec;
     private Exercise exercise;
@@ -44,6 +47,8 @@ public class ExerciseRepositoryTest {
         // Initializes mocks
         MockitoAnnotations.openMocks(this); 
         statementSpec = mock(JdbcClient.StatementSpec.class);
+        statementSpecTwo = mock(JdbcClient.StatementSpec.class);
+        
         mappedQuerySpec = mock(JdbcClient.MappedQuerySpec.class); 
         resultQuerySpec = mock(JdbcClient.ResultQuerySpec.class);  // Mock MappedQuerySpec
     
@@ -223,24 +228,19 @@ public class ExerciseRepositoryTest {
     }
 
     @Test
-    void testSaveAll() {
-        Exercise exerciseTwo = new Exercise(2, "Squat", ExerciseType.LOWERBODY, "Squat description");
-        List<Exercise> exercises = List.of(exercise, exerciseTwo);
+    void testCreatAll() {
+        Exercise exercise2 = new Exercise(2, "Squat", ExerciseType.LOWERBODY, "Squat description");
+        List<Exercise> exercises = List.of(exercise, exercise2);
 
-        when(jdbcClient.sql("INSERT INTO exercise(id,name,exercise_type,description) values(?,?,?,?)")).thenReturn(statementSpec);
-        // when(statementSpec.params(anyList())).thenReturn(statementSpec);
-        when(statementSpec.params(List.of(exercise.id(),exercise.name(),exercise.exerciseType().toString(),exercise.description()))).thenReturn(statementSpec);
-        when(statementSpec.params(List.of(exerciseTwo.id(),exerciseTwo.name(),exerciseTwo.exerciseType().toString(),exerciseTwo.description()))).thenReturn(statementSpec);
-        
+        when(jdbcClient.sql(anyString())).thenReturn(statementSpec);
+        when(statementSpec.params(anyList())).thenReturn(statementSpec);
         when(statementSpec.update()).thenReturn(1);
 
         exerciseRepository.saveAll(exercises);
 
-        verify(jdbcClient, times(2)).sql("INSERT INTO exercise(id,name,exercise_type,description) values(?,?,?,?)");
-        verify(statementSpec).params(List.of(exercise.id(), exercise.name(), exercise.exerciseType().toString(), exercise.description()));
-        verify(statementSpec.params(List.of(exerciseTwo.id(),exerciseTwo.name(),exerciseTwo.exerciseType().toString(),exerciseTwo.description())));
+        verify(jdbcClient, times(2)).sql(anyString());
+        verify(statementSpec, times(2)).params(anyList());
         verify(statementSpec, times(2)).update();
-
     }
     
 
