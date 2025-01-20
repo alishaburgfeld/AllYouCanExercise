@@ -39,11 +39,12 @@ public class ExerciseRepositoryTest {
     private JdbcClient.MappedQuerySpec<Exercise> mappedQuerySpec;
     private JdbcClient.ResultQuerySpec resultQuerySpec;
     private Exercise exercise;
+    private Exercise exercise2;
 
     @BeforeEach
     void setUp() {
         exercise = new Exercise(1, "Push-up", ExerciseType.UPPERBODY, "Push-up description");
-
+        exercise2 = new Exercise(2, "Squat", ExerciseType.LOWERBODY, "Squat description");
         // Initializes mocks
         MockitoAnnotations.openMocks(this); 
         statementSpec = mock(JdbcClient.StatementSpec.class);
@@ -229,7 +230,7 @@ public class ExerciseRepositoryTest {
 
     @Test
     void testCreatAll() {
-        Exercise exercise2 = new Exercise(2, "Squat", ExerciseType.LOWERBODY, "Squat description");
+        
         List<Exercise> exercises = List.of(exercise, exercise2);
 
         when(jdbcClient.sql(anyString())).thenReturn(statementSpec);
@@ -241,6 +242,48 @@ public class ExerciseRepositoryTest {
         verify(jdbcClient, times(2)).sql(anyString());
         verify(statementSpec, times(2)).params(anyList());
         verify(statementSpec, times(2)).update();
+    }
+
+    @Test
+    void testFindByExerciseTypeUpperBody() {
+        String exerciseType1= "UPPERBODY";
+
+        when(jdbcClient.sql("select * from exercise where exercise_type = :exerciseType")).thenReturn(statementSpec);
+        when(statementSpec.param("exercise_type", exerciseType1)).thenReturn(statementSpec);
+        when(statementSpec.query(Exercise.class)).thenReturn(mappedQuerySpec);
+        when(mappedQuerySpec.list()).thenReturn(List.of(exercise));
+
+        List<Exercise> exercises = exerciseRepository.findByExerciseType(exerciseType1);
+
+        assertNotNull(exercises);
+        assertEquals(1, exercises.size());
+        assertEquals("Push-up", exercises.get(0).name());
+        assertEquals(ExerciseType.UPPERBODY, exercises.get(0).exerciseType());
+
+        verify(jdbcClient).sql("select * from exercise where exercise_type = :exerciseType");
+        verify(statementSpec).query(Exercise.class);
+        verify(mappedQuerySpec).list(); 
+    }
+
+    @Test
+    void testFindByExerciseTypeLowerBody() {
+        String exerciseType2= "LOWERBODY";
+
+        when(jdbcClient.sql("select * from exercise where exercise_type = :exerciseType")).thenReturn(statementSpec);
+        when(statementSpec.param("exercise_type", exerciseType2)).thenReturn(statementSpec);
+        when(statementSpec.query(Exercise.class)).thenReturn(mappedQuerySpec);
+        when(mappedQuerySpec.list()).thenReturn(List.of(exercise2));
+
+        List<Exercise> exercises = exerciseRepository.findByExerciseType(exerciseType2);
+
+        assertNotNull(exercises);
+        assertEquals(1, exercises.size());
+        assertEquals("Squat", exercises.get(0).name());
+        assertEquals(ExerciseType.LOWERBODY, exercises.get(0).exerciseType());
+
+        verify(jdbcClient).sql("select * from exercise where exercise_type = :exerciseType");
+        verify(statementSpec).query(Exercise.class);
+        verify(mappedQuerySpec).list(); 
     }
     
 
