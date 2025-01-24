@@ -6,6 +6,7 @@ import { useEffect, useState, useRef } from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import axios from 'axios'
 import Homepage from './pages/Homepage';
+import Navbar from './components/Navbar/Navbar'
 
 function App() {
   return (

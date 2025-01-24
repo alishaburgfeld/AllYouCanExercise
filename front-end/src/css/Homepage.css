@@ -1,0 +1,29 @@
+
+.homepage{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  position: relative;
+}
+
+.main-image-front, .main-image-back{
+    width: 100%;
+    max-width: 600px; /* Reasonable size on larger screens */
+    height: auto; /* Maintain aspect ratio */
+    display: block;
+    margin: 0 auto; /* Center the image */
+    position: relative;
+  }
+  
+  /* Ensure it looks good on smaller devices */
+  @media (max-width: 768px) {
+    .main-image-front, .main-image-back {
+      max-width: 90%; /* Adjust for smaller screens like iPhones */
+    }
+  }
+  
+  .image-div {
+    padding: 10px;
+  }
+  
