@@ -79,3 +79,8 @@ https://docs.oracle.com/javase/tutorial/reallybigindex.html
 
 
 SpringBoot: -In Spring Boot, port 8080 is the default port that the embedded Tomcat server uses to serve web applications. When you run a Spring Boot application without specifying a port, it automatically starts on port 8080 by default
+
+
+<!----------------- TODOS ----------->
+1. Add a navbar - look into how to do a hamburger style on tailwind
+2. Figure out how I'm going to insert the Exercise names onto the main picture page, and how upon click it will go to the exercise page.
