@@ -11,18 +11,29 @@ import ExercisePage from './pages/ExercisePage'
 
 function App() {
 
-  
+  const [exercises, setExercises] = useState([]);
+
+  const getExercises = async () => {
+    const response = await axios.get('http://localhost:8080/api/exercises')
+    console.log("response is", response, "response.data is", response.data)
+    setExercises(response.data);
+  }
+
+  useEffect(()=> {
+    getExercises();
+  })
+
   return (
     <div className="App">
         <Router> 
         <Navbar />
         <Routes>
-          <Route path='/' element={<Homepage />} />
+          <Route path='/' element={<Homepage exercises={exercises}/>} />
           {/* <Route path='/login' element={<LoginPage/>} /> */}
           {/* <Route path='/signup' element = {<SignUpPage />} /> */}
           {/* <Route path='/game' element = {<GamePage user={user} whoAmI={whoAmI} hand={hand} setHand={setHand} game={game} setGame = {setGame}/>} /> */}
           {/* <Route path='/draft' element = {<Draft/>} /> */}
-          <Route path="/exercise/:id" element={<ExercisePage/>} />
+          <Route path="/exercise/:id" element={<ExercisePage exercises={exercises}/>} />
         </Routes>
       </Router> 
     </div>

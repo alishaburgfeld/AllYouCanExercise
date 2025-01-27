@@ -19,6 +19,7 @@ function Homepage({exercises}) {
             :
                 <img src={back} alt="woman-back-body" className="homepage_image_back"/>}
             </div>
+            <div>"Exercises are" {exercises}</div>
             
         </div>
     )
