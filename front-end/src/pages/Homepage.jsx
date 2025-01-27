@@ -13,11 +13,11 @@ function Homepage() {
         
         <div className="homepage">
             {console.log("angle is", angle)}
-            <div className="image div">
+            <div className="homepage_image">
             {angle==="front" ?
-                <img src={front} alt="woman-front-body" className="main-image-front"/>
+                <img src={front} alt="woman-front-body" className="homepage_image_front"/>
             :
-                <img src={back} alt="woman-back-body" className="main-image-back"/>}
+                <img src={back} alt="woman-back-body" className="homepage_image_back"/>}
             </div>
             
         </div>

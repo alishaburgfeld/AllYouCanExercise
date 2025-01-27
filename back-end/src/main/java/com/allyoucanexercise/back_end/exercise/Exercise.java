@@ -6,6 +6,7 @@ public record Exercise(
     Integer id, 
     @NotEmpty
     String name, 
+    ExerciseGroup exerciseGroup,
     ExerciseType exerciseType, 
     String description) {
     

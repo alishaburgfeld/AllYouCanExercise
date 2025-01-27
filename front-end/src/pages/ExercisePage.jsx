@@ -1,6 +1,6 @@
 function ExercisePage() {
 
-    [exerciseName,setExerciseName] = useState("biceps");
+    const [exerciseName,setExerciseName] = useState("biceps");
 
     return {exerciseName}
 }

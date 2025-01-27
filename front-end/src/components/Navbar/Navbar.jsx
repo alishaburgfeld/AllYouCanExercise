@@ -1,7 +1,7 @@
 
 
 function Navbar () {
-    return ""
+    return "Navbar here"
 }
 
 export default Navbar
