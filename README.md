@@ -20,7 +20,8 @@ its not working with the security dependency, so for now I comment that out when
 
 <!-- Database -->
 
-# exec into the container then run this to connect to mysql: mysql -u alisha -psecret
+# exec into the container: docker exec -it allyoucanexercise-mysql-1 sh
+# then run this to connect to mysql: mysql -u alisha -psecret
 # then show databases
 # use <db name>
 # show tables
@@ -31,7 +32,7 @@ minikube location: /opt/homebrew/bin/minikube
 
 Start Docker: Open Docker Desktop on mac -- possible way to hide the desktop, try this next time: https://stackoverflow.com/questions/64533789/how-to-start-docker-desktop-with-a-cli-command-on-macos-without-showing-dashboar Start Minikube: minikube start --driver=docker
 
-To start the front-end: cd into exercise_react_app and type npm start go to localhost:3000 to run tests: npm run test ( need to be in the react folder)
+To start the front-end: cd into front-end and type npm start go to localhost:3000 to run tests: npm run test ( need to be in the react folder)
 
 To run application:
 
@@ -68,6 +69,11 @@ springboot + java + minikub k8s: https://www.youtube.com/watch?v=cvi3pMelCV0 htt
 https://docs.oracle.com/javase/tutorial/reallybigindex.html
 
 
+React/Java Fitness:
+1. https://www.youtube.com/watch?v=gpqoZQ8GNK8
+2. https://www.youtube.com/watch?v=KBpoBc98BwM
+--the second one uses apis to grab videos and exercise descriptions
+
 <!-- Helpful Articles/Information -->
 -which dockerfile to use? https://www.techtarget.com/searchitoperations/tip/Choose-the-best-Docker-image-for-the-job-at-hand
 
@@ -79,3 +85,8 @@ https://docs.oracle.com/javase/tutorial/reallybigindex.html
 
 
 SpringBoot: -In Spring Boot, port 8080 is the default port that the embedded Tomcat server uses to serve web applications. When you run a Spring Boot application without specifying a port, it automatically starts on port 8080 by default
+
+
+<!----------------- TODOS ----------->
+1. Add a navbar - look into how to do a hamburger style on tailwind
+2. Figure out how I'm going to insert the Exercise names onto the main picture page, and how upon click it will go to the exercise page.

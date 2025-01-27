@@ -35,7 +35,6 @@ public class ExerciseRepositoryTest {
 
     // essential JdbcClient Mocks we'll use for most tests
     private JdbcClient.StatementSpec statementSpec;
-    private JdbcClient.StatementSpec statementSpecTwo;
     private JdbcClient.MappedQuerySpec<Exercise> mappedQuerySpec;
     private JdbcClient.ResultQuerySpec resultQuerySpec;
     private Exercise exercise;
@@ -43,13 +42,11 @@ public class ExerciseRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        exercise = new Exercise(1, "Push-up", ExerciseType.UPPERBODY, "Push-up description");
-        exercise2 = new Exercise(2, "Squat", ExerciseType.LOWERBODY, "Squat description");
+        exercise = new Exercise(1, "Push-up", ExerciseGroup.CHEST, ExerciseType.UPPERBODY, "Push-up description");
+        exercise2 = new Exercise(2, "Squat", ExerciseGroup.QUADS, ExerciseType.LOWERBODY, "Squat description");
         // Initializes mocks
         MockitoAnnotations.openMocks(this); 
         statementSpec = mock(JdbcClient.StatementSpec.class);
-        statementSpecTwo = mock(JdbcClient.StatementSpec.class);
-        
         mappedQuerySpec = mock(JdbcClient.MappedQuerySpec.class); 
         resultQuerySpec = mock(JdbcClient.ResultQuerySpec.class);  // Mock MappedQuerySpec
     
@@ -84,7 +81,7 @@ public class ExerciseRepositoryTest {
     @Test
     void testFindById() {
         
-        when(jdbcClient.sql("SELECT id,name,exercise_type,description FROM exercise WHERE id = :id")).thenReturn(statementSpec);
+        when(jdbcClient.sql("SELECT id,name,exercise_group,exercise_type,description FROM exercise WHERE id = :id")).thenReturn(statementSpec);
         when(statementSpec.param("id", 1)).thenReturn(statementSpec);
         when(statementSpec.query(Exercise.class)).thenReturn(mappedQuerySpec);
         when(mappedQuerySpec.optional()).thenReturn(Optional.of(exercise));
@@ -92,9 +89,9 @@ public class ExerciseRepositoryTest {
     Optional<Exercise> result = exerciseRepository.findById(1);
 
     assertEquals("Push-up", result.get().name());
-    assertEquals(ExerciseType.UPPERBODY, result.get().exerciseType());
+    assertEquals(ExerciseGroup.CHEST, result.get().exerciseGroup());
 
-    verify(jdbcClient).sql("SELECT id,name,exercise_type,description FROM exercise WHERE id = :id");
+    verify(jdbcClient).sql("SELECT id,name,exercise_group,exercise_type,description FROM exercise WHERE id = :id");
     verify(statementSpec).param("id", 1);
     verify(statementSpec).query(Exercise.class);
     verify(mappedQuerySpec).optional();  // Ensure optional was called
@@ -103,25 +100,25 @@ public class ExerciseRepositoryTest {
     @Test
     @DisplayName("test create - Happy Path")
     void testCreate() {
-        when(jdbcClient.sql("INSERT INTO exercise(id,name,exercise_type,description) values(?,?,?,?)")).thenReturn(statementSpec);
-        when(statementSpec.params(List.of(exercise.id(),exercise.name(),exercise.exerciseType().toString(),exercise.description()))).thenReturn(statementSpec);
+        when(jdbcClient.sql("INSERT INTO exercise(id,name,exercise_group,exercise_type,description) values(?,?,?,?,?)")).thenReturn(statementSpec);
+        when(statementSpec.params(List.of(exercise.id(),exercise.name(),exercise.exerciseGroup(),exercise.exerciseType().toString(),exercise.description()))).thenReturn(statementSpec);
         when(statementSpec.update()).thenReturn(1);
 
         exerciseRepository.create(exercise);
 
-        verify(jdbcClient).sql("INSERT INTO exercise(id,name,exercise_type,description) values(?,?,?,?)");
-        verify(statementSpec).params(List.of(exercise.id(), exercise.name(), exercise.exerciseType().toString(), exercise.description()));
+        verify(jdbcClient).sql("INSERT INTO exercise(id,name,exercise_group,exercise_type,description) values(?,?,?,?,?)");
+        verify(statementSpec).params(List.of(exercise.id(),exercise.name(),exercise.exerciseGroup(),exercise.exerciseType().toString(),exercise.description()));
         verify(statementSpec).update();  
     }
 
     @Test
     @DisplayName("test create - Unhappy Path")
     void testCreateUnhappy() {
-        exercise = new Exercise(1, "", ExerciseType.UPPERBODY, "Push-up description");  // Missing name
+        exercise = new Exercise(1, "", ExerciseGroup.CHEST,ExerciseType.UPPERBODY, "Push-up description");  // Missing name
 
-        when(jdbcClient.sql("INSERT INTO exercise(id,name,exercise_type,description) values(?,?,?,?)")).thenReturn(statementSpec);
+        when(jdbcClient.sql("INSERT INTO exercise(id,name,exercise_group,exercise_type,description) values(?,?,?,?,?)")).thenReturn(statementSpec);
         // missing the name
-        when(statementSpec.params(List.of(exercise.id(),exercise.name(),exercise.exerciseType().toString(),exercise.description()))).thenReturn(statementSpec);
+        when(statementSpec.params(List.of(exercise.id(),exercise.name(),exercise.exerciseGroup(),exercise.exerciseType().toString(),exercise.description()))).thenReturn(statementSpec);
         when(statementSpec.update()).thenReturn(0);
 
         try {
@@ -132,36 +129,36 @@ public class ExerciseRepositoryTest {
             assertTrue(e.getMessage().contains("Failed to create exercise"));
         }
 
-        verify(jdbcClient).sql("INSERT INTO exercise(id,name,exercise_type,description) values(?,?,?,?)");
-        verify(statementSpec).params(List.of(exercise.id(), exercise.name(), exercise.exerciseType().toString(), exercise.description()));
+        verify(jdbcClient).sql("INSERT INTO exercise(id,name,exercise_group,exercise_type,description) values(?,?,?,?,?)");
+        verify(statementSpec).params(List.of(exercise.id(),exercise.name(),exercise.exerciseGroup(),exercise.exerciseType().toString(),exercise.description()));
         verify(statementSpec).update();  
     }
 
     @Test
     @DisplayName("test update - Happy Path")
     void testUpdate() {
-        exercise = new Exercise(1, "Push-up", ExerciseType.UPPERBODY, "New, Updated, Push-up description");
+        exercise = new Exercise(1, "Push-up", ExerciseGroup.CHEST,ExerciseType.UPPERBODY, "New, Updated, Push-up description");
 
         int id = exercise.id();
-        when(jdbcClient.sql("update exercise set name = ?, exercise_type = ?, description = ? where id = ?")).thenReturn(statementSpec);
-        when(statementSpec.params(List.of(exercise.name(),exercise.exerciseType().toString(),exercise.description(), id))).thenReturn(statementSpec);
+        when(jdbcClient.sql("update exercise set name = ?, exercise_group = ?, exercise_type = ?, description = ? where id = ?")).thenReturn(statementSpec);
+        when(statementSpec.params(List.of(exercise.name(),exercise.exerciseGroup().toString(),exercise.exerciseType().toString(),exercise.description(), id))).thenReturn(statementSpec);
         when(statementSpec.update()).thenReturn(1);
 
         exerciseRepository.update(exercise, id);
 
-        verify(jdbcClient).sql("update exercise set name = ?, exercise_type = ?, description = ? where id = ?");
-        verify(statementSpec).params(List.of(exercise.name(),exercise.exerciseType().toString(),exercise.description(), id));
+        verify(jdbcClient).sql("update exercise set name = ?, exercise_group = ?, exercise_type = ?, description = ? where id = ?");
+        verify(statementSpec).params(List.of(exercise.name(),exercise.exerciseGroup().toString(),exercise.exerciseType().toString(),exercise.description(), id));
         verify(statementSpec).update(); 
     }
 
     @Test
     @DisplayName("test update - Unhappy Path")
     void testUpdateUnhappy() {
-        exercise = new Exercise(1, "Push-up", ExerciseType.UPPERBODY, "New, Updated, Push-up description");
+        exercise = new Exercise(1, "Push-up", ExerciseGroup.CHEST,ExerciseType.UPPERBODY, "New, Updated, Push-up description");
         int id = 2;
 
-        when(jdbcClient.sql("update exercise set name = ?, exercise_type = ?, description = ? where id = ?")).thenReturn(statementSpec);
-        when(statementSpec.params(List.of(exercise.name(),exercise.exerciseType().toString(),exercise.description(), id))).thenReturn(statementSpec);
+        when(jdbcClient.sql("update exercise set name = ?, exercise_group = ?, exercise_type = ?, description = ? where id = ?")).thenReturn(statementSpec);
+        when(statementSpec.params(List.of(exercise.name(),exercise.exerciseGroup().toString(),exercise.exerciseType().toString(),exercise.description(), id))).thenReturn(statementSpec);
         when(statementSpec.update()).thenReturn(0);
 
         try {
@@ -172,8 +169,8 @@ public class ExerciseRepositoryTest {
             assertTrue(e.getMessage().contains("Failed to update exercise"));
         }
 
-        verify(jdbcClient).sql("update exercise set name = ?, exercise_type = ?, description = ? where id = ?");
-        verify(statementSpec).params(List.of(exercise.name(),exercise.exerciseType().toString(),exercise.description(), id));
+        verify(jdbcClient).sql("update exercise set name = ?, exercise_group = ?, exercise_type = ?, description = ? where id = ?");
+        verify(statementSpec).params(List.of(exercise.name(),exercise.exerciseGroup().toString(),exercise.exerciseType().toString(),exercise.description(), id));
         verify(statementSpec).update(); 
     }
 
@@ -219,8 +216,8 @@ public class ExerciseRepositoryTest {
         when(jdbcClient.sql("select * from exercise")).thenReturn(statementSpec);
         when(statementSpec.query()).thenReturn(resultQuerySpec);
         when(resultQuerySpec.listOfRows()).thenReturn(List.of(
-        Map.of("id", 1, "name", "Push-up", "exerciseType", "UPPERBODY", "description", "Push-up description"),
-        Map.of("id", 2, "name", "Squat", "exerciseType", "LOWERBODY", "description", "Squat Description")
+        Map.of("id", 1, "name", "Push-up", "exerciseGroup", "CHEST", "exerciseType", "UPPERBODY", "description", "Push-up description"),
+        Map.of("id", 2, "name", "Squat", "exerciseGroup", "QUADS", "exerciseType", "LOWERBODY", "description", "Squat Description")
     ));
 
         int count = exerciseRepository.count();

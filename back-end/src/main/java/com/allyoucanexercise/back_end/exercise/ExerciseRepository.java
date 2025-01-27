@@ -29,16 +29,15 @@ public class ExerciseRepository{
     }
 
     public Optional<Exercise> findById(Integer id) {
-        return jdbcClient.sql("SELECT id,name,exercise_type,description FROM exercise WHERE id = :id" )
+        return jdbcClient.sql("SELECT id,name,exercise_group,exercise_type,description FROM exercise WHERE id = :id" )
                 .param("id", id)
                 .query(Exercise.class)
                 .optional();
     }
 
     public void create(Exercise exercise) {
-        log.info("exercise is", exercise.id(), exercise.name(), "type", exercise.exerciseType(), "description", exercise.description());
-        var updated = jdbcClient.sql("INSERT INTO exercise(id,name,exercise_type,description) values(?,?,?,?)")
-                .params(List.of(exercise.id(),exercise.name(),exercise.exerciseType().toString(),exercise.description()))
+        var updated = jdbcClient.sql("INSERT INTO exercise(id,name,exercise_group,exercise_type,description) values(?,?,?,?,?)")
+                .params(List.of(exercise.id(),exercise.name(),exercise.exerciseGroup().toString(),exercise.exerciseType().toString(),exercise.description()))
                 .update();
         
         // the sql .update function returns the amount of rows affected.
@@ -47,8 +46,8 @@ public class ExerciseRepository{
     }
 
     public void update(Exercise exercise, Integer id) {
-        var updated = jdbcClient.sql("update exercise set name = ?, exercise_type = ?, description = ? where id = ?")
-                .params(List.of(exercise.name(),exercise.exerciseType().toString(),exercise.description(), id))
+        var updated = jdbcClient.sql("update exercise set name = ?, exercise_group = ?, exercise_type = ?, description = ? where id = ?")
+                .params(List.of(exercise.name(),exercise.exerciseGroup().toString(),exercise.exerciseType().toString(),exercise.description(), id))
                 .update();
 
         Assert.state(updated == 1, "Failed to update exercise");
@@ -73,6 +72,13 @@ public class ExerciseRepository{
     public List<Exercise> findByExerciseType(String exerciseType) {
         return jdbcClient.sql("select * from exercise where exercise_type = :exerciseType")
                 .param("exercise_type", exerciseType)
+                .query(Exercise.class)
+                .list();
+    }
+
+    public List<Exercise> findByExerciseGroup(String exerciseGroup) {
+        return jdbcClient.sql("select * from exercise where exercise_group = :exerciseGroup")
+                .param("exercise_group", exerciseGroup)
                 .query(Exercise.class)
                 .list();
     }
