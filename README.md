@@ -20,7 +20,8 @@ its not working with the security dependency, so for now I comment that out when
 
 <!-- Database -->
 
-# exec into the container then run this to connect to mysql: mysql -u alisha -psecret
+# exec into the container: docker exec -it allyoucanexercise-mysql-1 sh
+# then run this to connect to mysql: mysql -u alisha -psecret
 # then show databases
 # use <db name>
 # show tables
@@ -67,6 +68,11 @@ springboot + java + minikub k8s: https://www.youtube.com/watch?v=cvi3pMelCV0 htt
 
 https://docs.oracle.com/javase/tutorial/reallybigindex.html
 
+
+React/Java Fitness:
+1. https://www.youtube.com/watch?v=gpqoZQ8GNK8
+2. https://www.youtube.com/watch?v=KBpoBc98BwM
+--the second one uses apis to grab videos and exercise descriptions
 
 <!-- Helpful Articles/Information -->
 -which dockerfile to use? https://www.techtarget.com/searchitoperations/tip/Choose-the-best-Docker-image-for-the-job-at-hand

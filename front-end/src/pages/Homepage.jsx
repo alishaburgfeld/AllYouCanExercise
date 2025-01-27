@@ -5,7 +5,7 @@ import back from "../assets/images/woman-back.jpg";
 import "../css/Homepage.css";
 
 
-function Homepage() {
+function Homepage({exercises}) {
 
     const [angle, setAngle] = useState("front");
 

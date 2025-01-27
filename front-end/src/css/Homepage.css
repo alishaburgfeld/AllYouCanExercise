@@ -7,7 +7,7 @@
   position: relative;
 }
 
-.main-image-front, .main-image-back{
+.homepage_image_front, .homepage_image_back{
     width: 100%;
     max-width: 600px; /* Reasonable size on larger screens */
     height: auto; /* Maintain aspect ratio */
@@ -18,12 +18,12 @@
   
   /* Ensure it looks good on smaller devices */
   @media (max-width: 768px) {
-    .main-image-front, .main-image-back {
+    .homepage_image_front, .homepage_image_back {
       max-width: 90%; /* Adjust for smaller screens like iPhones */
     }
   }
   
-  .image-div {
+  .homepage_image {
     padding: 10px;
   }
   

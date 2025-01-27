@@ -1,5 +1,5 @@
 package com.allyoucanexercise.back_end.exercise;
 
-public enum ExerciseType {
-    UPPERBODY, LOWERBODY, CARDIO, ABS
+public enum ExerciseGroup {
+    SHOULDERS,CHEST,FOREARMS,OBLIQUES,QUADS,ADDUCTORS,ABS,BICEPS,CARDIO,TRAPS,TRICEPS,ABDUCTORS,HAMSTRINGS,CALVES,LATS,LOWER_BACK,GLUTES
 }
