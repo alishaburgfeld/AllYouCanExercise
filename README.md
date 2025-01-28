@@ -86,6 +86,7 @@ React/Java Fitness:
 
 SpringBoot: -In Spring Boot, port 8080 is the default port that the embedded Tomcat server uses to serve web applications. When you run a Spring Boot application without specifying a port, it automatically starts on port 8080 by default
 
+How to handle CSRF configuration: https://chatgpt.com/share/67992954-c8e0-800f-b2a5-03943e2854cc
 
 <!----------------- TODOS ----------->
 1. Add a navbar - look into how to do a hamburger style on tailwind
