@@ -5,6 +5,7 @@ import { useEffect, useState, useRef } from 'react';
 // import './App.css'
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import axios from 'axios'
+import Cookies from 'js-cookie';
 import Homepage from './pages/Homepage';
 import Navbar from './components/Navbar/Navbar'
 import ExercisePage from './pages/ExercisePage'
@@ -14,14 +15,25 @@ function App() {
   const [exercises, setExercises] = useState([]);
 
   const getExercises = async () => {
-    const response = await axios.get('http://localhost:8080/api/exercises')
-    console.log("response is", response, "response.data is", response.data)
-    setExercises(response.data);
-  }
+    const csrfToken = Cookies.get('XSRF-TOKEN'); // Read the CSRF token from the cookie
+  
+    try {
+      const response = await axios.get('http://localhost:8080/api/exercises', {
+        headers: {
+          'X-XSRF-TOKEN': csrfToken,
+        },
+        withCredentials: true, // Include cookies in the request
+      });
+      console.log("response is", response, "response.data is", response.data);
+      setExercises(response.data);
+    } catch (error) {
+      console.error("Error fetching exercises:", error);
+    }
+  };
 
   useEffect(()=> {
     getExercises();
-  })
+  }, [])
 
   return (
     <div className="App">
@@ -33,7 +45,7 @@ function App() {
           {/* <Route path='/signup' element = {<SignUpPage />} /> */}
           {/* <Route path='/game' element = {<GamePage user={user} whoAmI={whoAmI} hand={hand} setHand={setHand} game={game} setGame = {setGame}/>} /> */}
           {/* <Route path='/draft' element = {<Draft/>} /> */}
-          <Route path="/exercise/:id" element={<ExercisePage exercises={exercises}/>} />
+          <Route path='/exercise/:id' element={<ExercisePage exercises={exercises}/>} />
         </Routes>
       </Router> 
     </div>
