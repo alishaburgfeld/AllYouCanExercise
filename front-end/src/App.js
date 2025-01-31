@@ -9,6 +9,7 @@ import Cookies from 'js-cookie';
 import Homepage from './pages/Homepage';
 import Navbar from './components/Navbar/Navbar'
 import ExercisePage from './pages/ExercisePage'
+import ExerciseGroupPage from './pages/ExerciseGroupPage';
 
 function App() {
 
@@ -43,7 +44,7 @@ function App() {
           <Route path='/' element={<Homepage exercises={exercises}/>} />
           {/* <Route path='/login' element={<LoginPage/>} /> */}
           {/* <Route path='/signup' element = {<SignUpPage />} /> */}
-          {/* <Route path='/game' element = {<GamePage user={user} whoAmI={whoAmI} hand={hand} setHand={setHand} game={game} setGame = {setGame}/>} /> */}
+          <Route path='/exercise/group/:exercise_group' element = {<ExerciseGroupPage exercises={exercises}/>} />
           {/* <Route path='/draft' element = {<Draft/>} /> */}
           <Route path='/exercise/:id' element={<ExercisePage exercises={exercises}/>} />
         </Routes>

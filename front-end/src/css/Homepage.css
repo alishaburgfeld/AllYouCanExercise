@@ -7,13 +7,39 @@
   position: relative;
 }
 
+.homepage-image {
+  position: relative;
+  padding: 10px;
+}
+
 .homepage_image_front, .homepage_image_back{
     width: 100%;
     max-width: 600px; /* Reasonable size on larger screens */
     height: auto; /* Maintain aspect ratio */
     display: block;
     margin: 0 auto; /* Center the image */
-    position: relative;
+  }
+
+  .homepage_label {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px;
+    font-size: 0.9em;
+    text-align: center;
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+  }
+
+  .homepage_label.CHEST {
+    top: 50%;
+    left: 25%;
+  }
+  
+  .homepage_label.QUADS {
+    bottom: 20%;
+    left: 20%;
   }
   
   /* Ensure it looks good on smaller devices */
@@ -23,7 +49,4 @@
     }
   }
   
-  .homepage_image {
-    padding: 10px;
-  }
   
