@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from 'react';
 // use {thing to be imported} when there are a lot of things to be imported from that file.
 //when using the "export default" this allows you n ot to use the {} on the thing you're importing
 // import './App.css'
-import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import axios from 'axios'
 import Cookies from 'js-cookie';
 import Homepage from './pages/Homepage';
@@ -38,7 +38,7 @@ function App() {
 
   return (
     <div className="App">
-        <Router> 
+        <BrowserRouter> 
         <Navbar />
         <Routes>
           <Route path='/' element={<Homepage exercises={exercises}/>} />
@@ -48,7 +48,7 @@ function App() {
           {/* <Route path='/draft' element = {<Draft/>} /> */}
           <Route path='/exercise/:id' element={<ExercisePage exercises={exercises}/>} />
         </Routes>
-      </Router> 
+      </BrowserRouter> 
     </div>
   );
 }

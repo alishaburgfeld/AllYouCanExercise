@@ -42,6 +42,13 @@ Build both images and container: docker-compose up --build
 get docker image id: docker images
 exec into your docker container: docker exec -it exercise_app-exercise-react-app-1 sh
 ./mvnw spring-boot:run
+
+
+Material UI Site: https://mui.com/material-ui/getting-started/installation/
+
+Material UI tutorials: https://www.youtube.com/watch?v=h9KevTtI5O0&list=PLDxCaNaYIuUlG5ZqoQzFE27CUOoQvOqnQ&index=1
+
+
 Things I have learned:
 
 Docker: -to delete docker image = docker rmi  -to delete docker containers: docker compose down -to delete docker container manually = first stop it. docker stop then docker rm -to see all containers (even stopped ones) = docker ps -a -to see logs: Docker container logs lb -“Dockerfile” is the instructions for building a container image. https://www.youtube.com/watch?v=LQjaJINkQXY
