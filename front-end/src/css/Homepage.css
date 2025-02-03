@@ -1,25 +1,29 @@
-
-.homepage{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  position: relative;
-}
-
-.homepage-image {
-  position: relative;
-  padding: 10px;
-}
-
-.homepage_image_front, .homepage_image_back{
-    width: 100%;
-    max-width: 600px; /* Reasonable size on larger screens */
-    height: auto; /* Maintain aspect ratio */
-    display: block;
-    margin: 0 auto; /* Center the image */
+.homepage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: relative;
+    overflow: hidden; /* Prevents scrolling */
+    width: 100vw;
   }
-
+  
+  .homepage-image {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .homepage_image_front, .homepage_image_back {
+    width: 100%;
+    height: 100vh;
+    object-fit: contain; /* Ensures full image is visible */
+    display: block;
+  }
+  
   .homepage_label {
     position: absolute;
     background: rgba(255, 255, 255, 0.8);
@@ -30,23 +34,55 @@
     text-align: center;
     cursor: pointer;
     transform: translate(-50%, -50%);
+    white-space: nowrap;
   }
 
+  .homepage_label.SHOULDERS {
+    top: 40%;
+    right: 10%;
+  }
+  
   .homepage_label.CHEST {
-    top: 50%;
+    top: 40%;
+    left: 25%;
+  }
+
+  .homepage_label.FOREARMS {
+    top: 45%;
+    left: 25%;
+  }
+
+  .homepage_label.OBLIQUES {
+    top: 55%;
     left: 25%;
   }
   
   .homepage_label.QUADS {
-    bottom: 20%;
-    left: 20%;
+    bottom: 30%;
+    left: 25%;
   }
+
+  .homepage_label.CARDIO {
+    top: 30%;
+    right: 10%;
+  }
+
+  .homepage_label.BICEPS {
+    top: 45%;
+    right: 5%;
+  }
+
+  .homepage_label.ABS{
+    bottom: 40%;
+    right: 10%;
+  }
+
   
-  /* Ensure it looks good on smaller devices */
+  
   @media (max-width: 768px) {
-    .homepage_image_front, .homepage_image_back {
-      max-width: 90%; /* Adjust for smaller screens like iPhones */
+    .homepage_label {
+      font-size: 0.7em;
+      padding: 3px;
     }
   }
-  
   

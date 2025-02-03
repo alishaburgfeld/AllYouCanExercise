@@ -34,6 +34,97 @@
         "exerciseGroup": "CARDIO",
         "exerciseType": "CARDIO",
         "description": "Walk"
+      },
+      {
+        "id": 6,
+        "name": "Push-up",
+        "exerciseGroup": "CHEST",
+        "exerciseType": "UPPERBODY",
+        "description": "Do a push-up"
+      },
+      {
+        "id": 7,
+        "name": "Standing Dumbbell Wrist Curl",
+        "exerciseGroup": "FOREARMS",
+        "exerciseType": "UPPERBODY",
+        "description": "Hold dumbbells at hips, curl your wrists and lift the dumbbell high."
+      },
+      {
+        "id": 8,
+        "name": "Russian Twist",
+        "exerciseGroup": "OBLIQUES",
+        "exerciseType": "ABS",
+        "description": "Lift your feet, twist left and right."
+      },
+      {
+        "id": 9,
+        "name": "Adduction Machine",
+        "exerciseGroup": "ADDUCTORS",
+        "exerciseType": "LOWERBODY",
+        "description": "Engage your inner thighs and squees your knees together."
+      },
+      {
+        "id": 10,
+        "name": "Squat",
+        "exerciseGroup": "QUADS",
+        "exerciseType": "LOWERBODY",
+        "description": "do a Squat"
+      },
+      {
+        "id": 11,
+        "name": "Standing Dumbbell Shrugs",
+        "exerciseGroup": "TRAPS",
+        "exerciseType": "UPPERBODY",
+        "description": "Hold umbbelss at your hips, shrug your shoulders up"
+      },
+      {
+        "id": 12,
+        "name": "Dumbbell Skull Crusher",
+        "exerciseGroup": "TRICEPS",
+        "exerciseType": "UPPERBODY",
+        "description": "Flat bar, extend dumbbells down to your forehead"
+      },
+      {
+        "id": 13,
+        "name": "Single Arm Dumbbell Row",
+        "exerciseGroup": "LATS",
+        "exerciseType": "UPPERBODY",
+        "description": "kneel on the bench, extend arm fully down, then pull back towards your chest"
+      },
+      {
+        "id": 14,
+        "name": "Squat",
+        "exerciseGroup": "ABDUCTORS",
+        "exerciseType": "LOWERBODY",
+        "description": "Push the pads out with your knees"
+      },
+      {
+        "id": 15,
+        "name": "Superman",
+        "exerciseGroup": "LOWER_BACK",
+        "exerciseType": "LOWERBODY",
+        "description": "Superman position on the floor"
+      },
+      {
+        "id": 16,
+        "name": "Barbell Hip Thrust",
+        "exerciseGroup": "GLUTES",
+        "exerciseType": "LOWERBODY",
+        "description": "Thrust your hips up"
+      },
+      {
+        "id": 17,
+        "name": "Barbell Deadlift",
+        "exerciseGroup": "HAMSTRINGS",
+        "exerciseType": "LOWERBODY",
+        "description": "Stand and hold barbell, lower barbell to the floor"
+      },
+      {
+        "id": 18,
+        "name": "Calf Raises",
+        "exerciseGroup": "CALVES",
+        "exerciseType": "LOWERBODY",
+        "description": "Stand up, raise up on to your toes"
       }
 
     ]
