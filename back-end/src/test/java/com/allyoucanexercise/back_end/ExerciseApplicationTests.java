@@ -29,6 +29,7 @@ class ExerciseApplicationTests {
 	}
 
 	@Test
+	// This test is probably due to some oauth security configuration .... possibly because I disabled the security dependency in pom.xml
 	void contextLoads() {
 	}
 }
