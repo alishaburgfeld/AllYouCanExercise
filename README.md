@@ -1,5 +1,6 @@
 <!-- -------------------Decision Notes --------------------->
 1. Had to install Debugger for Java and Language Support for Java(TM) by Red Hat to be able to do. Run ->Run without debugging. Or can just do ./mvnw spring-boot:run
+-this is not working because I don't have java installed, and I wasn't in the back-end folder. 
 
 <!-- -------------------REST --------------------->
 When have security dependency invoked it prints a password in the console to connect to the localhost:
@@ -98,3 +99,6 @@ How to handle CSRF configuration: https://chatgpt.com/share/67992954-c8e0-800f-b
 <!----------------- TODOS ----------->
 1. Add a navbar - look into how to do a hamburger style on tailwind
 2. Figure out how I'm going to insert the Exercise names onto the main picture page, and how upon click it will go to the exercise page.
+3. Make it so id is auto-populated based on the next value in the mysql database
+4. Verify the way I'm doing CORS exception is a secure way
+5. Database variables for mysql container
