@@ -101,13 +101,13 @@ public class ExerciseRepositoryTest {
     @DisplayName("test create - Happy Path")
     void testCreate() {
         when(jdbcClient.sql("INSERT INTO exercise(id,name,exercise_group,exercise_type,description) values(?,?,?,?,?)")).thenReturn(statementSpec);
-        when(statementSpec.params(List.of(exercise.id(),exercise.name(),exercise.exerciseGroup(),exercise.exerciseType().toString(),exercise.description()))).thenReturn(statementSpec);
+        when(statementSpec.params(List.of(exercise.id(),exercise.name(),exercise.exerciseGroup().toString(),exercise.exerciseType().toString(),exercise.description()))).thenReturn(statementSpec);
         when(statementSpec.update()).thenReturn(1);
 
         exerciseRepository.create(exercise);
 
         verify(jdbcClient).sql("INSERT INTO exercise(id,name,exercise_group,exercise_type,description) values(?,?,?,?,?)");
-        verify(statementSpec).params(List.of(exercise.id(),exercise.name(),exercise.exerciseGroup(),exercise.exerciseType().toString(),exercise.description()));
+        verify(statementSpec).params(List.of(exercise.id(),exercise.name(),exercise.exerciseGroup().toString(),exercise.exerciseType().toString(),exercise.description()));
         verify(statementSpec).update();  
     }
 
@@ -118,7 +118,7 @@ public class ExerciseRepositoryTest {
 
         when(jdbcClient.sql("INSERT INTO exercise(id,name,exercise_group,exercise_type,description) values(?,?,?,?,?)")).thenReturn(statementSpec);
         // missing the name
-        when(statementSpec.params(List.of(exercise.id(),exercise.name(),exercise.exerciseGroup(),exercise.exerciseType().toString(),exercise.description()))).thenReturn(statementSpec);
+        when(statementSpec.params(List.of(exercise.id(),exercise.name(),exercise.exerciseGroup().toString(),exercise.exerciseType().toString(),exercise.description()))).thenReturn(statementSpec);
         when(statementSpec.update()).thenReturn(0);
 
         try {
@@ -130,7 +130,7 @@ public class ExerciseRepositoryTest {
         }
 
         verify(jdbcClient).sql("INSERT INTO exercise(id,name,exercise_group,exercise_type,description) values(?,?,?,?,?)");
-        verify(statementSpec).params(List.of(exercise.id(),exercise.name(),exercise.exerciseGroup(),exercise.exerciseType().toString(),exercise.description()));
+        verify(statementSpec).params(List.of(exercise.id(),exercise.name(),exercise.exerciseGroup().toString(),exercise.exerciseType().toString(),exercise.description()));
         verify(statementSpec).update();  
     }
 
@@ -245,7 +245,7 @@ public class ExerciseRepositoryTest {
     void testFindByExerciseTypeUpperBody() {
         String exerciseType1= "UPPERBODY";
 
-        when(jdbcClient.sql("select * from exercise where exercise_type = :exerciseType")).thenReturn(statementSpec);
+        when(jdbcClient.sql("select * from exercise where exercise_type = :exercise_type")).thenReturn(statementSpec);
         when(statementSpec.param("exercise_type", exerciseType1)).thenReturn(statementSpec);
         when(statementSpec.query(Exercise.class)).thenReturn(mappedQuerySpec);
         when(mappedQuerySpec.list()).thenReturn(List.of(exercise));
@@ -257,7 +257,7 @@ public class ExerciseRepositoryTest {
         assertEquals("Push-up", exercises.get(0).name());
         assertEquals(ExerciseType.UPPERBODY, exercises.get(0).exerciseType());
 
-        verify(jdbcClient).sql("select * from exercise where exercise_type = :exerciseType");
+        verify(jdbcClient).sql("select * from exercise where exercise_type = :exercise_type");
         verify(statementSpec).query(Exercise.class);
         verify(mappedQuerySpec).list(); 
     }
@@ -266,7 +266,7 @@ public class ExerciseRepositoryTest {
     void testFindByExerciseTypeLowerBody() {
         String exerciseType2= "LOWERBODY";
 
-        when(jdbcClient.sql("select * from exercise where exercise_type = :exerciseType")).thenReturn(statementSpec);
+        when(jdbcClient.sql("select * from exercise where exercise_type = :exercise_type")).thenReturn(statementSpec);
         when(statementSpec.param("exercise_type", exerciseType2)).thenReturn(statementSpec);
         when(statementSpec.query(Exercise.class)).thenReturn(mappedQuerySpec);
         when(mappedQuerySpec.list()).thenReturn(List.of(exercise2));
@@ -278,7 +278,7 @@ public class ExerciseRepositoryTest {
         assertEquals("Squat", exercises.get(0).name());
         assertEquals(ExerciseType.LOWERBODY, exercises.get(0).exerciseType());
 
-        verify(jdbcClient).sql("select * from exercise where exercise_type = :exerciseType");
+        verify(jdbcClient).sql("select * from exercise where exercise_type = :exercise_type");
         verify(statementSpec).query(Exercise.class);
         verify(mappedQuerySpec).list(); 
     }
