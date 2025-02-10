@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 import "../css/ExerciseGroupPage.css";
 
 
+
 function ExerciseGroupPage() {
 
     const { exerciseGroup } = useParams();
