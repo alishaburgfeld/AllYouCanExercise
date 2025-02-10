@@ -29,13 +29,14 @@ public class ExerciseController {
 
     private final ExerciseRepository exerciseRepository;
 
-    public ExerciseController(ExerciseRepository exerciseRepository) {
+    public ExerciseController(final ExerciseRepository exerciseRepository) {
         this.exerciseRepository = exerciseRepository;
     }
 
+    // @Slf4j Lombok annotation to add a logger, put annotation on top of class.
     private static final Logger log = LoggerFactory.getLogger(ExerciseApplication.class);
 
-    @GetMapping("")
+    @GetMapping()
     List<Exercise> findAll() {
         // log.info("inside find all controller");
         return exerciseRepository.findAll();
@@ -44,24 +45,25 @@ public class ExerciseController {
     @GetMapping("/{id}")
     Exercise findById(@PathVariable Integer id) {
         Optional<Exercise> exercise = exerciseRepository.findById(id);
-        if(exercise.isEmpty()) {
+        if (exercise.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Exercise not found.");
         }
         return exercise.get();
-        // I don't understand why the .get is needed here
+        // I don't understand why the .get is needed here:
+        // Since exercise can be an optional you have to add the .get()
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("")
+    @PostMapping()
     void create (@Valid @RequestBody Exercise exercise){
-        log.info("we are in the create on the controller, exercise is", exercise.id(), "name", exercise.name(), "group", exercise.exerciseGroup(),"type", exercise.exerciseType(), "description", exercise.description());
+        // log.info("we are in the create on the controller, exercise is", exercise.id(), "name", exercise.name(), "group", exercise.exerciseGroup(),"type", exercise.exerciseType(), "description", exercise.description());
         exerciseRepository.create(exercise);
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}")
     void update (@Valid @RequestBody Exercise newExercise, @PathVariable Integer id) {
-        Optional <Exercise> existingExercise = exerciseRepository.findById(id);
+        Optional<Exercise> existingExercise = exerciseRepository.findById(id);
         if(existingExercise.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Exercise not found.");
         }
@@ -70,10 +72,10 @@ public class ExerciseController {
 
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    // Could do ok here... is there a better response?
     @DeleteMapping("/{id}")
     void delete (@PathVariable Integer id) {
         exerciseRepository.delete(id);
     }
 
-    // 1:49 in the video
 }

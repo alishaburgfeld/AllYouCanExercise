@@ -10,7 +10,7 @@ const mockExercises = [
     test("defaults to front angle", async () => {
         render(
             <Homepage />)
-
+a
         expect(angle).toEqual("front");
     })
     
