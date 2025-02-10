@@ -15,38 +15,38 @@ function App() {
 
   const [exercises, setExercises] = useState([]);
 
-  const getExercises = async () => {
-    const csrfToken = Cookies.get('XSRF-TOKEN'); // Read the CSRF token from the cookie
+  // const getExercises = async () => {
+  //   const csrfToken = Cookies.get('XSRF-TOKEN'); // Read the CSRF token from the cookie
   
-    try {
-      const response = await axios.get('http://localhost:8080/api/exercises', {
-        headers: {
-          'X-XSRF-TOKEN': csrfToken,
-        },
-        withCredentials: true, // Include cookies in the request
-      });
-      console.log("response is", response, "response.data is", response.data);
-      setExercises(response.data);
-    } catch (error) {
-      console.error("Error fetching exercises:", error);
-    }
-  };
+  //   try {
+  //     const response = await axios.get('http://localhost:8080/api/exercises', {
+  //       headers: {
+  //         'X-XSRF-TOKEN': csrfToken,
+  //       },
+  //       withCredentials: true, // Include cookies in the request
+  //     });
+  //     console.log("response is", response, "response.data is", response.data);
+  //     setExercises(response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching exercises:", error);
+  //   }
+  // };
 
-  useEffect(()=> {
-    getExercises();
-  }, [])
+  // useEffect(()=> {
+  //   getExercises();
+  // }, [])
 
   return (
     <div className="App">
         <BrowserRouter> 
         <Navbar />
         <Routes>
-          <Route path='/' element={<Homepage exercises={exercises}/>} />
-          {/* <Route path='/login' element={<LoginPage/>} /> */}
-          {/* <Route path='/signup' element = {<SignUpPage />} /> */}
-          <Route path='/exercise/group/:exercise_group' element = {<ExerciseGroupPage exercises={exercises}/>} />
+          <Route path='/' element={<Homepage />} />
+          {/* <Route path='/' element={<Homepage exercises={exercises}/>} /> */}
+      
+          {/* <Route path='/exercise/group/:exercise_group' element = {<ExerciseGroupPage exercises={exercises}/>} /> */}
           {/* <Route path='/draft' element = {<Draft/>} /> */}
-          <Route path='/exercise/:id' element={<ExercisePage exercises={exercises}/>} />
+          {/* <Route path='/exercise/:id' element={<ExercisePage exercises={exercises}/>} /> */}
         </Routes>
       </BrowserRouter> 
     </div>

@@ -102,3 +102,5 @@ How to handle CSRF configuration: https://chatgpt.com/share/67992954-c8e0-800f-b
 3. Make it so id is auto-populated based on the next value in the mysql database
 4. Verify the way I'm doing CORS exception is a secure way
 5. Database variables for mysql container
+6.  context load - probably not working because security dependency is disabled.
+7. Instead of grabbing all the exercises, only grab the exercisegroup when clicking on the label
