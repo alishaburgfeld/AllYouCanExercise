@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom";
 import front from "../assets/images/woman-front-two.png";
 import back from "../assets/images/woman-back-two.png";
 
@@ -11,20 +12,11 @@ function Homepage() {
     const frontLabels = ['SHOULDERS','CHEST','FOREARMS','OBLIQUES','QUADS','ADDUCTORS','ABS','BICEPS','CARDIO']
     const backLabels = ['CARDIO','TRAPS','TRICEPS','ABDUCTORS','HAMSTRINGS','CALVES','LATS','LOWER_BACK','GLUTES']
     const [angleLabels, setAngleLabels] = useState(frontLabels)
+    const navigate = useNavigate();
 
-    // const checkGroupLabels = function (exercise) {
-    //     if(angleLabels.includes(exercise.exerciseGroup)) {
-    //         console.log("inside the if")
-    //         return(
-    //             <div className={`homepage_label ${exercise.exerciseGroup}`}>
-    //         <span className={`homepage_span`}>{exercise.exerciseGroup}</span>
-    //         {/* need to make this a link to exerciseGroupPage */}
-    //         <br />
-    //     </div>
-    //         )       
-    //     }
-        
-    // }
+    const handleLabelClick = (exerciseGroup) => {
+        navigate(`/exercises/${exerciseGroup}`);
+    };
 
     // need to do a function that on some button click it will change angle to back, and will also change the labels {setAngleLabels(backLabels)}.
     
@@ -39,7 +31,7 @@ function Homepage() {
                     {frontLabels.map((label) => (
                     <>
                     {console.log("in front labels map", label)}
-                    <span key={label} className={`homepage_label_${label}`}>{label}</span>
+                    <span key={label} className={`homepage_label_${label}`} onClick={() => handleLabelClick(label)}>{label}</span>
                     </>
                 ))}
                 </div>
@@ -49,7 +41,7 @@ function Homepage() {
                     {backLabels.map((label) => (
                     <>
                     {console.log("in back labels map", label)}
-                    <span key={label} className={`homepage_label_${label}`}>{label}</span>
+                    <span key={label} className={`homepage_label_${label}`} onClick={() => handleLabelClick(label)}>{label}</span>
                     </>
                 ))}
                 </div>

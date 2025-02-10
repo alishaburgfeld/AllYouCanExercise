@@ -42,11 +42,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path='/' element={<Homepage />} />
-          {/* <Route path='/' element={<Homepage exercises={exercises}/>} /> */}
-      
-          {/* <Route path='/exercise/group/:exercise_group' element = {<ExerciseGroupPage exercises={exercises}/>} /> */}
-          {/* <Route path='/draft' element = {<Draft/>} /> */}
-          {/* <Route path='/exercise/:id' element={<ExercisePage exercises={exercises}/>} /> */}
+          <Route path='/exercises/:exerciseGroup' element = {<ExerciseGroupPage />} />
         </Routes>
       </BrowserRouter> 
     </div>
