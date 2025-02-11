@@ -8,7 +8,7 @@ import "../css/Homepage.css";
 
 function Homepage() {
 
-    const [angle, setAngle] = useState("front");
+    const [angle, setAngle] = useState("back");
     const frontLabels = ['SHOULDERS','CHEST','FOREARMS','OBLIQUES','QUADS','ADDUCTORS','ABS','BICEPS','CARDIO']
     const backLabels = ['CARDIO','TRAPS','TRICEPS','ABDUCTORS','HAMSTRINGS','CALVES','LATS','LOWER_BACK','GLUTES']
     const [angleLabels, setAngleLabels] = useState(frontLabels)

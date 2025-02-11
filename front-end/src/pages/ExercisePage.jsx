@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom";
 import axios from 'axios'
 import Cookies from 'js-cookie';
-import Link from '@mui/material/Link';
+
 
 function ExercisePage() {
 

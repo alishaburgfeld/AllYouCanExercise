@@ -41,16 +41,23 @@
     white-space: nowrap;
   }
 
-  /* Positioning labels with percentages so they scale with image */
   .homepage_label_SHOULDERS { top: 37%; right:5%; }
   .homepage_label_CHEST { bottom: 46%; left: 30%; }
   .homepage_label_FOREARMS { bottom: 35%; right: -6%; }
   .homepage_label_OBLIQUES { bottom: 38%; left: 25%; }
   .homepage_label_QUADS { bottom: 13%; right: 5%; }
-  .homepage_label_CARDIO { top: 20%; right: 8%; }
+  .homepage_label_CARDIO { top: 22%; right: 11%; }
   .homepage_label_BICEPS { top: 44%; left: 15%; }
   .homepage_label_ABS { bottom: 28%; right: 15%; }
   .homepage_label_ADDUCTORS { bottom: 18%; left: 15%; }
+  .homepage_label_GLUTES { bottom: 28%; right: 5%; }
+  .homepage_label_LOWER_BACK { bottom: 37%; left: 15%; }
+  .homepage_label_LATS { top: 45%; right: 13%; }
+  .homepage_label_CALVES { bottom: -1%; left: 10%; }
+  .homepage_label_HAMSTRINGS { bottom: 14%; right: -6%; }
+  .homepage_label_ABDUCTORS { bottom: 18%; left: 15%; }
+  .homepage_label_TRICEPS { top: 44%; left: 20%; }
+  .homepage_label_TRAPS { top: 26%; left: 23%; }
 
 
   /* for larger screens */
