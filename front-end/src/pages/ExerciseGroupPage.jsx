@@ -1,14 +1,18 @@
 import { useState, useEffect } from "react"
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from 'axios'
 import Cookies from 'js-cookie';
+import Box from '@mui/material/Box';
+import Link from '@mui/material/Link';
 import "../css/ExerciseGroupPage.css";
+import { Typography } from "@mui/material";
 
 
 
 function ExerciseGroupPage() {
 
     const { exerciseGroup } = useParams();
+    const navigate = useNavigate();
     // console.log("Extracted exerciseGroup:", exerciseGroup);
     const [exercisesByGroup, setExercisesByGroup] = useState([]);
     
@@ -29,25 +33,29 @@ function ExerciseGroupPage() {
         }
     };
 
+    const handleClick= (exerciseId) => {
+        navigate(`/${exerciseId}`);
+    }
+
   useEffect(()=> {
     getExercisesByGroup();
   }, [exerciseGroup])
 
     return (
         
-        <div className="exerciseGroup">
-            <div>"Exercises are" {exercisesByGroup.map((exercise, index) => (
-                <div key={index}>
-                    <h4>{`Exercise-${exercise.id} details:`}</h4>
-                    <span>{`name: ${exercise.name}`}</span>
-                    <span>{`exercise group: ${exercise.exerciseGroup}`}</span>
-                    <span>{`type: ${exercise.exerciseType}`}</span>
-                    <span>{`description: ${exercise.description}`}</span>
-                    <br />
-                </div>
-            ))}</div>
+        <Box className="exerciseGroup">
+            <Typography variant="h3">
+                {exerciseGroup}
+            </Typography>
+            {exercisesByGroup.map((exercise)=> (
+                <>
+                {console.log("exercise is", exercise.name)}
+                <Link key={exercise.id} onClick={() => handleClick(exercise.id)}>{exercise.name}
+                </Link>
+                </>
+            ))}
             
-        </div>
+        </Box>
     )
 }
 
