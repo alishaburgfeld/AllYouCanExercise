@@ -6,11 +6,13 @@ import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import "../css/ExerciseGroupPage.css";
 import { Typography } from "@mui/material";
-
+import { exerciseOptions, fetchRapidData } from '../utils/RapidApiInfo'
 
 
 function ExerciseGroupPage() {
 
+    const apiKey = process.env.REACT_APP_RAPID_API_KEY;
+    const [rapidUrl, setRapidUrl] = useState('');
     const { exerciseGroup } = useParams();
     const navigate = useNavigate();
     // console.log("Extracted exerciseGroup:", exerciseGroup);
@@ -33,14 +35,52 @@ function ExerciseGroupPage() {
         }
     };
 
+    const getRapidExercises = async () => {
+        try {
+            const exercises = await fetchRapidData(rapidUrl,exerciseOptions)
+            console.log(exercises);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     const handleClick= (exerciseId) => {
         navigate(`/${exerciseId}`);
     }
 
+    const determineRapidUrl = () => {
+        const targetUrl= 'https://exercisedb.p.rapidapi.com/exercises/target/'
+        const bodyPartUrl='https://exercisedb.p.rapidapi.com/exercises/bodyPart/'
+        var finalUrl = ""
+
+        if (["SHOULDERS","CHEST","CARDIO"].includes(exerciseGroup)) {
+            // still need to figure out obliques and lower back.
+            finalUrl = (bodyPartUrl + exerciseGroup.toLowerCase())
+        }
+        else {
+            finalUrl = (targetUrl + exerciseGroup.toLowerCase())
+        }
+        console.log("rapidUrl is currently", rapidUrl, "final url is", finalUrl);
+        setRapidUrl(finalUrl);
+        
+    }
+
+
   useEffect(()=> {
+    console.log('exercise group is', exerciseGroup)
+    determineRapidUrl();
     getExercisesByGroup();
   }, [exerciseGroup])
 
+  useEffect(() => {
+    if (rapidUrl) {
+        getRapidExercises();
+    }
+}, [rapidUrl]);
+
+
+
+  
     return (
         
         <Box className="exerciseGroup">

@@ -11,8 +11,11 @@ function Homepage() {
     const [angle, setAngle] = useState("back");
     const frontLabels = ['SHOULDERS','CHEST','FOREARMS','OBLIQUES','QUADS','ADDUCTORS','ABS','BICEPS','CARDIO']
     const backLabels = ['CARDIO','TRAPS','TRICEPS','ABDUCTORS','HAMSTRINGS','CALVES','LATS','LOWER_BACK','GLUTES']
-    const [angleLabels, setAngleLabels] = useState(frontLabels)
+    const [imageSource, setImageSource] = useState(back);
+    const [labels, setLabels] = useState(backLabels);
+    
     const navigate = useNavigate();
+    // todo - just have image pull image source and then run through labels. lables and image source will be set on button push.
 
     const handleLabelClick = (exerciseGroup) => {
         navigate(`/exercises/${exerciseGroup}`);
@@ -29,10 +32,7 @@ function Homepage() {
                 <div className="homepage_image">
                     <img src={front} alt="woman-front-body" className="homepage_image_front"/>
                     {frontLabels.map((label) => (
-                    <>
-                    {console.log("in front labels map", label)}
                     <span key={label} className={`homepage_label_${label}`} onClick={() => handleLabelClick(label)}>{label}</span>
-                    </>
                 ))}
                 </div>
                 :
@@ -40,7 +40,7 @@ function Homepage() {
                     <img src={back} alt="woman-back-body" className="homepage_image_back"/>
                     {backLabels.map((label) => (
                     <>
-                    {console.log("in back labels map", label)}
+                    {console.log("")}
                     <span key={label} className={`homepage_label_${label}`} onClick={() => handleLabelClick(label)}>{label}</span>
                     </>
                 ))}
