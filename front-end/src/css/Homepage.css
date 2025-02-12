@@ -6,6 +6,11 @@
     position: relative;
     overflow: hidden;
     width: 100vw;
+    background-image: url("../assets/images/BG5.jpg"); /* Replace with your image path */
+    background-size: cover; /* Ensures the image covers the entire area */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents tiling */
+    
   }
   
   .homepage_image {
@@ -28,29 +33,37 @@
     background: rgba(255, 255, 255, 0.8);
     border: 1px solid #ccc;
     border-radius: 4px;
-    padding: 5px;
-    font-size: 0.9em;
+    padding: 3px;
+    font-size: 0.7em;
     text-align: center;
     cursor: pointer;
     transform: translate(-50%, -50%); /* Center the label */
     white-space: nowrap;
   }
 
-  /* Positioning labels with percentages so they scale with image */
-  .homepage_label_SHOULDERS { top: 15%; left: 50%; }
-  .homepage_label_CHEST { top: 25%; left: 50%; }
-  .homepage_label_FOREARMS { top: 40%; left: 60%; }
-  .homepage_label_OBLIQUES { top: 50%; left: 40%; }
-  .homepage_label_QUADS { bottom: 15%; left: 50%; }
-  .homepage_label_CARDIO { top: 10%; left: 50%; }
-  .homepage_label_BICEPS { top: 35%; left: 70%; }
-  .homepage_label_ABS { bottom: 30%; left: 50%; }
-  .homepage_label_ADDUCTORS { bottom: 20%; left: 50%; }
+  .homepage_label_SHOULDERS { top: 37%; right:5%; }
+  .homepage_label_CHEST { bottom: 46%; left: 30%; }
+  .homepage_label_FOREARMS { bottom: 35%; right: -6%; }
+  .homepage_label_OBLIQUES { bottom: 38%; left: 25%; }
+  .homepage_label_QUADS { bottom: 13%; right: 5%; }
+  .homepage_label_CARDIO { top: 22%; right: 11%; }
+  .homepage_label_BICEPS { top: 44%; left: 15%; }
+  .homepage_label_ABS { bottom: 28%; right: 15%; }
+  .homepage_label_ADDUCTORS { bottom: 18%; left: 15%; }
+  .homepage_label_GLUTES { bottom: 28%; right: 5%; }
+  .homepage_label_LOWER_BACK { bottom: 37%; left: 15%; }
+  .homepage_label_LATS { top: 45%; right: 13%; }
+  .homepage_label_CALVES { bottom: -1%; left: 10%; }
+  .homepage_label_HAMSTRINGS { bottom: 14%; right: -6%; }
+  .homepage_label_ABDUCTORS { bottom: 18%; left: 15%; }
+  .homepage_label_TRICEPS { top: 44%; left: 20%; }
+  .homepage_label_TRAPS { top: 26%; left: 23%; }
 
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
+
+  /* for larger screens */
+  @media (min-width: 769px) {
     [class^="homepage_label"] {
-      font-size: 0.7em;
-      padding: 3px;
+      font-size: 0.9em;
+      padding: 5px;
     }
   }

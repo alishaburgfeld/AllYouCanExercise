@@ -10,45 +10,25 @@ import Homepage from './pages/Homepage';
 import Navbar from './components/Navbar/Navbar'
 import ExercisePage from './pages/ExercisePage'
 import ExerciseGroupPage from './pages/ExerciseGroupPage';
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import theme from './utils/theme'
 
 function App() {
 
-  const [exercises, setExercises] = useState([]);
-
-  // const getExercises = async () => {
-  //   const csrfToken = Cookies.get('XSRF-TOKEN'); // Read the CSRF token from the cookie
-  
-  //   try {
-  //     const response = await axios.get('http://localhost:8080/api/exercises', {
-  //       headers: {
-  //         'X-XSRF-TOKEN': csrfToken,
-  //       },
-  //       withCredentials: true, // Include cookies in the request
-  //     });
-  //     console.log("response is", response, "response.data is", response.data);
-  //     setExercises(response.data);
-  //   } catch (error) {
-  //     console.error("Error fetching exercises:", error);
-  //   }
-  // };
-
-  // useEffect(()=> {
-  //   getExercises();
-  // }, [])
-
   return (
     <div className="App">
-        <BrowserRouter> 
-        <Navbar />
-        <Routes>
-          <Route path='/' element={<Homepage />} />
-          {/* <Route path='/' element={<Homepage exercises={exercises}/>} /> */}
-      
-          {/* <Route path='/exercise/group/:exercise_group' element = {<ExerciseGroupPage exercises={exercises}/>} /> */}
-          {/* <Route path='/draft' element = {<Draft/>} /> */}
-          {/* <Route path='/exercise/:id' element={<ExercisePage exercises={exercises}/>} /> */}
-        </Routes>
-      </BrowserRouter> 
+      <ThemeProvider theme={theme}>
+      <CssBaseline />
+          <BrowserRouter> 
+          <Navbar />
+          <Routes>
+            <Route path='/' element={<Homepage />} />
+            <Route path='/exercises/:exerciseGroup' element = {<ExerciseGroupPage />} />
+            <Route path='/:exerciseId' element = {<ExercisePage />} />
+          </Routes>
+        </BrowserRouter> 
+      </ThemeProvider>
     </div>
   );
 }

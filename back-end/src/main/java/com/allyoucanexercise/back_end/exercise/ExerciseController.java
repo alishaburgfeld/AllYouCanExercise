@@ -78,4 +78,10 @@ public class ExerciseController {
         exerciseRepository.delete(id);
     }
 
+    @GetMapping("/group/{exercise_group}")
+    List<Exercise> findByExerciseGroup(@PathVariable String exercise_group) {
+        // log.info("group is", exercise_group);
+        return exerciseRepository.findByExerciseGroup(exercise_group);
+    }
+
 }

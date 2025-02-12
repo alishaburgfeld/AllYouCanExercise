@@ -69,16 +69,16 @@ public class ExerciseRepository{
         exercises.stream().forEach(this::create);
     }
 
-    public List<Exercise> findByExerciseType(String exerciseType) {
-        return jdbcClient.sql("select * from exercise where exercise_type = :exerciseType")
-                .param("exercise_type", exerciseType)
+    public List<Exercise> findByExerciseType(String exercise_type) {
+        return jdbcClient.sql("select * from exercise where exercise_type = :exercise_type")
+                .param("exercise_type", exercise_type)
                 .query(Exercise.class)
                 .list();
     }
 
-    public List<Exercise> findByExerciseGroup(String exerciseGroup) {
-        return jdbcClient.sql("select * from exercise where exercise_group = :exerciseGroup")
-                .param("exercise_group", exerciseGroup)
+    public List<Exercise> findByExerciseGroup(String exercise_group) {
+        return jdbcClient.sql("select * from exercise where exercise_group = :exercise_group")
+                .param("exercise_group", exercise_group)
                 .query(Exercise.class)
                 .list();
     }
