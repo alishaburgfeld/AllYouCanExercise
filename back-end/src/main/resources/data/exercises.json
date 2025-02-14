@@ -1,113 +1,413 @@
 {
-    "exercises": [
-      {
-        "name": "Incline Dumbbell Curl",
-        "exerciseGroup": "BICEPS",
-        "exerciseType": "UPPERBODY",
-        "description": "Incline the bench. Hold the dumbbells below your shoulders with your arms straight using an underahnd grip. Perform the curl by bending your elbows and raising the dumbbells until they touch your chest. Return to the starting position in a slow and controlled manner."
-      },
-      {
-        "name": "Seated Dumbbell Overhead Press",
-        "exerciseGroup": "SHOULDERS",
-        "exerciseType": "UPPERBODY",
-        "description": "Pin your shoulder blades into the bench and plant you feet firmly on the ground. Engage the core and then press the dumbbells up by extending both arms straight up overhead. Slowly lower the dumbbells back to the starting position."
-      },
-      {
-        "name": "Decline Situps",
-        "exerciseGroup": "ABS",
-        "exerciseType": "ABS",
-        "description": "Set a decline bench to a 30-45 degree angle. Sit on the bench with your knees bent and feet hooked under the padded bar. Lie flat with your back against the bench. Brace your core and pull your belly button towards your spine. Flex your spine to bring your torso off the bench until you're sitting upright. Pause briefly, then slowly lower yourself back down to the bench"
-      },
-      {
-        "name": "Plank",
-        "exerciseGroup": "ABS",
-        "exerciseType": "ABS",
-        "description": "Get into a push up position, with your elbows under your shoulders and your feet hip-width apart. Bend your elbows and rest your weight on your forearms and on your toes, keeping your body in a straight line. Hold the position."
-      },
-      {
-        "name": "Walk",
-        "exerciseGroup": "CARDIO",
-        "exerciseType": "CARDIO",
-        "description": "Walk"
-      },
-      {
-        "name": "Push-up",
-        "exerciseGroup": "CHEST",
-        "exerciseType": "UPPERBODY",
-        "description": "Do a push-up"
-      },
-      {
-        "name": "Standing Dumbbell Wrist Curl",
-        "exerciseGroup": "FOREARMS",
-        "exerciseType": "UPPERBODY",
-        "description": "Hold dumbbells at hips, curl your wrists and lift the dumbbell high."
-      },
-      {
-        "name": "Russian Twist",
-        "exerciseGroup": "OBLIQUES",
-        "exerciseType": "ABS",
-        "description": "Lift your feet, twist left and right."
-      },
-      {
-        "name": "Adduction Machine",
-        "exerciseGroup": "ADDUCTORS",
-        "exerciseType": "LOWERBODY",
-        "description": "Engage your inner thighs and squees your knees together."
-      },
-      {
-        "name": "Squat",
-        "exerciseGroup": "QUADS",
-        "exerciseType": "LOWERBODY",
-        "description": "do a Squat"
-      },
-      {
-        "name": "Standing Dumbbell Shrugs",
-        "exerciseGroup": "TRAPS",
-        "exerciseType": "UPPERBODY",
-        "description": "Hold umbbelss at your hips, shrug your shoulders up"
-      },
-      {
-        "name": "Dumbbell Skull Crusher",
-        "exerciseGroup": "TRICEPS",
-        "exerciseType": "UPPERBODY",
-        "description": "Flat bar, extend dumbbells down to your forehead"
-      },
-      {
-        "name": "Single Arm Dumbbell Row",
-        "exerciseGroup": "LATS",
-        "exerciseType": "UPPERBODY",
-        "description": "kneel on the bench, extend arm fully down, then pull back towards your chest"
-      },
-      {
-        "name": "Squat",
-        "exerciseGroup": "ABDUCTORS",
-        "exerciseType": "LOWERBODY",
-        "description": "Push the pads out with your knees"
-      },
-      {
-        "name": "Superman",
-        "exerciseGroup": "LOWER_BACK",
-        "exerciseType": "LOWERBODY",
-        "description": "Superman position on the floor"
-      },
-      {
-        "name": "Barbell Hip Thrust",
-        "exerciseGroup": "GLUTES",
-        "exerciseType": "LOWERBODY",
-        "description": "Thrust your hips up"
-      },
-      {
-        "name": "Barbell Deadlift",
-        "exerciseGroup": "HAMSTRINGS",
-        "exerciseType": "LOWERBODY",
-        "description": "Stand and hold barbell, lower barbell to the floor"
-      },
-      {
-        "name": "Calf Raises",
-        "exerciseGroup": "CALVES",
-        "exerciseType": "LOWERBODY",
-        "description": "Stand up, raise up on to your toes"
-      }
+  "exercises": [
+        {
+          "name": "Around the World",
+          "exerciseGroup": "SHOULDERS",
+          "exerciseType": "UPPERBODY",
+          "description": "Hold dumbbells at your sides, bring them up and around your head in a circular motion, then lower them back down.",
+          "picture": ""
+        },
+        {
+          "name": "Dumbbell Overhead Press",
+          "exerciseGroup": "SHOULDERS",
+          "exerciseType": "UPPERBODY",
+          "description": "Press the dumbbells overhead from shoulder height until your arms are fully extended, then lower back to the starting position.",
+          "picture": ""
+        },
+        {
+          "name": "Overhead Press Single Arm",
+          "exerciseGroup": "SHOULDERS",
+          "exerciseType": "UPPERBODY",
+          "description": "Press one dumbbell overhead while keeping the other arm at your side, then switch arms after the desired repetitions.",
+          "picture": ""
+        },
+        {
+          "name": "Barbell Overhead Press",
+          "exerciseGroup": "SHOULDERS",
+          "exerciseType": "UPPERBODY",
+          "description": "Grip the barbell at shoulder width, press it overhead until arms are locked, then lower back to shoulder level.",
+          "picture": ""
+        },
+        {
+          "name": "Barbell Behind the Neck Press",
+          "exerciseGroup": "SHOULDERS",
+          "exerciseType": "UPPERBODY",
+          "description": "Lower the barbell behind your head to shoulder level, then press it back up overhead.",
+          "picture": ""
+        },
+        {
+          "name": "Barbell Upright Row",
+          "exerciseGroup": "SHOULDERS",
+          "exerciseType": "UPPERBODY",
+          "description": "Hold the barbell at thigh level with an overhand grip, pull it up towards your chin while keeping elbows high.",
+          "picture": ""
+        },
+        {
+          "name": "EZ Bar Upright Row",
+          "exerciseGroup": "SHOULDERS",
+          "exerciseType": "UPPERBODY",
+          "description": "Using an EZ curl bar, pull it up towards your chin while keeping elbows higher than wrists.",
+          "picture": ""
+        },
+        {
+          "name": "Cable Upright Row",
+          "exerciseGroup": "SHOULDERS",
+          "exerciseType": "UPPERBODY",
+          "description": "Use a cable machine with a straight bar attachment and pull the bar towards your chin, keeping elbows high.",
+          "picture": ""
+        },
+        {
+          "name": "Dumbbell Upright Row",
+          "exerciseGroup": "SHOULDERS",
+          "exerciseType": "UPPERBODY",
+          "description": "Hold dumbbells at your thighs and pull them up toward your chin, leading with your elbows.",
+          "picture": ""
+        },
+        {
+          "name": "Dumbbell Lateral Raise",
+          "exerciseGroup": "SHOULDERS",
+          "exerciseType": "UPPERBODY",
+          "description": "Raise dumbbells out to the sides until shoulder level, then slowly lower back to start.",
+          "picture": ""
+        },
+        {
+          "name": "Barbell Front Raise",
+          "exerciseGroup": "SHOULDERS",
+          "exerciseType": "UPPERBODY",
+          "description": "Hold a barbell in front of you and raise it to shoulder height, then lower it back down.",
+          "picture": ""
+        },
+        {
+          "name": "Dumbbell Front Raise",
+          "exerciseGroup": "SHOULDERS",
+          "exerciseType": "UPPERBODY",
+          "description": "Lift dumbbells in front of you to shoulder height, then lower back down.",
+          "picture": ""
+        },
+        {
+          "name": "Dumbbell Bent Over Reverse Fly",
+          "exerciseGroup": "SHOULDERS",
+          "exerciseType": "UPPERBODY",
+          "description": "Hinge at the hips, raise dumbbells out to the sides while keeping a slight bend in your elbows.",
+          "picture": ""
+        },
+        {
+          "name": "Dumbbell Incline Prone Reverse Fly",
+          "exerciseGroup": "SHOULDERS",
+          "exerciseType": "UPPERBODY",
+          "description": "Lie face down on an incline bench and raise dumbbells out to the sides.",
+          "picture": ""
+        },
+        {
+          "name": "Cable Face Pull",
+          "exerciseGroup": "SHOULDERS",
+          "exerciseType": "UPPERBODY",
+          "description": "Using a rope attachment, pull the cable towards your face while keeping elbows high.",
+          "picture": ""
+        },
+        {
+          "name": "Barbell Bench Press",
+          "exerciseGroup": "CHEST",
+          "exerciseType": "UPPERBODY",
+          "description": "Lie on a flat bench, grip the bar slightly wider than shoulder-width, lower it to your chest, then push it back up.",
+          "picture": ""
+        },
+        {
+          "name": "Barbell Bench Press Close Grip",
+          "exerciseGroup": "CHEST",
+          "exerciseType": "UPPERBODY",
+          "description": "Perform a bench press with hands closer together to emphasize triceps activation.",
+          "picture": ""
+        },
+        {
+          "name": "Barbell Bench Press Wide Grip",
+          "exerciseGroup": "CHEST",
+          "exerciseType": "UPPERBODY",
+          "description": "Use a wider grip on the barbell bench press to target the chest more.",
+          "picture": ""
+        },
+        {
+          "name": "Dumbbell Bench Press",
+          "exerciseGroup": "CHEST",
+          "exerciseType": "UPPERBODY",
+          "description": "Lie on a bench and press dumbbells up from chest level until arms are fully extended.",
+          "picture": ""
+        },
+        {
+          "name": "Incline Dumbbell Bench Press",
+          "exerciseGroup": "CHEST",
+          "exerciseType": "UPPERBODY",
+          "description": "Lie on an incline bench with a dumbbell in each hand. Press the dumbbells above your chest by extending your arms. Slowly lower the weights until they are at chest level, then press them back up.",
+          "picture": ""
+        },
+        {
+          "name": "Dumbbell Fly",
+          "exerciseGroup": "CHEST",
+          "exerciseType": "UPPERBODY",
+          "description": "Lie flat on a bench holding dumbbells above your chest with a slight bend in your elbows. Lower the dumbbells out to the sides until you feel a stretch in your chest. Bring them back to the starting position in a controlled motion.",
+          "picture": ""
+        },
+        {
+          "name": "Decline Dumbbell Fly",
+          "exerciseGroup": "CHEST",
+          "exerciseType": "UPPERBODY",
+          "description": "Lie on a decline bench with a dumbbell in each hand. Extend your arms above your chest, then slowly lower the dumbbells to the sides while keeping a slight bend in your elbows. Bring them back together in a controlled motion.",
+          "picture": ""
+        },
+        {
+          "name": "Medium Cable Fly",
+          "exerciseGroup": "CHEST",
+          "exerciseType": "UPPERBODY",
+          "description": "Stand in the middle of a cable machine with the pulleys set at shoulder height. Grab the handles and bring your hands together in front of you, then slowly return to the starting position.",
+          "picture": ""
+        },
+        {
+          "name": "High Cable Fly",
+          "exerciseGroup": "CHEST",
+          "exerciseType": "UPPERBODY",
+          "description": "Set the cable pulleys to the highest setting. With a handle in each hand, step forward and bring your hands down and together in front of you. Slowly return to the start.",
+          "picture": ""
+        },
+        {
+          "name": "Low Cable Fly",
+          "exerciseGroup": "CHEST",
+          "exerciseType": "UPPERBODY",
+          "description": "Set the cable pulleys to the lowest setting. Hold a handle in each hand and bring your hands up and together in front of you. Slowly return to the start.",
+          "picture": ""
+        },
+        {
+          "name": "Chest Press Machine",
+          "exerciseGroup": "CHEST",
+          "exerciseType": "UPPERBODY",
+          "description": "Sit on the chest press machine with your back flat against the pad. Push the handles forward until your arms are extended, then slowly return to the start.",
+          "picture": ""
+        },
+        {
+          "name": "Chest Fly Machine",
+          "exerciseGroup": "CHEST",
+          "exerciseType": "UPPERBODY",
+          "description": "Sit at the chest fly machine and grip the handles. Bring your hands together in front of you in a controlled motion, then slowly return to the starting position.",
+          "picture": ""
+        },
+        {
+          "name": "Push-Up Close Grip",
+          "exerciseGroup": "CHEST",
+          "exerciseType": "UPPERBODY",
+          "description": "Get into a push-up position with your hands placed closer than shoulder-width apart. Lower your chest to just above the floor, then push back up.",
+          "picture": ""
+        },
+        {
+          "name": "Dips",
+          "exerciseGroup": "CHEST",
+          "exerciseType": "UPPERBODY",
+          "description": "Grip parallel bars and lift yourself up. Lower your body by bending your elbows until your shoulders are below your elbows, then push yourself back up.",
+          "picture": ""
+        },
+        {
+          "name": "Push-Up",
+          "exerciseGroup": "CHEST",
+          "exerciseType": "UPPERBODY",
+          "description": "With your legs extended back, place your hands below your shoulders, slightly wider than shoulder-width apart. Lower your chest to just above the floor, then push back to the starting position.",
+          "picture": ""
+        },
+        {
+          "name": "Standing Dumbbell Wrist Curl",
+          "exerciseGroup": "FOREARMS",
+          "exerciseType": "UPPERBODY",
+          "description": "Hold a dumbbell in each hand with your palms facing upward. Rest your forearms on a bench or your thighs. Curl your wrists upward, then slowly lower them back to the starting position.",
+          "picture": ""
+        },
+        {
+          "name": "Behind Back Barbell Wrist Curl",
+          "exerciseGroup": "FOREARMS",
+          "exerciseType": "UPPERBODY",
+          "description": "Hold a barbell behind your back with palms facing away. Curl your wrists upward, then slowly lower back to the starting position.",
+          "picture": ""
+          },
+          {
+          "name": "Preacher Dumbbell Wrist Curl",
+          "exerciseGroup": "FOREARMS",
+          "exerciseType": "UPPERBODY",
+          "description": "Sit at a preacher bench with a dumbbell in one hand. Rest your arm on the bench and curl your wrist upward, then lower it back down.",
+          "picture": ""
+          },
+          {
+          "name": "Side Plank",
+          "exerciseGroup": "OBLIQUES",
+          "exerciseType": "ABS",
+          "description": "Lie on your side with legs extended. Support your upper body with your elbow and hold the position, engaging your obliques.",
+          "picture": ""
+          },
+          {
+          "name": "Hanging Windshield Wipers",
+          "exerciseGroup": "OBLIQUES",
+          "exerciseType": "ABS",
+          "description": "Hang from a bar and lift your legs. Rotate them side to side in a controlled motion, engaging your core and obliques.",
+          "picture": ""
+          },
+          {
+          "name": "Standing Dumbbell Side Bend",
+          "exerciseGroup": "OBLIQUES",
+          "exerciseType": "ABS",
+          "description": "Hold a dumbbell in one hand and bend sideways at the waist. Return to the starting position and repeat on the other side.",
+          "picture": ""
+          },
+          {
+          "name": "Roman Chair Side Bend",
+          "exerciseGroup": "OBLIQUES",
+          "exerciseType": "ABS",
+          "description": "Position yourself sideways on a Roman chair. Lower your torso and then engage your obliques to lift back up.",
+          "picture": ""
+          },
+          {
+          "name": "Barbell Back Squat",
+          "exerciseGroup": "QUADS",
+          "exerciseType": "LOWERBODY",
+          "description": "Place a barbell on your upper back. Squat down by bending your knees and lowering your hips, then push back up to standing.",
+          "picture": ""
+          },
+          {
+          "name": "Barbell Front Squat",
+          "exerciseGroup": "QUADS",
+          "exerciseType": "LOWERBODY",
+          "description": "Hold a barbell across your front shoulders. Squat down by bending your knees and lowering your hips, then push back up.",
+          "picture": ""
+          },
+          {
+          "name": "Barbell Lunge",
+          "exerciseGroup": "QUADS",
+          "exerciseType": "LOWERBODY",
+          "description": "Hold a barbell on your upper back. Step forward into a lunge, lower your back knee, then push back to standing.",
+          "picture": ""
+          },
+          {
+          "name": "Goblet Squat",
+          "exerciseGroup": "QUADS",
+          "exerciseType": "LOWERBODY",
+          "description": "Hold a dumbbell or kettlebell at chest level. Squat down by bending your knees and lowering your hips, then push back up.",
+          "picture": ""
+          },
+          {
+          "name": "Goblet Lunge",
+          "exerciseGroup": "QUADS",
+          "exerciseType": "LOWERBODY",
+          "description": "Hold a dumbbell or kettlebell at chest level. Step forward into a lunge, lower your back knee, then push back to standing.",
+          "picture": ""
+          },
+          {
+          "name": "Goblet Bulgarian Lunge",
+          "exerciseGroup": "QUADS",
+          "exerciseType": "LOWERBODY",
+          "description": "Hold a dumbbell or kettlebell at chest level. Place one foot behind you on a bench and lunge forward with the front leg.",
+          "picture": ""
+          },
+          {
+            "name": "Bodyweight Squat",
+            "exerciseGroup": "QUADS",
+            "exerciseType": "LOWERBODY",
+            "description": "Stand with feet shoulder-width apart. Lower your hips back and down as if sitting in a chair. Keep your chest up and knees aligned with your toes. Push through your heels to return to standing.",
+            "picture": ""
+          },
 
-    ]
-  }
+    {
+      "name": "Decline Situps",
+      "exerciseGroup": "ABS",
+      "exerciseType": "ABS",
+      "description": "Lie on a decline bench with your feet secured. Cross your arms over your chest or place them behind your head. Engage your core and lift your torso towards your knees. Slowly lower yourself back down.",
+      "picture": ""
+    },
+    {
+      "name": "Plank",
+      "exerciseGroup": "ABS",
+      "exerciseType": "ABS",
+      "description": "Lie face down and prop yourself up on your forearms and toes. Keep your body in a straight line from head to heels. Engage your core and hold this position for the desired duration.",
+      "picture": ""
+    },
+    {
+      "name": "Walk",
+      "exerciseGroup": "CARDIO",
+      "exerciseType": "CARDIO",
+      "description": "Maintain an upright posture and walk at a steady pace, ensuring proper heel-to-toe movement and arm swing.",
+      "picture": ""
+    },
+    
+    {
+      "name": "Russian Twist",
+      "exerciseGroup": "OBLIQUES",
+      "exerciseType": "ABS",
+      "description": "Sit on the floor with your knees bent and feet lifted. Hold a weight or clasp your hands together. Twist your torso to the left, then to the right, engaging your core.",
+      "picture": ""
+    },
+    {
+      "name": "Adduction Machine",
+      "exerciseGroup": "ADDUCTORS",
+      "exerciseType": "LOWERBODY",
+      "description": "Sit on the machine with your legs placed against the pads. Slowly squeeze your legs together, then return to the starting position in a controlled motion.",
+      "picture": ""
+    },
+    
+    {
+      "name": "Standing Dumbbell Shrugs",
+      "exerciseGroup": "TRAPS",
+      "exerciseType": "UPPERBODY",
+      "description": "Hold a dumbbell in each hand at your sides. Raise your shoulders toward your ears as high as possible. Hold briefly, then slowly lower back down.",
+      "picture": ""
+    },
+    {
+      "name": "Dumbbell Skull Crusher",
+      "exerciseGroup": "TRICEPS",
+      "exerciseType": "UPPERBODY",
+      "description": "Lie on a bench holding dumbbells above your head. Lower them toward your forehead by bending your elbows. Extend your arms back up to the starting position.",
+      "picture": ""
+    },
+    {
+      "name": "Single Arm Dumbbell Row",
+      "exerciseGroup": "LATS",
+      "exerciseType": "UPPERBODY",
+      "description": "Place one knee and hand on a bench for support. Hold a dumbbell in the other hand and pull it towards your torso, keeping your elbow close. Lower the weight back down.",
+      "picture": ""
+    },
+    {
+      "name": "Squat",
+      "exerciseGroup": "ABDUCTORS",
+      "exerciseType": "LOWERBODY",
+      "description": "Use an abduction machine or resistance band. Push outward against resistance, engaging your outer thighs and glutes.",
+      "picture": ""
+    },
+    {
+      "name": "Superman",
+      "exerciseGroup": "LOWER_BACK",
+      "exerciseType": "LOWERBODY",
+      "description": "Lie face down with arms and legs extended. Simultaneously lift your arms, chest, and legs off the floor. Hold briefly, then lower back down.",
+      "picture": ""
+    },
+    {
+      "name": "Barbell Hip Thrust",
+      "exerciseGroup": "GLUTES",
+      "exerciseType": "LOWERBODY",
+      "description": "Sit on the floor with a bench behind you and a barbell over your hips. Drive your hips upward, squeezing your glutes at the top. Lower back down.",
+      "picture": ""
+    },
+    {
+      "name": "Barbell Deadlift",
+      "exerciseGroup": "HAMSTRINGS",
+      "exerciseType": "LOWERBODY",
+      "description": "Stand with feet hip-width apart and a barbell in front of you. Hinge at your hips and lower your torso while gripping the bar. Lift the bar by driving through your heels, keeping your back straight.",
+      "picture": ""
+    },
+    {
+      "name": "Calf Raises",
+      "exerciseGroup": "CALVES",
+      "exerciseType": "LOWERBODY",
+      "description": "Stand with feet hip-width apart. Push through the balls of your feet to raise your heels. Hold briefly, then lower back down.",
+      "picture": ""
+    },
+    {
+      "name": "Incline Dumbbell Bicep Curl",
+      "exerciseGroup": "BICEPS",
+      "exerciseType": "UPPERBODY",
+      "description": "Sit on an incline bench with a dumbbell in each hand, arms fully extended. Keep your elbows close to your torso and curl the dumbbells up towards your shoulders. Slowly lower the dumbbells back to the starting position.",
+      "picture": ""
+    }
+  ]
+}
