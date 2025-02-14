@@ -8,7 +8,7 @@ import "../css/ExerciseGroupPage.css";
 import { Typography } from "@mui/material";
 import { exerciseOptions, fetchRapidData } from '../utils/RapidApiInfo'
 
-
+// TO-DO: Eventually I can create a component for "records" etc. each of these components can be querying different tables in my database so that I don't have to worry about everything being on one record
 function ExerciseGroupPage() {
 
     const apiKey = process.env.REACT_APP_RAPID_API_KEY;

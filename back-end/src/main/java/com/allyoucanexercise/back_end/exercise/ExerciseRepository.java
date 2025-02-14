@@ -29,25 +29,26 @@ public class ExerciseRepository{
     }
 
     public Optional<Exercise> findById(Integer id) {
-        return jdbcClient.sql("SELECT id,name,exercise_group,exercise_type,description FROM exercise WHERE id = :id" )
+        return jdbcClient.sql("SELECT id,name,exercise_group,exercise_type,description,picture FROM exercise WHERE id = :id" )
                 .param("id", id)
                 .query(Exercise.class)
                 .optional();
     }
 
     public void create(Exercise exercise) {
-        var updated = jdbcClient.sql("INSERT INTO exercise(id,name,exercise_group,exercise_type,description) values(?,?,?,?,?)")
-                .params(List.of(exercise.id(),exercise.name(),exercise.exerciseGroup().toString(),exercise.exerciseType().toString(),exercise.description()))
+        var updated = jdbcClient.sql("INSERT INTO exercise(name,exercise_group,exercise_type,description,picture) values(?,?,?,?,?)")
+                .params(List.of(exercise.name(),exercise.exerciseGroup().toString(),exercise.exerciseType().toString(),exercise.description(),exercise.picture() != null ? exercise.picture() : ""))
                 .update();
         
+        // list does not allow null values, so had to add in the default "" value for picture
         // the sql .update function returns the amount of rows affected.
 
         Assert.state(updated == 1, "Failed to create exercise " + exercise.name());
     }
 
     public void update(Exercise exercise, Integer id) {
-        var updated = jdbcClient.sql("update exercise set name = ?, exercise_group = ?, exercise_type = ?, description = ? where id = ?")
-                .params(List.of(exercise.name(),exercise.exerciseGroup().toString(),exercise.exerciseType().toString(),exercise.description(), id))
+        var updated = jdbcClient.sql("update exercise set name = ?, exercise_group = ?, exercise_type = ?, description = ?, picture = ? where id = ?")
+                .params(List.of(exercise.name(),exercise.exerciseGroup().toString(),exercise.exerciseType().toString(),exercise.description(),exercise.picture() != null ? exercise.picture() : "", id))
                 .update();
 
         Assert.state(updated == 1, "Failed to update exercise");
