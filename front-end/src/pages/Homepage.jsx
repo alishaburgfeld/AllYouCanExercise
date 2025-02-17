@@ -2,17 +2,25 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import front from "../assets/images/woman-front-two.png";
 import back from "../assets/images/woman-back-two.png";
-
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import CameraswitchIcon from '@mui/icons-material/Cameraswitch';
+import { useTheme } from '@mui/material/styles';
 import "../css/Homepage.css";
+import { IconButton } from "@mui/material";
+import { positions } from '@mui/system';
+
 
 
 function Homepage() {
 
-    const [angle, setAngle] = useState("back");
+    const theme = useTheme();
+    const [frontAngle, setfrontAngle] = useState(true);
+    const [angle, setAngle] = useState("front");
     const frontLabels = ['SHOULDERS','CHEST','FOREARMS','OBLIQUES','QUADS','ADDUCTORS','ABS','BICEPS','CARDIO']
     const backLabels = ['CARDIO','TRAPS','TRICEPS','ABDUCTORS','HAMSTRINGS','CALVES','LATS','LOWER_BACK','GLUTES']
-    const [imageSource, setImageSource] = useState(back);
-    const [labels, setLabels] = useState(backLabels);
+    const [imageSource, setImageSource] = useState(front);
+    const [labels, setLabels] = useState(frontLabels);
     
     const navigate = useNavigate();
     // todo - just have image pull image source and then run through labels. lables and image source will be set on button push.
@@ -21,34 +29,45 @@ function Homepage() {
         navigate(`/exercises/${exerciseGroup}`);
     };
 
+    const changeLabels = () =>{
+        if (frontAngle) {
+            setLabels(frontLabels);
+            setImageSource(front);
+            setAngle("front");
+        }
+        else {
+            setLabels(backLabels);
+            setImageSource(back);
+            setAngle("back");
+        }
+    }
+
+
+    useEffect(()=> {
+        changeLabels();
+      }, [frontAngle])
+
+    const handleAngleSwitch = () => {
+        setfrontAngle(!frontAngle);
+    }
+
     // need to do a function that on some button click it will change angle to back, and will also change the labels {setAngleLabels(backLabels)}.
     
     return (
         
-        <div className="homepage">
-            {console.log("angle is", angle)}
-            
-            {angle==="front" ?
-                <div className="homepage_image">
-                    <img src={front} alt="woman-front-body" className="homepage_image_front"/>
-                    {frontLabels.map((label) => (
+        <Box className="homepage">
+            {console.log("theme secondary is", theme.palette.secondary.main)}
+                <Box className="homepage_image">
+                    <img src={imageSource} alt={`woman-${angle}-body`} className={`homepage_image_${angle}`}/>
+                    {labels.map((label) => (
                     <span key={label} className={`homepage_label_${label}`} onClick={() => handleLabelClick(label)}>{label}</span>
                 ))}
-                </div>
-                :
-                <div className="homepage_image">
-                    <img src={back} alt="woman-back-body" className="homepage_image_back"/>
-                    {backLabels.map((label) => (
-                    <>
-                    {console.log("")}
-                    <span key={label} className={`homepage_label_${label}`} onClick={() => handleLabelClick(label)}>{label}</span>
-                    </>
-                ))}
-                </div>
-            }
-        </div>
+                </Box>
+            <IconButton className = "homepage_camera" aria-label="camera-switch" sx={{color: theme.palette.secondary.main, position: "absolute", right: "42%", top: "13%"}} onClick={() => handleAngleSwitch()}>
+                <CameraswitchIcon fontSize ="large"/>
+            </IconButton>
+        </Box>
     )
 }
 
-{/* map through the labels instead, each label will navigate to exercisegroup page. Additionally, try putting the labels inside the same div as the image, so hopefully they'll stay with the responsive image */}
 export default Homepage
