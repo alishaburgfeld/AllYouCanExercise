@@ -11,8 +11,11 @@ import { exerciseOptions, fetchRapidData } from '../utils/RapidApiInfo'
 // TO-DO: Eventually I can create a component for "records" etc. each of these components can be querying different tables in my database so that I don't have to worry about everything being on one record
 function ExerciseGroupPage() {
 
+    const apiKey = process.env.REACT_APP_RAPID_API_KEY;
+    const [rapidUrl, setRapidUrl] = useState('');
     const { exerciseGroup } = useParams();
     const navigate = useNavigate();
+    // console.log("Extracted exerciseGroup:", exerciseGroup);
     const [exercisesByGroup, setExercisesByGroup] = useState([]);
     
     
@@ -32,43 +35,62 @@ function ExerciseGroupPage() {
         }
     };
 
+    const getRapidExercises = async () => {
+        try {
+            const exercises = await fetchRapidData(rapidUrl,exerciseOptions)
+            console.log(exercises);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     const handleClick= (exerciseId) => {
         navigate(`/${exerciseId}`);
     }
 
-    const getImageSource = (name) => {
-        try {
-            return require(`../assets/images/${name}.png`); 
-        } catch (error) {
-            return require("../assets/images/noexerciseimage.png");
+    const determineRapidUrl = () => {
+        const targetUrl= 'https://exercisedb.p.rapidapi.com/exercises/target/'
+        const bodyPartUrl='https://exercisedb.p.rapidapi.com/exercises/bodyPart/'
+        var finalUrl = ""
+
+        if (["SHOULDERS","CHEST","CARDIO"].includes(exerciseGroup)) {
+            // still need to figure out obliques and lower back.
+            finalUrl = (bodyPartUrl + exerciseGroup.toLowerCase())
         }
-    };
-    
+        else {
+            finalUrl = (targetUrl + exerciseGroup.toLowerCase())
+        }
+        console.log("rapidUrl is currently", rapidUrl, "final url is", finalUrl);
+        setRapidUrl(finalUrl);
+        
+    }
 
 
   useEffect(()=> {
     console.log('exercise group is', exerciseGroup)
+    determineRapidUrl();
     getExercisesByGroup();
   }, [exerciseGroup])
 
-//   useEffect(() => {
-//     if (rapidUrl) {
-//         getRapidExercises();
-//     }
-// }, [rapidUrl]);
+  useEffect(() => {
+    if (rapidUrl) {
+        getRapidExercises();
+    }
+}, [rapidUrl]);
+
 
 
   
     return (
         
         <Box className="exerciseGroup">
-            <Typography variant="h3" className="exerciseGroup_title">
+            <Typography variant="h3">
                 {exerciseGroup}
             </Typography>
             {exercisesByGroup.map((exercise)=> (
                 <>
-                <Link key={exercise.id} className="exerciseGroup_name" onClick={() => handleClick(exercise.id)} underline="none">{exercise.name}
-                <img src={getImageSource(exercise.name)} className="exerciseGroup_photo" alt={exercise.name} />
+                {console.log("exercise is", exercise.name)}
+                <Link key={exercise.id} onClick={() => handleClick(exercise.id)}>{exercise.name}
                 </Link>
                 </>
             ))}
