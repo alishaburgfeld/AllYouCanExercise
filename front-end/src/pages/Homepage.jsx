@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import front from "../assets/images/woman-front-two.png";
 import back from "../assets/images/woman-back-two.png";
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import CameraswitchIcon from '@mui/icons-material/Cameraswitch';
 import { useTheme } from '@mui/material/styles';
 import "../css/Homepage.css";
@@ -56,7 +55,7 @@ function Homepage() {
     return (
         
         <Box className="homepage">
-            {console.log("theme secondary is", theme.palette.secondary.main)}
+            {/* {console.log("theme secondary is", theme.palette.secondary.main)} */}
                 <Box className="homepage_image">
                     <img src={imageSource} alt={`woman-${angle}-body`} className={`homepage_image_${angle}`}/>
                     {labels.map((label) => (
