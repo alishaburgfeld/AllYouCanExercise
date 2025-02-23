@@ -3,17 +3,19 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from 'axios'
 import Cookies from 'js-cookie';
 import Box from '@mui/material/Box';
+import Link from '@mui/material/Link';
 import "../css/ExerciseGroupPage.css";
-import { Typography, Link } from "@mui/material";
-import { useTheme } from '@mui/material/styles';
-// import { exerciseOptions, fetchRapidData } from '../utils/RapidApiInfo'
+import { Typography } from "@mui/material";
+import { exerciseOptions, fetchRapidData } from '../utils/RapidApiInfo'
 
 // TO-DO: Eventually I can create a component for "records" etc. each of these components can be querying different tables in my database so that I don't have to worry about everything being on one record
 function ExerciseGroupPage() {
 
-    const theme = useTheme();
+    const apiKey = process.env.REACT_APP_RAPID_API_KEY;
+    const [rapidUrl, setRapidUrl] = useState('');
     const { exerciseGroup } = useParams();
     const navigate = useNavigate();
+    // console.log("Extracted exerciseGroup:", exerciseGroup);
     const [exercisesByGroup, setExercisesByGroup] = useState([]);
     
     
@@ -33,48 +35,65 @@ function ExerciseGroupPage() {
         }
     };
 
+    const getRapidExercises = async () => {
+        try {
+            const exercises = await fetchRapidData(rapidUrl,exerciseOptions)
+            console.log(exercises);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     const handleClick= (exerciseId) => {
         navigate(`/${exerciseId}`);
     }
 
-    const getImageSource = (name) => {
-        try {
-            return require(`../assets/images/${name}.png`); 
-        } catch (error) {
-            return require("../assets/images/noexerciseimage.png");
+    const determineRapidUrl = () => {
+        const targetUrl= 'https://exercisedb.p.rapidapi.com/exercises/target/'
+        const bodyPartUrl='https://exercisedb.p.rapidapi.com/exercises/bodyPart/'
+        var finalUrl = ""
+
+        if (["SHOULDERS","CHEST","CARDIO"].includes(exerciseGroup)) {
+            // still need to figure out obliques and lower back.
+            finalUrl = (bodyPartUrl + exerciseGroup.toLowerCase())
         }
-    };
-    
+        else {
+            finalUrl = (targetUrl + exerciseGroup.toLowerCase())
+        }
+        console.log("rapidUrl is currently", rapidUrl, "final url is", finalUrl);
+        setRapidUrl(finalUrl);
+        
+    }
 
 
   useEffect(()=> {
     console.log('exercise group is', exerciseGroup)
+    determineRapidUrl();
     getExercisesByGroup();
   }, [exerciseGroup])
 
-//   useEffect(() => {
-//     if (rapidUrl) {
-//         getRapidExercises();
-//     }
-// }, [rapidUrl]);
+  useEffect(() => {
+    if (rapidUrl) {
+        getRapidExercises();
+    }
+}, [rapidUrl]);
+
 
 
   
     return (
         
         <Box className="exerciseGroup">
-            <Typography className="exerciseGroup_title" sx={{fontSize:"1.8rem", pt:"4rem", color: theme.palette.secondary.main}}>
+            <Typography variant="h3">
                 {exerciseGroup}
             </Typography>
-            <Box className="exerciseGroup_ItemContainer">
-
-                {exercisesByGroup.map((exercise)=> (
-                    <Box key={exercise.id} className="exerciseGroup_items" onClick={() => handleClick(exercise.id)} sx={{borderRadius: 1, border:2, borderColor: theme.palette.secondary.main}}>
-                        <img src={getImageSource(exercise.name)} className="exerciseGroup_photo" alt={exercise.name}/>
-                        <Typography align="center" className="exerciseGroup_name"> {exercise.name}</Typography>
-                    </Box>
-                ))}
-            </Box>
+            {exercisesByGroup.map((exercise)=> (
+                <>
+                {console.log("exercise is", exercise.name)}
+                <Link key={exercise.id} onClick={() => handleClick(exercise.id)}>{exercise.name}
+                </Link>
+                </>
+            ))}
             
         </Box>
     )

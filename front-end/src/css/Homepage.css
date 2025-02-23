@@ -6,7 +6,7 @@
     position: relative;
     overflow: hidden;
     width: 100vw;
-    background-image: url("../assets/images/BG5.jpg"); /* Replace with your image path */
+    background-image: url("../assets/images/BG5.jpg"); 
     background-size: cover; /* Ensures the image covers the entire area */
     background-position: center; /* Centers the image */
     background-repeat: no-repeat; /* Prevents tiling */
@@ -15,8 +15,8 @@
   
   .homepage_image {
     position: relative; /* Ensures labels are positioned relative to this container */
-    width: 100vw; /* Adjust as needed */
-    max-width: 500px; /* Prevents image from being too large */
+    width: 100vw; 
+    max-width: 500px;
   }
   
   .homepage_image_front, 
