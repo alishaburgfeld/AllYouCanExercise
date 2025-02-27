@@ -1,12 +1,12 @@
 import { BrowserRouter } from "react-router";
 import { render, screen } from "@testing-library/react";
-import App from "../../../front-end-old/src/App";
+import App from "../../../front-end/src/App";
 
 test("renders Navbar text", () => {
   render(
     <BrowserRouter>
       <App />
-    </BrowserRouter>
+    </BrowserRouter>,
   );
   const navbarText = screen.getByText(/All You Can Exercise/i);
   expect(navbarText).toBeInTheDocument();
