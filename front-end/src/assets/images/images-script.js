@@ -2,12 +2,11 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import fs from "fs";
 
-const IMAGES = {
-  "Abduction Machine": new URL(
-    "./ABDUCTORS/Abduction Machine.png",
-    import.meta.url,
-  ).href,
-};
+// "Abduction Machine": new URL(
+//     "./ABDUCTORS/Abduction Machine.png",
+//     import.meta.url,
+//   ).href,
+const IMAGES = {};
 
 const getExercises = async () => {
   const csrfToken = Cookies.get("XSRF-TOKEN");
@@ -46,7 +45,7 @@ const addToImages = async () => {
 };
 
 const updateImagesFile = () => {
-  const filePath = "./src/assets/images/images.js";
+  const filePath = "./images.js";
   let newContent = "const IMAGES = {\n";
 
   // Loop through the IMAGES object and manually format each key-value pair
