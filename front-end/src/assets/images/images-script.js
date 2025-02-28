@@ -1,6 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import fs from "fs";
+import path from "path";
 
 // "Abduction Machine": new URL(
 //     "./ABDUCTORS/Abduction Machine.png",
@@ -27,17 +28,31 @@ const getExercises = async () => {
   }
 };
 
+const imageExists = (imagePath) => {
+  const fullPath = path.resolve(imagePath); // Ensure it resolves to an absolute path
+  return fs.existsSync(fullPath); // Checks if the file exists synchronously
+};
+
 const addToImages = async () => {
   const exercises = await getExercises(); // Wait for the data from getExercises
 
   exercises.forEach((exercise) => {
-    if (!IMAGES[exercise.name]) {
-      IMAGES[
-        exercise.name
-      ] = `new URL('./${exercise.exerciseGroup}/${exercise.name}.png', import.meta.url).href`;
-      // console.log(IMAGES[exercise.name]);
+    const imagePath = `./${exercise.exerciseGroup}/${exercise.name}.png`; // Define image path
+
+    // Check if image exists before adding to the IMAGES object
+    if (imageExists(imagePath)) {
+      if (!IMAGES[exercise.name]) {
+        IMAGES[
+          exercise.name
+        ] = `new URL('./${exercise.exerciseGroup}/${exercise.name}.png', import.meta.url).href`;
+        // console.log(IMAGES[exercise.name]);
+      } else {
+        console.log(exercise.name, "already in images");
+      }
     } else {
-      console.log(exercise.name, "already in images");
+      console.log(
+        `Image for ${exercise.name} does not exist in the folder`,
+      );
     }
   });
 
@@ -72,10 +87,3 @@ addToImages()
   .catch((error) => {
     console.error("Error adding images:", error);
   });
-
-//     // if (!IMAGES[exercise.name]) {
-//     IMAGES[
-//       exercise.name
-//     ] = `new URL('./${exercise.group}/${exercise.name}', import.meta.url).href`;
-//     // } else {
-//     //   console.log(`${exercise.name} already in images`);
