@@ -39,14 +39,13 @@ function ExerciseGroupPage() {
     }
 
     const getImageSource = (name) => {
-        // this isn't working because I did create a key for every exercise, regardless of if there is an image or not...
         let source;
         if (IMAGES[name]) {
+            console.log(name, 'name was found in images')
             source = IMAGES[name]
         }
         else {
-            let noImageString=`${exerciseGroup}/${name}.png`
-            console.log('noImageString is', noImageString)
+            let noImageString='../assets/images/noexerciseimage.png'
             source = new URL(noImageString,
                 import.meta.url,
               ).href
