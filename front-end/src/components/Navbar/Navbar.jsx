@@ -17,7 +17,7 @@ export default function Navbar() {
 
   return (
     <Box sx={{ flexGrow: 1 }} className="navbar">
-      <AppBar position="static" sx={{ backgroundColor: theme.palette.primary.mix}}>
+      <AppBar position="static" sx={{ backgroundColor: theme.palette.primary.mix}} role='navigation'>
         <Toolbar>
           <Link to="/">
             <FitnessCenterIcon
