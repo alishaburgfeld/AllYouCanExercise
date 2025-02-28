@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import "../css/ExerciseGroupPage.css";
 import { Typography, Link } from "@mui/material";
 import { useTheme } from '@mui/material/styles';
+import IMAGES from "../assets/images/images";
 // import { exerciseOptions, fetchRapidData } from '../utils/RapidApiInfo'
 
 // TO-DO: Eventually I can create a component for "records" etc. each of these components can be querying different tables in my database so that I don't have to worry about everything being on one record
@@ -38,13 +39,23 @@ function ExerciseGroupPage() {
     }
 
     const getImageSource = (name) => {
-        try {
-            return require(`../assets/images/${name}.png`); 
-        } catch (error) {
-            return require("../assets/images/noexerciseimage.png");
+        // this isn't working because I did create a key for every exercise, regardless of if there is an image or not...
+        let source;
+        if (IMAGES[name]) {
+            source = IMAGES[name]
         }
-    };
+        else {
+            let noImageString=`${exerciseGroup}/${name}.png`
+            console.log('noImageString is', noImageString)
+            source = new URL(noImageString,
+                import.meta.url,
+              ).href
+        }
+        return source;
+    }
     
+    // need to do this to get the image source:
+    // https://enivid.hashnode.dev/importing-images-in-a-vite-react-app
 
 
   useEffect(()=> {
