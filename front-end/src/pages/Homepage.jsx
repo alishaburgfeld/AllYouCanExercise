@@ -49,8 +49,6 @@ function Homepage() {
     const handleAngleSwitch = () => {
         setfrontAngle(!frontAngle);
     }
-
-    // need to do a function that on some button click it will change angle to back, and will also change the labels {setAngleLabels(backLabels)}.
     
     return (
         
