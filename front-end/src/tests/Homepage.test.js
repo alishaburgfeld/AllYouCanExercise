@@ -3,10 +3,6 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, useNavigate } from "react-router-dom";
 
-const mockExercises = [
-  { id: 1, exerciseGroup: "CHEST" },
-  { id: 2, exerciseGroup: "BICEPS" },
-];
 const mockedNavigate = jest.fn();
 
 jest.mock("react-router-dom", () => ({
@@ -27,6 +23,24 @@ describe("Homepage", () => {
     render(<Homepage />);
     const homepageImage = screen.getByAltText(/woman-front-body/i);
     expect(homepageImage).toBeInTheDocument();
+  });
+
+  test("defaults to front labels", () => {
+    const frontLabels = [
+      "SHOULDERS",
+      "CHEST",
+      "FOREARMS",
+      "OBLIQUES",
+      "QUADS",
+      "ADDUCTORS",
+      "ABS",
+      "BICEPS",
+      "CARDIO",
+    ];
+    render(<Homepage />);
+    frontLabels.forEach((label) => {
+      expect(screen.getByText(label)).toBeInTheDocument();
+    });
   });
 
   test("Camera button is present", () => {
