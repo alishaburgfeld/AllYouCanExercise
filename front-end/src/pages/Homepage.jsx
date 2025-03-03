@@ -22,7 +22,6 @@ function Homepage() {
     const [labels, setLabels] = useState(frontLabels);
     
     const navigate = useNavigate();
-    // todo - just have image pull image source and then run through labels. lables and image source will be set on button push.
 
     const handleLabelClick = (exerciseGroup) => {
         navigate(`/exercises/${exerciseGroup}`);
@@ -57,7 +56,7 @@ function Homepage() {
                 <Box className="homepage_image">
                     <img src={imageSource} alt={`woman-${angle}-body`} className={`homepage_image_${angle}`}/>
                     {labels.map((label) => (
-                    <span key={label} className={`homepage_label_${label}`} onClick={() => handleLabelClick(label)}>{label}</span>
+                    <span key={label} role="link" className={`homepage_label_${label}`} aria-label={`homepage_label_${label}`} onClick={() => handleLabelClick(label)}>{label}</span>
                 ))}
                 </Box>
             <IconButton className = "homepage_camera" aria-label="camera-switch" sx={{color: theme.palette.secondary.main, position: "absolute", right: "42%", top: "13%"}} onClick={() => handleAngleSwitch()}>
