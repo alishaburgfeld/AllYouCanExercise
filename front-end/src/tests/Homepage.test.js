@@ -1,7 +1,7 @@
 import Homepage from "../pages/Homepage";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { MemoryRouter, useNavigate } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 
 const mockedNavigate = jest.fn();
 
@@ -74,7 +74,7 @@ describe("Homepage", () => {
 
   // Since handleAngleSwitch is a function defined inside the Homepage component, you’ll need to take a different approach. Specifically, you can’t spy on it directly, but you can still test that the function is invoked by checking the side effects it causes.
 
-  test("Camera Button Click changes the image", async () => {
+  test("Camera Button Click changes the image and labels", async () => {
     render(<Homepage />);
 
     const cameraButton = screen.getByRole("button", {
@@ -83,6 +83,21 @@ describe("Homepage", () => {
     await userEvent.click(cameraButton);
 
     const backImage = screen.getByAltText(/woman-back-body/i);
+    const backLabels = [
+      "CARDIO",
+      "TRAPS",
+      "TRICEPS",
+      "ABDUCTORS",
+      "HAMSTRINGS",
+      "CALVES",
+      "LATS",
+      "LOWER_BACK",
+      "GLUTES",
+    ];
+
+    backLabels.forEach((label) => {
+      expect(screen.getByText(label)).toBeInTheDocument();
+    });
     expect(backImage).toBeInTheDocument();
   });
 

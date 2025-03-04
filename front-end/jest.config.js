@@ -15,7 +15,7 @@ export default {
     ".+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$":
       "jest-transform-stub",
   },
-  transformIgnorePatterns: ["<rootDir>/node_modules/"],
+  transformIgnorePatterns: ["<rootDir>/node_modules/(?!axios)"],
   collectCoverageFrom: ["src/**/*.{js,jsx}"],
   setupFilesAfterEnv: ["@testing-library/jest-dom"],
 };
