@@ -7,7 +7,7 @@ import "../css/ExerciseGroupPage.css";
 import { Typography, Link } from "@mui/material";
 import { useTheme } from '@mui/material/styles';
 import IMAGES from "../assets/images/images";
-// import { exerciseOptions, fetchRapidData } from '../utils/RapidApiInfo'
+import { getImageSource } from "../utils/HelperFunctions";
 
 // TO-DO: Eventually I can create a component for "records" etc. each of these components can be querying different tables in my database so that I don't have to worry about everything being on one record
 function ExerciseGroupPage() {
@@ -38,37 +38,14 @@ function ExerciseGroupPage() {
         navigate(`/${exerciseId}`);
     }
 
-    const getImageSource = (name) => {
-        let source;
-        if (IMAGES[name]) {
-            console.log(name, 'name was found in images')
-            source = IMAGES[name]
-        }
-        else {
-            let noImageString='../assets/images/noexerciseimage.png'
-            source = new URL(noImageString,
-                import.meta.url,
-              ).href
-        }
-        return source;
-    }
     
-    // need to do this to get the image source:
-    // https://enivid.hashnode.dev/importing-images-in-a-vite-react-app
+    
 
 
   useEffect(()=> {
     console.log('exercise group is', exerciseGroup)
     getExercisesByGroup();
   }, [exerciseGroup])
-
-//   useEffect(() => {
-//     if (rapidUrl) {
-//         getRapidExercises();
-//     }
-// }, [rapidUrl]);
-
-
   
     return (
         

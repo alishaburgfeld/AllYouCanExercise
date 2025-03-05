@@ -45,7 +45,7 @@ function Homepage() {
         changeLabels();
       }, [frontAngle])
 
-    const handleAngleSwitch = () => {
+    function handleAngleSwitch()  {
         setfrontAngle(!frontAngle);
     }
     
