@@ -19,9 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.allyoucanexercise.back_end.ExerciseApplication;
 
-
 import jakarta.validation.Valid;
-
 
 @RestController
 @RequestMapping("/api/exercises")
@@ -38,7 +36,6 @@ public class ExerciseController {
 
     @GetMapping()
     List<Exercise> findAll() {
-        // log.info("inside find all controller");
         return exerciseRepository.findAll();
     }
 
@@ -55,26 +52,28 @@ public class ExerciseController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping()
-    void create (@Valid @RequestBody Exercise exercise){
-        // log.info("we are in the create on the controller, exercise is", exercise.id(), "name", exercise.name(), "group", exercise.exerciseGroup(),"type", exercise.exerciseType(), "description", exercise.description());
+    void create(@Valid @RequestBody Exercise exercise) {
+        // log.info("we are in the create on the controller, exercise is",
+        // exercise.id(), "name", exercise.name(), "group",
+        // exercise.exerciseGroup(),"type", exercise.exerciseType(), "description",
+        // exercise.description());
         exerciseRepository.create(exercise);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}")
-    void update (@Valid @RequestBody Exercise newExercise, @PathVariable Integer id) {
+    void update(@Valid @RequestBody Exercise newExercise, @PathVariable Integer id) {
         Optional<Exercise> existingExercise = exerciseRepository.findById(id);
-        if(existingExercise.isEmpty()) {
+        if (existingExercise.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Exercise not found.");
         }
         exerciseRepository.update(newExercise, id);
     }
 
-
     @ResponseStatus(HttpStatus.NO_CONTENT)
     // Could do ok here... is there a better response?
     @DeleteMapping("/{id}")
-    void delete (@PathVariable Integer id) {
+    void delete(@PathVariable Integer id) {
         exerciseRepository.delete(id);
     }
 

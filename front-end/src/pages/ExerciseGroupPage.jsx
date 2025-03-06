@@ -4,7 +4,7 @@ import axios from 'axios'
 import Cookies from 'js-cookie';
 import Box from '@mui/material/Box';
 import "../css/ExerciseGroupPage.css";
-import { Typography, Link } from "@mui/material";
+import { Typography} from "@mui/material";
 import { useTheme } from '@mui/material/styles';
 import { getImageSource } from "../utils/HelperFunctions";
 
@@ -26,7 +26,7 @@ function ExerciseGroupPage() {
                 },
                 withCredentials: true, // Include cookies in the request
             });
-            console.log("response is", response, "response.data is", response.data);
+            // console.log("response is", response, "response.data is", response.data);
             setExercisesByGroup(response.data);
         } catch (error) {
             console.error("Error fetching exercises:", error);
@@ -42,7 +42,6 @@ function ExerciseGroupPage() {
 
 
   useEffect(()=> {
-    console.log('exercise group is', exerciseGroup)
     getExercisesByGroup();
   }, [exerciseGroup])
   
@@ -67,3 +66,6 @@ function ExerciseGroupPage() {
 }
 
 export default ExerciseGroupPage 
+
+
+// todos: add the ability to add an exercise
