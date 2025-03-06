@@ -108,3 +108,6 @@ May need to read this with testing with MUI Material UI:
 https://jskim1991.medium.com/react-dont-give-up-on-testing-when-using-material-ui-with-react-ff737969eec7
 
 https://medium.com/@MussieTeshome/react-testing-library-with-vitest-the-basics-explained-d583e62945fd
+
+to run test coverage:
+npm run test -- --coverage --
