@@ -6,7 +6,6 @@ import Box from '@mui/material/Box';
 import "../css/ExerciseGroupPage.css";
 import { Typography, Link } from "@mui/material";
 import { useTheme } from '@mui/material/styles';
-import IMAGES from "../assets/images/images";
 import { getImageSource } from "../utils/HelperFunctions";
 
 // TO-DO: Eventually I can create a component for "records" etc. each of these components can be querying different tables in my database so that I don't have to worry about everything being on one record
