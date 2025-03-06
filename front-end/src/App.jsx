@@ -3,6 +3,7 @@ import "./App.css";
 //when using the "export default" this allows you n ot to use the {} on the thing you're importing
 // import './App.css'
 import { BrowserRouter, Route, Routes } from "react-router";
+import { useState } from "react"
 import Homepage from "../../front-end/src/pages/Homepage";
 import Navbar from "../../front-end/src/components/Navbar/Navbar";
 import ExercisePage from "../../front-end/src/pages/ExercisePage";
@@ -12,6 +13,13 @@ import CssBaseline from "@mui/material/CssBaseline";
 import theme from "../../front-end/src/utils/theme";
 
 function App() {
+
+  const [workout, setWorkout] = useState([]);
+
+  const addToWorkout= (exercise) => {
+    setWorkout((prevWorkout) => [...prevWorkout, exercise]);
+  };
+
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
@@ -24,7 +32,8 @@ function App() {
               path="/exercises/:exerciseGroup"
               element={<ExerciseGroupPage />}
             />
-            <Route path="/:exerciseId" element={<ExercisePage />} />
+            <Route path="/:exerciseId" element={<ExercisePage addToWorkout={addToWorkout}/>} />
+            <Route path="/:workout" element={<ExercisePage workout={workout}/>} />
           </Routes>
         </BrowserRouter>
       </ThemeProvider>
