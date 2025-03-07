@@ -1,16 +1,10 @@
 .exercisePage {
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 100%;
     width: 100vw;
     background-color: #BDBDBD;
-}
-
-.exercisePage_title_container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
+    /* overflow: hidden; */
 }
 
 .exercisePage_ItemContainer {
@@ -21,21 +15,22 @@
     max-width: 500px;
 }
 
-.exercisePage_addToWorkout {
-    margin-top:1rem;
-}
-
 @media (min-width: 769px) {
-    .exercisePage {
-        display:flex;
+
+    .exercisePage_addToWorkout {
+        margin-top:1.2rem !important;
+        right: 15% !important;
+        top: 12% !important;
     }
 
     .exercisePage_title {
-      font-size:2.7rem !important;
+      font-size:2rem !important;
       padding-top:5rem !important;
+      margin-top:2rem !important;
     }
 
     .exercisePage_image {
-        max-width: 700px;
+        max-width: 500px;
+        max-height: 500px;
     }
 }
