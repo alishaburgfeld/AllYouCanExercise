@@ -3,7 +3,6 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 // import IconButton from '@mui/material/IconButton';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
@@ -29,7 +28,7 @@ export default function Navbar() {
               <MenuIcon />
             </FitnessCenterIcon>
           </Link>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1, color: theme.palette.secondary.main}}>
+          <Typography component="div" sx={{ flexGrow: 1, color: theme.palette.secondary.main, fontSize: "1.5rem", fontWeight: "600"}}>
             All You Can Exercise
           </Typography>
           <IconButton 
