@@ -20,3 +20,10 @@ CREATE TABLE IF NOT EXISTS exercise_equipment (
    CONSTRAINT fk_exercise FOREIGN KEY (exercise_id) REFERENCES exercise(id) ON UPDATE CASCADE ON DELETE CASCADE,
    CONSTRAINT fk_equipment FOREIGN KEY (equipment_id) REFERENCES equipment(id) ON UPDATE CASCADE ON DELETE CASCADE 
 );
+
+-- CREATE TABLE IF NOT EXISTS users (
+--         id INT AUTO_INCREMENT PRIMARY KEY,
+--         username VARCHAR(255) NOT NULL UNIQUE,
+--         password VARCHAR(255) NOT NULL,
+--       --   enabled BOOLEAN DEFAULT TRUE
+-- );
