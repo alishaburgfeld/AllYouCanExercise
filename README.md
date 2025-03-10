@@ -111,3 +111,7 @@ https://medium.com/@MussieTeshome/react-testing-library-with-vitest-the-basics-e
 
 to run test coverage:
 npm run test -- --coverage --
+
+<!-- to do: watch this video on user registration and login -->
+
+https://www.youtube.com/watch?v=X7pGCmVxx10
