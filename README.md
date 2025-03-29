@@ -115,3 +115,9 @@ npm run test -- --coverage --
 <!-- to do: watch this video on user registration and login -->
 
 https://www.youtube.com/watch?v=X7pGCmVxx10
+
+look into:
+https://chatgpt.com/share/67e70d05-6fe8-800f-a14d-4afaccf0600d
+
+I need to change my current user setup because it is not setting a session for the user.
+https://chatgpt.com/share/67e70d05-6fe8-800f-a14d-4afaccf0600d

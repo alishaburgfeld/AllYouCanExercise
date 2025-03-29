@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
                 .authorizeHttpRequests(auth -> auth
                         // .requestMatchers("/api/auth/**").permitAll() // Allow authentication requests
-                        .requestMatchers("/api/**").permitAll() // Allow authentication requests
+                        .requestMatchers("/api/**", "/auth/**").permitAll() // Allow authentication requests
                         .anyRequest().authenticated())
                 .formLogin(form -> form.disable()) // I won't be providing a java form login
                 .httpBasic(basic -> basic.disable()); // I don't need basic authentication since I'm using cookies
