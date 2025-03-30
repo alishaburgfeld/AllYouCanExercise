@@ -10,7 +10,7 @@ import path from "path";
 const IMAGES = {};
 
 const getExercises = async () => {
-  const csrfToken = Cookies.get("XSRF-TOKEN");
+  const csrfToken = Cookies.get("X-XSRF-TOKEN");
   try {
     const response = await axios.get(
       "http://localhost:8080/api/exercises",

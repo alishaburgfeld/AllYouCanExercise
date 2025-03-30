@@ -1,5 +1,9 @@
 package com.allyoucanexercise.back_end.user;
 
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,15 +13,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.allyoucanexercise.back_end.ExerciseApplication;
+import com.allyoucanexercise.back_end.exercise.Exercise;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @RestController
-@RequestMapping("/auth")
 public class UserController {
 
     private final UserService userService;
     private final UserRepository userRepository;
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
     public UserController(final UserService userService, final UserRepository userRepository) {
         this.userService = userService;
@@ -25,8 +32,9 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/register")
+    @PostMapping("/auth/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
+        // log.info("in register on controller. username is", username);
         try {
             userService.registerUser(user.getUsername(), user.getPassword());
             return ResponseEntity.ok("User registered successfully!");
@@ -36,7 +44,7 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/login")
+    @PostMapping("/auth/login")
     public ResponseEntity<String> login(@RequestBody User user, HttpServletRequest request) {
         boolean authenticated = userService.authenticateUser(user.getUsername(), user.getPassword());
 
@@ -49,7 +57,7 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/logout")
+    @PostMapping("/auth/logout")
     public ResponseEntity<String> logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
@@ -58,7 +66,7 @@ public class UserController {
         return ResponseEntity.ok("Logged out successfully");
     }
 
-    @GetMapping("/checkusersession")
+    @GetMapping("/auth/checkusersession")
     public User checkUserSession(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         User user = null;
@@ -66,6 +74,11 @@ public class UserController {
             user = userRepository.findByUsername(session.getAttribute("username").toString()).orElse(null);
         }
         return user;
+    }
+
+    @GetMapping("/api/users")
+    List<User> findAll() {
+        return userRepository.findAll();
     }
 
 }

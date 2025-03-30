@@ -3,6 +3,8 @@
 1. Had to install Debugger for Java and Language Support for Java(TM) by Red Hat to be able to do. Run ->Run without debugging. Or can just do ./mvnw spring-boot:run
    -this is not working because I don't have java installed, and I wasn't in the back-end folder.
 
+2. CSRF wasn't working b/c when working with a javascript frontend you have to force your spring security to refresh the token every request. Thats why I had to add the SpaCsrfTokenRequestHandler. Here is where I learned about that: https://stackoverflow.com/questions/74447118/csrf-protection-not-working-with-spring-security-6
+
 <!-- -------------------REST --------------------->
 
 When have security dependency invoked it prints a password in the console to connect to the localhost:

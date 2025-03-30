@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { TextField, Button, Typography, Box, Link } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios'
+import Cookies from 'js-cookie';
 import "../css/SignUpPage.css";
 
 export default function SignUpPage() {
@@ -17,7 +19,7 @@ export default function SignUpPage() {
   }
   
 
-  const handleSignUp = (event) => {
+  const handleSignUp = async (event) => {
     event.preventDefault();
     if (password !== confirmedPassword) {
         setMatchingPasswords(false);
@@ -25,9 +27,24 @@ export default function SignUpPage() {
     }
     else {
         setMatchingPasswords(true);
-        // Implement sign up logic here
-        console.log('Signing up with', username, password);
-    }
+        const csrfToken = Cookies.get('XSRF-TOKEN');
+        console.log('csrf token', csrfToken)
+        try {
+            const response = await axios.post(
+                "http://localhost:8080/auth/register", 
+                { username, password }, // This is the body of the POST request
+                {
+                  headers: {
+                    'X-XSRF-TOKEN': csrfToken,
+                  },
+                  withCredentials: true, // Sends cookies with the request
+                }
+              );              
+              console.log('Signing up with', username, password);
+        } catch (error) {
+            console.error(error);
+        }
+        }
     }
 
   return (

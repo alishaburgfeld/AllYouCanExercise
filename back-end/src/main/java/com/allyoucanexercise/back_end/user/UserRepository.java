@@ -7,12 +7,20 @@ import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
+import com.allyoucanexercise.back_end.exercise.Exercise;
+
 @Repository
 public class UserRepository {
     private final JdbcClient jdbcClient;
 
     public UserRepository(JdbcClient jdbcClient) {
         this.jdbcClient = jdbcClient;
+    }
+
+    public List<User> findAll() {
+        return jdbcClient.sql("select * from user")
+                .query(User.class)
+                .list();
     }
 
     public Optional<User> findByUsername(String username) {
