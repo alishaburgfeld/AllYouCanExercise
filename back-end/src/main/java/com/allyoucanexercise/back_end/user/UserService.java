@@ -4,6 +4,9 @@ import org.apache.el.stream.Optional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -26,8 +29,14 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public void setSession(String username, HttpServletRequest request) {
+        HttpSession session = request.getSession(true);
+        session.setAttribute("username", username); // Store username in session
+    }
+
     public boolean authenticateUser(String username, String rawPassword) {
         User user = userRepository.findByUsername(username).orElse(null);
         return user != null && passwordEncoder.matches(rawPassword, user.getPassword());
     }
+
 }

@@ -26,9 +26,13 @@ public class SecurityConfig {
                 }))
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
+                // .sessionManagement(session ->
+                // session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
+                .sessionManagement(session -> session
+                        .maximumSessions(1)
+                        .maxSessionsPreventsLogin(false) // Allows new login to replace the old session
+                )
                 .authorizeHttpRequests(auth -> auth
-                        // .requestMatchers("/api/auth/**").permitAll() // Allow authentication requests
                         .requestMatchers("/api/**", "/auth/**").permitAll() // Allow authentication requests
                         .anyRequest().authenticated())
                 .formLogin(form -> form.disable()) // I won't be providing a java form login
