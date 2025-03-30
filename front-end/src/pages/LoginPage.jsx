@@ -68,7 +68,8 @@ export default function LoginPage() {
         <Box sx={{ textAlign: 'center' }}>
           <Typography variant="body2">
             Don't have an account?{' '}
-            <Link component="button" onClick={handleSignUpRedirect} sx={{color: theme.palette.secondary.main}}>
+            {/* The { ' ' } here adds a space between "Don't have an account?" and the Sign Up link. Without it, the Sign Up link would be right next to the sentence without any space in between. */}
+            <Link component="button" onClick={handleSignUpRedirect} sx={{color: theme.palette.secondary.main, '& .MuiInput-underline:before': { borderBottomColor: theme.palette.secondary.main }}}>
               Sign Up
             </Link>
           </Typography>

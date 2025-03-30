@@ -8,7 +8,7 @@ export default function SignUpPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmedPassword, setConfirmedPassword] = useState('');
-  const [matchingPasswords,setMatchingPasswords] = useState(false)
+  const [matchingPasswords,setMatchingPasswords] = useState(true)
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -19,13 +19,15 @@ export default function SignUpPage() {
 
   const handleSignUp = (event) => {
     event.preventDefault();
-    // Implement sign up logic here
     if (password !== confirmedPassword) {
-        setMatchingPasswords(true);
-        alert('Passwords do not match');
+        setMatchingPasswords(false);
         return;
-    };
-    console.log('Signing up with', username, password);
+    }
+    else {
+        setMatchingPasswords(true);
+        // Implement sign up logic here
+        console.log('Signing up with', username, password);
+    }
     }
 
   return (
@@ -73,6 +75,16 @@ export default function SignUpPage() {
           onChange={(e) => setConfirmedPassword(e.target.value)}
           sx={{ marginBottom: 2 }}
         />
+        {!matchingPasswords 
+            ? (
+            <>
+            <Typography variant="body2" sx={{ mb: 2, color: "red" }}>
+        Passwords do not match!
+      </Typography>
+            </>
+            )
+            : ""
+        }
         <Button
           type="submit"
           variant="contained"
@@ -85,7 +97,7 @@ export default function SignUpPage() {
         <Box sx={{ textAlign: 'center' }}>
           <Typography variant="body2">
             Already have an account?{' '}
-            <Button onClick={handleLoginRedirect} variant="text">
+            <Button onClick={handleLoginRedirect} variant="text" sx={{color: theme.palette.secondary.main}}>
               Login
             </Button>
           </Typography>
