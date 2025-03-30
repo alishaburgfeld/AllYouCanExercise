@@ -5,3 +5,9 @@
     width: 100%;
     z-index: 10; /* Ensures navbar is above other content */
 }
+
+
+ /* for larger screens */
+ @media (min-width: 769px) {
+    .navbar_title { font-size: 1.5rem !important;}
+  }

@@ -24,9 +24,8 @@ function ExerciseGroupPage() {
                 headers: {
                 'X-XSRF-TOKEN': csrfToken,
                 },
-                withCredentials: true, // Include cookies in the request
+                withCredentials: true, 
             });
-            // console.log("response is", response, "response.data is", response.data);
             setExercisesByGroup(response.data);
         } catch (error) {
             console.error("Error fetching exercises:", error);

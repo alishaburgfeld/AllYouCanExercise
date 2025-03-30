@@ -3,6 +3,8 @@
 1. Had to install Debugger for Java and Language Support for Java(TM) by Red Hat to be able to do. Run ->Run without debugging. Or can just do ./mvnw spring-boot:run
    -this is not working because I don't have java installed, and I wasn't in the back-end folder.
 
+2. CSRF wasn't working b/c when working with a javascript frontend you have to force your spring security to refresh the token every request. Thats why I had to add the SpaCsrfTokenRequestHandler. Here is where I learned about that: https://stackoverflow.com/questions/74447118/csrf-protection-not-working-with-spring-security-6
+
 <!-- -------------------REST --------------------->
 
 When have security dependency invoked it prints a password in the console to connect to the localhost:
@@ -96,13 +98,11 @@ How to handle CSRF configuration: https://chatgpt.com/share/67992954-c8e0-800f-b
 
 <!----------------- TODOS ----------->
 
-1. Add a navbar - look into how to do a hamburger style on tailwind
-2. Figure out how I'm going to insert the Exercise names onto the main picture page, and how upon click it will go to the exercise page.
-3. Make it so id is auto-populated based on the next value in the mysql database
-4. Verify the way I'm doing CORS exception is a secure way
-5. Database variables for mysql container
-6. context load - probably not working because security dependency is disabled.
-7. Instead of grabbing all the exercises, only grab the exercisegroup when clicking on the label
+1. Add a navbar - look into how to do a hamburger style on tailwind. make a wider navbar on big screens
+2. Figure out how to grab all the core exercises AND any custom user created exercises. (not allowing custom exercises for now)
+3. Verify the way I'm doing CORS exception is a secure way
+4. Database variables for mysql container
+5. context load - probably not working because security dependency is disabled.
 
 May need to read this with testing with MUI Material UI:
 https://jskim1991.medium.com/react-dont-give-up-on-testing-when-using-material-ui-with-react-ff737969eec7
@@ -111,3 +111,13 @@ https://medium.com/@MussieTeshome/react-testing-library-with-vitest-the-basics-e
 
 to run test coverage:
 npm run test -- --coverage --
+
+<!-- to do: watch this video on user registration and login -->
+
+https://www.youtube.com/watch?v=X7pGCmVxx10
+
+look into:
+https://chatgpt.com/share/67e70d05-6fe8-800f-a14d-4afaccf0600d
+
+I need to change my current user setup because it is not setting a session for the user.
+https://chatgpt.com/share/67e70d05-6fe8-800f-a14d-4afaccf0600d
