@@ -96,7 +96,7 @@ How to handle CSRF configuration: https://chatgpt.com/share/67992954-c8e0-800f-b
 
 <!----------------- TODOS ----------->
 
-1. Add a navbar - look into how to do a hamburger style on tailwind
+1. Add a navbar - look into how to do a hamburger style on tailwind. make a wider navbar on big screens
 2. Figure out how to grab all the core exercises AND any custom user created exercises. (not allowing custom exercises for now)
 3. Verify the way I'm doing CORS exception is a secure way
 4. Database variables for mysql container

@@ -1,6 +1,5 @@
 package com.allyoucanexercise.back_end.user;
 
-import org.apache.el.stream.Optional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 

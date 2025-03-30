@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import com.allyoucanexercise.back_end.user.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -18,9 +17,11 @@ import jakarta.servlet.http.HttpSession;
 public class UserController {
 
     private final UserService userService;
+    private final UserRepository userRepository;
 
-    public UserController(final UserService userService) {
+    public UserController(final UserService userService, final UserRepository userRepository) {
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -58,12 +59,13 @@ public class UserController {
     }
 
     @GetMapping("/checkusersession")
-    public ResponseEntity<String> checkUserSession(HttpServletRequest request) {
+    public User checkUserSession(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
+        User user = null;
         if (session != null && session.getAttribute("username") != null) {
-            return ResponseEntity.ok(session.getAttribute("username") + " is logged in");
+            user = userRepository.findByUsername(session.getAttribute("username").toString()).orElse(null);
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No active session");
+        return user;
     }
 
 }

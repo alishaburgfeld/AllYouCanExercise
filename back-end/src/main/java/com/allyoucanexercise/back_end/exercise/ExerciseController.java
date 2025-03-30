@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.allyoucanexercise.back_end.ExerciseApplication;
+import com.allyoucanexercise.back_end.exercise.ExerciseRepository;
 
 import jakarta.validation.Valid;
 

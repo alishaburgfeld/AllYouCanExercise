@@ -1,4 +1,4 @@
-package com.allyoucanuser.back_end.user;
+package com.allyoucanexercise.back_end.user;
 
 import java.util.List;
 import java.util.Optional;
