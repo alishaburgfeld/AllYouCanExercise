@@ -2,16 +2,13 @@ package com.allyoucanexercise.back_end.user;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-// import static org.junit.jupiter.api.Assertions.assertTrue;
-// import static org.junit.jupiter.api.Assertions.fail;
-// import static org.mockito.ArgumentMatchers.anyList;
-// import static org.mockito.ArgumentMatchers.anyString;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -71,90 +68,69 @@ public class UserRepositoryTest {
 
         @Test
         void testFindByUsername() {
-                // public Optional<User> findByUsername(String username) {
-                // return jdbcClient.sql("SELECT id,username,password FROM user WHERE username =
-                // :username")
-                // .param("username", username)
-                // .query(User.class)
-                // .optional();
-                // }
 
-                // when(jdbcClient
-                // .sql("SELECT id,name,user_group,user_type,description,picture FROM user WHERE
-                // id = :id"))
-                // .thenReturn(statementSpec);
-                // when(statementSpec.param("id", 1)).thenReturn(statementSpec);
-                // when(statementSpec.query(User.class)).thenReturn(mappedQuerySpec);
-                // when(mappedQuerySpec.optional()).thenReturn(Optional.of(user));
+                when(jdbcClient
+                                .sql("SELECT id,username,password FROM user WHERE username = :username"))
+                                .thenReturn(statementSpec);
+                when(statementSpec.param("username", user.getUsername())).thenReturn(statementSpec);
+                when(statementSpec.query(User.class)).thenReturn(mappedQuerySpec);
+                when(mappedQuerySpec.optional()).thenReturn(Optional.of(user));
 
-                // Optional<User> result = userRepository.findById(1);
+                Optional<User> result = userRepository.findByUsername(user.getUsername());
 
-                // assertEquals("Push-up", result.get().name());
-                // assertEquals(UserGroup.CHEST, result.get().userGroup());
+                assertEquals("username1", result.get().getUsername());
+                assertEquals(user.getPassword(), result.get().getPassword());
 
-                // verify(jdbcClient)
-                // .sql("SELECT id,name,user_group,user_type,description,picture FROM user WHERE
-                // id = :id");
-                // verify(statementSpec).param("id", 1);
-                // verify(statementSpec).query(User.class);
-                // verify(mappedQuerySpec).optional(); // Ensure optional was called
+                verify(jdbcClient)
+                                .sql("SELECT id,username,password FROM user WHERE username = :username");
+                verify(statementSpec).param("username", "username1");
+                verify(statementSpec).query(User.class);
+                verify(mappedQuerySpec).optional();
         }
 
-        // @Test
-        // @DisplayName("test create - Happy Path")
-        // void testCreate() {
-        // when(jdbcClient
-        // .sql("INSERT INTO user(name,user_group,user_type,description,picture)
-        // values(?,?,?,?,?)"))
-        // .thenReturn(statementSpec);
-        // when(statementSpec.params(List.of(user.name(), user.userGroup().toString(),
-        // user.userType().toString(), user.description(), user.picture())))
-        // .thenReturn(statementSpec);
-        // when(statementSpec.update()).thenReturn(1);
+        @Test
+        @DisplayName("test save - Happy Path")
+        void testSave() {
+                when(jdbcClient
+                                .sql("INSERT INTO user(username,password) values(?,?)"))
+                                .thenReturn(statementSpec);
+                when(statementSpec.params(List.of(user.getUsername(), user.getPassword())))
+                                .thenReturn(statementSpec);
+                when(statementSpec.update()).thenReturn(1);
 
-        // userRepository.create(user);
+                userRepository.save(user);
 
-        // verify(jdbcClient)
-        // .sql("INSERT INTO user(name,user_group,user_type,description,picture)
-        // values(?,?,?,?,?)");
-        // verify(statementSpec).params(List.of(user.name(),
-        // user.userGroup().toString(),
-        // user.userType().toString(), user.description(), user.picture()));
-        // verify(statementSpec).update();
-        // }
+                verify(jdbcClient)
+                                .sql("INSERT INTO user(username,password) values(?,?)");
+                verify(statementSpec).params(List.of(user.getUsername(), user.getPassword()));
+                verify(statementSpec).update();
+        }
 
-        // @Test
-        // @DisplayName("test create - Unhappy Path")
-        // void testCreateUnhappy() {
-        // user = new User(1, "", UserGroup.CHEST, UserType.UPPERBODY, "Push-up
-        // description",
-        // "pictureUrl"); // Missing name
+        @Test
+        @DisplayName("test save - Unhappy Path")
+        void testCreateUnhappy() {
+                User invalidUser = new User();
+                invalidUser.setUsername("");
+                invalidUser.setPassword("password");
 
-        // when(jdbcClient
-        // .sql("INSERT INTO user(name,user_group,user_type,description,picture)
-        // values(?,?,?,?,?)"))
-        // .thenReturn(statementSpec);
-        // // missing the name
-        // when(statementSpec.params(List.of(user.name(), user.userGroup().toString(),
-        // user.userType().toString(), user.description(), user.picture())))
-        // .thenReturn(statementSpec);
-        // when(statementSpec.update()).thenReturn(0);
+                when(jdbcClient
+                                .sql("INSERT INTO user(username,password) values(?,?)"))
+                                .thenReturn(statementSpec);
+                when(statementSpec.params(List.of(invalidUser.getUsername(), invalidUser.getPassword())))
+                                .thenReturn(statementSpec);
+                when(statementSpec.update()).thenReturn(0);
 
-        // try {
-        // userRepository.create(user);
-        // fail("Expected an exception to be thrown due to unsuccessful creation");
-        // } catch (IllegalStateException e) {
-        // // Verify that the exception message contains the expected failure reason
-        // assertTrue(e.getMessage().contains("Failed to create user"));
-        // }
+                try {
+                        userRepository.save(invalidUser);
+                        fail("Expected an exception to be thrown due to unsuccessful creation");
+                } catch (IllegalStateException e) {
+                        assertTrue(e.getMessage().contains("Failed to create user"));
+                }
 
-        // verify(jdbcClient)
-        // .sql("INSERT INTO user(name,user_group,user_type,description,picture)
-        // values(?,?,?,?,?)");
-        // verify(statementSpec).params(List.of(user.name(),
-        // user.userGroup().toString(),
-        // user.userType().toString(), user.description(), user.picture()));
-        // verify(statementSpec).update();
-        // }
+                verify(jdbcClient)
+                                .sql("INSERT INTO user(username,password) values(?,?)");
+                verify(statementSpec).params(List.of(invalidUser.getUsername(), invalidUser.getPassword()));
+                verify(statementSpec).update();
+        }
 
 }
