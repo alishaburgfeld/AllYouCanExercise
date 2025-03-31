@@ -4,6 +4,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
@@ -22,8 +23,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.jdbc.core.simple.JdbcClient;
 
 public class UserServiceTest {
-    @Mock
-    private JdbcClient jdbcClient;
 
     // @Mock
     // private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -33,16 +32,13 @@ public class UserServiceTest {
     // out, so for now I'll just let it actually create a new one for the tests
     // instead of mocking.
 
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     @Mock
     private UserRepository userRepository;
 
     @InjectMocks
     private UserService userService;
-
-    // essential JdbcClient Mocks we'll use for most tests
-    private JdbcClient.StatementSpec statementSpec;
-    private JdbcClient.MappedQuerySpec<User> mappedQuerySpec;
-    private JdbcClient.ResultQuerySpec resultQuerySpec;
 
     private User user;
 
@@ -55,9 +51,6 @@ public class UserServiceTest {
         // user2.setUsername("username2");
         // user2.setPassword("password2");
         MockitoAnnotations.openMocks(this);
-        statementSpec = mock(JdbcClient.StatementSpec.class);
-        mappedQuerySpec = mock(JdbcClient.MappedQuerySpec.class);
-        resultQuerySpec = mock(JdbcClient.ResultQuerySpec.class); // Mock MappedQuerySpec
     }
 
     @Test
@@ -76,33 +69,33 @@ public class UserServiceTest {
         verify(userRepository).save(any(User.class));
 
     }
-    // public void registerUser(String username, String password) throws
-    // UsernameAlreadyExistsException {
-    // log.info("in register user");
-    // User existingUser = userRepository.findByUsername(username).orElse(null);
-    // if (existingUser != null) {
-    // throw new UsernameAlreadyExistsException("Username '" +
-    // existingUser.getUsername() + "' is already taken.");
-    // }
 
-    // String encodedPassword = passwordEncoder.encode(password);
-    // User user = new User();
-    // user.setUsername(username);
-    // user.setPassword(encodedPassword);
-    // log.info("user is", user.getUsername());
-    // userRepository.save(user);
-    // }
+    @Test
+    @DisplayName("test register - unhappy Path")
+    void testRegisterUserException() {
+        when(userRepository.findByUsername("username1")).thenReturn(Optional.of(user));
+        try {
+            userService.registerUser(user.getUsername(), user.getPassword());
+            fail("Expected an exception to be thrown due to unsuccessful sign up");
+        } catch (UsernameAlreadyExistsException e) {
+            assertEquals("Username 'username1' is already taken.", e.getMessage());
+        }
+        verify(userRepository).findByUsername(user.getUsername());
+    }
 
-    // @Test
-    // @DisplayName("test register - unhappy Path")
-    // void testRegisterUserException() {
-    // when(userRepository.findByUsername("username1")).thenReturn(Optional.of(user));
-    // try {
-    // userService.registerUser(user.getUsername(), user.getPassword());
-    // fail("Expected an exception to be thrown due to unsuccessful sign up");
-    // } catch (UsernameAlreadyExistsException e) {
-    // assertTrue(e.getMessage().contains("username1 is already taken"));
-    // }
-    // }
+    @Test
+    @DisplayName("test authenticate - happy Path")
+    void testAuthenticateUser() {
+        User user = new User();
+        user.setUsername("username2");
+        String originalPassword = "password";
+        user.setPassword(originalPassword);
+        String encodedPassword = passwordEncoder.encode(originalPassword);
+        user.setPassword(encodedPassword);
+        when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
+        boolean authenticated = userService.authenticateUser(user.getUsername(), originalPassword);
+        verify(userRepository).findByUsername(user.getUsername());
+        assertTrue(authenticated);
+    }
 
 }
