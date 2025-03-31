@@ -108,7 +108,7 @@ public class UserRepositoryTest {
 
         @Test
         @DisplayName("test save - Unhappy Path")
-        void testCreateUnhappy() {
+        void testSaveUnhappy() {
                 User invalidUser = new User();
                 invalidUser.setUsername("");
                 invalidUser.setPassword("password");
