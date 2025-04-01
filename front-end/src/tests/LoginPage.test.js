@@ -13,11 +13,12 @@ describe("LoginPage", () => {
   test("displays appropriate inputs", async () => {
     render(<LoginPage />);
     const usernameInput = screen.getByLabelText(/Username/i);
-    const passwordInput = screen.getByRole("textbox", {
-      name: /Password/i,
-    });
+    const passwordInput = screen.getByLabelText(/Password/i);
     const submitButton = screen.getByRole("button", {
       name: /login/i,
     });
+    expect(usernameInput).toBeInTheDocument();
+    expect(passwordInput).toBeInTheDocument();
+    expect(submitButton).toBeInTheDocument();
   });
 });

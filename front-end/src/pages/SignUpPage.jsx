@@ -39,7 +39,8 @@ export default function SignUpPage() {
                   },
                   withCredentials: true, // Sends cookies with the request
                 }
-              );              
+              );
+              console.log("sign up response is", response)              
               console.log('Signing up with', username, password);
         } catch (error) {
             console.error(error);
