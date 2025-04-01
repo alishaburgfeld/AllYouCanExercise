@@ -39,7 +39,8 @@ export default function SignUpPage() {
                   },
                   withCredentials: true, // Sends cookies with the request
                 }
-              );              
+              );
+              console.log("sign up response is", response)              
               console.log('Signing up with', username, password);
         } catch (error) {
             console.error(error);
@@ -70,6 +71,7 @@ export default function SignUpPage() {
           required
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          inputProps={{ "data-testid": "signup-username-input" }}
           sx={{ marginBottom: 2 }}
         />
         <TextField
@@ -80,6 +82,7 @@ export default function SignUpPage() {
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          inputProps={{ "data-testid": "signup-password-input" }}
           sx={{ marginBottom: 2 }}
         />
         <TextField
@@ -90,6 +93,7 @@ export default function SignUpPage() {
           required
           value={confirmedPassword}
           onChange={(e) => setConfirmedPassword(e.target.value)}
+          inputProps={{ "data-testid": "signup-password-confirmation-input" }}
           sx={{ marginBottom: 2 }}
         />
         {!matchingPasswords 
@@ -104,6 +108,7 @@ export default function SignUpPage() {
         }
         <Button
           type="submit"
+          aria-role="button"
           variant="contained"
           color="primary"
           fullWidth
