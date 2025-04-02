@@ -3,7 +3,7 @@ import "./App.css";
 //when using the "export default" this allows you n ot to use the {} on the thing you're importing
 // import './App.css'
 import { BrowserRouter, Route, Routes } from "react-router";
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Homepage from "../../front-end/src/pages/Homepage";
 import LoginPage from "../../front-end/src/pages/LoginPage";
 import SignUpPage from "../../front-end/src/pages/SignUpPage";
@@ -25,6 +25,9 @@ function App() {
     setWorkout((prevWorkout) => [...prevWorkout, exercise]);
   };
 
+  // when a user signs in it will say "successfully signed in, you may login now" and redirect to login page
+  // wehn a users logs in it will say "successfully logged in", and will redirect to homepage.
+  // this redirect should go back to app.jsx which should set the user.
   const getUser = async () => {
       try {
           const csrfToken = Cookies.get('XSRF-TOKEN');
@@ -41,6 +44,10 @@ function App() {
       }
   };
 
+  useEffect(()=> {
+    getUser();
+  }, [])
+
 
   return (
     <div className="App">
@@ -50,8 +57,8 @@ function App() {
           <Navbar user={user}/>
           <Routes>
             <Route path="/" element={<Homepage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignUpPage />} />
+            <Route path="/login" element={<LoginPage setUser={setUser}/>} />
+            <Route path="/signup" element={<SignUpPage setUser={setUser}/>} />
             <Route
               path="/exercises/:exerciseGroup"
               element={<ExerciseGroupPage />}

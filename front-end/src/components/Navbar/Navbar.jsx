@@ -11,10 +11,12 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { IconButton, Menu, MenuItem, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import "../../css/Navbar.css"
+import axios from 'axios'
+import Cookies from 'js-cookie';
 
 export default function Navbar({ user }) {
 
-  console.log("user is", user);
+  // console.log("user is", user);
   const navigate = useNavigate();
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -30,7 +32,29 @@ export default function Navbar({ user }) {
 
   const handleLoginClick = () => {
     navigate("/login");
-};
+  };
+
+  const logout = async () => {
+    try {
+      const csrfToken = Cookies.get('XSRF-TOKEN')
+      console.log('csrf token is', csrfToken)
+      const response = await axios.post(
+          "http://localhost:8080/auth/logout", 
+          {},
+          {
+            headers: {
+              'X-XSRF-TOKEN': csrfToken,
+            },
+            withCredentials: true, 
+          }
+        );
+        console.log("logout response is", response.data);
+  } catch (error) {
+      console.error(error);
+  }
+    handleClose()
+    navigate("/")
+  }
 
   return (
     <Box sx={{ flexGrow: 1 }} className="navbar">
@@ -76,7 +100,7 @@ export default function Navbar({ user }) {
                 <MenuItem onClick={handleClose}>Records</MenuItem>
                 <MenuItem onClick={handleClose}>Workouts</MenuItem>
                 <MenuItem onClick={handleClose}>Calendar</MenuItem>
-                <MenuItem onClick={handleClose}>Logout</MenuItem>
+                <MenuItem onClick={logout}>Logout</MenuItem>
               </Menu>
             </>
           ) : (

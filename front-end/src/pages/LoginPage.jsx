@@ -2,20 +2,47 @@ import React, { useState } from 'react';
 import { TextField, Button, Typography, Box, Link } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
+import axios from 'axios'
+import Cookies from 'js-cookie';
 import "../css/LoginPage.css";
+import Alert from '@mui/material/Alert';
 
-export default function LoginPage() {
+export default function LoginPage({setUser}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [loggedIn, setLoggedIn] = useState(false);
   const theme = useTheme();
   const navigate = useNavigate();
+
+  const handleLoginSuccess = () => {
+    setLoggedIn(true)
+    setTimeout(navigate("/"), 3000)
+  };
+
   
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
-    // Implement login logic here
-    console.log('Logging in with', username, password);
-  };
+    try {
+      const csrfToken = Cookies.get('XSRF-TOKEN')
+      console.log('csrf token is', csrfToken)
+      const response = await axios.post(
+          "http://localhost:8080/auth/login", 
+          { username, password },
+          {
+            headers: {
+              'X-XSRF-TOKEN': csrfToken,
+            },
+            withCredentials: true, 
+          }
+        );
+        console.log("login response is", response)              
+        console.log('Logging in with', username, password);
+        handleLoginSuccess();
+  } catch (error) {
+      console.error(error);
+  }
+  }
 
   const handleSignUpRedirect = () => {
     navigate('/signup');
@@ -74,6 +101,9 @@ export default function LoginPage() {
             </Link>
           </Typography>
         </Box>
+        {loggedIn ?
+        <Alert severity="success">You have successfully logged in!</Alert>
+        : ""}
       </form>
     </Box>
   );
