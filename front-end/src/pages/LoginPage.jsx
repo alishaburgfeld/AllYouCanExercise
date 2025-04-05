@@ -7,7 +7,7 @@ import Cookies from 'js-cookie';
 import "../css/LoginPage.css";
 import Alert from '@mui/material/Alert';
 
-export default function LoginPage({setUser}) {
+export default function LoginPage({setActiveUsername}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
@@ -16,7 +16,9 @@ export default function LoginPage({setUser}) {
 
   const handleLoginSuccess = () => {
     setLoggedIn(true)
-    setTimeout(navigate("/"), 3000)
+    // setTimeout(navigate("/"), 3000)
+    // the way above was making the navigation happens instantly — before the timeout starts
+    setTimeout(() => navigate("/"), 1500);
   };
 
   
@@ -36,9 +38,12 @@ export default function LoginPage({setUser}) {
             withCredentials: true, 
           }
         );
-        console.log("login response is", response)              
         console.log('Logging in with', username, password);
-        handleLoginSuccess();
+        console.log("login response is", response)
+        if (response.data) {
+          setActiveUsername(response.data)            
+          handleLoginSuccess();
+        }  
   } catch (error) {
       console.error(error);
   }

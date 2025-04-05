@@ -19,7 +19,7 @@ import Cookies from 'js-cookie';
 function App() {
 
   const [workout, setWorkout] = useState([]);
-  const [user, setUser] =useState(null)
+  const [activeUsername, setActiveUsername] =useState(null)
 
   const addToWorkout= (exercise) => {
     setWorkout((prevWorkout) => [...prevWorkout, exercise]);
@@ -28,7 +28,10 @@ function App() {
   // when a user signs in it will say "successfully signed in, you may login now" and redirect to login page
   // wehn a users logs in it will say "successfully logged in", and will redirect to homepage.
   // this redirect should go back to app.jsx which should set the user.
-  const getUser = async () => {
+  const checkForUser= async () => {
+    // console.log("in get user")
+    if (activeUsername) {
+
       try {
           const csrfToken = Cookies.get('XSRF-TOKEN');
           const response = await axios.get('http://localhost:8080/auth/checkusersession', {
@@ -37,15 +40,21 @@ function App() {
             },
             withCredentials: true, 
         });
-          console.log(response.data);
-          setUser(response.data);
+        if (response.data) {
+          console.log('check session response data is', response.data);
+          setActiveUsername(response.data);
+        }
+        else {
+          console.log("no username returned")
+        }
       } catch (error) {
-          console.log("No active session");
+          console.log("Error retrieving session, error is", error);
       }
+    }
   };
 
   useEffect(()=> {
-    getUser();
+    checkForUser();
   }, [])
 
 
@@ -54,11 +63,11 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <BrowserRouter>
-          <Navbar user={user}/>
+          <Navbar activeUsername={activeUsername} setActiveUsername={setActiveUsername}/>
           <Routes>
             <Route path="/" element={<Homepage />} />
-            <Route path="/login" element={<LoginPage setUser={setUser}/>} />
-            <Route path="/signup" element={<SignUpPage setUser={setUser}/>} />
+            <Route path="/login" element={<LoginPage setActiveUsername={setActiveUsername}/>} />
+            <Route path="/signup" element={<SignUpPage />} />
             <Route
               path="/exercises/:exerciseGroup"
               element={<ExerciseGroupPage />}

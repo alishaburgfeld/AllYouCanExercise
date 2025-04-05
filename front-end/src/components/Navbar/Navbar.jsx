@@ -14,9 +14,11 @@ import "../../css/Navbar.css"
 import axios from 'axios'
 import Cookies from 'js-cookie';
 
-export default function Navbar({ user }) {
+export default function Navbar({ activeUsername, setActiveUsername }) {
 
-  // console.log("user is", user);
+  // console.log("user inside navbar is", user);
+  // console.log("Is user null?", user === null);
+  // console.log("Type of user:", typeof user);
   const navigate = useNavigate();
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -53,6 +55,7 @@ export default function Navbar({ user }) {
       console.error(error);
   }
     handleClose()
+    setActiveUsername(null)
     navigate("/")
   }
 
@@ -73,7 +76,7 @@ export default function Navbar({ user }) {
           <Typography component="div" className="navbar_title" sx={{ flexGrow: 1, color: theme.palette.secondary.main, fontSize: "1.2rem", fontWeight: "600" }}>
             All You Can Exercise
           </Typography>
-          {user!=null ? (
+          {activeUsername!=null ? (
             <>
               <IconButton
                 size="large"

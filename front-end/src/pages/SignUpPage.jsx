@@ -47,7 +47,7 @@ export default function SignUpPage() {
               console.log("sign up response is", response)              
               console.log('Signing up with', username, password);
               setSignedUp(true)
-              setTimeout(loginRedirect(), 3000);
+              setTimeout(() => loginRedirect(), 1500);
         } catch (error) {
             console.error(error);
         }
@@ -114,7 +114,6 @@ export default function SignUpPage() {
         }
         <Button
           type="submit"
-          aria-role="button"
           variant="contained"
           color="primary"
           fullWidth
