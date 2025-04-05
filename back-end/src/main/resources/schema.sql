@@ -27,3 +27,30 @@ CREATE TABLE IF NOT EXISTS user (
    password VARCHAR(255) NOT NULL,
    PRIMARY KEY (id)
 );
+
+CREATE TABLE IF NOT EXISTS workout (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    title VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    completed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES user(id)
+);
+
+CREATE TABLE workout_exercise (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    workout_id INT,
+    exercise_id INT,
+    exercise_order INT,
+    FOREIGN KEY (workout_id) REFERENCES workout(id),
+    FOREIGN KEY (exercise_id) REFERENCES exercise(id)
+);
+
+CREATE TABLE exercise_set (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    workout_exercise_id INT,
+    set_order INT NOT NULL,
+    reps INT,
+    weight DECIMAL(5,2) UNSIGNED, -- supports decimal weights like 95.5
+    FOREIGN KEY (workout_exercise_id) REFERENCES workout_exercise(id)
+);

@@ -27,7 +27,7 @@ its not working with the security dependency, so for now I comment that out when
 
 # then show databases
 
-# use <db name>
+# use exercise-database
 
 # show tables
 
