@@ -30,7 +30,7 @@ public class WorkoutRepository {
 
     public Optional<Workout> findById(Integer id) {
         return jdbcClient
-                .sql("SELECT id,userId, title, createdAt, completedAt FROM workout WHERE id = :id")
+                .sql("SELECT id, userId, title, createdAt, completedAt FROM workout WHERE id = :id")
                 .param("id", id)
                 .query(Workout.class)
                 .optional();
@@ -40,8 +40,8 @@ public class WorkoutRepository {
         var updated = jdbcClient
                 .sql("INSERT INTO workout(userId, title, createdAt, completedAt) values(?,?,?,?)")
                 .params(List.of(workout.getUserId(), workout.getTitle() != null ? workout.getTitle() : "",
-                        workout.getCreatedAt() != null ? workout.getCreatedAt() : "",
-                        workout.getCompletedAt() != null ? workout.getCompletedAt() : ""))
+                        workout.getCreatedAt(),
+                        workout.getCompletedAt()))
                 .update();
 
         Assert.state(updated == 1, "Failed to create workout");
@@ -51,8 +51,8 @@ public class WorkoutRepository {
         var updated = jdbcClient.sql(
                 "update workout set userId = ?, title = ?, createdAt = ?, completedAt = ? where id = ?")
                 .params(List.of(workout.getUserId(), workout.getTitle() != null ? workout.getTitle() : "",
-                        workout.getCreatedAt() != null ? workout.getCreatedAt() : "",
-                        workout.getCompletedAt() != null ? workout.getCompletedAt() : "", id))
+                        workout.getCreatedAt(),
+                        workout.getCompletedAt(), id))
                 .update();
 
         Assert.state(updated == 1, "Failed to update workout");

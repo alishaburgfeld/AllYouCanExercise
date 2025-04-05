@@ -4,18 +4,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -35,29 +34,31 @@ public class WorkoutRepositoryTest {
         @InjectMocks
         private WorkoutRepository workoutRepository;
 
+        private static final Logger log = LoggerFactory.getLogger(WorkoutRepositoryTest.class);
+
         // essential JdbcClient Mocks we'll use for most tests
         private JdbcClient.StatementSpec statementSpec;
         private JdbcClient.MappedQuerySpec<Workout> mappedQuerySpec;
         private JdbcClient.ResultQuerySpec resultQuerySpec;
         private Workout workout;
-        private Workout workout2;
+        private Workout workoutNoAddedDates;
+        private final String fixedTimeString = "2025-04-02 10:30:00";
+        private final Timestamp time = TimeStampFormatter.stringToTimestamp(fixedTimeString);
 
         Workout setupCompletedWorkout(Integer userId, String title, Timestamp createdAt, Timestamp completedAt) {
-                workout = new Workout();
-                workout.setUserId(userId);
-                workout.setTitle(title);
-                workout.setCreatedAt(createdAt);
-                workout.setCompletedAt(completedAt);
-                return workout;
+                Workout temporaryWorkout = new Workout();
+                temporaryWorkout.setUserId(userId);
+                temporaryWorkout.setTitle(title);
+                temporaryWorkout.setCreatedAt(createdAt);
+                temporaryWorkout.setCompletedAt(completedAt);
+                return temporaryWorkout;
         }
 
         @BeforeEach
         void setUp() {
 
-                final String fixedTimeString = "2025-04-02 10:30:00";
-                final Timestamp time = TimeStampFormatter.stringToTimestamp(fixedTimeString);
-                workout = setupCompletedWorkout(1, "Test Title", time, time);
-                workout2 = setupCompletedWorkout(2, "Test Title2", time, time);
+                workout = setupCompletedWorkout(1, "Test Title1", time, time);
+                workoutNoAddedDates = setupCompletedWorkout(2, "Test Title2", null, null);
 
                 MockitoAnnotations.openMocks(this);
                 statementSpec = mock(JdbcClient.StatementSpec.class);
@@ -67,32 +68,28 @@ public class WorkoutRepositoryTest {
 
         @Test
         void testFindAll() {
-                // Prepare mock data prior to the call
+                log.debug("************************workout title is {}", workout.getTitle());
 
                 when(jdbcClient.sql("select * from workout")).thenReturn(statementSpec);
-                when(statementSpec.query(Workout.class)).thenReturn(mappedQuerySpec); // query() returns MappedQuerySpec
-                when(mappedQuerySpec.list()).thenReturn(List.of(workout)); // list() returns the mock list of workouts
+                when(statementSpec.query(Workout.class)).thenReturn(mappedQuerySpec);
+                when(mappedQuerySpec.list()).thenReturn(List.of(workout));
 
-                // Call method under test
                 List<Workout> workouts = workoutRepository.findAll();
 
-                // Verify the result
                 assertNotNull(workouts);
                 assertEquals(1, workouts.size());
-                assertEquals("Push-up", workouts.get(0).name());
-                assertEquals(WorkoutType.UPPERBODY, workouts.get(0).workoutType());
+                assertEquals("Test Title1", workouts.get(0).getTitle());
 
-                // Verify interactions with mock
                 verify(jdbcClient).sql("select * from workout");
-                verify(statementSpec).query(Workout.class); // Verify query() was called with Workout.class
-                verify(mappedQuerySpec).list(); // Verify that list() was called on the MappedQuerySpec
+                verify(statementSpec).query(Workout.class);
+                verify(mappedQuerySpec).list();
         }
 
         @Test
         void testFindById() {
 
                 when(jdbcClient
-                                .sql("SELECT id,name,workout_group,workout_type,description,picture FROM workout WHERE id = :id"))
+                                .sql("SELECT id, userId, title, createdAt, completedAt FROM workout WHERE id = :id"))
                                 .thenReturn(statementSpec);
                 when(statementSpec.param("id", 1)).thenReturn(statementSpec);
                 when(statementSpec.query(Workout.class)).thenReturn(mappedQuerySpec);
@@ -100,53 +97,76 @@ public class WorkoutRepositoryTest {
 
                 Optional<Workout> result = workoutRepository.findById(1);
 
-                assertEquals("Push-up", result.get().name());
-                assertEquals(WorkoutGroup.CHEST, result.get().workoutGroup());
+                assertEquals("Test Title1", result.get().getTitle());
+                assertEquals(time, result.get().getCreatedAt());
 
                 verify(jdbcClient)
-                                .sql("SELECT id,name,workout_group,workout_type,description,picture FROM workout WHERE id = :id");
+                                .sql("SELECT id, userId, title, createdAt, completedAt FROM workout WHERE id = :id");
                 verify(statementSpec).param("id", 1);
                 verify(statementSpec).query(Workout.class);
-                verify(mappedQuerySpec).optional(); // Ensure optional was called
+                verify(mappedQuerySpec).optional();
         }
 
         @Test
         @DisplayName("test create - Happy Path")
         void testCreate() {
                 when(jdbcClient
-                                .sql("INSERT INTO workout(name,workout_group,workout_type,description,picture) values(?,?,?,?,?)"))
+                                .sql("INSERT INTO workout(userId, title, createdAt, completedAt) values(?,?,?,?)"))
                                 .thenReturn(statementSpec);
-                when(statementSpec.params(List.of(workout.name(), workout.workoutGroup().toString(),
-                                workout.workoutType().toString(), workout.description(), workout.picture())))
+                when(statementSpec.params(List.of(workout.getUserId(), workout.getTitle(), workout.getCreatedAt(),
+                                workout.getCompletedAt())))
                                 .thenReturn(statementSpec);
                 when(statementSpec.update()).thenReturn(1);
 
                 workoutRepository.create(workout);
 
                 verify(jdbcClient)
-                                .sql("INSERT INTO workout(name,workout_group,workout_type,description,picture) values(?,?,?,?,?)");
-                verify(statementSpec).params(List.of(workout.name(), workout.workoutGroup().toString(),
-                                workout.workoutType().toString(), workout.description(), workout.picture()));
+                                .sql("INSERT INTO workout(userId, title, createdAt, completedAt) values(?,?,?,?)");
+                verify(statementSpec).params(List.of(workout.getUserId(), workout.getTitle(), workout.getCreatedAt(),
+                                workout.getCompletedAt()));
+                verify(statementSpec).update();
+        }
+
+        @Test
+        @DisplayName("test create works with no createdAt or completedAt provided")
+        void testCreateWithoutDates() {
+                when(jdbcClient
+                                .sql("INSERT INTO workout(userId, title, createdAt, completedAt) values(?,?,?,?)"))
+                                .thenReturn(statementSpec);
+                when(statementSpec.params(List.of(workoutNoAddedDates.getUserId(), workoutNoAddedDates.getTitle(),
+                                workoutNoAddedDates.getCreatedAt(),
+                                workoutNoAddedDates.getCompletedAt())))
+                                .thenReturn(statementSpec);
+                when(statementSpec.update()).thenReturn(1);
+
+                workoutRepository.create(workoutNoAddedDates);
+
+                verify(jdbcClient)
+                                .sql("INSERT INTO workout(userId, title, createdAt, completedAt) values(?,?,?,?)");
+                verify(statementSpec).params(List.of(workoutNoAddedDates.getUserId(), workoutNoAddedDates.getTitle(),
+                                workoutNoAddedDates.getCreatedAt(),
+                                workoutNoAddedDates.getCompletedAt()));
                 verify(statementSpec).update();
         }
 
         @Test
         @DisplayName("test create - Unhappy Path")
         void testCreateUnhappy() {
-                workout = new Workout(1, "", WorkoutGroup.CHEST, WorkoutType.UPPERBODY, "Push-up description",
-                                "pictureUrl"); // Missing name
 
+                Workout workoutMissingUserId = new Workout();
+                workoutMissingUserId.setTitle("title");
+                // Missing userId
                 when(jdbcClient
-                                .sql("INSERT INTO workout(name,workout_group,workout_type,description,picture) values(?,?,?,?,?)"))
+                                .sql("INSERT INTO workout(userId, title, createdAt, completedAt) values(?,?,?,?)"))
                                 .thenReturn(statementSpec);
-                // missing the name
-                when(statementSpec.params(List.of(workout.name(), workout.workoutGroup().toString(),
-                                workout.workoutType().toString(), workout.description(), workout.picture())))
+                when(statementSpec.params(List.of(workoutMissingUserId.getUserId(), workoutMissingUserId.getTitle(),
+                                workoutMissingUserId.getCreatedAt(),
+                                workoutMissingUserId.getCompletedAt())))
                                 .thenReturn(statementSpec);
                 when(statementSpec.update()).thenReturn(0);
 
                 try {
-                        workoutRepository.create(workout);
+                        workoutRepository.create(workoutMissingUserId);
                         fail("Expected an exception to be thrown due to unsuccessful creation");
                 } catch (IllegalStateException e) {
                         // Verify that the exception message contains the expected failure reason
@@ -154,53 +174,58 @@ public class WorkoutRepositoryTest {
                 }
 
                 verify(jdbcClient)
-                                .sql("INSERT INTO workout(name,workout_group,workout_type,description,picture) values(?,?,?,?,?)");
-                verify(statementSpec).params(List.of(workout.name(), workout.workoutGroup().toString(),
-                                workout.workoutType().toString(), workout.description(), workout.picture()));
+                                .sql("INSERT INTO workout(userId, title, createdAt, completedAt) values(?,?,?,?)");
+                verify(statementSpec).params(List.of(workoutMissingUserId.getUserId(), workoutMissingUserId.getTitle(),
+                                workoutMissingUserId.getCreatedAt(),
+                                workoutMissingUserId.getCompletedAt()));
                 verify(statementSpec).update();
         }
 
         @Test
         @DisplayName("test update - Happy Path")
         void testUpdate() {
-                workout = new Workout(1, "Push-up", WorkoutGroup.CHEST, WorkoutType.UPPERBODY,
-                                "New, Updated, Push-up description", "pictureUrl");
+                Workout updatedWorkout = workout;
+                updatedWorkout.setTitle("New Title");
 
-                int id = workout.id();
+                int id = workout.getId();
                 when(jdbcClient.sql(
-                                "update workout set name = ?, workout_group = ?, workout_type = ?, description = ?, picture = ? where id = ?"))
+                                "update workout set userId = ?, title = ?, createdAt = ?, completedAt = ? where id = ?"))
                                 .thenReturn(statementSpec);
-                when(statementSpec.params(List.of(workout.name(), workout.workoutGroup().toString(),
-                                workout.workoutType().toString(), workout.description(), workout.picture(), id)))
+                when(statementSpec.params(List.of(updatedWorkout.getUserId(), updatedWorkout.getTitle(),
+                                updatedWorkout.getCreatedAt(),
+                                updatedWorkout.getCompletedAt(), id)))
                                 .thenReturn(statementSpec);
                 when(statementSpec.update()).thenReturn(1);
 
-                workoutRepository.update(workout, id);
+                workoutRepository.update(updatedWorkout, id);
 
                 verify(jdbcClient).sql(
-                                "update workout set name = ?, workout_group = ?, workout_type = ?, description = ?, picture = ? where id = ?");
-                verify(statementSpec).params(List.of(workout.name(), workout.workoutGroup().toString(),
-                                workout.workoutType().toString(), workout.description(), workout.picture(), id));
+                                "update workout set userId = ?, title = ?, createdAt = ?, completedAt = ? where id = ?");
+                verify(statementSpec).params(List.of(updatedWorkout.getUserId(), updatedWorkout.getTitle(),
+                                updatedWorkout.getCreatedAt(),
+                                updatedWorkout.getCompletedAt(), id));
                 verify(statementSpec).update();
         }
 
         @Test
         @DisplayName("test update - Unhappy Path")
         void testUpdateUnhappy() {
-                workout = new Workout(1, "Push-up", WorkoutGroup.CHEST, WorkoutType.UPPERBODY,
-                                "New, Updated, Push-up description", "pictureUrl");
-                int id = 2;
+                Workout updatedWorkout = workout;
+                updatedWorkout.setTitle("New Title");
+
+                int id = workout.getId();
 
                 when(jdbcClient.sql(
-                                "update workout set name = ?, workout_group = ?, workout_type = ?, description = ?, picture = ? where id = ?"))
+                                "update workout set userId = ?, title = ?, createdAt = ?, completedAt = ? where id = ?"))
                                 .thenReturn(statementSpec);
-                when(statementSpec.params(List.of(workout.name(), workout.workoutGroup().toString(),
-                                workout.workoutType().toString(), workout.description(), workout.picture(), id)))
+                when(statementSpec.params(List.of(updatedWorkout.getUserId(), updatedWorkout.getTitle(),
+                                updatedWorkout.getCreatedAt(),
+                                updatedWorkout.getCompletedAt(), id)))
                                 .thenReturn(statementSpec);
                 when(statementSpec.update()).thenReturn(0);
 
                 try {
-                        workoutRepository.update(workout, id);
+                        workoutRepository.update(updatedWorkout, id);
                         fail("Expected an exception to be thrown due to unsuccessful creation");
                 } catch (IllegalStateException e) {
                         // Verify that the exception message contains the expected failure reason
@@ -208,16 +233,17 @@ public class WorkoutRepositoryTest {
                 }
 
                 verify(jdbcClient).sql(
-                                "update workout set name = ?, workout_group = ?, workout_type = ?, description = ?, picture = ? where id = ?");
-                verify(statementSpec).params(List.of(workout.name(), workout.workoutGroup().toString(),
-                                workout.workoutType().toString(), workout.description(), workout.picture(), id));
+                                "update workout set userId = ?, title = ?, createdAt = ?, completedAt = ? where id = ?");
+                verify(statementSpec).params(List.of(updatedWorkout.getUserId(), updatedWorkout.getTitle(),
+                                updatedWorkout.getCreatedAt(),
+                                updatedWorkout.getCompletedAt(), id));
                 verify(statementSpec).update();
         }
 
         @Test
         @DisplayName("test delete - Happy Path")
         void testDelete() {
-                int id = workout.id();
+                int id = workout.getId();
                 when(jdbcClient.sql("delete from workout where id = :id")).thenReturn(statementSpec);
                 when(statementSpec.param("id", id)).thenReturn(statementSpec);
                 when(statementSpec.update()).thenReturn(1);
@@ -251,81 +277,40 @@ public class WorkoutRepositoryTest {
         }
 
         @Test
-        void testCount() {
+        void testFindByUserId() {
+                Workout additionaWorkout = setupCompletedWorkout(2, "AdditionalTitle", time, time);
+                Integer userId = 2;
 
-                when(jdbcClient.sql("select * from workout")).thenReturn(statementSpec);
+                log.debug("************ addiontional workout {}", additionaWorkout);
+                log.debug("************ workoutNoAddedDates workout {}", workoutNoAddedDates);
+
+                when(jdbcClient.sql("select * from workout where user_id = :user_id"))
+                                .thenReturn(statementSpec);
                 when(statementSpec.query()).thenReturn(resultQuerySpec);
+                when(statementSpec.query(Workout.class)).thenReturn(mappedQuerySpec);
                 when(resultQuerySpec.listOfRows()).thenReturn(List.of(
-                                Map.of("id", 1, "name", "Push-up", "workoutGroup", "CHEST", "workoutType", "UPPERBODY",
-                                                "description",
-                                                "Push-up description", "picture", "pictureUrl"),
-                                Map.of("id", 2, "name", "Squat", "workoutGroup", "QUADS", "workoutType", "LOWERBODY",
-                                                "description",
-                                                "Squat Description", "picture", "pictureUrl")));
+                                Map.of("id", workoutNoAddedDates.getId(), "userId", workoutNoAddedDates.getUserId(),
+                                                "title", workoutNoAddedDates.getTitle(), "createdAt",
+                                                workoutNoAddedDates.getCreatedAt() == null ? null
+                                                                : workoutNoAddedDates.getCreatedAt(),
+                                                "completedAt",
+                                                workoutNoAddedDates.getCompletedAt() == null ? null
+                                                                : workoutNoAddedDates.getCompletedAt()),
+                                Map.of("id", additionaWorkout.getId(), "userId", additionaWorkout.getUserId(), "title",
+                                                additionaWorkout.getTitle(), "createdAt",
+                                                workoutNoAddedDates.getCreatedAt() == null ? null
+                                                                : workoutNoAddedDates.getCreatedAt(),
+                                                "completedAt", workoutNoAddedDates.getCompletedAt() == null ? null
+                                                                : workoutNoAddedDates.getCompletedAt())));
 
-                int count = workoutRepository.count();
-                assertEquals(count, 2);
-
-        }
-
-        @Test
-        void testCreatAll() {
-
-                List<Workout> workouts = List.of(workout, workout2);
-
-                when(jdbcClient.sql(anyString())).thenReturn(statementSpec);
-                when(statementSpec.params(anyList())).thenReturn(statementSpec);
-                when(statementSpec.update()).thenReturn(1);
-
-                workoutRepository.saveAll(workouts);
-
-                verify(jdbcClient, times(2)).sql(anyString());
-                verify(statementSpec, times(2)).params(anyList());
-                verify(statementSpec, times(2)).update();
-        }
-
-        @Test
-        void testFindByWorkoutTypeUpperBody() {
-                String workoutType1 = "UPPERBODY";
-
-                when(jdbcClient.sql("select * from workout where workout_type = :workout_type"))
-                                .thenReturn(statementSpec);
-                when(statementSpec.param("workout_type", workoutType1)).thenReturn(statementSpec);
-                when(statementSpec.query(Workout.class)).thenReturn(mappedQuerySpec);
-                when(mappedQuerySpec.list()).thenReturn(List.of(workout));
-
-                List<Workout> workouts = workoutRepository.findByWorkoutType(workoutType1);
+                List<Workout> workouts = workoutRepository.findByUserId(userId);
 
                 assertNotNull(workouts);
-                assertEquals(1, workouts.size());
-                assertEquals("Push-up", workouts.get(0).name());
-                assertEquals(WorkoutType.UPPERBODY, workouts.get(0).workoutType());
+                assertEquals(2, workouts.size());
+                assertEquals("Test Title2", workouts.get(0).getTitle());
 
-                verify(jdbcClient).sql("select * from workout where workout_type = :workout_type");
+                verify(jdbcClient).sql("select * from workout where user_id = :user_id");
                 verify(statementSpec).query(Workout.class);
-                verify(mappedQuerySpec).list();
+                verify(resultQuerySpec.listOfRows());
         }
-
-        @Test
-        void testFindByWorkoutTypeLowerBody() {
-                String workoutType2 = "LOWERBODY";
-
-                when(jdbcClient.sql("select * from workout where workout_type = :workout_type"))
-                                .thenReturn(statementSpec);
-                when(statementSpec.param("workout_type", workoutType2)).thenReturn(statementSpec);
-                when(statementSpec.query(Workout.class)).thenReturn(mappedQuerySpec);
-                when(mappedQuerySpec.list()).thenReturn(List.of(workout2));
-
-                List<Workout> workouts = workoutRepository.findByWorkoutType(workoutType2);
-
-                assertNotNull(workouts);
-                assertEquals(1, workouts.size());
-                assertEquals("Squat", workouts.get(0).name());
-                assertEquals(WorkoutType.LOWERBODY, workouts.get(0).workoutType());
-
-                verify(jdbcClient).sql("select * from workout where workout_type = :workout_type");
-                verify(statementSpec).query(Workout.class);
-                verify(mappedQuerySpec).list();
-        }
-
 }

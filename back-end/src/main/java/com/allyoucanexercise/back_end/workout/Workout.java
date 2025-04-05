@@ -1,9 +1,11 @@
 package com.allyoucanexercise.back_end.workout;
 
 import java.sql.Timestamp;
+import jakarta.validation.constraints.NotEmpty;
 
 public class Workout {
     private int id;
+    @NotEmpty
     private int userId;
     private String title;
     private Timestamp createdAt;
