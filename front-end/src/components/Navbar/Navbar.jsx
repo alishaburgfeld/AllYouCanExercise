@@ -11,10 +11,14 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { IconButton, Menu, MenuItem, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import "../../css/Navbar.css"
+import axios from 'axios'
+import Cookies from 'js-cookie';
 
-export default function Navbar({ user }) {
+export default function Navbar({ activeUsername, setActiveUsername }) {
 
-  console.log("user is", user);
+  // console.log("user inside navbar is", user);
+  // console.log("Is user null?", user === null);
+  // console.log("Type of user:", typeof user);
   const navigate = useNavigate();
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -30,7 +34,30 @@ export default function Navbar({ user }) {
 
   const handleLoginClick = () => {
     navigate("/login");
-};
+  };
+
+  const logout = async () => {
+    try {
+      const csrfToken = Cookies.get('XSRF-TOKEN')
+      console.log('csrf token is', csrfToken)
+      const response = await axios.post(
+          "http://localhost:8080/auth/logout", 
+          {},
+          {
+            headers: {
+              'X-XSRF-TOKEN': csrfToken,
+            },
+            withCredentials: true, 
+          }
+        );
+        console.log("logout response is", response.data);
+  } catch (error) {
+      console.error(error);
+  }
+    handleClose()
+    setActiveUsername(null)
+    navigate("/")
+  }
 
   return (
     <Box sx={{ flexGrow: 1 }} className="navbar">
@@ -49,7 +76,7 @@ export default function Navbar({ user }) {
           <Typography component="div" className="navbar_title" sx={{ flexGrow: 1, color: theme.palette.secondary.main, fontSize: "1.2rem", fontWeight: "600" }}>
             All You Can Exercise
           </Typography>
-          {user!=null ? (
+          {activeUsername!=null ? (
             <>
               <IconButton
                 size="large"
@@ -76,7 +103,7 @@ export default function Navbar({ user }) {
                 <MenuItem onClick={handleClose}>Records</MenuItem>
                 <MenuItem onClick={handleClose}>Workouts</MenuItem>
                 <MenuItem onClick={handleClose}>Calendar</MenuItem>
-                <MenuItem onClick={handleClose}>Logout</MenuItem>
+                <MenuItem onClick={logout}>Logout</MenuItem>
               </Menu>
             </>
           ) : (

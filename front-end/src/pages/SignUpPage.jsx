@@ -5,17 +5,20 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import Cookies from 'js-cookie';
 import "../css/SignUpPage.css";
+import Alert from '@mui/material/Alert';
 
 export default function SignUpPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmedPassword, setConfirmedPassword] = useState('');
   const [matchingPasswords,setMatchingPasswords] = useState(true)
+  const [signedUp, setSignedUp] = useState(false)
   const theme = useTheme();
   const navigate = useNavigate();
 
-  const handleLoginRedirect=() =>{
+  const loginRedirect=() =>{
     navigate("/login");
+    // need to add a success alert that they were signed in
   }
   
 
@@ -40,8 +43,11 @@ export default function SignUpPage() {
                   withCredentials: true, // Sends cookies with the request
                 }
               );
+
               console.log("sign up response is", response)              
               console.log('Signing up with', username, password);
+              setSignedUp(true)
+              setTimeout(() => loginRedirect(), 1500);
         } catch (error) {
             console.error(error);
         }
@@ -108,7 +114,6 @@ export default function SignUpPage() {
         }
         <Button
           type="submit"
-          aria-role="button"
           variant="contained"
           color="primary"
           fullWidth
@@ -119,11 +124,14 @@ export default function SignUpPage() {
         <Box sx={{ textAlign: 'center' }}>
           <Typography variant="body2">
             Already have an account?{' '}
-            <Button onClick={handleLoginRedirect} variant="text" sx={{color: theme.palette.secondary.main}}>
+            <Button onClick={loginRedirect} variant="text" sx={{color: theme.palette.secondary.main}}>
               Login
             </Button>
           </Typography>
         </Box>
+        {signedUp ?
+          <Alert severity="success">You have successfully signed up, you can now login!</Alert>
+          : ""}
       </form>
     </Box>
   );

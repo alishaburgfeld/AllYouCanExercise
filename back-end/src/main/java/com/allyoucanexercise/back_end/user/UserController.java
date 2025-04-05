@@ -50,7 +50,7 @@ public class UserController {
 
         if (authenticated) {
             userService.setSession(user.getUsername(), request);
-            return ResponseEntity.ok("Login successful!");
+            return ResponseEntity.ok(user.getUsername());
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
@@ -67,13 +67,15 @@ public class UserController {
     }
 
     @GetMapping("/auth/checkusersession")
-    public User checkUserSession(HttpServletRequest request) {
+    public String checkUserSession(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
+        log.debug("session is", session);
         User user = null;
         if (session != null && session.getAttribute("username") != null) {
+            log.debug("inside checkuser, session is not null, username is not null");
             user = userRepository.findByUsername(session.getAttribute("username").toString()).orElse(null);
         }
-        return user;
+        return user.getUsername();
     }
 
     @GetMapping("/api/users")
