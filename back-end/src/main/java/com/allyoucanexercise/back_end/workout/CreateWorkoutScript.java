@@ -19,8 +19,8 @@ public class CreateWorkoutScript {
 
     public void create() {
         Workout temporaryWorkout = new Workout();
-        temporaryWorkout.setUserId(1);
-        temporaryWorkout.setTitle("First Workout Title");
+        temporaryWorkout.setUserId(2);
+        temporaryWorkout.setTitle("Second User Workout Title");
         temporaryWorkout.setCompletedAt(currentTime);
         log.error("in create script, temporary workout is {}", temporaryWorkout);
         workoutRepository.create(temporaryWorkout);

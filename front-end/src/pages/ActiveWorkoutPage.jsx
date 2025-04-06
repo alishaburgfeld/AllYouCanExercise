@@ -7,8 +7,11 @@ import { useState, useEffect } from "react"
 import { getImageSource, getAxiosCall } from "../utils/HelperFunctions";
 
 
-export default function ActiveWorkoutPage({activeWorkout}) {
+export default function ActiveWorkoutPage({activeWorkout, activeUsername}) {
     const [allWorkouts, setAllWorkouts] = useState([])
+    const [userWorkouts, setUserWorkouts] = useState([])
+
+    console.log('active username is', activeUsername)
 
     const getAllWorkouts = async () => {
         const response = await getAxiosCall("http://localhost:8080/api/workouts")
@@ -21,8 +24,20 @@ export default function ActiveWorkoutPage({activeWorkout}) {
         }
     }
 
+    const getUserWorkouts = async () => {
+        const response = await getAxiosCall(`http://localhost:8080/api/workouts/user/${activeUsername}`)
+        if (response) {
+            console.log('response for get User workouts', response)
+            setUserWorkouts(response)
+        }
+        else {
+            console.log("no response for get user workouts")
+        }
+    }
+
     useEffect(()=> {
         getAllWorkouts();
+        getUserWorkouts();
       }, [])
 
     return (
@@ -36,6 +51,16 @@ export default function ActiveWorkoutPage({activeWorkout}) {
     })
 ) : (
     <p>There are no historical workouts to display</p>
+)}
+
+<h3>Testing USER workouts</h3>
+        {userWorkouts[0] ? (
+            userWorkouts.map((workout, index) => {
+            console.log('in user workout map');
+            return <p key={index}>{workout.title}</p>;
+    })
+) : (
+    <p>There are no USER workouts to display</p>
 )}
         <h3>Current Exercises in Active Workout:</h3>
         {activeWorkout[0]? (

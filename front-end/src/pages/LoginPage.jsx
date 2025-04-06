@@ -26,6 +26,7 @@ export default function LoginPage({setActiveUsername}) {
     event.preventDefault();
     const response = await postAxiosCall("http://localhost:8080/auth/login", { username, password });
     if (response) {
+      console.log('handleLogin response is', response)
       setActiveUsername(response)            
       handleLoginSuccess();
     }  

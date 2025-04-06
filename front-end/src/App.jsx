@@ -24,26 +24,30 @@ function App() {
   const [activeWorkout, setActiveWorkout] = useState([]);
   const [activeUsername, setActiveUsername] =useState(null)
 
+  console.log('active username one app,jsx', activeUsername)
+
   const addToActiveWorkout= (exercise) => {
     setActiveWorkout((prevActiveWorkout) => [...prevActiveWorkout, exercise]);
   };
 
-  const checkForUser= async () => {
-    // console.log("in get user")
-    if (activeUsername) {
-      const response = await getAxiosCall('http://localhost:8080/auth/checkusersession');
-      if (response) {
-        setActiveUsername(response);
-      }
-      else {
-        console.log("no username returned")
-      }
-    }
-  };
+  // const checkForUser= async () => {
+  //   console.log("in check for user")
+  //   if (activeUsername) {
+  //     console.log('under if active username')
+  //     const response = await getAxiosCall('http://localhost:8080/auth/checkusersession');
+  //     if (response) {
+  //       console.log('response in checkForUser is', response)
+  //       setActiveUsername(response);
+  //     }
+  //     else {
+  //       console.log("no username returned")
+  //     }
+  //   }
+  // };
 
-  useEffect(()=> {
-    checkForUser();
-  }, [])
+  // useEffect(()=> {
+  //   checkForUser();
+  // }, [])
 
 
   return (
@@ -61,7 +65,7 @@ function App() {
               element={<ExerciseGroupPage />}
             />
             <Route path="/exercise/:exerciseId" element={<ExercisePage addToActiveWorkout={addToActiveWorkout}/>} />
-            <Route path="/workout" element={<ActiveWorkoutPage activeWorkout={activeWorkout}/>} />
+            <Route path="/workout" element={<ActiveWorkoutPage activeWorkout={activeWorkout} activeUsername={activeUsername}/>} />
             <Route path="/workout/:workoutId" element={<ViewWorkoutPage />} />
           {/* the variable name after : must match the variable name you set with <variable> = useParams() */}
           </Routes>

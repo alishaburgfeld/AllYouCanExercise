@@ -31,13 +31,15 @@ public class WorkoutController {
     private final ExerciseRepository exerciseRepository;
     private final UserRepository userRepository;
     private final WorkoutRepository workoutRepository;
+    private final WorkoutService workoutService;
 
     public WorkoutController(final UserRepository userRepository, final ExerciseRepository exerciseRepository,
-            final WorkoutRepository workoutRepository) {
+            final WorkoutRepository workoutRepository, final WorkoutService workoutService) {
 
         this.userRepository = userRepository;
         this.exerciseRepository = exerciseRepository;
         this.workoutRepository = workoutRepository;
+        this.workoutService = workoutService;
     }
 
     private static final Logger log = LoggerFactory.getLogger(ExerciseApplication.class);
@@ -82,5 +84,10 @@ public class WorkoutController {
     @GetMapping("/user/{userId}")
     List<Workout> findByUserId(@PathVariable Integer userId) {
         return workoutRepository.findByUserId(userId);
+    }
+
+    @GetMapping("/user/{username}")
+    List<Workout> findByUsername(@PathVariable String username) {
+        return workoutService.findByUsername(username);
     }
 }
