@@ -38,22 +38,9 @@ function App() {
     sessionStorage.setItem("activeUsername", JSON.stringify(activeUsername))
   }, [activeUsername])
 
-  const checkForUser= async () => {
-    console.log("in check for user")
-      const response = await getAxiosCall('http://localhost:8080/auth/checkusersession');
-      if (response) {
-        console.log('response in checkForUser is', response)
-        setActiveUsername(response);
-      }
-      else {
-        console.log("no username returned")
-      }
-    }
 
-  useEffect(()=> {
-    checkForUser();
-  }, [])
-
+// I don't think I need my check for users function anymore. Leaving this comment here in case I run into issues with getting the active username once I have more tha one user.
+//  check commit 7a7fdd8 for the checkUser function.
 
   return (
     <div className="App">
