@@ -20,12 +20,12 @@ public class ExerciseApplication {
 
 	}
 
-	@Bean
-	CommandLineRunner run(CreateWorkoutScript createWorkoutScript) {
-		return args -> {
-			// Running the create() function on startup
-			createWorkoutScript.create();
-		};
-	}
+	// @Bean
+	// CommandLineRunner run(CreateWorkoutScript createWorkoutScript) {
+	// return args -> {
+	// // Running the create() function on startup
+	// createWorkoutScript.create();
+	// };
+	// }
 
 }
