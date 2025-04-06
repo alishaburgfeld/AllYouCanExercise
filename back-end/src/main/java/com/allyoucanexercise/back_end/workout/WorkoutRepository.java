@@ -37,10 +37,13 @@ public class WorkoutRepository {
     }
 
     public void create(Workout workout) {
+        if (workout.getUserId() == null) {
+            throw new IllegalArgumentException("userId must not be null");
+        }
+
         var updated = jdbcClient
-                .sql("INSERT INTO workout(userId, title, createdAt, completedAt) values(?,?,?,?)")
+                .sql("INSERT INTO workout(userId, title, completedAt) values(?,?,?)")
                 .params(List.of(workout.getUserId(), workout.getTitle() != null ? workout.getTitle() : "",
-                        workout.getCreatedAt(),
                         workout.getCompletedAt()))
                 .update();
 
@@ -49,9 +52,8 @@ public class WorkoutRepository {
 
     public void update(Workout workout, Integer id) {
         var updated = jdbcClient.sql(
-                "update workout set userId = ?, title = ?, createdAt = ?, completedAt = ? where id = ?")
+                "update workout set userId = ?, title = ?, completedAt = ? where id = ?")
                 .params(List.of(workout.getUserId(), workout.getTitle() != null ? workout.getTitle() : "",
-                        workout.getCreatedAt(),
                         workout.getCompletedAt(), id))
                 .update();
 
@@ -66,9 +68,11 @@ public class WorkoutRepository {
         Assert.state(updated == 1, "Failed to delete workout");
     }
 
-    public List<Workout> findByUserId(Integer userId) {
+    public List<Workout> findByUserId(Integer user_id) {
+        log.error("in find by User");
+        log.error("user_id is {}", user_id);
         return jdbcClient.sql("select * from workout where user_id = :user_id")
-                .param("user_id", userId)
+                .param("user_id", user_id)
                 .query(Workout.class)
                 .list();
     }

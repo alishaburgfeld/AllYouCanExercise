@@ -32,12 +32,12 @@ CREATE TABLE IF NOT EXISTS workout (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     title VARCHAR(255),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    completed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    completed_at DATETIME,
     FOREIGN KEY (user_id) REFERENCES user(id)
 );
 
-CREATE TABLE workout_exercise (
+CREATE TABLE IF NOT EXISTS workout_exercise (
     id INT AUTO_INCREMENT PRIMARY KEY,
     workout_id INT,
     exercise_id INT,
@@ -46,7 +46,7 @@ CREATE TABLE workout_exercise (
     FOREIGN KEY (exercise_id) REFERENCES exercise(id)
 );
 
-CREATE TABLE exercise_set (
+CREATE TABLE IF NOT EXISTS exercise_set (
     id INT AUTO_INCREMENT PRIMARY KEY,
     workout_exercise_id INT,
     set_order INT NOT NULL,

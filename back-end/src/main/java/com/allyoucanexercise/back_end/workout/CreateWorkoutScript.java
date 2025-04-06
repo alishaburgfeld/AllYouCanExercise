@@ -2,7 +2,9 @@ package com.allyoucanexercise.back_end.workout;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CreateWorkoutScript {
 
     private final WorkoutRepository workoutRepository;
@@ -12,7 +14,7 @@ public class CreateWorkoutScript {
         this.workoutRepository = workoutRepository;
     }
 
-    void create() {
+    public void create() {
         Workout temporaryWorkout = new Workout();
         temporaryWorkout.setUserId(1);
         temporaryWorkout.setTitle("First Workout Title");

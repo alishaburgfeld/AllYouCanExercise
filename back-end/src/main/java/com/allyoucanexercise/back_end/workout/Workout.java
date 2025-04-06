@@ -1,31 +1,34 @@
 package com.allyoucanexercise.back_end.workout;
 
-import java.sql.Timestamp;
-import jakarta.validation.constraints.NotEmpty;
+import java.time.LocalDateTime;
+import jakarta.validation.constraints.NotNull;
 
 public class Workout {
     private int id;
-    @NotEmpty
-    private int userId;
+    @NotNull
+    private Integer userId;
     private String title;
-    private Timestamp createdAt;
-    private Timestamp completedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime completedAt;
 
     // timestamp:
     // https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Timestamp.html
 
     public Workout() {
+        if (this.createdAt == null) {
+            this.createdAt = LocalDateTime.now();
+        }
     }
 
     public int getId() {
         return id;
     }
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
@@ -37,19 +40,15 @@ public class Workout {
         this.title = title;
     }
 
-    public Timestamp getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Timestamp getCompletedAt() {
+    public LocalDateTime getCompletedAt() {
         return completedAt;
     }
 
-    public void setCompletedAt(Timestamp completedAt) {
+    public void setCompletedAt(LocalDateTime completedAt) {
         this.completedAt = completedAt;
     }
 }

@@ -5,6 +5,14 @@
 
 2. CSRF wasn't working b/c when working with a javascript frontend you have to force your spring security to refresh the token every request. Thats why I had to add the SpaCsrfTokenRequestHandler. Here is where I learned about that: https://stackoverflow.com/questions/74447118/csrf-protection-not-working-with-spring-security-6
 
+3. I was running into a bunch of null pointer exceptions trying to allow the datefiles for completedAt and createdAt to be null. I'm going to change my database to require a completedat and createdat time. The front end will either allow the user to input a date-time, and if they don't set the time to now. i.e
+   <input
+   type="datetime-local"
+   </input>
+
+My java will use import java.time.LocalDateTime;
+My sql will use completedAt DATETIME
+
 <!-- -------------------REST --------------------->
 
 When have security dependency invoked it prints a password in the console to connect to the localhost:
