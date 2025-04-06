@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { TextField, Button, Typography, Box, Link } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
+import { postAxiosCall } from "../utils/HelperFunctions";
 import axios from 'axios'
 import Cookies from 'js-cookie';
 import "../css/SignUpPage.css";
@@ -29,30 +30,14 @@ export default function SignUpPage() {
         return;
     }
     else {
-        setMatchingPasswords(true);
-        const csrfToken = Cookies.get('XSRF-TOKEN');
-        console.log('csrf token', csrfToken)
-        try {
-            const response = await axios.post(
-                "http://localhost:8080/auth/register", 
-                { username, password }, // This is the body of the POST request
-                {
-                  headers: {
-                    'X-XSRF-TOKEN': csrfToken,
-                  },
-                  withCredentials: true, // Sends cookies with the request
-                }
-              );
-
-              console.log("sign up response is", response)              
-              console.log('Signing up with', username, password);
-              setSignedUp(true)
-              setTimeout(() => loginRedirect(), 1500);
-        } catch (error) {
-            console.error(error);
-        }
-        }
+      setMatchingPasswords(true);
+      const response = await postAxiosCall("http://localhost:8080/auth/register", { username, password });
+      if (response) {
+        setSignedUp(true)
+        setTimeout(() => loginRedirect(), 1500);
+      }
     }
+  }
 
   return (
     <Box
