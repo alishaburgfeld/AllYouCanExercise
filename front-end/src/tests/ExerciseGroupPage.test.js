@@ -54,7 +54,7 @@ describe("ExerciseGroup Page", () => {
     );
     expect(axios.get).toHaveBeenCalledTimes(1);
 
-    // screen.debug();
+    screen.debug();
 
     await waitFor(() => {
       expect(
