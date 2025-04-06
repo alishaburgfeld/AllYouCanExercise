@@ -112,11 +112,12 @@ How to handle CSRF configuration: https://chatgpt.com/share/67992954-c8e0-800f-b
 
 <!----------------- TODOS ----------->
 
-1. Add a navbar - look into how to do a hamburger style on tailwind. make a wider navbar on big screens
+1. M ake a wider navbar on big screens
 2. Figure out how to grab all the core exercises AND any custom user created exercises. (not allowing custom exercises for now)
 3. Verify the way I'm doing CORS exception is a secure way
 4. Database variables for mysql container
 5. context load - probably not working because security dependency is disabled.
+6. Look into using CreateContext to store react user data so I don't have to keep passing user to all my pages.
 
 May need to read this with testing with MUI Material UI:
 https://jskim1991.medium.com/react-dont-give-up-on-testing-when-using-material-ui-with-react-ff737969eec7

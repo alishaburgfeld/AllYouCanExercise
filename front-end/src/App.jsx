@@ -16,38 +16,43 @@ import { ThemeProvider } from "@mui/material/styles";
 import { getAxiosCall } from "./utils/HelperFunctions"
 import CssBaseline from "@mui/material/CssBaseline";
 import theme from "../../front-end/src/utils/theme";
-import axios from 'axios'
-import Cookies from 'js-cookie';
+
+const getInitialUsername = () => {
+  const activeUsername = sessionStorage.getItem("activeUsername");
+  return activeUsername ? JSON.parse(activeUsername) : null
+}
 
 function App() {
 
   const [activeWorkout, setActiveWorkout] = useState([]);
-  const [activeUsername, setActiveUsername] =useState(null)
+  const [activeUsername, setActiveUsername] =useState(getInitialUsername());
 
-  console.log('active username one app,jsx', activeUsername)
+  console.log('active username on app,jsx', activeUsername)
 
   const addToActiveWorkout= (exercise) => {
     setActiveWorkout((prevActiveWorkout) => [...prevActiveWorkout, exercise]);
   };
 
-  // const checkForUser= async () => {
-  //   console.log("in check for user")
-  //   if (activeUsername) {
-  //     console.log('under if active username')
-  //     const response = await getAxiosCall('http://localhost:8080/auth/checkusersession');
-  //     if (response) {
-  //       console.log('response in checkForUser is', response)
-  //       setActiveUsername(response);
-  //     }
-  //     else {
-  //       console.log("no username returned")
-  //     }
-  //   }
-  // };
 
-  // useEffect(()=> {
-  //   checkForUser();
-  // }, [])
+  useEffect(() => {
+    sessionStorage.setItem("activeUsername", JSON.stringify(activeUsername))
+  }, [activeUsername])
+
+  const checkForUser= async () => {
+    console.log("in check for user")
+      const response = await getAxiosCall('http://localhost:8080/auth/checkusersession');
+      if (response) {
+        console.log('response in checkForUser is', response)
+        setActiveUsername(response);
+      }
+      else {
+        console.log("no username returned")
+      }
+    }
+
+  useEffect(()=> {
+    checkForUser();
+  }, [])
 
 
   return (

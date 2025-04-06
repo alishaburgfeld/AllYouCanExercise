@@ -66,13 +66,16 @@ public class UserController {
     @GetMapping("/auth/checkusersession")
     public String checkUserSession(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        log.debug("session is", session);
+        log.error("session is {}", session);
         User user = null;
         if (session != null && session.getAttribute("username") != null) {
-            log.debug("inside checkuser, session is not null, username is not null");
+            log.error("inside checkuser, session is not null, username is not null, username is {}",
+                    session.getAttribute("username"));
             user = userRepository.findByUsername(session.getAttribute("username").toString()).orElse(null);
+            return user.getUsername();
+        } else {
+            return "";
         }
-        return user.getUsername();
     }
 
     @GetMapping("/api/users")
