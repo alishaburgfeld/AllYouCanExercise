@@ -39,6 +39,12 @@ its not working with the security dependency, so for now I comment that out when
 
 # show tables
 
+<!-- if need to drop tables: follow this order:
+drop table exercise_set;
+drop table workout_exercise;
+drop table workout;
+drop table user;-->
+
 <!-- App Information -->
 
 minikube location: /opt/homebrew/bin/minikube

@@ -93,7 +93,7 @@ public class WorkoutRepositoryTest {
     void testFindById() {
 
         when(jdbcClient
-                .sql("SELECT id, userId, title, createdAt, completedAt FROM workout WHERE id = :id"))
+                .sql("SELECT id, user_Id, title, created_at, completed_at FROM workout WHERE id = :id"))
                 .thenReturn(statementSpec);
         when(statementSpec.param("id", 1)).thenReturn(statementSpec);
         when(statementSpec.query(Workout.class)).thenReturn(mappedQuerySpec);
@@ -105,7 +105,7 @@ public class WorkoutRepositoryTest {
         assertEquals(time, result.get().getCompletedAt());
 
         verify(jdbcClient)
-                .sql("SELECT id, userId, title, createdAt, completedAt FROM workout WHERE id = :id");
+                .sql("SELECT id, user_Id, title, created_at, completed_at FROM workout WHERE id = :id");
         verify(statementSpec).param("id", 1);
         verify(statementSpec).query(Workout.class);
         verify(mappedQuerySpec).optional();
@@ -115,7 +115,7 @@ public class WorkoutRepositoryTest {
     @DisplayName("test create - Happy Path")
     void testCreate() {
         when(jdbcClient
-                .sql("INSERT INTO workout(userId, title, completedAt) values(?,?,?)"))
+                .sql("INSERT INTO workout(user_id, title, completed_at) values(?,?,?)"))
                 .thenReturn(statementSpec);
         when(statementSpec.params(List.of(workout.getUserId(), workout.getTitle(),
                 workout.getCompletedAt())))
@@ -125,7 +125,7 @@ public class WorkoutRepositoryTest {
         workoutRepository.create(workout);
 
         verify(jdbcClient)
-                .sql("INSERT INTO workout(userId, title, completedAt) values(?,?,?)");
+                .sql("INSERT INTO workout(user_id, title, completed_at) values(?,?,?)");
         verify(statementSpec).params(List.of(workout.getUserId(), workout.getTitle(),
                 workout.getCompletedAt()));
         verify(statementSpec).update();
@@ -174,7 +174,7 @@ public class WorkoutRepositoryTest {
         workoutMissingUserId.setCompletedAt(time);
 
         when(jdbcClient
-                .sql("INSERT INTO workout(userId, title, completedAt) values(?,?,?)"))
+                .sql("INSERT INTO workout(user_id, title, completed_at) values(?,?,?)"))
                 .thenReturn(statementSpec);
 
         try {
@@ -195,7 +195,7 @@ public class WorkoutRepositoryTest {
 
         int id = workout.getId();
         when(jdbcClient.sql(
-                "update workout set userId = ?, title = ?, completedAt = ? where id = ?"))
+                "update workout set user_id = ?, title = ?, completed_at = ? where id = ?"))
                 .thenReturn(statementSpec);
         when(statementSpec.params(List.of(updatedWorkout.getUserId(),
                 updatedWorkout.getTitle(),
@@ -206,7 +206,7 @@ public class WorkoutRepositoryTest {
         workoutRepository.update(updatedWorkout, id);
 
         verify(jdbcClient).sql(
-                "update workout set userId = ?, title = ?, completedAt = ? where id = ?");
+                "update workout set user_id = ?, title = ?, completed_at = ? where id = ?");
         verify(statementSpec).params(List.of(updatedWorkout.getUserId(),
                 updatedWorkout.getTitle(),
                 updatedWorkout.getCompletedAt(), id));
@@ -222,7 +222,7 @@ public class WorkoutRepositoryTest {
         int id = workout.getId();
 
         when(jdbcClient.sql(
-                "update workout set userId = ?, title = ?, completedAt = ? where id = ?"))
+                "update workout set user_id = ?, title = ?, completed_at = ? where id = ?"))
                 .thenReturn(statementSpec);
         when(statementSpec.params(List.of(updatedWorkout.getUserId(),
                 updatedWorkout.getTitle(),
@@ -239,7 +239,7 @@ public class WorkoutRepositoryTest {
         }
 
         verify(jdbcClient).sql(
-                "update workout set userId = ?, title = ?, completedAt = ? where id = ?");
+                "update workout set user_id = ?, title = ?, completed_at = ? where id = ?");
         verify(statementSpec).params(List.of(updatedWorkout.getUserId(),
                 updatedWorkout.getTitle(),
                 updatedWorkout.getCompletedAt(), id));

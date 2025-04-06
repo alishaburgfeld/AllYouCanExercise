@@ -30,7 +30,7 @@ public class WorkoutRepository {
 
     public Optional<Workout> findById(Integer id) {
         return jdbcClient
-                .sql("SELECT id, userId, title, createdAt, completedAt FROM workout WHERE id = :id")
+                .sql("SELECT id, user_Id, title, created_at, completed_at FROM workout WHERE id = :id")
                 .param("id", id)
                 .query(Workout.class)
                 .optional();
@@ -42,7 +42,7 @@ public class WorkoutRepository {
         }
 
         var updated = jdbcClient
-                .sql("INSERT INTO workout(userId, title, completedAt) values(?,?,?)")
+                .sql("INSERT INTO workout(user_id, title, completed_at) values(?,?,?)")
                 .params(List.of(workout.getUserId(), workout.getTitle() != null ? workout.getTitle() : "",
                         workout.getCompletedAt()))
                 .update();
@@ -52,7 +52,7 @@ public class WorkoutRepository {
 
     public void update(Workout workout, Integer id) {
         var updated = jdbcClient.sql(
-                "update workout set userId = ?, title = ?, completedAt = ? where id = ?")
+                "update workout set user_id = ?, title = ?, completed_at = ? where id = ?")
                 .params(List.of(workout.getUserId(), workout.getTitle() != null ? workout.getTitle() : "",
                         workout.getCompletedAt(), id))
                 .update();

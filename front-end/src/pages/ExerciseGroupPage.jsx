@@ -33,7 +33,7 @@ function ExerciseGroupPage() {
     };
 
     const handleClick= (exerciseId) => {
-        navigate(`/${exerciseId}`);
+        navigate(`/exercise/${exerciseId}`);
     }
 
     

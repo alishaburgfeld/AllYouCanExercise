@@ -9,6 +9,8 @@ import LoginPage from "../../front-end/src/pages/LoginPage";
 import SignUpPage from "../../front-end/src/pages/SignUpPage";
 import Navbar from "../../front-end/src/components/Navbar/Navbar";
 import ExercisePage from "../../front-end/src/pages/ExercisePage";
+import ActiveWorkoutPage from "../../front-end/src/pages/ActiveWorkoutPage";
+import ViewWorkoutPage from "../../front-end/src/pages/ViewWorkoutPage";
 import ExerciseGroupPage from "../../front-end/src/pages/ExerciseGroupPage";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -18,11 +20,11 @@ import Cookies from 'js-cookie';
 
 function App() {
 
-  const [workout, setWorkout] = useState([]);
+  const [activeWorkout, setActiveWorkout] = useState([]);
   const [activeUsername, setActiveUsername] =useState(null)
 
-  const addToWorkout= (exercise) => {
-    setWorkout((prevWorkout) => [...prevWorkout, exercise]);
+  const addToActiveWorkout= (exercise) => {
+    setActiveWorkout((prevActiveWorkout) => [...prevActiveWorkout, exercise]);
   };
 
   // when a user signs in it will say "successfully signed in, you may login now" and redirect to login page
@@ -72,8 +74,10 @@ function App() {
               path="/exercises/:exerciseGroup"
               element={<ExerciseGroupPage />}
             />
-            <Route path="/:exerciseId" element={<ExercisePage addToWorkout={addToWorkout}/>} />
-            <Route path="/:workout" element={<ExercisePage workout={workout}/>} />
+            <Route path="/exercise/:exerciseId" element={<ExercisePage addToActiveWorkout={addToActiveWorkout}/>} />
+            <Route path="/workout" element={<ActiveWorkoutPage activeWorkout={activeWorkout}/>} />
+            <Route path="/workout/:workoutId" element={<ViewWorkoutPage />} />
+          {/* the variable name after : must match the variable name you set with <variable> = useParams() */}
           </Routes>
         </BrowserRouter>
       </ThemeProvider>

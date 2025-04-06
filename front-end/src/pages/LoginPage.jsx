@@ -46,6 +46,7 @@ export default function LoginPage({setActiveUsername}) {
         }  
   } catch (error) {
       console.error(error);
+      // need to handle a 401 which is what happens when the credentials aren't recognized
   }
   }
 
