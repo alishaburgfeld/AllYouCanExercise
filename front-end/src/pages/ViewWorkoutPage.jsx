@@ -5,6 +5,7 @@ import { useParams, useNavigate } from "react-router-dom";
 export default function ViewWorkoutPage() {
     const [workoutById, setWorkoutById] = useState({})
     const { workoutId } = useParams();
+    const [userWorkouts, setUserWorkouts] = useState([])
     console.log('workoutId is', workoutId)
 
 const getWorkoutById = async () => {
@@ -15,6 +16,17 @@ const getWorkoutById = async () => {
     }
     else {
         console.log("no response for get workout by id")
+    }
+}
+
+const getUserWorkouts = async () => {
+    const response = await getAxiosCall(`http://localhost:8080/api/workouts/user/${activeUsername}`)
+    if (response) {
+        console.log('response for get User workouts', response)
+        setUserWorkouts(response)
+    }
+    else {
+        console.log("no response for get user workouts")
     }
 }
 

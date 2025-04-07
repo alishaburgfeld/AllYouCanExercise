@@ -81,11 +81,6 @@ public class WorkoutController {
         workoutRepository.delete(id);
     }
 
-    // @GetMapping("/user/{userId}")
-    // List<Workout> findByUserId(@PathVariable Integer userId) {
-    // return workoutRepository.findByUserId(userId);
-    // }
-
     @GetMapping("/user/{username}")
     List<Workout> findByUsername(@PathVariable String username) {
         return workoutService.findByUsername(username);

@@ -25,12 +25,26 @@ const getInitialUsername = () => {
 function App() {
 
   const [activeWorkout, setActiveWorkout] = useState([]);
+  const [workoutDetails, setWorkoutDetails] = useState([])
   const [activeUsername, setActiveUsername] =useState(getInitialUsername());
 
   console.log('active username on app,jsx', activeUsername)
 
+  const setExerciseInfo =(exercise) =>{
+    let exerciseInfo = {}
+    if (exercise.type==="CARDIO") {
+      exerciseInfo["exerciseId"] = exercise.id
+      exerciseInfo["duration"] = 15
+    }
+    else {
+      exerciseInfo= {"sets": 4, "reps": 10, "weight": 10}
+    }
+    return exerciseInfo;
+  }
+
   const addToActiveWorkout= (exercise) => {
     setActiveWorkout((prevActiveWorkout) => [...prevActiveWorkout, exercise]);
+    setWorkoutDetails((prevWorkoutDetails) => [...prevWorkoutDetails, setExerciseInfo()]);
   };
 
 
