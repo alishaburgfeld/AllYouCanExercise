@@ -17,36 +17,65 @@ import { getAxiosCall } from "./utils/HelperFunctions"
 import CssBaseline from "@mui/material/CssBaseline";
 import theme from "../../front-end/src/utils/theme";
 
+
+// a way to potentially refactor these session states into one function:
+//  search for "custom hook" https://chatgpt.com/share/67f3d8fb-12f8-800f-9475-560f78c153f4
+
 const getInitialUsername = () => {
   const activeUsername = sessionStorage.getItem("activeUsername");
   return activeUsername ? JSON.parse(activeUsername) : null
 }
 
+const getInitialActiveWorkout = () => {
+  const activeWorkout = sessionStorage.getItem("activeWorkout");
+  return activeWorkout ? JSON.parse(activeWorkout) : null
+}
+
+const getInitialWorkoutDetails = () => {
+  const workoutDetails = sessionStorage.getItem("workoutDetails");
+  return workoutDetails ? JSON.parse(workoutDetails) : null
+}
+
 function App() {
 
-  const [activeWorkout, setActiveWorkout] = useState([]);
-  const [workoutDetails, setWorkoutDetails] = useState([])
+  const [activeWorkout, setActiveWorkout] = useState(getInitialActiveWorkout());
+  const [exerciseToBeAdded, setExerciseToBeAdded] = useState(null);
+  const [workoutDetails, setWorkoutDetails] = useState(getInitialWorkoutDetails());
   const [activeUsername, setActiveUsername] =useState(getInitialUsername());
 
-  console.log('active username on app,jsx', activeUsername)
+  console.log('active username, active workout, workoutDetails on app,jsx', activeUsername, activeWorkout, workoutDetails)
+  // explains why strict mode causes this console log to render twice: https://chatgpt.com/share/67f3d8fb-12f8-800f-9475-560f78c153f4
 
   const setExerciseInfo =(exercise) =>{
-    let exerciseInfo = {}
-    if (exercise.exerciseType==="CARDIO") {
-      exerciseInfo["exerciseId"] = exercise.id
-      exerciseInfo["duration"] = 930
+    if (exercise) {
+
+      let exerciseInfo = {}
+      if (exercise.exerciseType==="CARDIO") {
+        exerciseInfo["exerciseId"] = exercise.id
+        exerciseInfo["duration"] = 930
+      }
+      else {
+        exerciseInfo= {"sets": 4, "reps": 10, "weight": 10}
+        exerciseInfo["exerciseId"] = exercise.id
+      }
+      console.log('exerciseInfo is', exerciseInfo)
+      return exerciseInfo;
     }
-    else {
-      exerciseInfo= {"sets": 4, "reps": 10, "weight": 10}
-      exerciseInfo["exerciseId"] = exercise.id
-    }
-    console.log('exerciseInfo is', exerciseInfo)
-    return exerciseInfo;
   }
 
-  const addToActiveWorkout= (exercise) => {
-    const updatedActiveWorkout = [...activeWorkout, exercise];
-  const updatedWorkoutDetails = [...workoutDetails, setExerciseInfo(exercise)];
+  const addToActiveWorkout= (exerciseToBeAdded) => {
+    console.log('in addtoActiveworkout')
+    let updatedActiveWorkout;
+    let updatedWorkoutDetails
+    if (activeWorkout && workoutDetails) {
+      updatedActiveWorkout = [...activeWorkout, exerciseToBeAdded];
+      updatedWorkoutDetails = [...workoutDetails, setExerciseInfo(exerciseToBeAdded)];
+    }
+    else {
+      updatedActiveWorkout = [exerciseToBeAdded];
+      updatedWorkoutDetails = [setExerciseInfo(exerciseToBeAdded)];
+    }
+    console.log('updatedAtiveWorkout is', updatedActiveWorkout, "updatedWorkoutDetails is", updatedWorkoutDetails)
   //   setActiveWorkout((prevActiveWorkout) => [...prevActiveWorkout, exercise]);
   //   console.log('prior to adding a new one, activeworkout is', activeWorkout)
   //   console.log('prior to adding a new one, workoutdetails is', workoutDetails)
@@ -55,10 +84,40 @@ function App() {
   setWorkoutDetails(updatedWorkoutDetails);
 };
 
+const checkForUserSession= async () => {
+  // had to add checkForUser back in. Without it I was running into a problem where my backend hadn't yet created a session/csrf token, so I had to click the login button twice.
+
+    const response = await getAxiosCall('http://localhost:8080/auth/checkusersession');
+    if (response) {
+      setActiveUsername(response);
+    }
+    else {
+      console.log("no username returned in checkforuser session")
+    }
+  }
+
+useEffect(()=> {
+  checkForUserSession();
+}, [])
 
   useEffect(() => {
     sessionStorage.setItem("activeUsername", JSON.stringify(activeUsername))
   }, [activeUsername])
+
+  useEffect(() => {
+    sessionStorage.setItem("activeWorkout", JSON.stringify(activeWorkout))
+  }, [activeWorkout])
+
+  useEffect(() => {
+    sessionStorage.setItem("workoutDetails", JSON.stringify(workoutDetails))
+  }, [workoutDetails])
+
+  useEffect(() => {
+    // only run this function if exerciseToBeAdded has a value, not on first render when its null
+    if (exerciseToBeAdded) {
+      addToActiveWorkout(exerciseToBeAdded);
+    }
+  }, [exerciseToBeAdded]);
 
 
 // I don't think I need my check for users function anymore. Leaving this comment here in case I run into issues with getting the active username once I have more tha one user.
@@ -69,7 +128,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <BrowserRouter>
-          <Navbar activeUsername={activeUsername} setActiveUsername={setActiveUsername}/>
+          <Navbar activeUsername={activeUsername} setActiveUsername={setActiveUsername} setActiveWorkout={setActiveWorkout} setWorkoutDetails={setWorkoutDetails}/>
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/login" element={<LoginPage setActiveUsername={setActiveUsername}/>} />
@@ -78,7 +137,7 @@ function App() {
               path="/exercises/:exerciseGroup"
               element={<ExerciseGroupPage />}
             />
-            <Route path="/exercise/:exerciseId" element={<ExercisePage addToActiveWorkout={addToActiveWorkout}/>} />
+            <Route path="/exercise/:exerciseId" element={<ExercisePage setExerciseToBeAdded= {setExerciseToBeAdded}/>} />
             <Route path="/workout" element={<ActiveWorkoutPage activeWorkout={activeWorkout} activeUsername={activeUsername} workoutDetails={workoutDetails} setWorkoutDetails={setWorkoutDetails}/>} />
             <Route path="/workout/:workoutId" element={<ViewWorkoutPage />} /> 
           {/* the variable name after : must match the variable name you set with <variable> = useParams() */}

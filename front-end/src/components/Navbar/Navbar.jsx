@@ -56,6 +56,8 @@ export default function Navbar({ activeUsername, setActiveUsername }) {
   }
     handleClose()
     setActiveUsername(null)
+    setActiveWorkout(null)
+    setWorkoutDetails(null)
     navigate("/")
   }
 
