@@ -9,12 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+// import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.allyoucanexercise.back_end.ExerciseApplication;
-import com.allyoucanexercise.back_end.exercise.Exercise;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -69,13 +66,16 @@ public class UserController {
     @GetMapping("/auth/checkusersession")
     public String checkUserSession(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        log.debug("session is", session);
+        log.error("session is {}", session);
         User user = null;
         if (session != null && session.getAttribute("username") != null) {
-            log.debug("inside checkuser, session is not null, username is not null");
+            log.error("inside checkuser, session is not null, username is not null, username is {}",
+                    session.getAttribute("username"));
             user = userRepository.findByUsername(session.getAttribute("username").toString()).orElse(null);
+            return user.getUsername();
+        } else {
+            return "";
         }
-        return user.getUsername();
     }
 
     @GetMapping("/api/users")

@@ -1,8 +1,7 @@
 
 import { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom";
-import axios from 'axios'
-import Cookies from 'js-cookie';
+import { getAxiosCall } from "../utils/HelperFunctions"
 import { getImageSource } from "../utils/HelperFunctions";
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import { Typography } from "@mui/material";
@@ -12,7 +11,7 @@ import { IconButton } from "@mui/material";
 import "../css/ExercisePage.css"
 
 
-function ExercisePage({addToWorkout}) {
+function ExercisePage({setExerciseToBeAdded}) {
     const theme = useTheme();
 
     const { exerciseId } = useParams();
@@ -22,18 +21,12 @@ function ExercisePage({addToWorkout}) {
     
     // add call to get history and records
     const getExercise = async () => {
-        const csrfToken = Cookies.get('XSRF-TOKEN'); 
-        try {
-            const response = await axios.get(`http://localhost:8080/api/exercises/${exerciseId}`, {
-                headers: {
-                'X-XSRF-TOKEN': csrfToken,
-                },
-                withCredentials: true, // Include cookies in the request
-            });
-            console.log("response is", response, "response.data is", response.data);
-            setExercise(response.data);
-        } catch (error) {
-            console.error("Error fetching exercises:", error);
+        const response = await getAxiosCall(`http://localhost:8080/api/exercises/${exerciseId}`);
+        if (response) {
+            setExercise(response);
+        }
+        else {
+            console.error("Error fetching exercise");
         }
     };
 
@@ -46,7 +39,7 @@ function ExercisePage({addToWorkout}) {
             <Typography className="exercisePage_title" sx={{fontSize:"1.8rem", pt:"4rem", mt: "3.2rem", mb: "1rem", color: theme.palette.secondary.main}}>
                 {exercise.name}
             </Typography>
-            <IconButton className = "exercisePage_addToWorkout" aria-label="add-to-workout" sx={{color: theme.palette.secondary.main, position:"absolute", top:"8%", right:"45%"}} onClick={() => addToWorkout(exercise)}>
+            <IconButton className = "exercisePage_addToWorkout" aria-label="add-to-workout" sx={{color: theme.palette.secondary.main, position:"absolute", top:"8%", right:"45%"}} onClick={() => setExerciseToBeAdded(exercise)}>
                     <PlaylistAddIcon fontSize ="large"/>
                 </IconButton>
             <Box className="exercisePage_ItemContainer" sx={{ padding: '1rem' }}>

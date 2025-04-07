@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom";
-import axios from 'axios'
-import Cookies from 'js-cookie';
+import { getAxiosCall } from "../utils/HelperFunctions"
 import Box from '@mui/material/Box';
 import "../css/ExerciseGroupPage.css";
 import { Typography} from "@mui/material";
@@ -18,22 +17,16 @@ function ExerciseGroupPage() {
     
     
     const getExercisesByGroup = async () => {
-        const csrfToken = Cookies.get('XSRF-TOKEN'); // Read the CSRF token from the cookie
-        try {
-            const response = await axios.get(`http://localhost:8080/api/exercises/group/${exerciseGroup}`, {
-                headers: {
-                'X-XSRF-TOKEN': csrfToken,
-                },
-                withCredentials: true, 
-            });
-            setExercisesByGroup(response.data);
-        } catch (error) {
-            console.error("Error fetching exercises:", error);
+        const response = await getAxiosCall(`http://localhost:8080/api/exercises/group/${exerciseGroup}`);
+        if (response) {
+            setExercisesByGroup(response);
+        } else {
+            console.error("Error fetching exercises:");
         }
     };
 
     const handleClick= (exerciseId) => {
-        navigate(`/${exerciseId}`);
+        navigate(`/exercise/${exerciseId}`);
     }
 
     

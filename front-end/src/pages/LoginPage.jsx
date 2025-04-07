@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { TextField, Button, Typography, Box, Link } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
-import axios from 'axios'
-import Cookies from 'js-cookie';
+import { postAxiosCall } from "../utils/HelperFunctions";
 import "../css/LoginPage.css";
 import Alert from '@mui/material/Alert';
 
@@ -25,28 +24,13 @@ export default function LoginPage({setActiveUsername}) {
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    try {
-      const csrfToken = Cookies.get('XSRF-TOKEN')
-      console.log('csrf token is', csrfToken)
-      const response = await axios.post(
-          "http://localhost:8080/auth/login", 
-          { username, password },
-          {
-            headers: {
-              'X-XSRF-TOKEN': csrfToken,
-            },
-            withCredentials: true, 
-          }
-        );
-        console.log('Logging in with', username, password);
-        console.log("login response is", response)
-        if (response.data) {
-          setActiveUsername(response.data)            
-          handleLoginSuccess();
-        }  
-  } catch (error) {
-      console.error(error);
-  }
+    const response = await postAxiosCall("http://localhost:8080/auth/login", { username, password });
+    if (response) {
+      console.log('handleLogin response is', response)
+      setActiveUsername(response)            
+      handleLoginSuccess();
+    }  
+    // need to handle a 401 which is what happens when the credentials aren't recognized
   }
 
   const handleSignUpRedirect = () => {

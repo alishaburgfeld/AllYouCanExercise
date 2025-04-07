@@ -27,3 +27,31 @@ CREATE TABLE IF NOT EXISTS user (
    password VARCHAR(255) NOT NULL,
    PRIMARY KEY (id)
 );
+
+CREATE TABLE IF NOT EXISTS workout (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    title VARCHAR(255),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    completed_at DATETIME,
+    FOREIGN KEY (user_id) REFERENCES user(id)
+);
+
+CREATE TABLE IF NOT EXISTS workout_exercise (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    workout_id INT,
+    exercise_id INT,
+    exercise_order INT,
+    FOREIGN KEY (workout_id) REFERENCES workout(id),
+    FOREIGN KEY (exercise_id) REFERENCES exercise(id)
+);
+
+CREATE TABLE IF NOT EXISTS exercise_set (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    workout_exercise_id INT,
+    set_order INT NOT NULL,
+    reps INT,
+    weight DECIMAL(5,2) UNSIGNED, -- supports decimal weights like 95.5
+    --duration_seconds INT DEFAULT NULL; -- put it a default null since most workouts won't use a time. only cardio. ie 930 = 15 minutes
+    FOREIGN KEY (workout_exercise_id) REFERENCES workout_exercise(id)
+);
