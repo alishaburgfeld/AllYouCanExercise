@@ -31,11 +31,13 @@ export default function ActiveWorkoutPage({activeWorkout, activeUsername, workou
             {activeWorkout[0]
                 ? (
                 activeWorkout.map((exercise)=> (
-                    <Box key={exercise.id} className="activeWorkout_items" onClick={() => handleExerciseClick(exercise.id)} sx={{borderRadius: 1, border:2, borderColor: theme.palette.secondary.main}}>
+                <Box key={exercise.id} className="activeWorkout_items" sx={{pb:5, borderRadius: 1, border:2, borderColor: theme.palette.secondary.main, position: "relative"}}>
+                    <Box onClick={() => handleExerciseClick(exercise.id)} >
                         <img src={getImageSource(exercise.name)} className="activeWorkout_exercisePhoto" alt={exercise.name}/>
                         <Typography align="center" className="activeWorkout_exerciseName"> {exercise.name}</Typography>
-                        <SetsRepsDuration exercise={exercise} workoutDetails={workoutDetails}/>
                     </Box>
+                    <SetsRepsDuration className="activeWorkout_setsRepsDuration" exercise={exercise} workoutDetails={workoutDetails} />
+                </Box>
                 )))
                 : (
                 <p>Add an exercise to see your workout!</p>

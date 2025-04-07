@@ -119,6 +119,9 @@ How to handle CSRF configuration: https://chatgpt.com/share/67992954-c8e0-800f-b
 5. context load - probably not working because security dependency is disabled.
 6. Look into using CreateContext to store react user data so I don't have to keep passing user to all my pages.
    https://dev.to/jucheng925/react-persisting-data-on-page-refresh-1jhk
+7. Refactor session setting/getting on my react pages:
+   // a way to potentially refactor these session states into one function:
+   // search for "custom hook" https://chatgpt.com/share/67f3d8fb-12f8-800f-9475-560f78c153f4
 
 May need to read this with testing with MUI Material UI:
 https://jskim1991.medium.com/react-dont-give-up-on-testing-when-using-material-ui-with-react-ff737969eec7

@@ -18,9 +18,6 @@ import CssBaseline from "@mui/material/CssBaseline";
 import theme from "../../front-end/src/utils/theme";
 
 
-// a way to potentially refactor these session states into one function:
-//  search for "custom hook" https://chatgpt.com/share/67f3d8fb-12f8-800f-9475-560f78c153f4
-
 const getInitialUsername = () => {
   const activeUsername = sessionStorage.getItem("activeUsername");
   return activeUsername ? JSON.parse(activeUsername) : null
@@ -67,7 +64,7 @@ function App() {
     console.log('in addtoActiveworkout')
     let updatedActiveWorkout;
     let updatedWorkoutDetails
-    if (activeWorkout && workoutDetails) {
+    if (activeWorkout && workoutDetails && !activeWorkout.includes(exerciseToBeAdded) && !workoutDetails.includes(exerciseToBeAdded)) {
       updatedActiveWorkout = [...activeWorkout, exerciseToBeAdded];
       updatedWorkoutDetails = [...workoutDetails, setExerciseInfo(exerciseToBeAdded)];
     }
@@ -119,9 +116,6 @@ useEffect(()=> {
     }
   }, [exerciseToBeAdded]);
 
-
-// I don't think I need my check for users function anymore. Leaving this comment here in case I run into issues with getting the active username once I have more tha one user.
-//  check commit 7a7fdd8 for the checkUser function.
 
   return (
     <div className="App">
