@@ -32,20 +32,28 @@ function App() {
 
   const setExerciseInfo =(exercise) =>{
     let exerciseInfo = {}
-    if (exercise.type==="CARDIO") {
+    if (exercise.exerciseType==="CARDIO") {
       exerciseInfo["exerciseId"] = exercise.id
-      exerciseInfo["duration"] = 15
+      exerciseInfo["duration"] = 930
     }
     else {
       exerciseInfo= {"sets": 4, "reps": 10, "weight": 10}
+      exerciseInfo["exerciseId"] = exercise.id
     }
+    console.log('exerciseInfo is', exerciseInfo)
     return exerciseInfo;
   }
 
   const addToActiveWorkout= (exercise) => {
-    setActiveWorkout((prevActiveWorkout) => [...prevActiveWorkout, exercise]);
-    setWorkoutDetails((prevWorkoutDetails) => [...prevWorkoutDetails, setExerciseInfo()]);
-  };
+    const updatedActiveWorkout = [...activeWorkout, exercise];
+  const updatedWorkoutDetails = [...workoutDetails, setExerciseInfo(exercise)];
+  //   setActiveWorkout((prevActiveWorkout) => [...prevActiveWorkout, exercise]);
+  //   console.log('prior to adding a new one, activeworkout is', activeWorkout)
+  //   console.log('prior to adding a new one, workoutdetails is', workoutDetails)
+  //   setWorkoutDetails((prevWorkoutDetails) => [...prevWorkoutDetails, setExerciseInfo(exercise)]);
+  setActiveWorkout(updatedActiveWorkout);
+  setWorkoutDetails(updatedWorkoutDetails);
+};
 
 
   useEffect(() => {
@@ -71,8 +79,8 @@ function App() {
               element={<ExerciseGroupPage />}
             />
             <Route path="/exercise/:exerciseId" element={<ExercisePage addToActiveWorkout={addToActiveWorkout}/>} />
-            <Route path="/workout" element={<ActiveWorkoutPage activeWorkout={activeWorkout} activeUsername={activeUsername}/>} />
-            <Route path="/workout/:workoutId" element={<ViewWorkoutPage />} />
+            <Route path="/workout" element={<ActiveWorkoutPage activeWorkout={activeWorkout} activeUsername={activeUsername} workoutDetails={workoutDetails} setWorkoutDetails={setWorkoutDetails}/>} />
+            <Route path="/workout/:workoutId" element={<ViewWorkoutPage />} /> 
           {/* the variable name after : must match the variable name you set with <variable> = useParams() */}
           </Routes>
         </BrowserRouter>

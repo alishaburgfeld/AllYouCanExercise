@@ -5,14 +5,15 @@ import { Box, Typography, IconButton} from "@mui/material";
 import { useTheme } from '@mui/material/styles';
 import { getImageSource, getAxiosCall } from "../utils/HelperFunctions";
 import { useState } from 'react';
-import { Edit } from '@mui/icons-material';
+
 import SetsRepsDuration from "../components/Workout/SetsRepsDuration";
 
 
-export default function ActiveWorkoutPage({activeWorkout, activeUsername, workoutDetails}) {
+export default function ActiveWorkoutPage({activeWorkout, activeUsername, workoutDetails, setWorkoutDetails}) {
     const theme = useTheme();
-    const [plannedSetsReps, setPlannedSetsReps] = useState(null)
     console.log('active username is', activeUsername)
+    console.log('workoutdetails in activeworkout page are', workoutDetails)
+    console.log('activeWorkout in activeworkout page are', activeWorkout)
 
     // useEffect(()=> {
     //   }, [])

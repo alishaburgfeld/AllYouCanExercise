@@ -11,7 +11,7 @@ import { IconButton } from "@mui/material";
 import "../css/ExercisePage.css"
 
 
-function ExercisePage({addToWorkout}) {
+function ExercisePage({addToActiveWorkout}) {
     const theme = useTheme();
 
     const { exerciseId } = useParams();
@@ -39,7 +39,7 @@ function ExercisePage({addToWorkout}) {
             <Typography className="exercisePage_title" sx={{fontSize:"1.8rem", pt:"4rem", mt: "3.2rem", mb: "1rem", color: theme.palette.secondary.main}}>
                 {exercise.name}
             </Typography>
-            <IconButton className = "exercisePage_addToWorkout" aria-label="add-to-workout" sx={{color: theme.palette.secondary.main, position:"absolute", top:"8%", right:"45%"}} onClick={() => addToWorkout(exercise)}>
+            <IconButton className = "exercisePage_addToWorkout" aria-label="add-to-workout" sx={{color: theme.palette.secondary.main, position:"absolute", top:"8%", right:"45%"}} onClick={() => addToActiveWorkout(exercise)}>
                     <PlaylistAddIcon fontSize ="large"/>
                 </IconButton>
             <Box className="exercisePage_ItemContainer" sx={{ padding: '1rem' }}>

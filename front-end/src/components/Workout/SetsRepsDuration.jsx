@@ -1,3 +1,9 @@
+import { Box, Typography, IconButton} from "@mui/material";
+import { Edit } from '@mui/icons-material';
+import { formatExerciseDurationIntoMinutesAndSeconds } from "../../utils/HelperFunctions"
+
+
+
 export default function SetsRepsDuration (exercise, workoutDetails) {
     // workoutDetails will be an array of objects
     // I might have to set workoutId on the backend since I don't have that yet.
@@ -11,14 +17,13 @@ export default function SetsRepsDuration (exercise, workoutDetails) {
 
     const determineSetsRepsOrDuration = (exercise) => {
         const workoutExerciseDetail = determineWorkoutExerciseDetail();
-        let exerciseInfo = "4x10:_lbs";
+        let exerciseInfo;
         if (exercise.type === 'cardio') {
-            exerciseInfo = workoutExerciseDetail ? `${workoutExerciseDetail.duration} minutes` : "15 minutes";
+            exerciseInfo = formatExerciseDurationIntoMinutesAndSeconds(workoutExerciseDetail.duration);
         } else {
             if (workoutExerciseDetail) {
-                //"Extract sets, reps, and weight from workoutDetail, but if any of them are missing or undefined, assign them a default value (4, 10, and "_lbs" respectively)."
-            const { sets = 4, reps = 10, weight = "_" } = workoutExerciseDetail; 
-            exerciseInfo = `${sets}x${reps}:${weight} lbs`;
+                const { sets, reps, weight} = workoutExerciseDetail; 
+                exerciseInfo = `${sets}x${reps}:${weight} lbs`;
             }
         }
         return exerciseInfo;

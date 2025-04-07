@@ -53,3 +53,11 @@ export const postAxiosCall = async (url, body) => {
     console.log("Axios Call Failed", error);
   }
 };
+
+export const formatExerciseDurationIntoMinutesAndSeconds = (
+  durationInSeconds,
+) => {
+  const minutes = Math.floor(durationInSeconds / 60);
+  const seconds = durationInSeconds % 60;
+  return `${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
+};
