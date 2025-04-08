@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -84,5 +85,11 @@ public class WorkoutController {
     @GetMapping("/user/{username}")
     List<Workout> findByUsername(@PathVariable String username) {
         return workoutService.findByUsername(username);
+    }
+
+    @PostMapping("/full/save")
+    ResponseEntity<?> saveFullWorkout(@RequestBody List<WorkoutIndividualExerciseDetailsDTO> fullWorkoutDetails) {
+        workoutService.saveFullWorkout(fullWorkoutDetails);
+        return ResponseEntity.ok("Workout saved");
     }
 }

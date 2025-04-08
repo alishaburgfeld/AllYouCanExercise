@@ -9,6 +9,7 @@ import { useState } from 'react';
 import SetsRepsDuration from "../components/Workout/SetsRepsDuration";
 
 
+// need to send set order and exercise order 
 export default function ActiveWorkoutPage({activeWorkout, activeUsername, workoutDetails, setWorkoutDetails}) {
     const theme = useTheme();
     console.log('active username is', activeUsername)
