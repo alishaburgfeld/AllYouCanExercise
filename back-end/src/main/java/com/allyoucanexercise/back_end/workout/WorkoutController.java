@@ -1,5 +1,6 @@
 package com.allyoucanexercise.back_end.workout;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -88,8 +89,10 @@ public class WorkoutController {
     }
 
     @PostMapping("/full/save")
-    ResponseEntity<?> saveFullWorkout(@RequestBody List<WorkoutIndividualExerciseDetailsDTO> fullWorkoutDetails) {
-        workoutService.saveFullWorkout(fullWorkoutDetails);
+    ResponseEntity<?> saveFullWorkout(@RequestBody String username, @RequestBody String title,
+            @RequestBody LocalDateTime completedAt,
+            @RequestBody List<WorkoutIndividualExerciseDetailsDTO> fullWorkoutDetails) {
+        workoutService.saveFullWorkout(username, title, completedAt, fullWorkoutDetails);
         return ResponseEntity.ok("Workout saved");
     }
 }

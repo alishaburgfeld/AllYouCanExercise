@@ -19,6 +19,9 @@ export default function ActiveWorkoutPage({activeWorkout, activeUsername, workou
     // useEffect(()=> {
     //   }, [])
 
+    // save Workout:
+    // body will need to have { username, title, completedAt, workoutDetails }
+
     const handleExerciseClick= (exerciseId) => {
         navigate(`/exercise/${exerciseId}`);
     }

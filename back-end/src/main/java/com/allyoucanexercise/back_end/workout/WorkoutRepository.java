@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
@@ -36,18 +38,35 @@ public class WorkoutRepository {
                 .optional();
     }
 
-    public void create(Workout workout) {
+    public Integer create(Workout workout) {
         if (workout.getUserId() == null) {
             throw new IllegalArgumentException("userId must not be null");
         }
 
-        var updated = jdbcClient
-                .sql("INSERT INTO workout(user_id, title, completed_at) values(?,?,?)")
-                .params(List.of(workout.getUserId(), workout.getTitle() != null ? workout.getTitle() : "",
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        // GeneratedKeyHolder is a Spring utility class used to capture auto-generated
+        // keys (like id from an AUTO_INCREMENT column in MySQL) after an insert.
+        // Any time you're inserting a row into a table where the primary key is
+        // auto-generated, and you want to use that ID immediately afterward (e.g., to
+        // insert into a related table), you use a GeneratedKeyHolder to get that new
+        // ID.
+
+        int updated = jdbcClient
+                .sql("INSERT INTO workout(user_id, title, completed_at) values (?, ?, ?)")
+                .params(List.of(
+                        workout.getUserId(),
+                        workout.getTitle() != null ? workout.getTitle() : "",
                         workout.getCompletedAt()))
-                .update();
+                .update(keyHolder);
 
         Assert.state(updated == 1, "Failed to create workout");
+
+        Number key = keyHolder.getKey();
+        if (key != null) {
+            return key.intValue();
+        } else {
+            throw new IllegalStateException("Failed to retrieve generated workout ID");
+        }
     }
 
     public void update(Workout workout, Integer id) {

@@ -6,10 +6,15 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import com.allyoucanexercise.back_end.workout.Workout;
 import com.allyoucanexercise.back_end.workout.WorkoutRepository;
+
+import jakarta.validation.constraints.NotNull;
 
 @Repository
 public class WorkoutExerciseRepository {
@@ -21,17 +26,32 @@ public class WorkoutExerciseRepository {
         this.jdbcClient = jdbcClient;
     }
 
-    public void create(WorkoutExercise workoutExercise) {
-        // if (workoutExercise.getUserId() == null) {
-        // throw new IllegalArgumentException("userId must not be null");
-        // }
-    }
+    public Integer create(WorkoutExercise workoutExercise) {
+        if (workoutExercise.getWorkoutId() == null) {
+            throw new IllegalArgumentException("workoutId must not be null");
+        }
 
-    // public int returnIdGivenWorkoutAndExerciseIds(int exerciseId, int workoutId)
-    // {
-    // check DB for workout_exercise with the exercise_id of X and the workout_id of
-    // Y
-    // WorkoutExercise workoutExercise =
-    // return workoutExercise.id
-    // }
+        if (workoutExercise.getExerciseId() == null) {
+            throw new IllegalArgumentException("exerciseId must not be null");
+        }
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        int updated = jdbcClient
+                .sql("INSERT INTO workout_exercise(workout_id, exercise_id, exercise_order) values (?, ?, ?)")
+                .params(List.of(
+                        workoutExercise.getWorkoutId(),
+                        workoutExercise.getExerciseId(),
+                        workoutExercise.getExerciseOrder()))
+                .update(keyHolder);
+
+        Assert.state(updated == 1, "Failed to create workout exercise");
+
+        Number key = keyHolder.getKey();
+        if (key != null) {
+            return key.intValue();
+        } else {
+            throw new IllegalStateException("Failed to retrieve generated workout ID");
+        }
+    }
 }
