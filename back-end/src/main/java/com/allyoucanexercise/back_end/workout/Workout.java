@@ -10,6 +10,7 @@ public class Workout {
     private String title;
     private LocalDateTime createdAt;
     private LocalDateTime completedAt;
+    private Integer workoutDurationSeconds;
 
     // timestamp:
     // https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Timestamp.html
@@ -50,5 +51,13 @@ public class Workout {
 
     public void setCompletedAt(LocalDateTime completedAt) {
         this.completedAt = completedAt;
+    }
+
+    public Integer getWorkoutDurationSeconds() {
+        return workoutDurationSeconds;
+    }
+
+    public void setWorkoutDurationSeconds(Integer workoutDurationSeconds) {
+        this.workoutDurationSeconds = workoutDurationSeconds;
     }
 }

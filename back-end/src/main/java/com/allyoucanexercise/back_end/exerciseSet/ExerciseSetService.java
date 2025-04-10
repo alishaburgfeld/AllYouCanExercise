@@ -11,7 +11,8 @@ public class ExerciseSetService {
         this.exerciseSetRepository = exerciseSetRepository;
     }
 
-    public void saveExerciseSet(int workoutExerciseId, Integer sets, Integer reps, Float weight, int durationSeconds,
+    public void saveExerciseSet(int workoutExerciseId, Integer setOrder, Integer sets, Integer reps, Float weight,
+            int durationSeconds,
             int distanceMeters) {
         ExerciseSet exerciseSet = new ExerciseSet();
         exerciseSet.setSets(sets);

@@ -1,5 +1,6 @@
 package com.allyoucanexercise.back_end.workout;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +33,7 @@ public class WorkoutRepository {
 
     public Optional<Workout> findById(Integer id) {
         return jdbcClient
-                .sql("SELECT id, user_Id, title, created_at, completed_at FROM workout WHERE id = :id")
+                .sql("SELECT id, user_Id, title, created_at, completed_at, workout_duration_seconds FROM workout WHERE id = :id")
                 .param("id", id)
                 .query(Workout.class)
                 .optional();
@@ -44,6 +45,7 @@ public class WorkoutRepository {
         }
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
+
         // GeneratedKeyHolder is a Spring utility class used to capture auto-generated
         // keys (like id from an AUTO_INCREMENT column in MySQL) after an insert.
         // Any time you're inserting a row into a table where the primary key is
@@ -52,11 +54,13 @@ public class WorkoutRepository {
         // ID.
 
         int updated = jdbcClient
-                .sql("INSERT INTO workout(user_id, title, completed_at) values (?, ?, ?)")
-                .params(List.of(
+                .sql("INSERT INTO workout(user_id, title, completed_at, workout_duration_seconds) VALUES (?, ?, ?, ?)")
+                .params(Arrays.asList(new Object[] {
                         workout.getUserId(),
                         workout.getTitle() != null ? workout.getTitle() : "",
-                        workout.getCompletedAt()))
+                        workout.getCompletedAt(),
+                        workout.getWorkoutDurationSeconds()
+                }))
                 .update(keyHolder);
 
         Assert.state(updated == 1, "Failed to create workout");
@@ -71,9 +75,13 @@ public class WorkoutRepository {
 
     public void update(Workout workout, Integer id) {
         var updated = jdbcClient.sql(
-                "update workout set user_id = ?, title = ?, completed_at = ? where id = ?")
-                .params(List.of(workout.getUserId(), workout.getTitle() != null ? workout.getTitle() : "",
-                        workout.getCompletedAt(), id))
+                "update workout set user_id = ?, title = ?, completed_at = ?, workout_duration_seconds where id = ?")
+                .params(Arrays.asList(new Object[] {
+                        workout.getUserId(),
+                        workout.getTitle() != null ? workout.getTitle() : "",
+                        workout.getCompletedAt(),
+                        workout.getWorkoutDurationSeconds()
+                }), id)
                 .update();
 
         Assert.state(updated == 1, "Failed to update workout");
@@ -87,11 +95,11 @@ public class WorkoutRepository {
         Assert.state(updated == 1, "Failed to delete workout");
     }
 
-    public List<Workout> findByUserId(Integer user_id) {
+    public List<Workout> findByUserId(Integer userId) {
         log.error("in find by User");
-        log.error("user_id is {}", user_id);
+        log.error("user_id is {}", userId);
         return jdbcClient.sql("select * from workout where user_id = :user_id")
-                .param("user_id", user_id)
+                .param("user_id", userId)
                 .query(Workout.class)
                 .list();
     }
