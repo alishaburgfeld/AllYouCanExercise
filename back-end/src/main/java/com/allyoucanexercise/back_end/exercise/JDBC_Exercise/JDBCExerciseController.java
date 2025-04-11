@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.allyoucanexercise.back_end.ExerciseApplication;
-import com.allyoucanexercise.back_end.exercise.ExerciseService;
+import com.allyoucanexercise.back_end.exercise.ExerciseRepository;
 
 import jakarta.validation.Valid;
 
@@ -26,49 +26,58 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/exercises")
 public class ExerciseController {
 
-    private final ExerciseService exerciseService;
+    private final ExerciseRepository exerciseRepository;
 
-    public ExerciseController(final ExerciseService exerciseService) {
-        this.exerciseService = exerciseService;
+    public ExerciseController(final ExerciseRepository exerciseRepository) {
+        this.exerciseRepository = exerciseRepository;
     }
 
     // @Slf4j Lombok annotation to add a logger, put annotation on top of class.
     private static final Logger log = LoggerFactory.getLogger(ExerciseApplication.class);
 
-    // @GetMapping()
-    // List<Exercise> findAll() {
-    // return exerciseService.findAll();
-    // }
+    @GetMapping()
+    List<Exercise> findAll() {
+        return exerciseRepository.findAll();
+    }
 
     @GetMapping("/{id}")
-    Exercise findById(@PathVariable Long id) {
-        return exerciseService.getExerciseById(id);
+    Exercise findById(@PathVariable Integer id) {
+        Optional<Exercise> exercise = exerciseRepository.findById(id);
+        if (exercise.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Exercise not found.");
+        }
+        return exercise.get();
+        // I don't understand why the .get is needed here:
+        // Since exercise can be an optional you have to add the .get()
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping()
     void create(@Valid @RequestBody Exercise exercise) {
-        exerciseService.saveExercise(exercise);
+        exerciseRepository.create(exercise);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}")
-    void update(@Valid @RequestBody Exercise newExercise, @PathVariable Long id) {
-        exerciseService.updateExercise(newExercise, id);
+    void update(@Valid @RequestBody Exercise newExercise, @PathVariable Integer id) {
+        Optional<Exercise> existingExercise = exerciseRepository.findById(id);
+        if (existingExercise.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Exercise not found.");
+        }
+        exerciseRepository.update(newExercise, id);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     // Could do ok here... is there a better response?
     @DeleteMapping("/{id}")
-    void delete(@PathVariable Long id) {
-        exerciseService.deleteExercise(id);
+    void delete(@PathVariable Integer id) {
+        exerciseRepository.delete(id);
     }
 
     @GetMapping("/group/{exercise_group}")
-    List<Exercise> findByExerciseGroup(@PathVariable String exerciseGroupString) {
+    List<Exercise> findByExerciseGroup(@PathVariable String exercise_group) {
         // log.info("group is", exercise_group);
-        ExerciseGroup exerciseGroup = ExerciseGroup.valueOf(exerciseGroupString.toUpperCase());
-        return exerciseService.getExercisesByGroup(exerciseGroup);
+        return exerciseRepository.findByExerciseGroup(exercise_group);
     }
 
 }

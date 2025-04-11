@@ -140,3 +140,15 @@ https://chatgpt.com/share/67e70d05-6fe8-800f-a14d-4afaccf0600d
 
 I need to change my current user setup because it is not setting a session for the user.
 https://chatgpt.com/share/67e70d05-6fe8-800f-a14d-4afaccf0600d
+
+<!-- JPA Repository -->
+
+https://docs.spring.io/spring-data/jpa/reference/repositories/query-methods-details.html
+
+Full list of queries:
+https://docs.spring.io/spring-data/jpa/reference/repositories/query-keywords-reference.html#appendix.query.method.subject
+
+https://docs.spring.io/spring-data/jpa/docs/1.5.1.RELEASE/reference/html/jpa.repositories.html#jpa.sample-app.finders.strategies
+
+CRUD functions:
+https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/repository/CrudRepository.html
