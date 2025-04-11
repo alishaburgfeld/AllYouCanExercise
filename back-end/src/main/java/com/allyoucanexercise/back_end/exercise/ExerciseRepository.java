@@ -3,8 +3,6 @@ package com.allyoucanexercise.back_end.exercise;
 import java.util.List;
 import java.util.Optional;
 
-import javax.swing.Spring;
-
 // In case I run into problems with my pom.xml file: https://stackoverflow.com/questions/63841351/the-import-org-springframework-data-jpa-repository-jparepository-cant-be-resolv
 import org.springframework.data.jpa.repository.JpaRepository;
 
