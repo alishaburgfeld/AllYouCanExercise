@@ -64,9 +64,9 @@ public class ExerciseController {
     }
 
     @GetMapping("/group/{exercise_group}")
-    List<Exercise> findByExerciseGroup(@PathVariable String exerciseGroupString) {
+    List<Exercise> findByExerciseGroup(@PathVariable String exercise_group) {
         // log.info("group is", exercise_group);
-        ExerciseGroup exerciseGroup = ExerciseGroup.valueOf(exerciseGroupString.toUpperCase());
+        ExerciseGroup exerciseGroup = ExerciseGroup.valueOf(exercise_group.toUpperCase());
         return exerciseService.getExercisesByGroup(exerciseGroup);
     }
 

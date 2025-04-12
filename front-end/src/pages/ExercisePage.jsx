@@ -11,7 +11,7 @@ import { IconButton } from "@mui/material";
 import "../css/ExercisePage.css"
 
 
-function ExercisePage({setExerciseToBeAdded}) {
+function ExercisePage({setExerciseToBeAdded, activeUsername}) {
     const theme = useTheme();
 
     const { exerciseId } = useParams();
@@ -39,9 +39,13 @@ function ExercisePage({setExerciseToBeAdded}) {
             <Typography className="exercisePage_title" sx={{fontSize:"1.8rem", pt:"4rem", mt: "3.2rem", mb: "1rem", color: theme.palette.secondary.main}}>
                 {exercise.name}
             </Typography>
-            <IconButton className = "exercisePage_addToWorkout" aria-label="add-to-workout" sx={{color: theme.palette.secondary.main, position:"absolute", top:"8%", right:"45%"}} onClick={() => setExerciseToBeAdded(exercise)}>
-                    <PlaylistAddIcon fontSize ="large"/>
-                </IconButton>
+            {activeUsername!== null?
+                <IconButton className = "exercisePage_addToWorkout" aria-label="add-to-workout" sx={{color: theme.palette.secondary.main, position:"absolute", top:"8%", right:"45%"}} onClick={() => setExerciseToBeAdded(exercise)}>
+                        <PlaylistAddIcon fontSize ="large"/>
+                    </IconButton>
+            : <span>Login to add workout</span>
+                
+            }
             <Box className="exercisePage_ItemContainer" sx={{ padding: '1rem' }}>
                 <img src={getImageSource(exercise.name)} className="exercisePage_image" alt={exercise.name}/>
                 <Box className="exercisePage_description" sx={{mt:"1rem", borderRadius: 1, border:2, borderColor: theme.palette.secondary.main }}>
