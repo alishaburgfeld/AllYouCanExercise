@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS user (
 );
 
 CREATE TABLE IF NOT EXISTS workout (
+   -- or change the MySQL schema to BIGINT if you prefer Long in Java
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     title VARCHAR(255),
