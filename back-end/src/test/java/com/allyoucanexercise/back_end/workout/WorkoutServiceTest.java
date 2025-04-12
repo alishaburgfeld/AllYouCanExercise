@@ -7,9 +7,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.jdbc.core.simple.JdbcClient;
 
 import com.allyoucanexercise.back_end.user.User;
+import com.allyoucanexercise.back_end.user.UserService;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -20,8 +20,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -29,6 +27,9 @@ class WorkoutServiceTest {
 
     @Mock
     private WorkoutRepository workoutRepository;
+
+    @Mock
+    private UserService userService;
 
     @InjectMocks
     private WorkoutService workoutService;
@@ -72,15 +73,16 @@ class WorkoutServiceTest {
 
     @Test
     void testGetUserWorkouts() {
-        // when(workoutService.findAllByWorkoutType(WorkoutType.UPPERBODY))
-        // .thenReturn(List.of(chestWorkout));
 
-        // List<Workout> results =
-        // workoutService.getWorkoutsByType(WorkoutType.UPPERBODY);
-        // assertThat(results).hasSize(1);
-        // assertThat(results.get(0).getWorkoutType()).isEqualTo(WorkoutType.UPPERBODY);
+        when(workoutRepository.findByUserId(user.getId())).thenReturn(List.of(workout, workout2));
+        when(userService.getUserByUsername(user.getUsername())).thenReturn(Optional.of(user));
 
-        // verify(workoutService).findAllByWorkoutType(WorkoutType.UPPERBODY);
+        List<Workout> results = workoutService.getWorkoutsByUsername(user.getUsername());
+        assertThat(results).hasSize(2);
+        assertThat(results.get(0).getTitle()).isEqualTo(workout.getTitle());
+        assertThat(results.get(1).getTitle()).isEqualTo(workout2.getTitle());
+
+        verify(workoutRepository).findByUserId(user.getId());
     }
 
     @Test
@@ -129,10 +131,11 @@ class WorkoutServiceTest {
     void testUpdateWorkout() {
         long id = 1;
 
-        Workout workoutWithNewTitle = workout;
         workout.setId(id);
+        Workout workoutWithNewTitle = workout;
         workoutWithNewTitle.setTitle("Updated Workout Title");
 
+        when(workoutRepository.existsById(id)).thenReturn(true);
         when(workoutRepository.save(workoutWithNewTitle))
                 .thenReturn(workoutWithNewTitle);
 

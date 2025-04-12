@@ -7,11 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.allyoucanexercise.back_end.workout.WorkoutRepository;
+// import com.allyoucanexercise.back_end.workout.WorkoutRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 
-import com.allyoucanexercise.back_end.exercise.Exercise;
 import com.allyoucanexercise.back_end.user.User;
 import com.allyoucanexercise.back_end.user.UserService;
 
