@@ -1,14 +1,17 @@
 package com.allyoucanexercise.back_end.user;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -20,19 +23,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.jdbc.core.simple.JdbcClient;
 
 public class UserServiceTest {
 
-    // @Mock
-    // private BCryptPasswordEncoder bCryptPasswordEncoder;
-    // I was going to mock this out, but I would have had to pass the encoder into
-    // my UserService similarly to how I pass in the UserRepository (not making a
-    // new instance). This would set it up as a depencency and allow me to mock it
-    // out, so for now I'll just let it actually create a new one for the tests
-    // instead of mocking.
-
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Mock
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Mock
     private UserRepository userRepository;
@@ -41,59 +36,74 @@ public class UserServiceTest {
     private UserService userService;
 
     private User user;
+    private final String hashedPassword = "hashedPassword123";
 
     @BeforeEach
     void setUp() {
         user = new User();
         user.setUsername("username1");
         user.setPassword("password1");
-        // user2 = new User();
-        // user2.setUsername("username2");
-        // user2.setPassword("password2");
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
     @DisplayName("test register - happy Path")
     void testRegisterUser() {
-        when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.empty());
+        User newUser = user;
+        newUser.setPassword(hashedPassword);
 
-        // Mock save behavior (since it's void, use doNothing)
-        doNothing().when(userRepository).save(any(User.class));
+        when(userRepository.save(newUser)).thenReturn(newUser);
+        when(bCryptPasswordEncoder.encode(user.getPassword())).thenReturn(hashedPassword);
 
-        // This executes userService.registerUser(...) and ensures that it runs without
-        // throwing an exception.
+        // userService.registerUser("username1", "password1");
         assertDoesNotThrow(() -> userService.registerUser(user.getUsername(), user.getPassword()));
 
-        verify(userRepository).findByUsername(user.getUsername());
+        assertEquals(newUser.getUsername(), "username1");
+        assertEquals(newUser.getPassword(), hashedPassword);
         verify(userRepository).save(any(User.class));
-
     }
 
     @Test
-    @DisplayName("test register - unhappy Path")
-    void testRegisterUserException() {
-        when(userRepository.findByUsername("username1")).thenReturn(Optional.of(user));
-        try {
-            userService.registerUser(user.getUsername(), user.getPassword());
-            fail("Expected an exception to be thrown due to unsuccessful sign up");
-        } catch (UsernameAlreadyExistsException e) {
-            assertEquals("Username 'username1' is already taken.", e.getMessage());
-        }
-        verify(userRepository).findByUsername(user.getUsername());
+    @DisplayName("test register fails when username exists")
+    void testRegisterFailsWhenUserExists() {
+        // have to use any, not user because "If I use 'user', Mockito is expecting the
+        // exact same object (user) to be passed as the argument in the save method, but
+        // register user creates a new instance of User with a different reference, not
+        // the user object you mocked."
+        when(userRepository.save(any(User.class)))
+                .thenThrow(new DataIntegrityViolationException("Duplicate"));
+
+        assertThrows(UsernameAlreadyExistsException.class, () -> {
+            userService.registerUser("username1", "password1");
+        });
+
+        verify(userRepository).save(any(User.class));
+    }
+
+    @Test
+    @DisplayName("test register fails when username is missing")
+    void testRegisterFailsWhenUsernameMissing() {
+        User invalidUser = user;
+        invalidUser.setUsername(null);
+
+        when(userRepository.save(any(User.class)))
+                .thenThrow(new DataIntegrityViolationException("Duplicate username"));
+
+        assertThrows(UsernameAlreadyExistsException.class, () -> {
+            userService.registerUser(invalidUser.getUsername(), invalidUser.getPassword());
+        });
     }
 
     @Test
     @DisplayName("test authenticate - happy Path")
     void testAuthenticateUser() {
-        User user = new User();
-        user.setUsername("username2");
         String originalPassword = "password";
-        user.setPassword(originalPassword);
-        String encodedPassword = passwordEncoder.encode(originalPassword);
-        user.setPassword(encodedPassword);
+        user.setPassword(hashedPassword);
+        when(bCryptPasswordEncoder.matches(originalPassword, hashedPassword)).thenReturn(true);
         when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
+
         boolean authenticated = userService.authenticateUser(user.getUsername(), originalPassword);
+        verify(bCryptPasswordEncoder, times(1)).matches(originalPassword, hashedPassword);
         verify(userRepository).findByUsername(user.getUsername());
         assertTrue(authenticated);
     }

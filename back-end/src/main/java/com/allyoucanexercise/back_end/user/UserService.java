@@ -1,6 +1,7 @@
 package com.allyoucanexercise.back_end.user;
 
 import org.springframework.stereotype.Service;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,19 +25,17 @@ public class UserService {
     }
 
     public void registerUser(String username, String password) throws UsernameAlreadyExistsException {
-        // is there a different way to address this since I will get a
-        // dataIntegrityViolation if it exists?
-        User existingUser = userRepository.findByUsername(username).orElse(null);
-        if (existingUser != null) {
-            throw new UsernameAlreadyExistsException("Username '" + existingUser.getUsername() + "' is already taken.");
-        }
 
         String encodedPassword = passwordEncoder.encode(password);
         User user = new User();
         user.setUsername(username);
         user.setPassword(encodedPassword);
-        // log.info("user is", user.getUsername());
-        userRepository.save(user);
+
+        try {
+            userRepository.save(user);
+        } catch (DataIntegrityViolationException e) {
+            throw new UsernameAlreadyExistsException("Username is already taken.");
+        }
     }
 
     public void setSession(String username, HttpServletRequest request) {
@@ -49,4 +48,14 @@ public class UserService {
         return user != null && passwordEncoder.matches(rawPassword, user.getPassword());
 
     }
+
+    // public User saveUser(User user) {
+    // User savedUser;
+    // try {
+    // savedUser = userRepository.save(user);
+    // } catch (DataIntegrityViolationException e) {
+    // throw new UsernameAlreadyExistsException("Username is already taken.");
+    // }
+    // return savedUser;
+    // }
 }
