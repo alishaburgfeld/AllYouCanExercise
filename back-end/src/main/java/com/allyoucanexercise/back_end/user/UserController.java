@@ -71,7 +71,7 @@ public class UserController {
         if (session != null && session.getAttribute("username") != null) {
             log.error("inside checkuser, session is not null, username is not null, username is {}",
                     session.getAttribute("username"));
-            user = userRepository.findByUsername(session.getAttribute("username").toString()).orElse(null);
+            user = userService.getUserByUsername(session.getAttribute("username").toString()).orElse(null);
             return user.getUsername();
         } else {
             return "";

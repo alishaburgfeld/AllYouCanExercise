@@ -29,11 +29,13 @@ CREATE TABLE IF NOT EXISTS user (
 );
 
 CREATE TABLE IF NOT EXISTS workout (
+   -- or change the MySQL schema to BIGINT if you prefer Long in Java
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     title VARCHAR(255),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     completed_at DATETIME,
+    workout_notes TEXT,
     FOREIGN KEY (user_id) REFERENCES user(id)
 );
 

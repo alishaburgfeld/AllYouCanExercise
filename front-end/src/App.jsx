@@ -131,7 +131,7 @@ useEffect(()=> {
               path="/exercises/:exerciseGroup"
               element={<ExerciseGroupPage />}
             />
-            <Route path="/exercise/:exerciseId" element={<ExercisePage setExerciseToBeAdded= {setExerciseToBeAdded}/>} />
+            <Route path="/exercise/:exerciseId" element={<ExercisePage setExerciseToBeAdded= {setExerciseToBeAdded} activeUsername={activeUsername}/>} />
             <Route path="/workout" element={<ActiveWorkoutPage activeWorkout={activeWorkout} activeUsername={activeUsername} workoutDetails={workoutDetails} setWorkoutDetails={setWorkoutDetails}/>} />
             <Route path="/workout/:workoutId" element={<ViewWorkoutPage />} /> 
           {/* the variable name after : must match the variable name you set with <variable> = useParams() */}

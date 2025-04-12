@@ -1,7 +1,6 @@
 package com.allyoucanexercise.back_end.workout;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,30 +14,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.allyoucanexercise.back_end.ExerciseApplication;
-import com.allyoucanexercise.back_end.exercise.Exercise;
-import com.allyoucanexercise.back_end.exercise.ExerciseRepository;
-import com.allyoucanexercise.back_end.user.UserRepository;
-import com.allyoucanexercise.back_end.user.UserService;
 
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/workouts")
 public class WorkoutController {
-    private final ExerciseRepository exerciseRepository;
-    private final UserRepository userRepository;
-    private final WorkoutRepository workoutRepository;
     private final WorkoutService workoutService;
 
-    public WorkoutController(final UserRepository userRepository, final ExerciseRepository exerciseRepository,
-            final WorkoutRepository workoutRepository, final WorkoutService workoutService) {
-
-        this.userRepository = userRepository;
-        this.exerciseRepository = exerciseRepository;
-        this.workoutRepository = workoutRepository;
+    public WorkoutController(final WorkoutService workoutService) {
         this.workoutService = workoutService;
     }
 
@@ -46,43 +32,35 @@ public class WorkoutController {
 
     @GetMapping()
     List<Workout> findAll() {
-        return workoutRepository.findAll();
+        return workoutService.getAllWorkouts();
     }
 
     @GetMapping("/{id}")
-    Workout findById(@PathVariable Integer id) {
-        Optional<Workout> workout = workoutRepository.findById(id);
-        if (workout.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Workout not found.");
-        }
-        return workout.get();
+    Workout findById(@PathVariable Long id) {
+        return workoutService.getWorkoutById(id);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping()
     void create(@Valid @RequestBody Workout workout) {
-        workoutRepository.create(workout);
+        workoutService.saveWorkout(workout);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}")
-    void update(@Valid @RequestBody Workout newWorkout, @PathVariable Integer id) {
-        Optional<Workout> workout = workoutRepository.findById(id);
-        if (workout.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Workout not found.");
-        }
-        workoutRepository.update(newWorkout, id);
+    void update(@Valid @RequestBody Workout newWorkout, @PathVariable Long id) {
+        workoutService.updateWorkout(newWorkout, id);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     // Could do ok here... is there a better response?
     @DeleteMapping("/{id}")
-    void delete(@PathVariable Integer id) {
-        workoutRepository.delete(id);
+    void delete(@PathVariable Long id) {
+        workoutService.deleteWorkout(id);
     }
 
     @GetMapping("/user/{username}")
     List<Workout> findByUsername(@PathVariable String username) {
-        return workoutService.findByUsername(username);
+        return workoutService.getWorkoutsByUsername(username);
     }
 }

@@ -1,35 +1,63 @@
 package com.allyoucanexercise.back_end.workout;
 
 import java.time.LocalDateTime;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
+import com.allyoucanexercise.back_end.user.User;
+
+@Entity
+@Table(name = "workout")
 public class Workout {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @NotNull
-    private Integer userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @NotEmpty
+    @Column(nullable = false)
     private String title;
+
+    @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
+
+    @Column(name = "completed_at", nullable = false)
     private LocalDateTime completedAt;
 
-    // timestamp:
-    // https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Timestamp.html
+    private String workoutNotes;
 
-    public Workout() {
-        if (this.createdAt == null) {
-            this.createdAt = LocalDateTime.now();
-        }
+    protected Workout() {
     }
 
-    public int getId() {
+    public Workout(User user, String title) {
+        this.user = user;
+        this.title = title;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public Long getUserId() {
+        return user.getId();
+    }
+
+    public User getUser() {
+        return this.user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getTitle() {
@@ -50,5 +78,13 @@ public class Workout {
 
     public void setCompletedAt(LocalDateTime completedAt) {
         this.completedAt = completedAt;
+    }
+
+    public String getWorkoutNotes() {
+        return this.workoutNotes;
+    }
+
+    public void setWorkoutNotes(String workoutNotes) {
+        this.workoutNotes = workoutNotes;
     }
 }

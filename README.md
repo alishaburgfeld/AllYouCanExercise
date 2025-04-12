@@ -43,7 +43,10 @@ its not working with the security dependency, so for now I comment that out when
 drop table exercise_set;
 drop table workout_exercise;
 drop table workout;
-drop table user;-->
+drop table user;
+drop table exercise_equipment;
+drop table equipment;
+drop table exercise;
 
 <!-- App Information -->
 
@@ -118,8 +121,9 @@ How to handle CSRF configuration: https://chatgpt.com/share/67992954-c8e0-800f-b
 4. Database variables for mysql container
 5. context load - probably not working because security dependency is disabled.
 6. Look into using CreateContext to store react user data so I don't have to keep passing user to all my pages.
+7. Need to add logic to logout to reset the active workout. Also have a problem with the sets/reps showing. Also alert the user when they've added an exercise to a workout, and alert them if they're trying to add one that is already in the workout.
    https://dev.to/jucheng925/react-persisting-data-on-page-refresh-1jhk
-7. Refactor session setting/getting on my react pages:
+8. Refactor session setting/getting on my react pages:
    // a way to potentially refactor these session states into one function:
    // search for "custom hook" https://chatgpt.com/share/67f3d8fb-12f8-800f-9475-560f78c153f4
 
@@ -140,3 +144,15 @@ https://chatgpt.com/share/67e70d05-6fe8-800f-a14d-4afaccf0600d
 
 I need to change my current user setup because it is not setting a session for the user.
 https://chatgpt.com/share/67e70d05-6fe8-800f-a14d-4afaccf0600d
+
+<!-- JPA Repository -->
+
+https://docs.spring.io/spring-data/jpa/reference/repositories/query-methods-details.html
+
+Full list of queries:
+https://docs.spring.io/spring-data/jpa/reference/repositories/query-keywords-reference.html#appendix.query.method.subject
+
+https://docs.spring.io/spring-data/jpa/docs/1.5.1.RELEASE/reference/html/jpa.repositories.html#jpa.sample-app.finders.strategies
+
+CRUD functions:
+https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/repository/CrudRepository.html

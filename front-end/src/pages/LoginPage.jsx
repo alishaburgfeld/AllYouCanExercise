@@ -10,6 +10,7 @@ export default function LoginPage({setActiveUsername}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
+  const [loginError, setLoginError] = useState(null);
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -24,14 +25,24 @@ export default function LoginPage({setActiveUsername}) {
 
   const handleLogin = async (event) => {
     event.preventDefault();
+  
     const response = await postAxiosCall("http://localhost:8080/auth/login", { username, password });
-    if (response) {
-      console.log('handleLogin response is', response)
-      setActiveUsername(response)            
+  
+    if (response.success) {
+      console.log('handleLogin response is', response.data);
+      setActiveUsername(response.data);
       handleLoginSuccess();
-    }  
-    // need to handle a 401 which is what happens when the credentials aren't recognized
-  }
+    } else {
+      if (response.error === "Unauthorized") {
+        // Show specific error message to user
+        console.error("Login failed: Invalid credentials");
+        setLoginError("Invalid username or password.");
+      } else {
+        console.error("Login failed:", response.error);
+        setLoginError("An unexpected error occurred. Please try again.");
+      }
+    }
+  };
 
   const handleSignUpRedirect = () => {
     navigate('/signup');
@@ -92,6 +103,9 @@ export default function LoginPage({setActiveUsername}) {
         </Box>
         {loggedIn ?
         <Alert severity="success">You have successfully logged in!</Alert>
+        : ""}
+        {loginError!==null ?
+        <Alert severity="error">Invalid Credentials!</Alert>
         : ""}
       </form>
     </Box>
