@@ -35,7 +35,6 @@ export const getAxiosCall = async (url) => {
 
 export const postAxiosCall = async (url, body) => {
   console.log("url in post axios call is", url);
-  // body must be an object
   try {
     const csrfToken = Cookies.get("XSRF-TOKEN");
     const response = await axios.post(url, body, {
@@ -44,13 +43,24 @@ export const postAxiosCall = async (url, body) => {
       },
       withCredentials: true,
     });
+
     if (response.data) {
-      return response.data;
+      return { success: true, data: response.data };
     } else {
       console.log("no response.data in axios post call");
+      return { success: false, error: "No data" };
     }
   } catch (error) {
     console.log("Axios Call Failed", error);
+
+    if (error.response && error.response.status === 401) {
+      return { success: false, error: "Unauthorized" };
+    }
+
+    return {
+      success: false,
+      error: error.message || "Unknown error",
+    };
   }
 };
 
