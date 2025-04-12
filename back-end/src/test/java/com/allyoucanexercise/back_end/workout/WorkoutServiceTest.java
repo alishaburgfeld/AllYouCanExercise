@@ -74,7 +74,7 @@ class WorkoutServiceTest {
     @Test
     void testGetUserWorkouts() {
 
-        when(workoutRepository.findByUserId(user.getId())).thenReturn(List.of(workout, workout2));
+        when(workoutRepository.findByUser(user)).thenReturn(List.of(workout, workout2));
         when(userService.getUserByUsername(user.getUsername())).thenReturn(Optional.of(user));
 
         List<Workout> results = workoutService.getWorkoutsByUsername(user.getUsername());
@@ -82,7 +82,7 @@ class WorkoutServiceTest {
         assertThat(results.get(0).getTitle()).isEqualTo(workout.getTitle());
         assertThat(results.get(1).getTitle()).isEqualTo(workout2.getTitle());
 
-        verify(workoutRepository).findByUserId(user.getId());
+        verify(workoutRepository).findByUser(user);
     }
 
     @Test

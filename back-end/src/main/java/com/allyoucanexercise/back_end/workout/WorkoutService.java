@@ -57,7 +57,7 @@ public class WorkoutService {
     public List<Workout> getWorkoutsByUsername(String username) {
         // what exception does this throw?
         User user = userService.getUserByUsername(username).orElse(null);
-        List<Workout> workouts = workoutRepository.findByUserId(user.getId());
+        List<Workout> workouts = workoutRepository.findByUser(user);
         return workouts;
     }
 }

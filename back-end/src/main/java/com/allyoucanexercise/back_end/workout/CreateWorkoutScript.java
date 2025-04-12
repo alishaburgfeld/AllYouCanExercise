@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.allyoucanexercise.back_end.user.User;
+import com.allyoucanexercise.back_end.workout.WorkoutService;
 
 @Component
 public class CreateWorkoutScript {
