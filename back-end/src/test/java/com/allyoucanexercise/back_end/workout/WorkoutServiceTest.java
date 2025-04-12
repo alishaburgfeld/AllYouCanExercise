@@ -41,11 +41,12 @@ class WorkoutServiceTest {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     LocalDateTime time = LocalDateTime.parse(fixedTimeString, formatter);
 
-    Workout setupCompletedWorkout(User user, String title, LocalDateTime completedAt) {
+    Workout setupCompletedWorkout(User user, String title, LocalDateTime completedAt, String workoutNotes) {
         Workout temporaryWorkout = new Workout();
         temporaryWorkout.setUser(user);
         temporaryWorkout.setTitle(title);
         temporaryWorkout.setCompletedAt(completedAt);
+        temporaryWorkout.setWorkoutNotes(workoutNotes);
         return temporaryWorkout;
     }
 
@@ -55,8 +56,8 @@ class WorkoutServiceTest {
         user.setUsername("username1");
         user.setPassword("password1");
 
-        workout = setupCompletedWorkout(user, "Test Title1", time);
-        workout2 = setupCompletedWorkout(user, "Test Title2", time);
+        workout = setupCompletedWorkout(user, "Test Title1", time, "Workout Notes");
+        workout2 = setupCompletedWorkout(user, "Test Title2", time, "Workout2 Notes");
         MockitoAnnotations.openMocks(this);
     }
 
@@ -67,6 +68,7 @@ class WorkoutServiceTest {
 
         Workout foundWorkout = workoutService.getWorkoutById(id);
         assertThat(foundWorkout.getTitle()).isEqualTo("Test Title1");
+        assertThat(foundWorkout.getWorkoutNotes()).isEqualTo("Workout Notes");
 
         verify(workoutRepository, times(1)).findById(id);
     }
@@ -93,6 +95,20 @@ class WorkoutServiceTest {
         assertThat(savedWorkout.getTitle()).isEqualTo("Test Title1");
 
         verify(workoutRepository).save(workout);
+    }
+
+    @Test
+    @DisplayName("test save works if notes are null")
+    void testSaveWithNoNotes() {
+        Workout workoutWithNoNotes = workout;
+        workoutWithNoNotes.setWorkoutNotes(null);
+
+        when(workoutRepository.save(workoutWithNoNotes)).thenReturn(workoutWithNoNotes);
+
+        Workout savedWorkout = workoutService.saveWorkout(workoutWithNoNotes);
+        assertThat(savedWorkout.getTitle()).isEqualTo("Test Title1");
+
+        verify(workoutRepository).save(workoutWithNoNotes);
     }
 
     @Test

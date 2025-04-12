@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS workout (
     title VARCHAR(255),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     completed_at DATETIME,
+    workout_notes TEXT,
     FOREIGN KEY (user_id) REFERENCES user(id)
 );
 

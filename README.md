@@ -43,7 +43,10 @@ its not working with the security dependency, so for now I comment that out when
 drop table exercise_set;
 drop table workout_exercise;
 drop table workout;
-drop table user;-->
+drop table user;
+drop table exercise_equipment;
+drop table equipment;
+drop table exercise;
 
 <!-- App Information -->
 

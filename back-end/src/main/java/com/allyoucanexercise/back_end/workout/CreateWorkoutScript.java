@@ -28,6 +28,7 @@ public class CreateWorkoutScript {
         temporaryWorkout.setUser(user);
         temporaryWorkout.setTitle("Sample User 15 Workout Title");
         temporaryWorkout.setCompletedAt(currentTime);
+        temporaryWorkout.setWorkoutNotes("this workout was really fun");
         log.error("in create script, temporary workout is {}", temporaryWorkout);
         workoutService.saveWorkout(temporaryWorkout);
     }
