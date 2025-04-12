@@ -58,7 +58,7 @@ class ExerciseServiceTest {
     @Test
     void testGetExerciseById() {
         long id = 1;
-        when(exerciseRepository.findById(id)).thenReturn(Optional.of(exercise));
+        when(exerciseRepository.findById(id)).thenReturn(Optional.of(chestExercise));
 
         Exercise foundExercise = exerciseService.getExerciseById(id);
         assertThat(foundExercise.getName()).isEqualTo("Push Up");
@@ -150,24 +150,26 @@ class ExerciseServiceTest {
     void testUpdateExercise() {
         long id = 1;
 
-        Exercise exerciseWithNewDescription = cardioExercise1;
         cardioExercise1.setId(id);
+        Exercise exerciseWithNewDescription = cardioExercise1;
         exerciseWithNewDescription.setDescription("Updated Run description");
 
-        when(exerciseRepository.update(exerciseWithNewDescription, cardioExercise1.getId()))
-                .thenReturn(exerciseWithNewDescription);
+        when(exerciseRepository.existsById(id)).thenReturn(true);
+        when(exerciseRepository.save(exerciseWithNewDescription)).thenReturn(exerciseWithNewDescription);
 
         Exercise updatedExercise = exerciseService.updateExercise(exerciseWithNewDescription, cardioExercise1.getId());
         assertThat(updatedExercise.getDescription()).isEqualTo("Updated Run description");
 
-        verify(exerciseRepository).update(exerciseWithNewDescription, id);
+        verify(exerciseRepository).save(exerciseWithNewDescription);
     }
 
     @Test
     void testDelete() {
         long id = 1;
         chestExercise.setId(id);
+        when(exerciseRepository.existsById(id)).thenReturn(true);
         exerciseService.deleteExercise(id);
+        verify(exerciseRepository, times(1)).existsById(id);
         verify(exerciseRepository, times(1)).deleteById(id);
     }
 
