@@ -67,28 +67,35 @@ public class WorkoutController {
     }
 
     @PostMapping("/full/save")
-    ResponseEntity<?> saveFullWorkout(@RequestBody String username, @RequestBody String title,
-            @RequestBody LocalDateTime completedAt,
-            @RequestBody List<WorkoutIndividualExerciseDetailsDTO> fullWorkoutDetails) {
-        workoutService.saveFullWorkout(username, title, completedAt, fullWorkoutDetails);
-        return ResponseEntity.ok("Workout saved");
+    public ResponseEntity<?> saveFullWorkout(@RequestBody WorkoutRequestDTO request) {
+        workoutService.saveFullWorkout(request);
+        return ResponseEntity.ok().build();
     }
 }
 
-"workout details": {"username": "xusername", "title", "xtitle", "completedAt", "xtime", "notes", "xnotes"}
-"exercise details": 
 // exercise order is just the index of the object in the array + 1
 // set order is just the index of the object in the array + 1
-[
-{"id": "xid1", "sets": [
-    {"reps": "xreps", "weight": "xweight", "duration": "xduration", "distance": "xdistance"}
-    {"reps": "xreps", "weight": "xweight", "duration": "xduration", "distance": "xdistance"}
-]}
-
-{"id": "xid2", "setsforExercise2": [
-    {"reps": "xreps", "weight": "xweight", "duration": "xduration", "distance": "xdistance"}
-    {"reps": "xreps", "weight": "xweight", "duration": "xduration", "distance": "xdistance"}
-]}
-
-
-]
+// {
+// "workoutDetails": {
+// "username": "xusername",
+// "title": "xtitle",
+// "completedAt": "2025-04-13T14:00:00",
+// "notes": "xnotes"
+// },
+// "workoutExerciseDetails": [
+// {
+// "id": 1,
+// "sets": [
+// { "reps": 10, "weight": 50.0, "duration": 0, "distance": 0 },
+// { "reps": 8, "weight": 55.0, "duration": 0, "distance": 0 }
+// ]
+// },
+// {
+// "id": 2,
+// "sets": [
+// { "reps": 15, "weight": 0.0, "duration": 900, "distance": 2000 },
+// { "reps": 10, "weight": 0.0, "duration": 600, "distance": 1500 }
+// ]
+// }
+// ]
+// }

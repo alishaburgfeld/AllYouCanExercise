@@ -8,6 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.allyoucanexercise.back_end.exercise.Exercise;
+import com.allyoucanexercise.back_end.workout.Workout;
+
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
@@ -25,6 +28,14 @@ public class WorkoutExerciseService {
     }
 
     public WorkoutExercise saveWorkoutExercise(WorkoutExercise workoutExercise) {
+        return workoutExerciseRepository.save(workoutExercise);
+    }
+
+    public WorkoutExercise saveWorkoutExercise(Workout workout, Exercise exercise, Integer exerciseOrder) {
+        WorkoutExercise workoutExercise = new WorkoutExercise();
+        workoutExercise.setWorkout(workout);
+        workoutExercise.setExercise(exercise);
+        workoutExercise.setExerciseOrder(exerciseOrder);
         return workoutExerciseRepository.save(workoutExercise);
     }
 

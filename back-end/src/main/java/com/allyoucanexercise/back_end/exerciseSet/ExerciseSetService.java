@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.allyoucanexercise.back_end.workoutExercise.WorkoutExercise;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -22,6 +23,18 @@ public class ExerciseSetService {
     }
 
     public ExerciseSet saveExerciseSet(ExerciseSet exerciseSet) {
+        return ExerciseSetRepository.save(exerciseSet);
+    }
+
+    public ExerciseSet saveExerciseSet(WorkoutExercise workoutExercise, Integer setOrder, Integer reps, Float weight,
+            Integer durationSeconds, Integer distanceMeters) {
+        ExerciseSet exerciseSet = new ExerciseSet();
+        exerciseSet.setWorkoutExercise(workoutExercise);
+        exerciseSet.setSetOrder(setOrder);
+        exerciseSet.setReps(reps);
+        exerciseSet.setWeight(weight);
+        exerciseSet.setDurationSeconds(durationSeconds);
+        exerciseSet.setDistanceMeters(distanceMeters);
         return ExerciseSetRepository.save(exerciseSet);
     }
 
