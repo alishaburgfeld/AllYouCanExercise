@@ -16,7 +16,7 @@ public class ExerciseSet {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "workout_id", nullable = false)
+    @JoinColumn(name = "workout_exercise_id", nullable = false)
     private WorkoutExercise workoutExercise;
 
     @Column(nullable = false)
@@ -27,12 +27,30 @@ public class ExerciseSet {
     private Integer durationSeconds;
     private Integer distanceMeters;
 
+    protected ExerciseSet(WorkoutExercise workoutExercise, Integer setOrder, Integer reps, Float weight,
+            Integer durationSeconds, Integer distanceMeters) {
+        this.workoutExercise = workoutExercise;
+        this.setOrder = setOrder;
+        this.reps = reps;
+        this.weight = weight;
+        this.durationSeconds = durationSeconds;
+        this.distanceMeters = distanceMeters;
+    }
+
+    public ExerciseSet() {
+
+    }
+
     public Long getId() {
         return id;
     }
 
-    public Workout getWorkoutExercise() {
-        return workout;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public WorkoutExercise getWorkoutExercise() {
+        return workoutExercise;
     }
 
     public void setWorkoutExercise(WorkoutExercise workoutExercise) {
@@ -45,14 +63,6 @@ public class ExerciseSet {
 
     public void setSetOrder(Integer setOrder) {
         this.setOrder = setOrder;
-    }
-
-    public Integer getSets() {
-        return sets;
-    }
-
-    public void setSets(Integer sets) {
-        this.sets = sets;
     }
 
     public Integer getReps() {

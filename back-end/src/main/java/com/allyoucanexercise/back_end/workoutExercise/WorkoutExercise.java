@@ -31,6 +31,16 @@ public class WorkoutExercise {
     @Column(name = "exercise_order", nullable = false)
     private Integer exerciseOrder;
 
+    protected WorkoutExercise() {
+
+    }
+
+    public WorkoutExercise(Workout workout, Exercise exercise, Integer exerciseOrder) {
+        this.workout = workout;
+        this.exercise = exercise;
+        this.exerciseOrder = exerciseOrder;
+    }
+
     public Long getId() {
         return id;
     }
