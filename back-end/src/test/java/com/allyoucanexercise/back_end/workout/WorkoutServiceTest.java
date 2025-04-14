@@ -263,6 +263,8 @@ class WorkoutServiceTest {
         verify(exerciseService, times(1)).getExerciseById((long) 1);
         verify(exerciseService, times(1)).getExerciseById((long) 2);
         // verify(workoutRepository).save(any(Workout.class));
+        // verify(workoutExerciseService,
+        // times(2)).saveWorkoutExercise(any(WorkoutExercise.class));
         verify(workoutExerciseService, times(2)).saveWorkoutExercise(any(WorkoutExercise.class));
         verify(exerciseSetService, times(3)).saveExerciseSet(any());
     }
