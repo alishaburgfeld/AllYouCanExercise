@@ -27,7 +27,7 @@ public class ExerciseSet {
     private Integer durationSeconds;
     private Integer distanceMeters;
 
-    protected ExerciseSet(WorkoutExercise workoutExercise, Integer setOrder, Integer reps, Float weight,
+    public ExerciseSet(WorkoutExercise workoutExercise, Integer setOrder, Integer reps, Float weight,
             Integer durationSeconds, Integer distanceMeters) {
         this.workoutExercise = workoutExercise;
         this.setOrder = setOrder;
@@ -37,7 +37,7 @@ public class ExerciseSet {
         this.distanceMeters = distanceMeters;
     }
 
-    public ExerciseSet() {
+    protected ExerciseSet() {
 
     }
 

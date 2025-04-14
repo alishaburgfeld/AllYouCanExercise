@@ -84,7 +84,7 @@ public class WorkoutController {
 // },
 // "workoutExerciseDetails": [
 // {
-// "id": 1,
+// "exerciseId": 1,
 // "sets": [
 // { "reps": 10, "weight": 50.0, "duration": 0, "distance": 0 },
 // { "reps": 8, "weight": 55.0, "duration": 0, "distance": 0 }

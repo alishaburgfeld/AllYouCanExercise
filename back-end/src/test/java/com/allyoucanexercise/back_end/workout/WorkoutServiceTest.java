@@ -8,8 +8,18 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import com.allyoucanexercise.back_end.exercise.Exercise;
+import com.allyoucanexercise.back_end.exercise.ExerciseGroup;
+import com.allyoucanexercise.back_end.exercise.ExerciseService;
+import com.allyoucanexercise.back_end.exercise.ExerciseType;
+import com.allyoucanexercise.back_end.exerciseSet.ExerciseSet;
+import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetDTO;
+import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetService;
 import com.allyoucanexercise.back_end.user.User;
 import com.allyoucanexercise.back_end.user.UserService;
+import com.allyoucanexercise.back_end.workoutExercise.WorkoutExercise;
+import com.allyoucanexercise.back_end.workoutExercise.WorkoutExerciseService;
+import com.allyoucanexercise.back_end.workoutExercise.WorkoutExerciseDetailsDTO;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -31,6 +41,15 @@ class WorkoutServiceTest {
     @Mock
     private UserService userService;
 
+    @Mock
+    private ExerciseService exerciseService;
+
+    @Mock
+    private WorkoutExerciseService workoutExerciseService;
+
+    @Mock
+    private ExerciseSetService exerciseSetService;
+
     @InjectMocks
     private WorkoutService workoutService;
 
@@ -41,7 +60,7 @@ class WorkoutServiceTest {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     LocalDateTime time = LocalDateTime.parse(fixedTimeString, formatter);
 
-    Workout setupCompletedWorkout(User user, String title, LocalDateTime completedAt, String workoutNotes) {
+    private Workout setupCompletedWorkout(User user, String title, LocalDateTime completedAt, String workoutNotes) {
         Workout temporaryWorkout = new Workout();
         temporaryWorkout.setUser(user);
         temporaryWorkout.setTitle(title);
@@ -186,4 +205,93 @@ class WorkoutServiceTest {
 
         verify(workoutRepository).existsById(invalidId);
     }
+
+    @Test
+    void testSaveFullWorkout() {
+        Float weight = (float) 10.00;
+        long id = 1;
+        long id2 = 2;
+
+        WorkoutDetailsDTO workoutDetailsDTO = setupWorkoutDetailsDTO("username1", "Test Title1", time, "Workout Notes");
+
+        ExerciseSetDTO set1 = setupExerciseSetDTO(10, weight, null, null);
+        ExerciseSetDTO set2 = setupExerciseSetDTO(null, null, 900, 300);
+        ExerciseSetDTO set3 = setupExerciseSetDTO(null, null, 1200, 900);
+
+        WorkoutExerciseDetailsDTO workoutExerciseDetails1 = setupWorkoutExerciseDetailsDTO(id, List.of(set1, set2));
+        WorkoutExerciseDetailsDTO workoutExerciseDetails2 = setupWorkoutExerciseDetailsDTO((long) 2,
+                List.of(set3));
+
+        WorkoutRequestDTO workoutRequestDTO = new WorkoutRequestDTO();
+
+        workoutRequestDTO.setWorkoutDetails(workoutDetailsDTO);
+        workoutRequestDTO.setWorkoutExerciseDetails(List.of(workoutExerciseDetails1, workoutExerciseDetails2));
+
+        Exercise chestExercise = new Exercise(
+                "Push Up",
+                ExerciseGroup.CHEST,
+                ExerciseType.UPPERBODY,
+                "A basic push up");
+
+        Exercise cardioExercise = new Exercise(
+                "Run",
+                ExerciseGroup.CARDIO,
+                ExerciseType.CARDIO,
+                "Run fast");
+
+        WorkoutExercise workoutExercise = new WorkoutExercise(workout, chestExercise, 1);
+
+        when(userService.getUserByUsername(user.getUsername())).thenReturn(Optional.of(user));
+        when(exerciseService.getExerciseById(id)).thenReturn(chestExercise);
+        when(exerciseService.getExerciseById(id2)).thenReturn(cardioExercise);
+        // would do this for every workout exercise, but just using any class to do it
+        // once
+        when(workoutExerciseService.saveWorkoutExercise(any(WorkoutExercise.class))).thenReturn(workoutExercise);
+
+        when(workoutRepository.save(any(Workout.class))).thenReturn(workout);
+        ExerciseSet savedSet1 = new ExerciseSet(workoutExercise, 1, set1.getReps(), set1.getWeight(),
+                set1.getDurationSeconds(),
+                set1.getDistanceMeters());
+
+        // would do this for every exercise set, but just using any class to do it once
+        when(exerciseSetService.saveExerciseSet(any(ExerciseSet.class)))
+                .thenReturn(savedSet1);
+
+        workoutService.saveFullWorkout(workoutRequestDTO);
+
+        verify(userService).getUserByUsername(user.getUsername());
+        verify(exerciseService, times(1)).getExerciseById((long) 1);
+        verify(exerciseService, times(1)).getExerciseById((long) 2);
+        // verify(workoutRepository).save(any(Workout.class));
+        verify(workoutExerciseService, times(2)).saveWorkoutExercise(any(WorkoutExercise.class));
+        verify(exerciseSetService, times(3)).saveExerciseSet(any());
+    }
+
+    private WorkoutDetailsDTO setupWorkoutDetailsDTO(String username, String title, LocalDateTime completedAt,
+            String workoutNotes) {
+        WorkoutDetailsDTO workoutDetails = new WorkoutDetailsDTO();
+        workoutDetails.setUsername(username);
+        workoutDetails.setTitle(title);
+        workoutDetails.setCompletedAt(completedAt);
+        workoutDetails.setWorkoutNotes(workoutNotes);
+        return workoutDetails;
+    }
+
+    private WorkoutExerciseDetailsDTO setupWorkoutExerciseDetailsDTO(Long id, List<ExerciseSetDTO> sets) {
+        WorkoutExerciseDetailsDTO workoutExerciseDetails = new WorkoutExerciseDetailsDTO();
+        workoutExerciseDetails.setExerciseId(id);
+        workoutExerciseDetails.setSets(sets);
+        return workoutExerciseDetails;
+    }
+
+    private ExerciseSetDTO setupExerciseSetDTO(Integer reps, Float weight, Integer durationSeconds,
+            Integer distanceMeters) {
+        ExerciseSetDTO exerciseSetDTO = new ExerciseSetDTO();
+        exerciseSetDTO.setReps(reps);
+        exerciseSetDTO.setWeight(weight);
+        exerciseSetDTO.setDurationSeconds(durationSeconds);
+        exerciseSetDTO.setDistanceMeters(distanceMeters);
+        return exerciseSetDTO;
+    }
+
 }

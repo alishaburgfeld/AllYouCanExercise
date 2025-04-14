@@ -97,7 +97,7 @@ public class WorkoutService {
 
         for (int i = 0; i < workoutExerciseDetails.size(); i++) {
             WorkoutExerciseDetailsDTO workoutExerciseDetailsDTO = workoutExerciseDetails.get(i);
-            Exercise exercise = exerciseService.getExerciseById(workoutExerciseDetailsDTO.getId());
+            Exercise exercise = exerciseService.getExerciseById(workoutExerciseDetailsDTO.getExerciseId());
             Integer exerciseOrder = i + 1;
             WorkoutExercise workoutExercise = workoutExerciseService.saveWorkoutExercise(workout, exercise,
                     exerciseOrder);

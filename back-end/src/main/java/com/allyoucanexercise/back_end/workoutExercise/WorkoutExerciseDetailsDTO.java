@@ -5,15 +5,15 @@ import java.util.List;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetDTO;
 
 public class WorkoutExerciseDetailsDTO {
-    private Long id;
+    private Long exerciseId;
     private List<ExerciseSetDTO> sets;
 
-    public Long getId() {
-        return id;
+    public Long getExerciseId() {
+        return exerciseId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setExerciseId(Long exerciseId) {
+        this.exerciseId = exerciseId;
     }
 
     public List<ExerciseSetDTO> getSets() {
