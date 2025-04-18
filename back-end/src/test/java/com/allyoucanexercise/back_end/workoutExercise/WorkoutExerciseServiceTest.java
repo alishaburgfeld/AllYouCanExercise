@@ -59,7 +59,9 @@ class WorkoutExerciseServiceTest {
 
         // (result.getWorkout())
         assertEquals(workoutExercise, result);
-        assertEquals(workoutExercise.getExerciseOrder(), 1);
+        assertEquals(result.getWorkout(), workout);
+        assertEquals(result.getExercise(), chestExercise);
+        assertEquals(result.getExerciseOrder(), 1);
         verify(workoutExerciseRepository).save(workoutExercise);
     }
 
