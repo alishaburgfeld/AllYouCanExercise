@@ -16,6 +16,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { getAxiosCall } from "./utils/HelperFunctions"
 import CssBaseline from "@mui/material/CssBaseline";
 import theme from "../../front-end/src/utils/theme";
+import TestPage from "./pages/TestPage"
 
 
 const getInitialUsername = () => {
@@ -45,15 +46,14 @@ function App() {
 
   const setExerciseInfo =(exercise) =>{
     if (exercise) {
-
       let exerciseInfo = {}
+      exerciseInfo["exerciseId"] = exercise.id
       if (exercise.exerciseType==="CARDIO") {
-        exerciseInfo["exerciseId"] = exercise.id
         exerciseInfo["duration"] = 930
+        exerciseInfo["distance"] = 300
       }
       else {
         exerciseInfo= {"sets": 4, "reps": 10, "weight": 10}
-        exerciseInfo["exerciseId"] = exercise.id
       }
       console.log('exerciseInfo is', exerciseInfo)
       return exerciseInfo;
@@ -73,12 +73,8 @@ function App() {
       updatedWorkoutDetails = [setExerciseInfo(exerciseToBeAdded)];
     }
     console.log('updatedAtiveWorkout is', updatedActiveWorkout, "updatedWorkoutDetails is", updatedWorkoutDetails)
-  //   setActiveWorkout((prevActiveWorkout) => [...prevActiveWorkout, exercise]);
-  //   console.log('prior to adding a new one, activeworkout is', activeWorkout)
-  //   console.log('prior to adding a new one, workoutdetails is', workoutDetails)
-  //   setWorkoutDetails((prevWorkoutDetails) => [...prevWorkoutDetails, setExerciseInfo(exercise)]);
-  setActiveWorkout(updatedActiveWorkout);
-  setWorkoutDetails(updatedWorkoutDetails);
+    setActiveWorkout(updatedActiveWorkout);
+    setWorkoutDetails(updatedWorkoutDetails);
 };
 
 const checkForUserSession= async () => {
@@ -125,6 +121,7 @@ useEffect(()=> {
           <Navbar activeUsername={activeUsername} setActiveUsername={setActiveUsername} setActiveWorkout={setActiveWorkout} setWorkoutDetails={setWorkoutDetails}/>
           <Routes>
             <Route path="/" element={<Homepage />} />
+            <Route path="/test" element={<TestPage />} />
             <Route path="/login" element={<LoginPage setActiveUsername={setActiveUsername}/>} />
             <Route path="/signup" element={<SignUpPage />} />
             <Route
@@ -143,3 +140,30 @@ useEffect(()=> {
 }
 
 export default App;
+
+
+// need to send:
+// {
+// "workoutDetails": {
+// "username": "xusername",
+// "title": "xtitle",
+// "completedAt": "2025-04-13T14:00:00",
+// "notes": "xnotes"
+// },
+// "workoutExerciseDetails": [
+// {
+// "exerciseId": 1,
+// "sets": [
+// { "reps": 10, "weight": 50.0, "duration": 0, "distance": 0 },
+// { "reps": 8, "weight": 55.0, "duration": 0, "distance": 0 }
+// ]
+// },
+// {
+// "exerciseId": 2,
+// "sets": [
+// { "reps": 15, "weight": 0.0, "duration": 900, "distance": 2000 },
+// { "reps": 10, "weight": 0.0, "duration": 600, "distance": 1500 }
+// ]
+// }
+// ]
+// }

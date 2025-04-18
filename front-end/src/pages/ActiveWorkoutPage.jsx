@@ -46,3 +46,30 @@ export default function ActiveWorkoutPage({activeWorkout, activeUsername, workou
         </Box>
     )
 }   
+
+
+// need to send:
+// {
+// "workoutDetails": {
+// "username": "xusername",
+// "title": "xtitle",
+// "completedAt": "2025-04-13T14:00:00",
+// "notes": "xnotes"
+// },
+// "workoutExerciseDetails": [
+// {
+// "exerciseId": 1,
+// "sets": [
+// { "reps": 10, "weight": 50.0, "duration": 0, "distance": 0 },
+// { "reps": 8, "weight": 55.0, "duration": 0, "distance": 0 }
+// ]
+// },
+// {
+// "id": 2,
+// "sets": [
+// { "reps": 15, "weight": 0.0, "duration": 900, "distance": 2000 },
+// { "reps": 10, "weight": 0.0, "duration": 600, "distance": 1500 }
+// ]
+// }
+// ]
+// }
