@@ -18,8 +18,11 @@ export default function SetsRepsDuration ({exercise, workoutDetails}) {
 
     const determineSetsRepsOrDuration = (exercise) => {
         const workoutExerciseDetail = determineWorkoutExerciseDetail();
+        console.log('workoutexercisedetail is', workoutExerciseDetail)
+        console.log('exercise is', exercise)
         let exerciseInfo;
-        if (exercise.type === 'cardio') {
+        if (exercise.exerciseType === 'CARDIO') {
+            console.log("exercise is cardio, exercise duration is", workoutExerciseDetail.duration);
             exerciseInfo = formatExerciseDurationIntoMinutesAndSeconds(workoutExerciseDetail.duration);
         } else {
             if (workoutExerciseDetail) {

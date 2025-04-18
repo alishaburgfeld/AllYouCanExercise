@@ -28,7 +28,7 @@ export default function ActiveWorkoutPage({activeWorkout, activeUsername, workou
                 Active Workout
             </Typography>
             <Box className="activeWorkout_ItemContainer">
-            {activeWorkout[0]
+            {activeWorkout!==null
                 ? (
                 activeWorkout.map((exercise)=> (
                 <Box key={exercise.id} className="activeWorkout_items" sx={{pb:5, borderRadius: 1, border:2, borderColor: theme.palette.secondary.main, position: "relative"}}>
