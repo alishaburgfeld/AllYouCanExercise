@@ -104,7 +104,7 @@ public class WorkoutService {
 
             List<ExerciseSetDTO> exerciseSetDTOs = workoutExerciseDetailsDTO.getSets();
             for (int j = 0; j < exerciseSetDTOs.size(); j++) {
-                Integer setOrder = j;
+                Integer setOrder = j + 1;
                 ExerciseSetDTO setDTO = exerciseSetDTOs.get(j);
                 exerciseSetService.saveExerciseSet(workoutExercise, setOrder, setDTO.getReps(), setDTO.getWeight(),
                         setDTO.getDurationSeconds(), setDTO.getDistanceMeters());
