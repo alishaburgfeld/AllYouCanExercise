@@ -36,9 +36,11 @@ public class Workout {
     protected Workout() {
     }
 
-    public Workout(User user, String title) {
+    public Workout(User user, String title, LocalDateTime completedAt, String workoutNotes) {
         this.user = user;
         this.title = title;
+        this.completedAt = completedAt;
+        this.workoutNotes = workoutNotes;
     }
 
     public Long getId() {
