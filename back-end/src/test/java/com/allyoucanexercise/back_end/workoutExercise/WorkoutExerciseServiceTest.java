@@ -71,7 +71,6 @@ class WorkoutExerciseServiceTest {
         WorkoutExercise invalidWorkoutExercise = new WorkoutExercise(workout, chestExercise, 1);
         invalidWorkoutExercise.setExerciseOrder(null);
 
-        // this is the type of exception thrown when you don't follow @NotNull, etc
         when(workoutExerciseRepository.save(invalidWorkoutExercise))
                 .thenThrow(new DataIntegrityViolationException("ExerciseOrder cannot be null"));
 

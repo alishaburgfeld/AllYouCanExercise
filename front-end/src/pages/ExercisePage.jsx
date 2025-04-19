@@ -9,6 +9,8 @@ import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
 import { IconButton } from "@mui/material";
 import "../css/ExercisePage.css"
+import Alert from '@mui/material/Alert';
+import ExerciseAddedAlert from "../components/Exercise/ExerciseAddedAlert";
 
 
 function ExercisePage({setExerciseToBeAdded, activeUsername}) {
@@ -18,6 +20,7 @@ function ExercisePage({setExerciseToBeAdded, activeUsername}) {
     const [exercise, setExercise] = useState({});
     const [exerciseHistory, setExerciseHistory] = useState([])
     const [exerciseRecord, setExerciseRecord] = useState([])
+    const [openExerciseAddedAlert, setOpenExerciseAddedAlert] = useState(false);
     
     // add call to get history and records
     const getExercise = async () => {
@@ -30,6 +33,11 @@ function ExercisePage({setExerciseToBeAdded, activeUsername}) {
         }
     };
 
+    const handleClickToAddWorkout = (exercise) => {
+        setExerciseToBeAdded(exercise);
+        setOpenExerciseAddedAlert(true);
+    }
+
   useEffect(()=> {
     getExercise();
   }, [exerciseId])
@@ -39,13 +47,27 @@ function ExercisePage({setExerciseToBeAdded, activeUsername}) {
             <Typography className="exercisePage_title" sx={{fontSize:"1.8rem", pt:"4rem", mt: "3.2rem", mb: "1rem", color: theme.palette.secondary.main}}>
                 {exercise.name}
             </Typography>
-            {activeUsername!== null?
-                <IconButton className = "exercisePage_addToWorkout" aria-label="add-to-workout" sx={{color: theme.palette.secondary.main, position:"absolute", top:"8%", right:"45%"}} onClick={() => setExerciseToBeAdded(exercise)}>
-                        <PlaylistAddIcon fontSize ="large"/>
-                    </IconButton>
-            : <span>Login to add workout</span>
-                
-            }
+        {activeUsername !== null ? (
+            <>
+            <IconButton
+                className="exercisePage_addToWorkout"
+                aria-label="add-to-workout"
+                sx={{
+                    color: theme.palette.secondary.main,
+                    position: "absolute",
+                    top: "8%",
+                    right: "45%",
+                }}
+                onClick={() => handleClickToAddWorkout(exercise)}
+            >
+                <PlaylistAddIcon fontSize="large" />
+            </IconButton>
+            <ExerciseAddedAlert openExerciseAddedAlert={openExerciseAddedAlert} setOpenExerciseAddedAlert= {setOpenExerciseAddedAlert}/>
+            </>
+            ) : (
+            <span>Login to add workout</span>
+            )}
+
             <Box className="exercisePage_ItemContainer" sx={{ padding: '1rem' }}>
                 <img src={getImageSource(exercise.name)} className="exercisePage_image" alt={exercise.name}/>
                 <Box className="exercisePage_description" sx={{mt:"1rem", borderRadius: 1, border:2, borderColor: theme.palette.secondary.main }}>

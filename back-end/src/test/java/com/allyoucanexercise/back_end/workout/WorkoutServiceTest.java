@@ -254,9 +254,8 @@ class WorkoutServiceTest {
 
         // Initially here I was passing in my workout not the any workout class version,
         // but my test was failing because I was passing one instance of Workout to
-        // when(...).thenReturn(...) in my
-        // test, but inside saveFullWorkout(), the method saves a different instance of
-        // Workout
+        // when(...).thenReturn(...) in my test, but inside
+        // saveFullWorkout(), the method saves a different instance of Workout
         // Even if the fields are the same, unless the exact object reference matches,
         // Mockito will treat them as different objects.
 
