@@ -29,52 +29,49 @@ const getInitialActiveWorkout = () => {
   return activeWorkout ? JSON.parse(activeWorkout) : null
 }
 
-const getInitialWorkoutDetails = () => {
-  const workoutDetails = sessionStorage.getItem("workoutDetails");
-  return workoutDetails ? JSON.parse(workoutDetails) : null
-}
-
 function App() {
 
   const [activeWorkout, setActiveWorkout] = useState(getInitialActiveWorkout());
   const [exerciseToBeAdded, setExerciseToBeAdded] = useState(null);
-  const [workoutDetails, setWorkoutDetails] = useState(getInitialWorkoutDetails());
   const [activeUsername, setActiveUsername] =useState(getInitialUsername());
 
-  console.log('active username, active workout, workoutDetails on app,jsx', activeUsername, activeWorkout, workoutDetails)
+  console.log('active username, active workout,on app,jsx', activeUsername, activeWorkout)
   // explains why strict mode causes this console log to render twice: https://chatgpt.com/share/67f3d8fb-12f8-800f-9475-560f78c153f4
 
-  const setExerciseInfo =(exercise) =>{
+  const setExerciseInfo = (exercise) => {
     if (exercise) {
-      let exerciseInfo = {}
-      exerciseInfo["exerciseId"] = exercise.id
-      if (exercise.exerciseType==="CARDIO") {
-        exerciseInfo["duration"] = 930
-        exerciseInfo["distance"] = 300
-      }
-      else {
-        exerciseInfo= {"sets": 4, "reps": 10, "weight": 10}
-      }
-      console.log('exerciseInfo is', exerciseInfo)
+      let exerciseInfo = {
+        exerciseId: exercise.id,
+        name: exercise.name,
+        description: exercise.description,
+        exerciseGroup: exercise.exerciseGroup,
+        exerciseType: exercise.exerciseType,
+        // Set values based on whether the exercise is cardio or not
+        sets: exercise.exerciseType === "CARDIO" ? 1 : 4, // Cardio gets 1 set, others get 4
+        reps: exercise.exerciseType === "CARDIO" ? undefined : 10, // Cardio doesn't have reps
+        weight: exercise.exerciseType === "CARDIO" ? undefined : 10, // Cardio doesn't have weight
+        duration: exercise.exerciseType === "CARDIO" ? 930 : undefined, // Cardio gets a duration value
+        distance: exercise.exerciseType === "CARDIO" ? 300 : undefined, // Cardio gets a distance value
+      };
+      
+      console.log('exerciseInfo is', exerciseInfo);
       return exerciseInfo;
     }
+  };
+  
+
+const addToActiveWorkout = (exerciseToBeAdded) => {
+  let updatedActiveWorkout;
+  
+  if (activeWorkout && !activeWorkout.some(exercise => exercise.exerciseId === exerciseToBeAdded.id)) {
+    // Add exercise if not already in the activeWorkout
+    updatedActiveWorkout = [...activeWorkout, setExerciseInfo(exerciseToBeAdded)];
+  } else {
+    updatedActiveWorkout = [setExerciseInfo(exerciseToBeAdded)]
   }
 
-  const addToActiveWorkout= (exerciseToBeAdded) => {
-    console.log('in addtoActiveworkout')
-    let updatedActiveWorkout;
-    let updatedWorkoutDetails
-    if (activeWorkout && workoutDetails && !activeWorkout.includes(exerciseToBeAdded) && !workoutDetails.includes(exerciseToBeAdded)) {
-      updatedActiveWorkout = [...activeWorkout, exerciseToBeAdded];
-      updatedWorkoutDetails = [...workoutDetails, setExerciseInfo(exerciseToBeAdded)];
-    }
-    else {
-      updatedActiveWorkout = [exerciseToBeAdded];
-      updatedWorkoutDetails = [setExerciseInfo(exerciseToBeAdded)];
-    }
-    console.log('updatedAtiveWorkout is', updatedActiveWorkout, "updatedWorkoutDetails is", updatedWorkoutDetails)
-    setActiveWorkout(updatedActiveWorkout);
-    setWorkoutDetails(updatedWorkoutDetails);
+  console.log('updatedActiveWorkout is', updatedActiveWorkout);
+  setActiveWorkout(updatedActiveWorkout);
 };
 
 const checkForUserSession= async () => {
@@ -102,10 +99,6 @@ useEffect(()=> {
   }, [activeWorkout])
 
   useEffect(() => {
-    sessionStorage.setItem("workoutDetails", JSON.stringify(workoutDetails))
-  }, [workoutDetails])
-
-  useEffect(() => {
     // only run this function if exerciseToBeAdded has a value, not on first render when its null
     if (exerciseToBeAdded) {
       addToActiveWorkout(exerciseToBeAdded);
@@ -118,7 +111,7 @@ useEffect(()=> {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <BrowserRouter>
-          <Navbar activeUsername={activeUsername} setActiveUsername={setActiveUsername} setActiveWorkout={setActiveWorkout} setWorkoutDetails={setWorkoutDetails}/>
+          <Navbar activeUsername={activeUsername} setActiveUsername={setActiveUsername} setActiveWorkout={setActiveWorkout}/>
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/test" element={<TestPage />} />
@@ -129,7 +122,7 @@ useEffect(()=> {
               element={<ExerciseGroupPage />}
             />
             <Route path="/exercise/:exerciseId" element={<ExercisePage setExerciseToBeAdded= {setExerciseToBeAdded} activeUsername={activeUsername}/>} />
-            <Route path="/workout" element={<ActiveWorkoutPage activeWorkout={activeWorkout} activeUsername={activeUsername} workoutDetails={workoutDetails} setWorkoutDetails={setWorkoutDetails}/>} />
+            <Route path="/workout" element={<ActiveWorkoutPage activeWorkout={activeWorkout} activeUsername={activeUsername} setActiveWorkout={setActiveWorkout} />} />
             <Route path="/workout/:workoutId" element={<ViewWorkoutPage />} /> 
           {/* the variable name after : must match the variable name you set with <variable> = useParams() */}
           </Routes>

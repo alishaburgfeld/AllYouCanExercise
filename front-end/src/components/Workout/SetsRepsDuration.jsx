@@ -6,13 +6,11 @@ import { useState } from "react";
 
 
 
-export default function SetsRepsDuration ({exercise, workoutDetails}) {
+export default function SetsRepsDuration ({exercise, activeWorkout}) {
    const [openEditExerciseModal, setOpenEditExerciseModal] = useState(false);
    
-
-    
     const determineWorkoutExerciseDetail = () => {
-        const workoutExerciseDetail = workoutDetails.find(detail => {
+        const workoutExerciseDetail = activeWorkout.find(detail => {
             return detail.exerciseId === exercise.id});
         return workoutExerciseDetail
     }

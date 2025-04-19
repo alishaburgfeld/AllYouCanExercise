@@ -156,3 +156,8 @@ https://docs.spring.io/spring-data/jpa/docs/1.5.1.RELEASE/reference/html/jpa.rep
 
 CRUD functions:
 https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/repository/CrudRepository.html
+
+<!-- getting a bunch of these errors:
+2025-04-19T10:39:45.141-04:00  WARN 13476 --- [back-end] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=2m7s845ms).
+2025-04-19T10:40:32.889-04:00  WARN 13476 --- [back-end] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=47s748ms).
+2025-04-19T10:56:31.335-04:00  WARN 13476 --- [back-end] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m28s431ms). -->

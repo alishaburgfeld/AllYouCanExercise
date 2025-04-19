@@ -11,62 +11,45 @@ import SetsRepsDuration from "../components/Workout/SetsRepsDuration";
 import { Delete } from "@mui/icons-material";
 
 
-export default function ActiveWorkoutPage({activeWorkout, activeUsername, workoutDetails, setWorkoutDetails}) {
+export default function ActiveWorkoutPage({ activeWorkout, setActiveWorkout, activeUsername}) {
     const theme = useTheme();
-    console.log('active username is', activeUsername)
-    console.log('workoutdetails in activeworkout page are', workoutDetails)
-    console.log('activeWorkout in activeworkout page are', activeWorkout)
-
-    // useEffect(()=> {
-    //   }, [])
-
-    const handleExerciseClick= (exerciseId) => {
-        navigate(`/exercise/${exerciseId}`);
-    }
-
+    console.log('activeWorkout in ActiveWorkoutPage:', activeWorkout);
+  
+    const handleExerciseClick = (exerciseId) => {
+      navigate(`/exercise/${exerciseId}`);
+    };
+  
     const handleRemoveExercise = (exerciseId) => {
-        console.log('workoutDetails are', workoutDetails, "activeWorkout is", activeWorkout)
-        console.log("you clicked remove")
-
-        // for (let i=0; i<workoutDetails.length; i++) {
-        //     if(workoutDetails[i].exerciseId===exerciseId) {
-        //         workoutDetails.splice(i,1)
-        //     }
-        // }
-
-        // for (let i=0; i<activeWorkout.length; i++) {
-        //     if(activeWorkout[i].exerciseId===exerciseId) {
-        //         activeWorkout.splice(i,1)
-        //     }
-        // }
-    
-    }
-
+      // Remove exercise by filtering out the one with matching id
+      const updatedActiveWorkout = activeWorkout.filter(exercise => exercise.exerciseId !== exerciseId);
+      setActiveWorkout(updatedActiveWorkout);
+    };
+  
     return (
-        <Box className="activeWorkout">
-            <Typography className="activeWorkout_title" sx={{fontSize:"1.8rem", pt:"4rem", color: theme.palette.secondary.main}}>
-                Active Workout
-            </Typography>
-            <Box className="activeWorkout_ItemContainer">
-            {activeWorkout!==null
-                ? (
-                activeWorkout.map((exercise)=> (
-                <Box key={exercise.id} className="activeWorkout_items" sx={{pb:5, borderRadius: 1, border:2, borderColor: theme.palette.secondary.main, position: "relative"}}>
-                    <DeleteIcon onClick={() => handleRemoveExercise(exercise.id)}/>
-                    <Box onClick={() => handleExerciseClick(exercise.id)} >
-                        <img src={getImageSource(exercise.name)} className="activeWorkout_exercisePhoto" alt={exercise.name}/>
-                        <Typography align="center" className="activeWorkout_exerciseName"> {exercise.name}</Typography>
-                    </Box>
-                    <SetsRepsDuration className="activeWorkout_setsRepsDuration" exercise={exercise} workoutDetails={workoutDetails} />
+      <Box className="activeWorkout">
+        <Typography className="activeWorkout_title" sx={{ fontSize: "1.8rem", pt: "4rem", color: theme.palette.secondary.main }}>
+          Active Workout
+        </Typography>
+        <Box className="activeWorkout_ItemContainer">
+          {activeWorkout.length > 0 ? (
+            activeWorkout.map((exercise) => (
+              <Box key={exercise.exerciseId} className="activeWorkout_items" sx={{ pb: 5, borderRadius: 1, border: 2, borderColor: theme.palette.secondary.main, position: "relative" }}>
+                <DeleteIcon onClick={() => handleRemoveExercise(exercise.exerciseId)} />
+                <Box onClick={() => handleExerciseClick(exercise.exerciseId)}>
+                  <img src={getImageSource(exercise.name)} className="activeWorkout_exercisePhoto" alt={exercise.name} />
+                  <Typography align="center" className="activeWorkout_exerciseName">{exercise.name}</Typography>
                 </Box>
-                )))
-                : (
-                <p>Add an exercise to see your workout!</p>
-                )}
-            </Box> 
+                <SetsRepsDuration className="activeWorkout_setsRepsDuration" exercise={exercise} activeWorkout={activeWorkout}/>
+              </Box>
+            ))
+          ) : (
+            <p>Add an exercise to see your workout!</p>
+          )}
         </Box>
-    )
-}   
+      </Box>
+    );
+}
+  
 
 
 // need to send:
