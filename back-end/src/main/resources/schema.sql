@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS workout (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     completed_at DATETIME,
     workout_notes TEXT,
+   --  workout_duration_seconds INT DEFAULT NULL;
     FOREIGN KEY (user_id) REFERENCES user(id)
 );
 
@@ -54,6 +55,7 @@ CREATE TABLE IF NOT EXISTS exercise_set (
     set_order INT NOT NULL,
     reps INT,
     weight DECIMAL(5,2) UNSIGNED, -- supports decimal weights like 95.5
-    --duration_seconds INT DEFAULT NULL; -- put it a default null since most workouts won't use a time. only cardio. ie 930 = 15 minutes
+    duration_seconds INT DEFAULT NULL, -- put it a default null since most workouts won't use a time. only cardio. ie 930 = 15 minutes
+    distance_meters INT DEFAULT NULL, -- put it a default null since most workouts won't use a distance
     FOREIGN KEY (workout_exercise_id) REFERENCES workout_exercise(id)
 );

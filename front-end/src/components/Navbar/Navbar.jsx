@@ -14,7 +14,7 @@ import "../../css/Navbar.css"
 import axios from 'axios'
 import Cookies from 'js-cookie';
 
-export default function Navbar({ activeUsername, setActiveUsername }) {
+export default function Navbar({ activeUsername, setActiveUsername, setActiveWorkout, setWorkoutDetails }) {
 
   // console.log("user inside navbar is", user);
   // console.log("Is user null?", user === null);

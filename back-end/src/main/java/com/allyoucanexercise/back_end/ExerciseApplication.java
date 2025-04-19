@@ -15,6 +15,11 @@ public class ExerciseApplication {
 	private static final Logger log = LoggerFactory.getLogger(ExerciseApplication.class);
 
 	public static void main(String[] args) {
+
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+			System.out.println(">>> SHUTDOWN HOOK TRIGGERED <<<");
+			Thread.dumpStack(); // Optional: shows where it was triggered from
+		}));
 		SpringApplication.run(ExerciseApplication.class, args);
 		log.info("Your application has started!");
 

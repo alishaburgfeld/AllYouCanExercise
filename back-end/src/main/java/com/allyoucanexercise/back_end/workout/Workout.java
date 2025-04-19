@@ -27,6 +27,7 @@ public class Workout {
     @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 
+    @NotNull
     @Column(name = "completed_at", nullable = false)
     private LocalDateTime completedAt;
 
@@ -35,9 +36,11 @@ public class Workout {
     protected Workout() {
     }
 
-    public Workout(User user, String title) {
+    public Workout(User user, String title, LocalDateTime completedAt, String workoutNotes) {
         this.user = user;
         this.title = title;
+        this.completedAt = completedAt;
+        this.workoutNotes = workoutNotes;
     }
 
     public Long getId() {
