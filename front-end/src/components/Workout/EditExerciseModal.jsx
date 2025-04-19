@@ -8,7 +8,10 @@ import RepSet from './RepSet';
 export default function EditExerciseModal({ openEditExerciseModal, setOpenEditExerciseModal, exercise }) {
 
     const [sets, setSets] = useState([1]);
+    const [allReps, setAllReps] = useState([""]);
+    const [allWeights, setAllWeights] = useState([""]);
 
+    console.log('allReps are', allReps)
     const handleClose = () => {
         setOpenEditExerciseModal(false);
     };
@@ -17,6 +20,9 @@ export default function EditExerciseModal({ openEditExerciseModal, setOpenEditEx
 
     const addSet = () => {
         setSets([...sets, sets.length + 1]); 
+        setAllReps((prev) => [...prev, allReps[allReps.length - 1] || ""]);
+        setAllWeights((prev) => [...prev, allWeights[allWeights.length - 1] || ""]);
+        // duplicates the previous value into the new set value
     };
 
     return (
@@ -35,7 +41,7 @@ export default function EditExerciseModal({ openEditExerciseModal, setOpenEditEx
                     {exercise.exerciseType !== "CARDIO" ?
                         <>
                             {sets.map((setCount) => (
-                                <RepSet key={setCount} setCount={setCount} />
+                                <RepSet key={setCount} setCount={setCount} allReps={allReps} allWeights={allWeights} setAllReps={setAllReps} setAllWeights={setAllWeights}/>
                             ))}
                             <AddIcon onClick={addSet} sx={{ cursor: 'pointer' }} />
                         </>
