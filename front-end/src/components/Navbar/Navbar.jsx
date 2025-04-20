@@ -14,7 +14,7 @@ import "../../css/Navbar.css"
 import axios from 'axios'
 import Cookies from 'js-cookie';
 
-export default function Navbar({ activeUsername, setActiveUsername, setActiveWorkout, setWorkoutDetails }) {
+export default function Navbar({ activeUsername, setActiveUsername, setActiveWorkout }) {
 
   // console.log("user inside navbar is", user);
   // console.log("Is user null?", user === null);
@@ -39,7 +39,7 @@ export default function Navbar({ activeUsername, setActiveUsername, setActiveWor
   const logout = async () => {
     try {
       const csrfToken = Cookies.get('XSRF-TOKEN')
-      console.log('csrf token is', csrfToken)
+      // console.log('csrf token is', csrfToken)
       const response = await axios.post(
           "http://localhost:8080/auth/logout", 
           {},
@@ -50,14 +50,13 @@ export default function Navbar({ activeUsername, setActiveUsername, setActiveWor
             withCredentials: true, 
           }
         );
-        console.log("logout response is", response.data);
+        // console.log("logout response is", response.data);
   } catch (error) {
       console.error(error);
   }
     handleClose()
     setActiveUsername(null)
     setActiveWorkout(null)
-    setWorkoutDetails(null)
     navigate("/")
   }
 

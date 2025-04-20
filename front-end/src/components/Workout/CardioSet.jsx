@@ -3,7 +3,7 @@ import { Add } from '@mui/icons-material';
 import { useState, useEffect } from "react";
 
 
-export default function CardioSet () {
+export default function CardioSet ({distance, duration, setDistance, setDuration}) {
   const [currentDistance, setCurrentDistance] = useState(null);
   const [currentDuration, setCurrentDuration] = useState(null);
 
@@ -16,7 +16,8 @@ export default function CardioSet () {
           label="Distance"
           type="number"
           variant="standard"
-          onChange={(e) => setCurrentDistance(e.target.value)}
+          value = {distance}
+          onChange={(e) => setDistance(e.target.value)}
           sx={{width: "30%"}}
           slotProps={{
             inputLabel: {
@@ -30,7 +31,8 @@ export default function CardioSet () {
           label="Duration"
           type="number"
           variant="standard"
-          onChange={(e) =>  setCurrentDuration(e.target.value)}
+          value = {duration}
+          onChange={(e) =>  setDuration(e.target.value)}
           sx={{width: "30%"}}
           slotProps={{
             inputLabel: {

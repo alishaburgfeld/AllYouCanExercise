@@ -5,19 +5,52 @@ import { useState } from "react";
 import CardioSet from './CardioSet';
 import RepSet from './RepSet';
 
-export default function EditExerciseModal({ openEditExerciseModal, setOpenEditExerciseModal, exercise, workoutExerciseDetail }) {
+export default function EditExerciseModal({ openEditExerciseModal, setOpenEditExerciseModal, exercise, workoutExerciseDetail, updateActiveWorkoutWithNewStats }) {
 
     const [sets, setSets] = useState([1]);
     const [allReps, setAllReps] = useState([""]);
     const [allWeights, setAllWeights] = useState([""]);
+    const [distance, setDistance] = useState(workoutExerciseDetail?.sets?.[0]?.distance || "");
+    const [duration, setDuration] = useState(workoutExerciseDetail?.sets?.[0]?.duration || "");
+    const exerciseType = exercise.exerciseType;
 
-    console.log('allReps are', allReps)
+    console.log('workoutxercisedetail is', workoutExerciseDetail)
+    console.log('distance is', distance, 'duration is', duration)
+
     const handleClose = () => {
-        console.log('on close, sets are', sets, 'allReps are', allReps, 'allWeights are', allWeights)
         setOpenEditExerciseModal(false);
     };
 
-    const exerciseType = exercise.exerciseType;
+    const handleSaveCardioEdits = () => {
+        const newSets = {"distance": distance, "duration": duration}
+        let updatedExerciseDetail = workoutExerciseDetail
+        updatedExerciseDetail["sets"] = newSets;
+        return updatedExerciseDetail;
+    }
+
+    const handleSaveEdits = () => {
+        let updatedExerciseDetail;
+        if (exerciseType === "CARDIO") {
+            updatedExerciseDetail = handleSaveCardioEdits()
+        }
+        else {
+
+            const newSets = [];
+            for(let i=0; i<allReps.length; i++) {
+                newSets[i] = {"reps": allReps[i], "weight": allWeights[i]}
+            }
+            // console.log("newsets are", newSets)
+            // console.log('****workoutex detail', workoutExerciseDetail)
+            updatedExerciseDetail = workoutExerciseDetail
+            updatedExerciseDetail["sets"] = newSets;
+            // console.log('updatedexdetails are', updatedExerciseDetail)
+            // console.log('on close, sets are', sets, 'allReps are', allReps, 'allWeights are', allWeights)
+        }
+        updateActiveWorkoutWithNewStats(updatedExerciseDetail)
+        setOpenEditExerciseModal(false);
+    };
+
+    
 
     const addSet = () => {
         setSets([...sets, sets.length + 1]); 
@@ -46,11 +79,11 @@ export default function EditExerciseModal({ openEditExerciseModal, setOpenEditEx
                             ))}
                             <AddIcon onClick={addSet} sx={{ cursor: 'pointer' }} />
                         </>
-                        : <CardioSet />
+                        : <CardioSet distance={distance} duration = {duration} setDistance={setDistance} setDuration={setDuration} />
                     }
                 </Box>
                 <DialogActions>
-                    <Button onClick={handleClose} autoFocus>
+                    <Button onClick={handleSaveEdits} autoFocus>
                         Save
                     </Button>
                 </DialogActions>
