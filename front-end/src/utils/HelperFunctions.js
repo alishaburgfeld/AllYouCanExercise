@@ -1,6 +1,7 @@
 import IMAGES from "../assets/images/images";
 import axios from "axios";
 import Cookies from "js-cookie";
+import convert from "convert-units";
 
 export const getImageSource = (name) => {
   let source;
@@ -73,11 +74,17 @@ export const formatExerciseDurationIntoMinutesAndSeconds = (
 };
 
 export const metersToMiles = (meters) => {
-  const milesPerMeter = 0.000621371;
-  return meters * milesPerMeter;
+  return convert(meters).from("m").to("mi");
 };
 
 export const metersToYards = (meters) => {
-  const yardsPerMeter = 1.09361;
-  return meters * yardsPerMeter;
+  return convert(meters).from("m").to("yd");
+};
+
+export const milesToMeters = (miles) => {
+  return convert(miles).from("mi").to("m");
+};
+
+export const yardsToMeters = (yards) => {
+  return convert(yards).from("yd").to("m");
 };

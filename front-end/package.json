@@ -18,6 +18,7 @@
     "@mui/material": "^6.4.2",
     "axios": "^1.7.9",
     "babel-plugin-transform-import-meta": "^2.3.2",
+    "convert-units": "^2.3.4",
     "isbot": "^5.1.17",
     "js-cookie": "^3.0.5",
     "react": "^19.0.0",
