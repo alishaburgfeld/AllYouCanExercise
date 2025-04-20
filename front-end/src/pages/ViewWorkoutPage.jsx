@@ -15,7 +15,7 @@ const getWorkoutById = async () => {
         setWorkoutById(response)
     }
     else {
-        console.log("no response for get workout by id")
+        // console.log("no response for get workout by id")
     }
 }
 
@@ -26,7 +26,7 @@ const getUserWorkouts = async () => {
         setUserWorkouts(response)
     }
     else {
-        console.log("no response for get user workouts")
+        // console.log("no response for get user workouts")
     }
 }
 

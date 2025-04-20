@@ -14,7 +14,7 @@ export const getImageSource = (name) => {
 };
 
 export const getAxiosCall = async (url) => {
-  console.log("url in get axios call is", url);
+  // console.log("url in get axios call is", url);
   try {
     const csrfToken = Cookies.get("XSRF-TOKEN");
     const response = await axios.get(url, {
@@ -34,7 +34,7 @@ export const getAxiosCall = async (url) => {
 };
 
 export const postAxiosCall = async (url, body) => {
-  console.log("url in post axios call is", url);
+  // console.log("url in post axios call is", url);
   try {
     const csrfToken = Cookies.get("XSRF-TOKEN");
     const response = await axios.post(url, body, {
@@ -70,4 +70,14 @@ export const formatExerciseDurationIntoMinutesAndSeconds = (
   const minutes = Math.floor(durationInSeconds / 60);
   const seconds = durationInSeconds % 60;
   return `${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
+};
+
+export const metersToMiles = (meters) => {
+  const milesPerMeter = 0.000621371;
+  return meters * milesPerMeter;
+};
+
+export const metersToYards = (meters) => {
+  const yardsPerMeter = 1.09361;
+  return meters * yardsPerMeter;
 };

@@ -39,6 +39,16 @@ function App() {
   // explains why strict mode causes this console log to render twice: https://chatgpt.com/share/67f3d8fb-12f8-800f-9475-560f78c153f4
 
   const setExerciseInfo = (exercise) => {
+    let repSets = [
+      {"reps": 10, "weight": 10.0},
+      {"reps": 10, "weight": 10.0},
+      {"reps": 10, "weight": 10.0},
+      {"reps": 10, "weight": 10.0}
+    ];
+
+    let cardioSets = [
+      {"duration": 900, "distance": 1609.34},
+    ]
     if (exercise) {
       let exerciseInfo = {
         exerciseId: exercise.id,
@@ -47,14 +57,10 @@ function App() {
         exerciseGroup: exercise.exerciseGroup,
         exerciseType: exercise.exerciseType,
         // Set values based on whether the exercise is cardio or not
-        sets: exercise.exerciseType === "CARDIO" ? 1 : 4, // Cardio gets 1 set, others get 4
-        reps: exercise.exerciseType === "CARDIO" ? undefined : 10, // Cardio doesn't have reps
-        weight: exercise.exerciseType === "CARDIO" ? undefined : 10, // Cardio doesn't have weight
-        duration: exercise.exerciseType === "CARDIO" ? 930 : undefined, // Cardio gets a duration value
-        distance: exercise.exerciseType === "CARDIO" ? 300 : undefined, // Cardio gets a distance value
+        sets: exercise.exerciseType === "CARDIO" ? cardioSets : repSets
       };
       
-      console.log('exerciseInfo is', exerciseInfo);
+      // console.log('exerciseInfo is', exerciseInfo);
       return exerciseInfo;
     }
   };
@@ -82,7 +88,7 @@ const checkForUserSession= async () => {
       setActiveUsername(response);
     }
     else {
-      console.log("no username returned in checkforuser session")
+      // console.log("no username returned in checkforuser session")
     }
   }
 

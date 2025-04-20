@@ -8,7 +8,6 @@ import { useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import SetsRepsDuration from "../components/Workout/SetsRepsDuration";
-import { Delete } from "@mui/icons-material";
 
 
 export default function ActiveWorkoutPage({ activeWorkout, setActiveWorkout, activeUsername}) {
