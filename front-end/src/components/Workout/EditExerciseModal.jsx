@@ -5,7 +5,7 @@ import { useState } from "react";
 import CardioSet from './CardioSet';
 import RepSet from './RepSet';
 
-export default function EditExerciseModal({ openEditExerciseModal, setOpenEditExerciseModal, exercise }) {
+export default function EditExerciseModal({ openEditExerciseModal, setOpenEditExerciseModal, exercise, workoutExerciseDetail }) {
 
     const [sets, setSets] = useState([1]);
     const [allReps, setAllReps] = useState([""]);
@@ -13,6 +13,7 @@ export default function EditExerciseModal({ openEditExerciseModal, setOpenEditEx
 
     console.log('allReps are', allReps)
     const handleClose = () => {
+        console.log('on close, sets are', sets, 'allReps are', allReps, 'allWeights are', allWeights)
         setOpenEditExerciseModal(false);
     };
 

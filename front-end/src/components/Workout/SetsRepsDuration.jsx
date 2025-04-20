@@ -1,22 +1,22 @@
 import { Box, Typography, IconButton} from "@mui/material";
 import { Edit } from '@mui/icons-material';
-import { formatExerciseDurationIntoMinutesAndSeconds, metersToMiles, metersToYards } from "../../utils/HelperFunctions"
+import { formatExerciseDurationIntoMinutesAndSeconds, fromMeters } from "../../utils/HelperFunctions"
 import EditExerciseModal from "./EditExerciseModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
 
 export default function SetsRepsDuration ({exercise, activeWorkout}) {
    const [openEditExerciseModal, setOpenEditExerciseModal] = useState(false);
-   
-    const getWorkoutExerciseDetail = () => {
-        const workoutExerciseDetail = activeWorkout.find(detail => {
+   const [workoutExerciseDetail, setWorkoutExerciseDetail] = useState(null);
+    
+   const getWorkoutExerciseDetail = () => {
+        const wed = activeWorkout.find(detail => {
             return detail.exerciseId === exercise.exerciseId});
-        return workoutExerciseDetail
+        setWorkoutExerciseDetail(wed);
     }
 
     const determineSetsRepsOrDuration = (exercise) => {
-        const workoutExerciseDetail = getWorkoutExerciseDetail();
         console.log('workoutexercisedetail is', workoutExerciseDetail)
         // console.log('exercise is', exercise)
         let exerciseInfo;
@@ -24,10 +24,10 @@ export default function SetsRepsDuration ({exercise, activeWorkout}) {
             console.log("exercise is cardio, exercise duration is", workoutExerciseDetail.sets[0].duration);
             exerciseInfo = formatExerciseDurationIntoMinutesAndSeconds(workoutExerciseDetail.sets[0].duration);
             if(exercise.name==="swim") {
-                exerciseInfo += `\n ${metersToYards(workoutExerciseDetail.sets[0].distance)}`
+                exerciseInfo += `\n ${fromMeters(workoutExerciseDetail.sets[0].distance, "yd")}`
             }
             else{
-                exerciseInfo += `\n ${metersToMiles(workoutExerciseDetail.sets[0].distance)}`
+                exerciseInfo += `\n ${fromMeters(workoutExerciseDetail.sets[0].distance, "mi")}`
             }
 
         } else {
@@ -72,7 +72,9 @@ export default function SetsRepsDuration ({exercise, activeWorkout}) {
         // then the "openEditExerciseModal" value would need to be passed to the EditExerciseModal
     };
 
-
+    useEffect(() => {
+        getWorkoutExerciseDetail()
+    }, [])
     
     return (
         <Box sx={{position: "absolute", bottom: 4, right: 0, left: 0, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
@@ -80,7 +82,7 @@ export default function SetsRepsDuration ({exercise, activeWorkout}) {
             <IconButton onClick={() => handleEditClick()}>
                 <Edit />
             </IconButton>
-            <EditExerciseModal openEditExerciseModal={openEditExerciseModal} setOpenEditExerciseModal={setOpenEditExerciseModal} exercise={exercise}/>
+            <EditExerciseModal openEditExerciseModal={openEditExerciseModal} setOpenEditExerciseModal={setOpenEditExerciseModal} exercise={exercise} workoutExerciseDetail={workoutExerciseDetail}/>
         </Box>
     )
 }
