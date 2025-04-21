@@ -5,15 +5,16 @@ import { useState, useEffect } from "react";
 
 
 
-export default function CardioSet ({distance, duration, setDistance, setDuration, hours, minutes, seconds, setHours, setMinutes, setSeconds}) {
+export default function CardioSet ({distance, duration, setDistance, setDuration, distanceUnit, setDistanceUnit, hours, minutes, seconds, setHours, setMinutes, setSeconds}) {
   // onclose need to reset the distanceInput to distance
   // const [currentDistance, setCurrentDistance] = useState(null);
   // const [currentDuration, setCurrentDuration] = useState(null);
   const [distanceInput, setDistanceInput] = useState(distance || ""); // what the user typed
-  const [unit, setUnit] = useState("mi"); // selected unit
+  const [unit, setUnit] = useState(distanceUnit || "mi"); // selected unit
 
   console.log('distanceinput is', distanceInput)
   const handleDurationChange = () => {
+    setDistanceUnit(unit)
     // Convert hours, minutes, and seconds into total seconds
     const totalDuration = (hours * 3600) + (minutes * 60) + seconds;
     setDuration(totalDuration);

@@ -93,6 +93,8 @@ export const fromMeters = (meters, toUnit) => {
   let distance;
   toUnit === "mi"
     ? (distance = +(meters / 1609.34).toFixed(2))
-    : (distance = +(meters / 0.9144).toFixed(2));
+    : toUnit === "yd"
+    ? (distance = +(meters / 0.9144).toFixed(2))
+    : (distance = meters);
   return distance;
 };

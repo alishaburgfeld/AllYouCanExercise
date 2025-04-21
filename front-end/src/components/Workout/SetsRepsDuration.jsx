@@ -11,6 +11,8 @@ export default function SetsRepsDuration({ exercise, activeWorkout, updateActive
   const [hours, setHours] = useState("");
   const [minutes, setMinutes] = useState("");
   const [seconds, setSeconds] = useState("");
+  const [distanceUnit, setDistanceUnit] =useState("m")
+
   const exerciseDuration = useMemo(() => {
     if (!workoutExerciseDetail) return null;
     const timeInSeconds = workoutExerciseDetail.sets[0].duration;
@@ -46,11 +48,11 @@ export default function SetsRepsDuration({ exercise, activeWorkout, updateActive
 
   const displayCardioSets = () => {
     let exerciseInfo = setTimes(workoutExerciseDetail?.sets?.[0]?.duration);
-    if (exercise.name === "swim") {
-      exerciseInfo += `\n ${fromMeters(workoutExerciseDetail.sets[0].distance, "yd")}`;
-    } else {
-      exerciseInfo += `\n ${fromMeters(workoutExerciseDetail.sets[0].distance, "mi")} mile`;
-    }
+    // if (exercise.name === "swim") {
+      exerciseInfo += `\n ${fromMeters(workoutExerciseDetail.sets[0].distance, distanceUnit)} ${distanceUnit}`;
+    // } else {
+    //   exerciseInfo += `\n ${fromMeters(workoutExerciseDetail.sets[0].distance, "mi")} mile`;
+    // }
     console.log("1) in display cardio sets, exerciseInfo is", exerciseInfo)  
     return exerciseInfo;
   }
@@ -116,6 +118,8 @@ export default function SetsRepsDuration({ exercise, activeWorkout, updateActive
         setHours={setHours} 
         setMinutes={setMinutes} 
         setSeconds={setSeconds}
+        setDistanceUnit={setDistanceUnit}
+        distanceUnit = {distanceUnit}
       />
     </Box>
   );
