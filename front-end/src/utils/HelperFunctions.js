@@ -72,11 +72,20 @@ export const formatExerciseDurationIntoMinutesAndSeconds = (
   return `${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
 };
 
+export const convertFromSeconds = (totalSeconds) => {
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  return { hours, minutes, seconds };
+};
+
 export const toMeters = (value, unit) => {
   let distance;
   unit === "mi"
     ? (distance = (value * 1609.34).toFixed(2))
-    : (distance = (value * 0.9144).toFixed(2)); //yards
+    : unit === "yd"
+    ? (distance = (value * 0.9144).toFixed(2)) //yards
+    : (distance = value); //meters
   return distance;
 };
 

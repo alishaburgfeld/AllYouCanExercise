@@ -1,21 +1,23 @@
 import * as React from 'react';
 import { Button, Box, Typography, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CardioSet from './CardioSet';
 import RepSet from './RepSet';
+import { convertFromSeconds } from '../../utils/HelperFunctions';
 
-export default function EditExerciseModal({ openEditExerciseModal, setOpenEditExerciseModal, exercise, workoutExerciseDetail, updateActiveWorkoutWithNewStats }) {
+export default function EditExerciseModal({ openEditExerciseModal, setOpenEditExerciseModal, exercise, workoutExerciseDetail, updateActiveWorkoutWithNewStats, hours, minutes, seconds, setHours, setMinutes, setSeconds }) {
 
     const [sets, setSets] = useState([1]);
     const [allReps, setAllReps] = useState([""]);
     const [allWeights, setAllWeights] = useState([""]);
     const [distance, setDistance] = useState(workoutExerciseDetail?.sets?.[0]?.distance || "");
     const [duration, setDuration] = useState(workoutExerciseDetail?.sets?.[0]?.duration || "");
+
     const exerciseType = exercise.exerciseType;
 
     console.log('workoutxercisedetail is', workoutExerciseDetail)
-    console.log('distance is', distance, 'duration is', duration)
+    console.log('distance on edit modal is', distance, 'duration on edit modal is', duration)
 
     const handleClose = () => {
         setOpenEditExerciseModal(false);
@@ -23,8 +25,9 @@ export default function EditExerciseModal({ openEditExerciseModal, setOpenEditEx
 
     const handleSaveCardioEdits = () => {
         const newSets = {"distance": distance, "duration": duration}
+        console.log('3) in savecardio edits newsets are', newSets)
         let updatedExerciseDetail = workoutExerciseDetail
-        updatedExerciseDetail["sets"] = newSets;
+        updatedExerciseDetail["sets"] = [newSets];
         return updatedExerciseDetail;
     }
 
@@ -43,9 +46,9 @@ export default function EditExerciseModal({ openEditExerciseModal, setOpenEditEx
             // console.log('****workoutex detail', workoutExerciseDetail)
             updatedExerciseDetail = workoutExerciseDetail
             updatedExerciseDetail["sets"] = newSets;
-            // console.log('updatedexdetails are', updatedExerciseDetail)
             // console.log('on close, sets are', sets, 'allReps are', allReps, 'allWeights are', allWeights)
         }
+        console.log('4) EEM updatedexdetails are', updatedExerciseDetail)
         updateActiveWorkoutWithNewStats(updatedExerciseDetail)
         setOpenEditExerciseModal(false);
     };
@@ -59,6 +62,14 @@ export default function EditExerciseModal({ openEditExerciseModal, setOpenEditEx
         // duplicates the previous value into the new set value
     };
 
+    useEffect(() => {
+        console.log('*1 and 5, in use effect on EEM, workout ex dets are',workoutExerciseDetail)
+        if (workoutExerciseDetail?.sets?.[0]) {
+            setDistance(workoutExerciseDetail.sets[0].distance || "");
+            setDuration(workoutExerciseDetail.sets[0].duration || "");
+        }
+    }, [workoutExerciseDetail]);
+
     return (
         <>
             <Dialog
@@ -66,12 +77,13 @@ export default function EditExerciseModal({ openEditExerciseModal, setOpenEditEx
                 onClose={handleClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
-                sx={{ width: '90%', maxWidth: 400 }}
+                sx={{ width: '90%', maxWidth: 400, m:1 }}
+                // possibly need to lower the margins
             >
                 <DialogTitle id="alert-dialog-title" sx={{fontSize: 17}}>
                     {`Edit ${exercise.name} Stats`}
                 </DialogTitle>
-                <Box sx={{ width: '90%', maxWidth: 400, display: 'flex', flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+                {/* <Box sx={{ width: '100%', maxWidth: 400, display: 'flex', flexDirection: "column", justifyContent: "center", alignItems: "center" }}> */}
                     {exercise.exerciseType !== "CARDIO" ?
                         <>
                             {sets.map((setCount) => (
@@ -79,9 +91,9 @@ export default function EditExerciseModal({ openEditExerciseModal, setOpenEditEx
                             ))}
                             <AddIcon onClick={addSet} sx={{ cursor: 'pointer' }} />
                         </>
-                        : <CardioSet distance={distance} duration = {duration} setDistance={setDistance} setDuration={setDuration} />
+                        : <CardioSet distance={distance} duration = {duration} setDistance={setDistance} setDuration={setDuration} hours={hours} minutes={minutes} seconds={seconds} setHours={setHours} setMinutes={setMinutes} setSeconds={setSeconds} />
                     }
-                </Box>
+                {/* </Box> */}
                 <DialogActions>
                     <Button onClick={handleSaveEdits} autoFocus>
                         Save
