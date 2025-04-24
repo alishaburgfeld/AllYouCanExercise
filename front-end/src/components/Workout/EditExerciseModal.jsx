@@ -28,6 +28,8 @@ export default function EditExerciseModal({ openEditExerciseModal, setOpenEditEx
         console.log('3) in savecardio edits newsets are', newSets)
         let updatedExerciseDetail = workoutExerciseDetail
         updatedExerciseDetail["sets"] = [newSets];
+        // You're modifying the object directly, which React doesn’t detect as a "state change."
+        // instead, Use a new object to trigger the update properly which react will render as a state change:
         return updatedExerciseDetail;
     }
 
@@ -46,6 +48,9 @@ export default function EditExerciseModal({ openEditExerciseModal, setOpenEditEx
             // console.log('****workoutex detail', workoutExerciseDetail)
             updatedExerciseDetail = workoutExerciseDetail
             updatedExerciseDetail["sets"] = newSets;
+            // You're modifying the object directly, which React doesn’t detect as a "state change."
+            // instead, Use a new object to trigger the update properly which react will render as a state change:
+
             // console.log('on close, sets are', sets, 'allReps are', allReps, 'allWeights are', allWeights)
         }
         console.log('4) EEM updatedexdetails are', updatedExerciseDetail)
