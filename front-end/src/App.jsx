@@ -47,7 +47,11 @@ function App() {
     ];
 
     let cardioSets = [
-      {"duration": 900, "distance": 1609.34},
+      {"duration": {
+        "hours": 0,
+        "minutes": 15,
+        "seconds": 0
+      }, "distance": 1, "distanceUnit": "mi"},
     ]
     if (exercise) {
       let exerciseInfo = {
@@ -75,15 +79,18 @@ function App() {
   
     setActiveWorkout(updatedActiveWorkout);
   };
-  
+
+const existingWorkoutDoesNotContainCurrentExercise = (exercise) => {
+  if (activeWorkout && !activeWorkout.some(exercise => exercise.exerciseId === exerciseToBeAdded.id))
+    return true
+}
 
 const addToActiveWorkout = (exerciseToBeAdded) => {
   let updatedActiveWorkout;
   
-  if (activeWorkout && !activeWorkout.some(exercise => exercise.exerciseId === exerciseToBeAdded.id)) {
-    // If already an active workout, but exercise is not in the workout, then add the exercise to the workout
-    updatedActiveWorkout = [...activeWorkout, setExerciseInfo(exerciseToBeAdded)];
-  } else {
+    if (existingWorkoutDoesNotContainCurrentExercise) {
+      updatedActiveWorkout = [...activeWorkout, setExerciseInfo(exerciseToBeAdded)];
+    } else {
     updatedActiveWorkout = [setExerciseInfo(exerciseToBeAdded)]
   }
 
