@@ -31,8 +31,8 @@ export default function ActiveWorkoutPage({ activeWorkout, setActiveWorkout, upd
         </Typography>
         <Box className="activeWorkout_ItemContainer">
           {activeWorkout.length > 0 ? (
-            activeWorkout.map((exercise) => (
-              <Box key={exercise.exerciseId} className="activeWorkout_items" sx={{ pb: 5, borderRadius: 1, border: 2, borderColor: theme.palette.secondary.main, position: "relative" }}>
+            activeWorkout.map((exercise, index) => (
+              <Box key={index} className="activeWorkout_items" sx={{ pb: 5, borderRadius: 1, border: 2, borderColor: theme.palette.secondary.main, position: "relative" }}>
                 <DeleteIcon onClick={() => handleRemoveExercise(exercise.exerciseId)} />
                 <Box onClick={() => handleExerciseClick(exercise.exerciseId)}>
                   <img src={getImageSource(exercise.name)} className="activeWorkout_exercisePhoto" alt={exercise.name} />
