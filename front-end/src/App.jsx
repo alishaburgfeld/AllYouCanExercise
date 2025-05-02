@@ -35,10 +35,20 @@ function App() {
   const [exerciseToBeAdded, setExerciseToBeAdded] = useState(null);
   const [activeUsername, setActiveUsername] =useState(getInitialUsername());
 
-  console.log('active username, active workout,on app,jsx', activeUsername, activeWorkout)
+  // console.log('active username, active workout,on app,jsx', activeUsername, activeWorkout)
   // explains why strict mode causes this console log to render twice: https://chatgpt.com/share/67f3d8fb-12f8-800f-9475-560f78c153f4
 
   const setExerciseInfo = (exercise) => {
+    let repSets = [
+      {"reps": 10, "weight": 10.0},
+      {"reps": 10, "weight": 10.0},
+      {"reps": 10, "weight": 10.0},
+      {"reps": 10, "weight": 10.0}
+    ];
+
+    let cardioSets = [
+      {"duration": 900, "distance": 1609.34},
+    ]
     if (exercise) {
       let exerciseInfo = {
         exerciseId: exercise.id,
@@ -47,16 +57,23 @@ function App() {
         exerciseGroup: exercise.exerciseGroup,
         exerciseType: exercise.exerciseType,
         // Set values based on whether the exercise is cardio or not
-        sets: exercise.exerciseType === "CARDIO" ? 1 : 4, // Cardio gets 1 set, others get 4
-        reps: exercise.exerciseType === "CARDIO" ? undefined : 10, // Cardio doesn't have reps
-        weight: exercise.exerciseType === "CARDIO" ? undefined : 10, // Cardio doesn't have weight
-        duration: exercise.exerciseType === "CARDIO" ? 930 : undefined, // Cardio gets a duration value
-        distance: exercise.exerciseType === "CARDIO" ? 300 : undefined, // Cardio gets a distance value
+        sets: exercise.exerciseType === "CARDIO" ? cardioSets : repSets
       };
+      // console.log('exerciseInfo is', exerciseInfo);
       
-      console.log('exerciseInfo is', exerciseInfo);
       return exerciseInfo;
     }
+  };
+
+  const updateActiveWorkoutWithNewStats = (updatedExerciseInfo) => {
+    const updatedActiveWorkout = activeWorkout.map(exerciseDetail => {
+      if (exerciseDetail.exerciseId === updatedExerciseInfo.exerciseId) {
+        return updatedExerciseInfo;  // Replace the exercise with updated one
+      }
+      return exerciseDetail;  // Keep the rest of the exercises as they are
+    });
+  
+    setActiveWorkout(updatedActiveWorkout);
   };
   
 
@@ -64,7 +81,7 @@ const addToActiveWorkout = (exerciseToBeAdded) => {
   let updatedActiveWorkout;
   
   if (activeWorkout && !activeWorkout.some(exercise => exercise.exerciseId === exerciseToBeAdded.id)) {
-    // Add exercise if not already in the activeWorkout
+    // If already an active workout, but exercise is not in the workout, then add the exercise to the workout
     updatedActiveWorkout = [...activeWorkout, setExerciseInfo(exerciseToBeAdded)];
   } else {
     updatedActiveWorkout = [setExerciseInfo(exerciseToBeAdded)]
@@ -82,7 +99,7 @@ const checkForUserSession= async () => {
       setActiveUsername(response);
     }
     else {
-      console.log("no username returned in checkforuser session")
+      // console.log("no username returned in checkforuser session")
     }
   }
 
@@ -122,7 +139,7 @@ useEffect(()=> {
               element={<ExerciseGroupPage />}
             />
             <Route path="/exercise/:exerciseId" element={<ExercisePage setExerciseToBeAdded= {setExerciseToBeAdded} activeUsername={activeUsername}/>} />
-            <Route path="/workout" element={<ActiveWorkoutPage activeWorkout={activeWorkout} activeUsername={activeUsername} setActiveWorkout={setActiveWorkout} />} />
+            <Route path="/workout" element={<ActiveWorkoutPage activeWorkout={activeWorkout} activeUsername={activeUsername} setActiveWorkout={setActiveWorkout} updateActiveWorkoutWithNewStats={updateActiveWorkoutWithNewStats}/>} />
             <Route path="/workout/:workoutId" element={<ViewWorkoutPage />} /> 
           {/* the variable name after : must match the variable name you set with <variable> = useParams() */}
           </Routes>

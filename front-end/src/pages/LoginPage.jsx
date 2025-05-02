@@ -29,7 +29,6 @@ export default function LoginPage({setActiveUsername}) {
     const response = await postAxiosCall("http://localhost:8080/auth/login", { username, password });
   
     if (response.success) {
-      console.log('handleLogin response is', response.data);
       setActiveUsername(response.data);
       handleLoginSuccess();
     } else {
@@ -105,7 +104,7 @@ export default function LoginPage({setActiveUsername}) {
         <Alert severity="success">You have successfully logged in!</Alert>
         : ""}
         {loginError!==null ?
-        <Alert severity="error">Invalid Credentials!</Alert>
+        <Alert severity="error">{loginError}!</Alert>
         : ""}
       </form>
     </Box>

@@ -14,7 +14,7 @@ export const getImageSource = (name) => {
 };
 
 export const getAxiosCall = async (url) => {
-  console.log("url in get axios call is", url);
+  // console.log("url in get axios call is", url);
   try {
     const csrfToken = Cookies.get("XSRF-TOKEN");
     const response = await axios.get(url, {
@@ -34,7 +34,7 @@ export const getAxiosCall = async (url) => {
 };
 
 export const postAxiosCall = async (url, body) => {
-  console.log("url in post axios call is", url);
+  // console.log("url in post axios call is", url);
   try {
     const csrfToken = Cookies.get("XSRF-TOKEN");
     const response = await axios.post(url, body, {
@@ -70,4 +70,31 @@ export const formatExerciseDurationIntoMinutesAndSeconds = (
   const minutes = Math.floor(durationInSeconds / 60);
   const seconds = durationInSeconds % 60;
   return `${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
+};
+
+export const convertFromSeconds = (totalSeconds) => {
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  return { hours, minutes, seconds };
+};
+
+export const toMeters = (value, unit) => {
+  let distance;
+  unit === "mi"
+    ? (distance = (value * 1609.34).toFixed(2))
+    : unit === "yd"
+    ? (distance = (value * 0.9144).toFixed(2)) //yards
+    : (distance = value); //meters
+  return distance;
+};
+
+export const fromMeters = (meters, toUnit) => {
+  let distance;
+  toUnit === "mi"
+    ? (distance = +(meters / 1609.34).toFixed(2))
+    : toUnit === "yd"
+    ? (distance = +(meters / 0.9144).toFixed(2))
+    : (distance = meters);
+  return distance;
 };

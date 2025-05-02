@@ -8,12 +8,11 @@ import { useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import SetsRepsDuration from "../components/Workout/SetsRepsDuration";
-import { Delete } from "@mui/icons-material";
 
 
-export default function ActiveWorkoutPage({ activeWorkout, setActiveWorkout, activeUsername}) {
+export default function ActiveWorkoutPage({ activeWorkout, setActiveWorkout, updateActiveWorkoutWithNewStats}) {
     const theme = useTheme();
-    console.log('activeWorkout in ActiveWorkoutPage:', activeWorkout);
+    // console.log('activeWorkout in ActiveWorkoutPage:', activeWorkout);
   
     const handleExerciseClick = (exerciseId) => {
       navigate(`/exercise/${exerciseId}`);
@@ -39,7 +38,7 @@ export default function ActiveWorkoutPage({ activeWorkout, setActiveWorkout, act
                   <img src={getImageSource(exercise.name)} className="activeWorkout_exercisePhoto" alt={exercise.name} />
                   <Typography align="center" className="activeWorkout_exerciseName">{exercise.name}</Typography>
                 </Box>
-                <SetsRepsDuration className="activeWorkout_setsRepsDuration" exercise={exercise} activeWorkout={activeWorkout}/>
+                <SetsRepsDuration className="activeWorkout_setsRepsDuration" exercise={exercise} activeWorkout={activeWorkout} updateActiveWorkoutWithNewStats={updateActiveWorkoutWithNewStats}/>
               </Box>
             ))
           ) : (
