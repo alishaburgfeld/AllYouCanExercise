@@ -59,8 +59,8 @@ function App() {
         // Set values based on whether the exercise is cardio or not
         sets: exercise.exerciseType === "CARDIO" ? cardioSets : repSets
       };
-      
       // console.log('exerciseInfo is', exerciseInfo);
+      
       return exerciseInfo;
     }
   };
