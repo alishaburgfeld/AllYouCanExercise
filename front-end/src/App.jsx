@@ -70,6 +70,7 @@ function App() {
   };
 
   const updateActiveWorkoutWithNewStats = (updatedExerciseInfo) => {
+    console.log('on app.jsx, updatedExerciseInfo is', updatedExerciseInfo)
     const updatedActiveWorkout = activeWorkout.map(exerciseDetail => {
       if (exerciseDetail.exerciseId === updatedExerciseInfo.exerciseId) {
         return updatedExerciseInfo;  // Replace the exercise with updated one
@@ -88,7 +89,7 @@ const existingWorkoutDoesNotContainCurrentExercise = (exercise) => {
 const addToActiveWorkout = (exerciseToBeAdded) => {
   let updatedActiveWorkout;
   
-    if (existingWorkoutDoesNotContainCurrentExercise) {
+    if (existingWorkoutDoesNotContainCurrentExercise(exerciseToBeAdded)) {
       updatedActiveWorkout = [...activeWorkout, setExerciseInfo(exerciseToBeAdded)];
     } else {
     updatedActiveWorkout = [setExerciseInfo(exerciseToBeAdded)]

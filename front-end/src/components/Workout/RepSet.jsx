@@ -9,7 +9,7 @@ export default function RepSet ({setCount, allReps, allWeights, setAllReps, setA
 
     return(
         <Box sx={{ width: '90%', maxWidth: 400, display: 'flex', flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-        <Typography>Set {setCount}</Typography>    
+        <Typography sx={{pl: 2}}>Set {setCount}: </Typography>    
         <TextField
           required
           label="Reps"

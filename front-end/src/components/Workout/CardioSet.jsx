@@ -5,30 +5,21 @@ import { useState, useEffect } from "react";
 
 
 
-export default function CardioSet ({distance, duration, setDistance, setDuration, distanceUnit, setDistanceUnit, hours, minutes, seconds, setHours, setMinutes, setSeconds}) {
-  // onclose need to reset the distanceInput to distance
-  // const [currentDistance, setCurrentDistance] = useState(null);
-  // const [currentDuration, setCurrentDuration] = useState(null);
-  const [distanceInput, setDistanceInput] = useState(distance || ""); // what the user typed
-  const [unit, setUnit] = useState(distanceUnit || "mi"); // selected unit
-
-  console.log('distanceinput is', distanceInput)
-  const handleDurationChange = () => {
-    setDistanceUnit(unit)
-    // Convert hours, minutes, and seconds into total seconds
-    const totalDuration = (hours * 3600) + (minutes * 60) + seconds;
-    setDuration(totalDuration);
+export default function CardioSet ({exercise, setInputDistance, setInputDistanceUnit, setInputDuration}) {
+  const [temporaryUnit, setTemporaryUnit] = useState(exercise?.sets?.[0]?.distanceUnit|| ""); // selected unit
+  const [temporaryDistance, setTemporaryDistance] = useState(exercise?.sets?.[0]?.distance || "")
+  const [temporaryHours, setTemporaryHours] = useState(exercise?.sets?.[0]?.duration?.hours || 0)
+  const [temporaryMinutes, setTemporaryMinutes] = useState(exercise?.sets?.[0]?.duration?.minutes || 0)
+  const [temporarySeconds, setTemporarySeconds] = useState(exercise?.sets?.[0]?.duration?.seconds || 0)
+  // console.log('distanceinput is', distanceInput)
+  const handleDurationChange = (hours, minutes, seconds) => {
+    setInputDuration({"hours": hours, "minutes": minutes, "seconds": seconds});
   };
 
   const handleDistanceInputChange = (distanceValue, distanceUnit) => {
-    setDistanceInput(distanceValue)
-    setUnit(distanceUnit)
-
-    const totalDistance = toMeters(distanceValue, distanceUnit)
-    console.log('2) Cardio set set total distance is', totalDistance)
-    setDistance(totalDistance);
+    setInputDistance(distanceValue)
+    setInputDistanceUnit(distanceUnit)
   };
-
 
     return(
       <Box sx={{ width: '100%', maxWidth: 400, display: 'flex', flexDirection: "column", alignItems: "flex-start", pl:4 }}>
@@ -39,8 +30,12 @@ export default function CardioSet ({distance, duration, setDistance, setDuration
           label="Distance"
           type="number"
           variant="standard"
-          value = {distanceInput}
-          onChange={(e) => handleDistanceInputChange(e.target.value, unit)}
+          value = {temporaryDistance}
+          onChange={
+            (e) => {
+              setTemporaryDistance(e.target.value)
+              handleDistanceInputChange(e.target.value, temporaryUnit)
+              }}
           sx={{width: "45%"}}
           slotProps={{
             inputLabel: {
@@ -52,8 +47,10 @@ export default function CardioSet ({distance, duration, setDistance, setDuration
         <InputLabel id="distance-unit-label" sx={{mt:1}}>Unit</InputLabel>
         <Select
           labelId="distance-unit-label"
-          value={unit || "mi"}
-          onChange={(e) => handleDistanceInputChange(distanceInput, e.target.value)}
+          value={temporaryUnit}
+          onChange={(e) => {
+            setTemporaryUnit(e.target.value)
+            handleDistanceInputChange(temporaryDistance, e.target.value)}}
           label="Distance Unit"
           variant="standard"
         >
@@ -68,10 +65,10 @@ export default function CardioSet ({distance, duration, setDistance, setDuration
           label="Hours"
           type="number"
           variant="standard"
-          value={hours}
+          value={temporaryHours}
           onChange={(e) => {
-            setHours(e.target.value);
-            handleDurationChange();
+            setTemporaryHours(e.target.value);
+            handleDurationChange(e.target.value, temporaryMinutes, temporarySeconds);
           }}
           sx={{ width: "30%", marginRight: "5px" }}
         />
@@ -79,10 +76,10 @@ export default function CardioSet ({distance, duration, setDistance, setDuration
           label="Minutes"
           type="number"
           variant="standard"
-          value={minutes}
+          value={temporaryMinutes}
           onChange={(e) => {
-            setMinutes(e.target.value);
-            handleDurationChange();
+            setTemporaryMinutes(e.target.value);
+            handleDurationChange(temporaryHours, e.target.value, temporarySeconds);
           }}
           sx={{ width: "30%", marginRight: "5px" }}
         />
@@ -90,10 +87,10 @@ export default function CardioSet ({distance, duration, setDistance, setDuration
           label="Seconds"
           type="number"
           variant="standard"
-          value={seconds}
+          value={temporarySeconds}
           onChange={(e) => {
-            setSeconds(e.target.value);
-            handleDurationChange();
+            setTemporarySeconds(e.target.value);
+            handleDurationChange(temporaryHours, temporaryMinutes, e.target.value);
           }}
           sx={{ width: "30%" }}
         />

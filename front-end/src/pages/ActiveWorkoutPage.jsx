@@ -12,7 +12,8 @@ import SetsRepsDuration from "../components/Workout/SetsRepsDuration";
 
 export default function ActiveWorkoutPage({ activeWorkout, setActiveWorkout, updateActiveWorkoutWithNewStats}) {
     const theme = useTheme();
-    // console.log('activeWorkout in ActiveWorkoutPage:', activeWorkout);
+
+    // TO-DO: Change theme fontSize based on if there is 1 or more exercises in activeworkout
   
     const handleExerciseClick = (exerciseId) => {
       navigate(`/exercise/${exerciseId}`);
@@ -34,9 +35,9 @@ export default function ActiveWorkoutPage({ activeWorkout, setActiveWorkout, upd
             activeWorkout.map((exercise, index) => (
               <Box key={index} className="activeWorkout_items" sx={{ pb: 5, borderRadius: 1, border: 2, borderColor: theme.palette.secondary.main, position: "relative" }}>
                 <DeleteIcon onClick={() => handleRemoveExercise(exercise.exerciseId)} />
-                <Box onClick={() => handleExerciseClick(exercise.exerciseId)}>
+                <Box onClick={() => handleExerciseClick(exercise.exerciseId)} sx={{mb:"1rem"}}>
                   <img src={getImageSource(exercise.name)} className="activeWorkout_exercisePhoto" alt={exercise.name} />
-                  <Typography align="center" className="activeWorkout_exerciseName">{exercise.name}</Typography>
+                  <Typography sx={{fontSize:theme.fontSize.primary}} className="activeWorkout_exerciseName">{exercise.name}</Typography>
                 </Box>
                 <SetsRepsDuration className="activeWorkout_setsRepsDuration" exercise={exercise} activeWorkout={activeWorkout} updateActiveWorkoutWithNewStats={updateActiveWorkoutWithNewStats}/>
               </Box>
