@@ -33,10 +33,10 @@ export default function SetsRepsDuration({ exercise, activeWorkout, updateActive
       displayDuration = `${distance} ${distanceUnit}`;
     }
     console.log("1) in display cardio sets, displaydistance is", displayDistance, "displayduration is", displayDuration)  
-    return (<>
+    return (<Box sx={{alignItems: "center"}}>
     <Typography align="center" className="activeWorkout_exerciseDetails">{displayDistance}</Typography>
     <Typography align="center" className="activeWorkout_exerciseDetails">{displayDuration}</Typography>
-    </>)
+    </Box>)
   }
 
   const displayRepSets = () => {
@@ -60,11 +60,18 @@ export default function SetsRepsDuration({ exercise, activeWorkout, updateActive
       }
     }
     console.log('combinedSets are', combinedSets)
-    if(combinedSets.length >1) {
-      displayReps= combinedSets.join(",\n");
-    } else {displayReps= combinedSets.join("\n");}
+    // if(combinedSets.length >1) {
+    //   displayReps= combinedSets.join(",\n");
+    // } else {displayReps= combinedSets.join("\n");}
 
-    return <Typography align="center" className="activeWorkout_exerciseDetails">{displayReps}</Typography>;
+    // return <Typography align="center" className="activeWorkout_exerciseDetails">{displayReps}</Typography>;
+    return (
+    <Box sx={{alignItems: "center"}}>
+      {combinedSets.map((item, index)=> {
+        return <Typography key={index} align="center" className="activeWorkout_exerciseDetails">{item}</Typography>
+      }
+      )}
+    </Box>)
   };
 
   const handleEditClick = () => {

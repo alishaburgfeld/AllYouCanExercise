@@ -67,7 +67,6 @@ export default function EditExerciseModal({ openEditExerciseModal, setOpenEditEx
                 <DialogTitle id="alert-dialog-title" sx={{fontSize: 17}}>
                     {`Edit ${exercise.name} Stats`}
                 </DialogTitle>
-                {/* <Box sx={{ width: '100%', maxWidth: 400, display: 'flex', flexDirection: "column", justifyContent: "center", alignItems: "center" }}> */}
                     {exercise.exerciseType !== "CARDIO" ?
                         <>
                             {sets.map((setCount) => (
@@ -77,7 +76,6 @@ export default function EditExerciseModal({ openEditExerciseModal, setOpenEditEx
                         </>
                         : <CardioSet exercise = {exercise} distance={distance} setInputDistance={setInputDistance} setInputDuration={setInputDuration} hours={hours} minutes={minutes} seconds={seconds} setHours={setHours} setMinutes={setMinutes} setSeconds={setSeconds} setInputDistanceUnit={setInputDistanceUnit} distanceUnit={distanceUnit}/>
                     }
-                {/* </Box> */}
                 <DialogActions>
                     <Button onClick={() => (exerciseType === "CARDIO" ? saveCardioEdits() : saveRepEdits())} autoFocus>
                         Save
