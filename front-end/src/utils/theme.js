@@ -1,19 +1,23 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
   palette: {
     primary: {
-        // grey
-      main: '#5c5861',
-      light: '#BDBDBD', // Light grey
-      dark: '#7d6b60',   // Dark grey
-      mix: '#918279',
+      // grey
+      main: "#5c5861",
+      light: "#BDBDBD", // Light grey
+      dark: "#7d6b60", // Dark grey
+      mix: "#918279",
     },
     // orange
     secondary: {
-      main: '#FF5733',
-      dark: '#eb330c',
-    }
+      main: "#FF5733",
+      dark: "#eb330c",
+    },
+  },
+  fontSize: {
+    primary: [".9rem", "1.9rem", "2.7rem"],
+    secondary: ["1.9rem", "1.9rem", "4rem"],
   },
 });
 

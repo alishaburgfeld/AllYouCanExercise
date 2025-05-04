@@ -8,12 +8,13 @@ import { useMemo } from "react";
 export default function SetsRepsDuration({ exercise, activeWorkout, updateActiveWorkoutWithNewStats }) {
   const [openEditExerciseModal, setOpenEditExerciseModal] = useState(false);
   // const [workoutExerciseDetail, setWorkoutExerciseDetail] = useState(null);
-  const [hours, setHours] = useState(exercise?.duration?.hours || "");
-  const [minutes, setMinutes] = useState(exercise?.duration?.minutes || "");
-  const [seconds, setSeconds] = useState(exercise?.duration?.seconds || "");
-  const [distanceUnit, setDistanceUnit] =useState(exercise?.distance?.distanceUnit || "")
-  const [distance, setDistance] =useState(exercise?.distance || "")
+  const [hours, setHours] = useState(exercise?.sets?.[0]?.duration?.hours || "");
+  const [minutes, setMinutes] = useState(exercise?.sets?.[0]?.duration?.minutes || "");
+  const [seconds, setSeconds] = useState(exercise?.sets?.[0]?.duration?.seconds || "");
+  const [distanceUnit, setDistanceUnit] =useState(exercise?.sets?.[0]?.distanceUnit || "")
+  const [distance, setDistance] =useState(exercise?.sets?.[0]?.distance || "")
 
+  console.log("on setsrepdur, distance is", distance, 'exercise is',exercise)
   // const exerciseDuration = useMemo(() => {
   //   if (!workoutExerciseDetail) return null;
   //   const timeInSeconds = workoutExerciseDetail.sets[0].duration;
@@ -63,6 +64,7 @@ export default function SetsRepsDuration({ exercise, activeWorkout, updateActive
 
   const displayRepSets = () => {
     const sets = exercise.sets;
+    console.log('in display rep sets, sets are', sets)
     if (!sets || sets.length === 0) return "No data";
     
     let combinedSets = [];
@@ -80,7 +82,7 @@ export default function SetsRepsDuration({ exercise, activeWorkout, updateActive
         count = 1;
       }
     }
-    
+    console.log('combinedSets are', combinedSets)
     if(combinedSets.length >1) {
       displayReps= combinedSets.join(",\n");
     } else {displayReps= combinedSets.join("\n");}

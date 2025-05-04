@@ -88,7 +88,7 @@ const existingWorkoutDoesNotContainCurrentExercise = (exercise) => {
 const addToActiveWorkout = (exerciseToBeAdded) => {
   let updatedActiveWorkout;
   
-    if (existingWorkoutDoesNotContainCurrentExercise) {
+    if (existingWorkoutDoesNotContainCurrentExercise(exerciseToBeAdded)) {
       updatedActiveWorkout = [...activeWorkout, setExerciseInfo(exerciseToBeAdded)];
     } else {
     updatedActiveWorkout = [setExerciseInfo(exerciseToBeAdded)]
