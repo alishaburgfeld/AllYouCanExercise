@@ -77,9 +77,11 @@ export default function EditExerciseModal({ openEditExerciseModal, setOpenEditEx
                         : <CardioSet exercise = {exercise} distance={distance} setInputDistance={setInputDistance} setInputDuration={setInputDuration} hours={hours} minutes={minutes} seconds={seconds} setHours={setHours} setMinutes={setMinutes} setSeconds={setSeconds} setInputDistanceUnit={setInputDistanceUnit} distanceUnit={distanceUnit}/>
                     }
                 <DialogActions>
-                    <Button onClick={() => (exerciseType === "CARDIO" ? saveCardioEdits() : saveRepEdits())} autoFocus>
-                        Save
-                    </Button>
+                    <Box >
+                        <Button onClick={() => (exerciseType === "CARDIO" ? saveCardioEdits() : saveRepEdits())} autoFocus>
+                            Save
+                        </Button>
+                    </Box>
                 </DialogActions>
             </Dialog>
         </>
