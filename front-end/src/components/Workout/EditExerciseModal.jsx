@@ -6,7 +6,7 @@ import CardioSet from './CardioSet';
 import RepSet from './RepSet';
 import { convertFromSeconds } from '../../utils/HelperFunctions';
 
-export default function EditExerciseModal({ openEditExerciseModal, setOpenEditExerciseModal, exercise, updateActiveWorkoutWithNewStats, hours, minutes, seconds, setHours, setMinutes, setSeconds, distance, setDistance, setDistanceUnit, distanceUnit }) {
+export default function EditExerciseModal({ openEditExerciseModal, setOpenEditExerciseModal, exercise, updateActiveWorkoutWithNewStats }) {
 
     const [sets, setSets] = useState([1]);
     const [allReps, setAllReps] = useState([""]);
@@ -74,7 +74,7 @@ export default function EditExerciseModal({ openEditExerciseModal, setOpenEditEx
                             ))}
                             <AddIcon onClick={addSet} sx={{ cursor: 'pointer' }} />
                         </>
-                        : <CardioSet exercise = {exercise} distance={distance} setInputDistance={setInputDistance} setInputDuration={setInputDuration} hours={hours} minutes={minutes} seconds={seconds} setHours={setHours} setMinutes={setMinutes} setSeconds={setSeconds} setInputDistanceUnit={setInputDistanceUnit} distanceUnit={distanceUnit}/>
+                        : <CardioSet exercise = {exercise} setInputDistance={setInputDistance} setInputDuration={setInputDuration} setInputDistanceUnit={setInputDistanceUnit}/>
                     }
                 <DialogActions>
                     <Box >

@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 
 
 
-export default function CardioSet ({exercise, distance, duration, setDistance, setDuration, distanceUnit, setDistanceUnit, hours, minutes, seconds, setHours, setMinutes, setSeconds, setInputDistance, setInputDistanceUnit, setInputDuration}) {
+export default function CardioSet ({exercise, setInputDistance, setInputDistanceUnit, setInputDuration}) {
   const [temporaryUnit, setTemporaryUnit] = useState(exercise?.sets?.[0]?.distanceUnit|| ""); // selected unit
   const [temporaryDistance, setTemporaryDistance] = useState(exercise?.sets?.[0]?.distance || "")
   const [temporaryHours, setTemporaryHours] = useState(exercise?.sets?.[0]?.duration?.hours || 0)
