@@ -5,32 +5,21 @@ import { useState, useEffect } from "react";
 
 
 
-export default function CardioSet ({distance, duration, setDistance, setDuration, distanceUnit, setDistanceUnit, hours, minutes, seconds, setHours, setMinutes, setSeconds, setInputDistance, setInputDistanceUnit, setInputDuration}) {
-  // onclose need to reset the distanceInput to distance
-  // const [currentDistance, setCurrentDistance] = useState(null);
-  // const [currentDuration, setCurrentDuration] = useState(null);
-  // const [distanceInput, setDistanceInput] = useState(distance || ""); // what the user typed
-  const [temporaryUnit, setTemporaryUnit] = useState(distanceUnit || ""); // selected unit
-  const [temporaryDistance, setTemporaryDistance] = useState(distance || "")
-
+export default function CardioSet ({exercise, distance, duration, setDistance, setDuration, distanceUnit, setDistanceUnit, hours, minutes, seconds, setHours, setMinutes, setSeconds, setInputDistance, setInputDistanceUnit, setInputDuration}) {
+  const [temporaryUnit, setTemporaryUnit] = useState(exercise?.sets?.[0]?.distanceUnit|| ""); // selected unit
+  const [temporaryDistance, setTemporaryDistance] = useState(exercise?.sets?.[0]?.distance || "")
+  const [temporaryHours, setTemporaryHours] = useState(exercise?.sets?.[0]?.duration?.hours || 0)
+  const [temporaryMinutes, setTemporaryMinutes] = useState(exercise?.sets?.[0]?.duration?.minutes || 0)
+  const [temporarySeconds, setTemporarySeconds] = useState(exercise?.sets?.[0]?.duration?.seconds || 0)
   // console.log('distanceinput is', distanceInput)
   const handleDurationChange = (hours, minutes, seconds) => {
-    // setDistanceUnit(unit)
-    // Convert hours, minutes, and seconds into total seconds
-    // const totalDuration = (hours * 3600) + (minutes * 60) + seconds;
     setInputDuration({"hours": hours, "minutes": minutes, "seconds": seconds});
-
   };
 
   const handleDistanceInputChange = (distanceValue, distanceUnit) => {
     setInputDistance(distanceValue)
     setInputDistanceUnit(distanceUnit)
-
-    // const totalDistance = toMeters(distanceValue, distanceUnit)
-    // console.log('2) Cardio set set total distance is', totalDistance)
-    // setDistance(totalDistance);
   };
-
 
     return(
       <Box sx={{ width: '100%', maxWidth: 400, display: 'flex', flexDirection: "column", alignItems: "flex-start", pl:4 }}>
@@ -76,10 +65,10 @@ export default function CardioSet ({distance, duration, setDistance, setDuration
           label="Hours"
           type="number"
           variant="standard"
-          value={hours}
+          value={temporaryHours}
           onChange={(e) => {
-            // setHours(e.target.value);
-            handleDurationChange(e.target.value, minutes, seconds);
+            setTemporaryHours(e.target.value);
+            handleDurationChange(e.target.value, temporaryMinutes, temporarySeconds);
           }}
           sx={{ width: "30%", marginRight: "5px" }}
         />
@@ -87,10 +76,10 @@ export default function CardioSet ({distance, duration, setDistance, setDuration
           label="Minutes"
           type="number"
           variant="standard"
-          value={minutes}
+          value={temporaryMinutes}
           onChange={(e) => {
-            // setMinutes(e.target.value);
-            handleDurationChange(hours, e.target.value, seconds);
+            setTemporaryMinutes(e.target.value);
+            handleDurationChange(temporaryHours, e.target.value, temporarySeconds);
           }}
           sx={{ width: "30%", marginRight: "5px" }}
         />
@@ -98,10 +87,10 @@ export default function CardioSet ({distance, duration, setDistance, setDuration
           label="Seconds"
           type="number"
           variant="standard"
-          value={seconds}
+          value={temporarySeconds}
           onChange={(e) => {
-            // setSeconds(e.target.value);
-            handleDurationChange(hours, minutes, e.target.value);
+            setTemporarySeconds(e.target.value);
+            handleDurationChange(temporaryHours, temporaryMinutes, e.target.value);
           }}
           sx={{ width: "30%" }}
         />

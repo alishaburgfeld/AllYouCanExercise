@@ -8,45 +8,22 @@ import { useMemo } from "react";
 export default function SetsRepsDuration({ exercise, activeWorkout, updateActiveWorkoutWithNewStats }) {
   const [openEditExerciseModal, setOpenEditExerciseModal] = useState(false);
   // const [workoutExerciseDetail, setWorkoutExerciseDetail] = useState(null);
-  const [hours, setHours] = useState(exercise?.sets?.[0]?.duration?.hours || "");
-  const [minutes, setMinutes] = useState(exercise?.sets?.[0]?.duration?.minutes || "");
-  const [seconds, setSeconds] = useState(exercise?.sets?.[0]?.duration?.seconds || "");
-  const [distanceUnit, setDistanceUnit] =useState(exercise?.sets?.[0]?.distanceUnit || "")
-  const [distance, setDistance] =useState(exercise?.sets?.[0]?.distance || "")
+  // const [hours, setHours] = useState(exercise?.sets?.[0]?.duration?.hours || "");
+  // const [minutes, setMinutes] = useState(exercise?.sets?.[0]?.duration?.minutes || "");
+  // const [seconds, setSeconds] = useState(exercise?.sets?.[0]?.duration?.seconds || "");
+  // const [distanceUnit, setDistanceUnit] =useState(exercise?.sets?.[0]?.distanceUnit || "")
+  // const [distance, setDistance] =useState(exercise?.sets?.[0]?.distance || "")
 
-  console.log("on setsrepdur, distance is", distance, 'exercise is',exercise)
-  // const exerciseDuration = useMemo(() => {
-  //   if (!workoutExerciseDetail) return null;
-  //   const timeInSeconds = workoutExerciseDetail.sets[0].duration;
-  //   return convertFromSeconds(timeInSeconds);
-  // }, [workoutExerciseDetail]);
-
-  // const getWorkoutExerciseDetail = () => {
-  //   const wed = activeWorkout.find(detail => detail.exerciseId === exercise.exerciseId);
-  //   setWorkoutExerciseDetail(wed);
-  // };
-
-  // const setTimes = () => {
-  //   if (exerciseDuration) {
-  //     return `H:${hours} M:${minutes} S:${seconds < 10 ? "0" + seconds : seconds}`;
-  //   }
-  //   return "";
-  // };
-
-  // const determineSetsRepsOrDuration = () => {
-  //   if (!exercise) {
-  //     return <Typography align="center" className="activeWorkout_exerciseDetails">Loading...</Typography>;
-  //   }
-  //   let exerciseInfo;
-  //   if (exercise.exerciseType === 'CARDIO') {
-  //     exerciseInfo = displayCardioSets();
-  //   } else {
-  //     exerciseInfo = displayRepSets(workoutExerciseDetail);
-  //   }
-  //   return <Typography align="center" className="activeWorkout_exerciseDetails">{exerciseInfo}</Typography>;
-  // };
+  // console.log("on setsrepdur, distance is", distance, 'exercise is',exercise)
+  console.log("on setsrepdur", 'exercise is',exercise)
 
   const displayCardioSets = () => {
+    const cardioSet = exercise?.sets?.[0];
+    if (!cardioSet) return null;
+
+    const { distance, distanceUnit, duration } = cardioSet;
+    const { hours, minutes, seconds } = duration || {};
+
     let displayDistance = ""
     let displayDuration = ""
     if (hours || minutes || seconds) {
@@ -92,23 +69,7 @@ export default function SetsRepsDuration({ exercise, activeWorkout, updateActive
 
   const handleEditClick = () => {
     setOpenEditExerciseModal(true);
-    // console.log('You clicked edit on sets and reps');
   };
-
-  // useEffect(() => {
-  //   if (exercise && activeWorkout) {
-  //     getWorkoutExerciseDetail();
-  //   }
-  // }, [exercise, activeWorkout]); 
-
-  // useEffect(() => {
-  //   if (exerciseDuration) {
-  //     const { hours, minutes, seconds } = exerciseDuration;
-  //     setHours(hours);
-  //     setMinutes(minutes);
-  //     setSeconds(seconds);
-  //   }
-  // }, [exerciseDuration]);
 
   return (
     <Box sx={{ position: "absolute", bottom: 4, right: 0, left: 0, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -122,16 +83,16 @@ export default function SetsRepsDuration({ exercise, activeWorkout, updateActive
         setOpenEditExerciseModal={setOpenEditExerciseModal}
         exercise={exercise}
         updateActiveWorkoutWithNewStats={updateActiveWorkoutWithNewStats}
-        hours={hours} 
-        minutes={minutes} 
-        seconds={seconds} 
-        setHours={setHours} 
-        setMinutes={setMinutes} 
-        setSeconds={setSeconds}
-        distance={distance}
-        setDistance={setDistance}
-        setDistanceUnit={setDistanceUnit}
-        distanceUnit = {distanceUnit}
+        // hours={hours} 
+        // minutes={minutes} 
+        // seconds={seconds} 
+        // setHours={setHours} 
+        // setMinutes={setMinutes} 
+        // setSeconds={setSeconds}
+        // distance={distance}
+        // setDistance={setDistance}
+        // setDistanceUnit={setDistanceUnit}
+        // distanceUnit = {distanceUnit}
       />
     </Box>
   );

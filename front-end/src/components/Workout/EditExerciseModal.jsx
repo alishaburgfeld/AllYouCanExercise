@@ -16,38 +16,30 @@ export default function EditExerciseModal({ openEditExerciseModal, setOpenEditEx
     const [inputDuration, setInputDuration] = useState(null);
 
     const exerciseType = exercise.exerciseType;
-
-    // console.log('workoutxercisedetail is', exercise)
     // console.log('distance on edit modal is', distance, 'duration on edit modal is', duration)
 
     const handleClose = () => {
         setOpenEditExerciseModal(false);
     };
 
+    // TO-DO: SaveCardio and SaveRep are basically the same except for the sets - refacdtor this.
+
     const saveCardioEdits = () => {
-        let updatedExerciseDetail = exercise
-        const newSets = {"distance": inputDistance, "duration": inputDuration, "distanceUnit": inputDistanceUnit}
+        let updatedExerciseDetail = {...exercise}
+        const newSets = [{"distance": inputDistance, "duration": inputDuration, "distanceUnit": inputDistanceUnit}]
         console.log('3) in savecardio edits newsets are', newSets)
-        updatedExerciseDetail["sets"] = [newSets];
-        // You're modifying the object directly, which React doesn’t detect as a "state change."
-        // instead, Use a new object to trigger the update properly which react will render as a state change:
+        updatedExerciseDetail["sets"] = newSets;
         updateActiveWorkoutWithNewStats(updatedExerciseDetail)
         setOpenEditExerciseModal(false);
     }
 
     const saveRepEdits = () => {
-        let updatedExerciseDetail = exercise
+        let updatedExerciseDetail = {...exercise}
             const newSets = [];
             for(let i=0; i<allReps.length; i++) {
                 newSets[i] = {"reps": allReps[i], "weight": allWeights[i]}
             }
-            // console.log("newsets are", newSets)
-            // console.log('****workoutex detail', exercise)
             updatedExerciseDetail["sets"] = newSets;
-            // You're modifying the object directly, which React doesn’t detect as a "state change."
-            // instead, Use a new object to trigger the update properly which react will render as a state change:
-
-            // console.log('on close, sets are', sets, 'allReps are', allReps, 'allWeights are', allWeights)
         console.log('4) EEM updatedexdetails are', updatedExerciseDetail)
         updateActiveWorkoutWithNewStats(updatedExerciseDetail)
         setOpenEditExerciseModal(false);
@@ -61,14 +53,6 @@ export default function EditExerciseModal({ openEditExerciseModal, setOpenEditEx
         setAllWeights((prev) => [...prev, allWeights[allWeights.length - 1] || ""]);
         // duplicates the previous value into the new set value
     };
-
-    // useEffect(() => {
-    //     // console.log('*1 and 5, in use effect on EEM, workout ex dets are',exercise)
-    //     if (exercise?.sets?.[0]) {
-    //         setDistance(exercise.sets[0].distance || "");
-    //         setDuration(exercise.sets[0].duration || "");
-    //     }
-    // }, [exercise]);
 
     return (
         <>
@@ -91,7 +75,7 @@ export default function EditExerciseModal({ openEditExerciseModal, setOpenEditEx
                             ))}
                             <AddIcon onClick={addSet} sx={{ cursor: 'pointer' }} />
                         </>
-                        : <CardioSet distance={distance} setInputDistance={setInputDistance} setInputDuration={setInputDuration} hours={hours} minutes={minutes} seconds={seconds} setHours={setHours} setMinutes={setMinutes} setSeconds={setSeconds} setInputDistanceUnit={setInputDistanceUnit} distanceUnit={distanceUnit}/>
+                        : <CardioSet exercise = {exercise} distance={distance} setInputDistance={setInputDistance} setInputDuration={setInputDuration} hours={hours} minutes={minutes} seconds={seconds} setHours={setHours} setMinutes={setMinutes} setSeconds={setSeconds} setInputDistanceUnit={setInputDistanceUnit} distanceUnit={distanceUnit}/>
                     }
                 {/* </Box> */}
                 <DialogActions>

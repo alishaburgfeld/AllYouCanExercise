@@ -12,7 +12,6 @@ import SetsRepsDuration from "../components/Workout/SetsRepsDuration";
 
 export default function ActiveWorkoutPage({ activeWorkout, setActiveWorkout, updateActiveWorkoutWithNewStats}) {
     const theme = useTheme();
-    // console.log('activeWorkout in ActiveWorkoutPage:', activeWorkout);
 
     // TO-DO: Change theme fontSize based on if there is 1 or more exercises in activeworkout
   
