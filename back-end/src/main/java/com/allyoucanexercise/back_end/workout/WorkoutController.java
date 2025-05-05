@@ -30,7 +30,7 @@ public class WorkoutController {
         this.workoutService = workoutService;
     }
 
-    private static final Logger log = LoggerFactory.getLogger(ExerciseApplication.class);
+    private static final Logger log = LoggerFactory.getLogger(WorkoutController.class);
 
     @GetMapping()
     List<Workout> findAll() {
@@ -68,6 +68,7 @@ public class WorkoutController {
 
     @PostMapping("/full/save")
     public ResponseEntity<?> saveFullWorkout(@RequestBody WorkoutRequestDTO request) {
+        log.error("inside saveFullWorkout, request is {}", request);
         workoutService.saveFullWorkout(request);
         return ResponseEntity.ok().build();
     }

@@ -25,7 +25,6 @@ export default function CardioSet ({exercise, setInputDistance, setInputDistance
       <Box sx={{ width: '100%', maxWidth: 400, display: 'flex', flexDirection: "column", alignItems: "flex-start", pl:4 }}>
         <Box sx={{ display: 'flex', justifyContent: "space-between" }}>
         <TextField
-        required
           id="standard-number"
           label="Distance"
           type="number"
@@ -43,10 +42,10 @@ export default function CardioSet ({exercise, setInputDistance, setInputDistance
             },
           }}
         />
-        <FormControl required sx={{ width: "40%" }}>
+        <FormControl sx={{ width: "40%" }}>
         <InputLabel id="distance-unit-label" sx={{mt:1}}>Unit</InputLabel>
         <Select
-          labelId="distance-unit-label"
+
           value={temporaryUnit}
           onChange={(e) => {
             setTemporaryUnit(e.target.value)

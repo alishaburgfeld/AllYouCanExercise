@@ -36,6 +36,11 @@ export default function Navbar({ activeUsername, setActiveUsername, setActiveWor
     navigate("/login");
   };
 
+  const handleActiveWorkoutClick = () => {
+    navigate("/workout")
+    handleClose();
+  }
+
   const logout = async () => {
     try {
       const csrfToken = Cookies.get('XSRF-TOKEN')
@@ -102,7 +107,7 @@ export default function Navbar({ activeUsername, setActiveUsername, setActiveWor
                 }}
               >
                 <MenuItem onClick={handleClose}>Records</MenuItem>
-                <MenuItem onClick={handleClose}>Workouts</MenuItem>
+                <MenuItem onClick={()=> {handleActiveWorkoutClick()}}>Active Workout</MenuItem>
                 <MenuItem onClick={handleClose}>Calendar</MenuItem>
                 <MenuItem onClick={logout}>Logout</MenuItem>
               </Menu>

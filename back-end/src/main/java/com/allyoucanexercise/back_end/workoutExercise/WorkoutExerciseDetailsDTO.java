@@ -23,4 +23,13 @@ public class WorkoutExerciseDetailsDTO {
     public void setSets(List<ExerciseSetDTO> sets) {
         this.sets = sets;
     }
+
+    @Override
+    public String toString() {
+        return "WorkoutExerciseDetailsDTO{" +
+                "exerciseId=" + exerciseId +
+                ", sets=" + (sets != null ? sets.toString() : "null") +
+                '}';
+    }
+
 }
