@@ -3,6 +3,9 @@ package com.allyoucanexercise.back_end.helpers;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
@@ -11,6 +14,9 @@ import org.springframework.security.web.csrf.CsrfTokenRequestHandler;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.security.web.csrf.XorCsrfTokenRequestAttributeHandler;
 import org.springframework.web.cors.CorsConfiguration;
+
+import com.allyoucanexercise.back_end.user.UserService;
+
 import org.springframework.util.StringUtils;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,10 +28,12 @@ import java.util.List;
 import java.util.function.Supplier;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
 
         @Bean
-        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        public SecurityFilterChain securityFilterChain(HttpSecurity http, UserDetailsService userDetailsService)
+                        throws Exception {
                 http
                                 .cors(cors -> cors.configurationSource(request -> {
                                         CorsConfiguration config = new CorsConfiguration();
@@ -46,13 +54,15 @@ public class SecurityConfig {
                                                                                                            // SPAs
                                 )
                                 .sessionManagement(session -> session
-                                                .maximumSessions(1)
-                                                .maxSessionsPreventsLogin(false))
+                                                // .maximumSessions(1)
+                                                // .maxSessionsPreventsLogin(false))
+                                                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
                                 .authorizeHttpRequests(auth -> auth
                                                 .requestMatchers("/api/**", "/auth/**").permitAll()
                                                 .anyRequest().authenticated())
                                 .formLogin(form -> form.disable())
-                                .httpBasic(basic -> basic.disable());
+                                .httpBasic(basic -> basic.disable())
+                                .userDetailsService(userDetailsService);
 
                 return http.build();
         }
@@ -61,6 +71,7 @@ public class SecurityConfig {
         public BCryptPasswordEncoder passwordEncoder() {
                 return new BCryptPasswordEncoder();
         }
+
 }
 
 /**

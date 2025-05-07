@@ -6,6 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,7 +50,10 @@ public class UserController {
         boolean authenticated = userService.authenticateUser(user.getUsername(), user.getPassword());
 
         if (authenticated) {
-            userService.setSession(user.getUsername(), request);
+            userService.setSessionAndSecurityContext(user, request);
+
+            Authentication authtest = SecurityContextHolder.getContext().getAuthentication();
+            System.out.println("Authenticated user: " + authtest.getName());
             return ResponseEntity.ok(user.getUsername());
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
