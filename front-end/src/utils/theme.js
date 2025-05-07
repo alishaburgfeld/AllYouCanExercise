@@ -16,7 +16,7 @@ const theme = createTheme({
     },
   },
   fontSize: {
-    primary: [".9rem", "1.9rem", "2.7rem"],
+    primary: [".9rem", "1.2rem", "2rem"],
     secondary: ["1.9rem", "1.9rem", "4rem"],
   },
 });

@@ -31,12 +31,20 @@ public class Workout {
     @Column(name = "completed_at", nullable = false)
     private LocalDateTime completedAt;
 
+    @Column(name = "workout_notes")
     private String workoutNotes;
 
     protected Workout() {
     }
 
     public Workout(User user, String title, LocalDateTime completedAt, String workoutNotes) {
+        this.user = user;
+        this.title = title;
+        this.completedAt = completedAt;
+        this.workoutNotes = workoutNotes;
+    }
+
+    public Workout(User user, String title, LocalDateTime createdAt, LocalDateTime completedAt, String workoutNotes) {
         this.user = user;
         this.title = title;
         this.completedAt = completedAt;
@@ -75,6 +83,10 @@ public class Workout {
         return createdAt;
     }
 
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
     public LocalDateTime getCompletedAt() {
         return completedAt;
     }
@@ -89,5 +101,16 @@ public class Workout {
 
     public void setWorkoutNotes(String workoutNotes) {
         this.workoutNotes = workoutNotes;
+    }
+
+    @Override
+    public String toString() {
+        return "Workout{" +
+                "user='" + user + '\'' +
+                ", title='" + title + '\'' +
+                ", createdAt=" + createdAt +
+                ", completedAt=" + completedAt +
+                ", workoutNotes='" + workoutNotes + '\'' +
+                '}';
     }
 }

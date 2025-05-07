@@ -3,6 +3,7 @@ import { useTheme } from '@mui/material/styles';
 import SetsRepsDuration from "./SetsRepsDuration"
 import { postAxiosCall, toMeters, convertToSeconds } from "../../utils/HelperFunctions";
 import { useState, useEffect } from 'react';
+import DateTimeComponent from "./DateTimeComponent";
 
 export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpenCompleteWorkoutModal, activeWorkout, activeUsername}) {
     const theme = useTheme();
@@ -10,16 +11,21 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
     const [saveWorkoutError, setSaveWorkoutError] = useState(null);
     const [title, setTitle] = useState("")
     const [notes, setNotes] = useState("")
+    const [selectedDateTime, setSelectedDateTime] = useState(new Date());
+
 
     
     const defineWorkoutDetails = () => {
+        const timeFormattedForJava = selectedDateTime.toISOString().slice(0, 19);
+
         console.log('in complete workout modal, active workout is', activeWorkout)
         let workoutExerciseDetails = [];
         let finalWorkoutDetails = {
             "workoutDetails": {
                 "username": activeUsername,
                 "title": title,
-                "notes": notes
+                "notes": notes,
+                "completedAt": timeFormattedForJava
             }
         }
         activeWorkout.forEach((exercise)=> {
@@ -61,7 +67,7 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
 
     useEffect(()=> {
         defineWorkoutDetails();
-      }, [activeWorkout, title])
+      }, [activeWorkout, title, selectedDateTime])
 
     return(
         <Dialog
@@ -80,7 +86,7 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
                 e.preventDefault(); // Stop page reload
                 handleSave();
             }}>
-            <DialogContent>
+            <DialogContent sx={{width:"100%"}}>
                 <DialogContentText>Have you finished editing all your exercises and would like to submit your workout?</DialogContentText>
                 <TextField
                           label="Workout Title"
@@ -100,7 +106,9 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
                           value={notes}
                           onChange={(e) => setNotes(e.target.value)}
                           sx={{marginTop: 1 }}
-                        />        
+                        />  
+                
+                <DateTimeComponent onChange={(date) => console.log('Selected:', date)} selectedDateTime={selectedDateTime} setSelectedDateTime = {setSelectedDateTime}/>      
             </DialogContent>
             {/* <Box sx={{width: "100%"}}>
 
