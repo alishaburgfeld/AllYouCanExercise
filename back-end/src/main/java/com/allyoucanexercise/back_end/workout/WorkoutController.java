@@ -72,9 +72,6 @@ public class WorkoutController {
     public ResponseEntity<?> saveFullWorkout(@RequestBody WorkoutRequestDTO request) {
         log.error("inside saveFullWorkout, request is {}", request);
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("Authenticated user: " + auth.getName());
-        // results in: Authenticated user: anonymousUser
         workoutService.saveFullWorkout(request);
         return ResponseEntity.ok().build();
     }

@@ -13,6 +13,10 @@
 My java will use import java.time.LocalDateTime;
 My sql will use completedAt DATETIME
 
+4. This is the commit with all the security config to allow all subsequent post calls:
+   0874023
+   https://github.com/alishaburgfeld/AllYouCanExercise/commit/d774bc7a107b9db5f9e01f83ec209cf30f900048
+
 <!-- -------------------REST --------------------->
 
 When have security dependency invoked it prints a password in the console to connect to the localhost:

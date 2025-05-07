@@ -48,8 +48,8 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
     }
 
     const handleSave = async () => {
-        console.log('in handle save')
-        const response = await postAxiosCall("http://localhost:8080/api/workouts/full/save", { workoutDetails });
+        console.log('in handle save, workout details are', workoutDetails)
+        const response = await postAxiosCall("http://localhost:8080/api/workouts/full/save", workoutDetails);
             if (response.success) {
             console.log('handleworkoutsave response', response)
             } else {
