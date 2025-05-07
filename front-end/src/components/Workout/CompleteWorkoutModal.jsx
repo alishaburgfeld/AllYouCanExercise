@@ -67,7 +67,7 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
 
     useEffect(()=> {
         defineWorkoutDetails();
-      }, [activeWorkout, title, selectedDateTime])
+      }, [activeWorkout, title, selectedDateTime, notes])
 
     return(
         <Dialog

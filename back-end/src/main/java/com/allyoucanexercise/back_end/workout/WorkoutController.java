@@ -1,7 +1,9 @@
 package com.allyoucanexercise.back_end.workout;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,7 +75,12 @@ public class WorkoutController {
         log.error("inside saveFullWorkout, request is {}", request);
 
         workoutService.saveFullWorkout(request);
-        return ResponseEntity.ok().build();
+        // return ResponseEntity.ok().build();
+
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("success", true);
+
+        return ResponseEntity.ok(responseBody);
     }
 }
 

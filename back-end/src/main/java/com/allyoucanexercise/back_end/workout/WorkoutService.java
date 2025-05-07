@@ -103,26 +103,23 @@ public class WorkoutService {
         Workout workout = this.saveWorkout(user, workoutDetailsDTO.getTitle(), workoutDetailsDTO.getCompletedAt(),
                 workoutDetailsDTO.getWorkoutNotes());
         log.error("workout in service is {}", workout);
-        // for (int i = 0; i < workoutExerciseDetails.size(); i++) {
-        // WorkoutExerciseDetailsDTO workoutExerciseDetailsDTO =
-        // workoutExerciseDetails.get(i);
-        // Exercise exercise =
-        // exerciseService.getExerciseById(workoutExerciseDetailsDTO.getExerciseId());
-        // Integer exerciseOrder = i + 1;
-        // WorkoutExercise workoutExercise =
-        // workoutExerciseService.saveWorkoutExercise(workout, exercise,
-        // exerciseOrder);
+        for (int i = 0; i < workoutExerciseDetails.size(); i++) {
+            WorkoutExerciseDetailsDTO workoutExerciseDetailsDTO = workoutExerciseDetails.get(i);
+            Exercise exercise = exerciseService.getExerciseById(workoutExerciseDetailsDTO.getExerciseId());
+            Integer exerciseOrder = i + 1;
+            WorkoutExercise workoutExercise = workoutExerciseService.saveWorkoutExercise(workout, exercise,
+                    exerciseOrder);
 
-        // List<ExerciseSetDTO> exerciseSetDTOs = workoutExerciseDetailsDTO.getSets();
-        // for (int j = 0; j < exerciseSetDTOs.size(); j++) {
-        // Integer setOrder = j + 1;
-        // ExerciseSetDTO setDTO = exerciseSetDTOs.get(j);
-        // exerciseSetService.saveExerciseSet(workoutExercise, setOrder,
-        // setDTO.getReps(), setDTO.getWeight(),
-        // setDTO.getDurationSeconds(), setDTO.getDistanceMeters());
+            List<ExerciseSetDTO> exerciseSetDTOs = workoutExerciseDetailsDTO.getSets();
+            for (int j = 0; j < exerciseSetDTOs.size(); j++) {
+                Integer setOrder = j + 1;
+                ExerciseSetDTO setDTO = exerciseSetDTOs.get(j);
+                exerciseSetService.saveExerciseSet(workoutExercise, setOrder,
+                        setDTO.getReps(), setDTO.getWeight(),
+                        setDTO.getDurationSeconds(), setDTO.getDistanceMeters());
 
-        // }
-        // }
+            }
+        }
     }
 
 }
