@@ -37,4 +37,15 @@ public class ExerciseSetDTO {
     public void setDistanceMeters(Integer distanceMeters) {
         this.distanceMeters = distanceMeters;
     }
+
+    @Override
+    public String toString() {
+        return "ExerciseSetDTO{" +
+                "reps=" + reps +
+                ", weight=" + weight +
+                ", durationSeconds=" + durationSeconds +
+                ", distanceMeters=" + distanceMeters +
+                '}';
+    }
+
 }

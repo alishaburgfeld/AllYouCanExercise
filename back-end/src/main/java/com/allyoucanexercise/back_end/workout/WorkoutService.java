@@ -88,6 +88,7 @@ public class WorkoutService {
     }
 
     public void saveFullWorkout(WorkoutRequestDTO workoutRequestDTO) {
+        log.error("**inside saveFullWorkout in workoutService, workoutRequest is {}", workoutRequestDTO);
         WorkoutDetailsDTO workoutDetailsDTO = workoutRequestDTO.getWorkoutDetails();
         List<WorkoutExerciseDetailsDTO> workoutExerciseDetails = workoutRequestDTO.getWorkoutExerciseDetails();
         User user = userService.getUserByUsername(workoutDetailsDTO.getUsername()).orElse(null);

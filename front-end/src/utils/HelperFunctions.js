@@ -1,6 +1,7 @@
 import IMAGES from "../assets/images/images";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { Box, Typography } from "@mui/material";
 
 export const getImageSource = (name) => {
   let source;
@@ -34,7 +35,7 @@ export const getAxiosCall = async (url) => {
 };
 
 export const postAxiosCall = async (url, body) => {
-  // console.log("url in post axios call is", url);
+  console.log("url in post axios call is", url, "body is", body);
   try {
     const csrfToken = Cookies.get("XSRF-TOKEN");
     const response = await axios.post(url, body, {
@@ -79,6 +80,11 @@ export const convertFromSeconds = (totalSeconds) => {
   return { hours, minutes, seconds };
 };
 
+export const convertToSeconds = (duration) => {
+  const { hours, minutes, seconds } = duration;
+  return hours * 3600 + minutes * 60 + seconds;
+};
+
 export const toMeters = (value, unit) => {
   let distance;
   unit === "mi"
@@ -97,4 +103,56 @@ export const fromMeters = (meters, toUnit) => {
     ? (distance = +(meters / 0.9144).toFixed(2))
     : (distance = meters);
   return distance;
+};
+
+export const displayCardioText = (exercise) => {
+  const cardioSet = exercise?.sets?.[0];
+  if (!cardioSet) return null;
+
+  const { distance, distanceUnit, duration } = cardioSet;
+  const { hours, minutes, seconds } = duration || {};
+
+  let cardioValues = {};
+  let displayDistance = "";
+  let displayDuration = "";
+  if (hours || minutes || seconds) {
+    displayDistance = `H:${hours} M:${minutes} S:${
+      seconds < 10 ? "0" + seconds : seconds
+    }`;
+  }
+  if (distance) {
+    displayDuration = `${distance} ${distanceUnit}`;
+  }
+  cardioValues["displayDistance"] = displayDistance;
+  cardioValues["displayDuration"] = displayDuration;
+  return cardioValues;
+  // console.log("1) in display cardio sets, displaydistance is", displayDistance, "displayduration is", displayDuration)
+};
+
+export const displayReps = (exercise) => {
+  const sets = exercise.sets;
+  // console.log('in display rep sets, sets are', sets)
+  if (!sets || sets.length === 0) return "No data";
+
+  let combinedSets = [];
+  let count = 1;
+
+  for (let i = 1; i <= sets.length; i++) {
+    const current = sets[i];
+    const prev = sets[i - 1];
+
+    if (
+      current &&
+      prev &&
+      current.reps === prev.reps &&
+      current.weight === prev.weight
+    ) {
+      count++;
+    } else {
+      combinedSets.push(`${count}x${prev.reps}:${prev.weight} lbs`);
+      count = 1;
+    }
+  }
+  console.log("combinedSets are", combinedSets);
+  return combinedSets;
 };

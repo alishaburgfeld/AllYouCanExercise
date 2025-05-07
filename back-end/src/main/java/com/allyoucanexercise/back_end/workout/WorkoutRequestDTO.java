@@ -42,4 +42,13 @@ public class WorkoutRequestDTO {
         this.workoutExerciseDetails = workoutExerciseDetails;
     }
 
+    @Override
+    public String toString() {
+        return "WorkoutRequestDTO{" +
+                "workoutDetails=" + (workoutDetails != null ? workoutDetails.toString() : "null") +
+                ", workoutExerciseDetails="
+                + (workoutExerciseDetails != null ? workoutExerciseDetails.toString() : "null") +
+                '}';
+    }
+
 }

@@ -1,17 +1,18 @@
 // import { useState, useEffect } from "react"
 // import { useParams, useNavigate } from "react-router-dom";
 import "../css/ActiveWorkoutPage.css";
-import { Box, Typography, IconButton} from "@mui/material";
+import { Box, Button, Typography, IconButton} from "@mui/material";
 import { useTheme } from '@mui/material/styles';
 import { getImageSource, getAxiosCall } from "../utils/HelperFunctions";
 import { useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
-
+import CompleteWorkoutModal from "../components/Workout/CompleteWorkoutModal";
 import SetsRepsDuration from "../components/Workout/SetsRepsDuration";
 
 
-export default function ActiveWorkoutPage({ activeWorkout, setActiveWorkout, updateActiveWorkoutWithNewStats}) {
+export default function ActiveWorkoutPage({ activeWorkout, setActiveWorkout, activeUsername, updateActiveWorkoutWithNewStats}) {
     const theme = useTheme();
+    const [openCompleteWorkoutModal, setOpenCompleteWorkoutModal] = useState(false);
 
     // TO-DO: Change theme fontSize based on if there is 1 or more exercises in activeworkout
   
@@ -31,7 +32,7 @@ export default function ActiveWorkoutPage({ activeWorkout, setActiveWorkout, upd
           Active Workout
         </Typography>
         <Box className="activeWorkout_ItemContainer">
-          {activeWorkout.length > 0 ? (
+          {activeWorkout?.length > 0 ? (
             activeWorkout.map((exercise, index) => (
               <Box key={index} className="activeWorkout_items" sx={{ pb: 5, borderRadius: 1, border: 2, borderColor: theme.palette.secondary.main, position: "relative" }}>
                 <DeleteIcon onClick={() => handleRemoveExercise(exercise.exerciseId)} />
@@ -46,6 +47,16 @@ export default function ActiveWorkoutPage({ activeWorkout, setActiveWorkout, upd
             <p>Add an exercise to see your workout!</p>
           )}
         </Box>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          sx={{ marginBottom: 2 }}
+          onClick={()=> {setOpenCompleteWorkoutModal(true)}}
+        >
+          Complete Workout
+        </Button>
+        <CompleteWorkoutModal openCompleteWorkoutModal={openCompleteWorkoutModal} setOpenCompleteWorkoutModal={setOpenCompleteWorkoutModal} activeWorkout={activeWorkout} activeUsername={activeUsername}/>
       </Box>
     );
 }

@@ -39,4 +39,15 @@ public class WorkoutDetailsDTO {
     public void setWorkoutNotes(String workoutNotes) {
         this.workoutNotes = workoutNotes;
     }
+
+    @Override
+    public String toString() {
+        return "WorkoutDetailsDTO{" +
+                "username='" + username + '\'' +
+                ", title='" + title + '\'' +
+                ", completedAt=" + completedAt +
+                ", workoutNotes='" + workoutNotes + '\'' +
+                '}';
+    }
+
 }
