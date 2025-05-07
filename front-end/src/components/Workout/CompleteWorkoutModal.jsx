@@ -11,9 +11,9 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
     const [title, setTitle] = useState("")
     const [notes, setNotes] = useState("")
 
-    // console.log('in complete workout modal, active workout is', activeWorkout)
-
+    
     const defineWorkoutDetails = () => {
+        console.log('in complete workout modal, active workout is', activeWorkout)
         let workoutExerciseDetails = [];
         let finalWorkoutDetails = {
             "workoutDetails": {
@@ -27,8 +27,9 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
             workoutExerciseDetails.push({"exerciseId": exercise.exerciseId, "sets": sets})
         })
         finalWorkoutDetails["workoutExerciseDetails"] = workoutExerciseDetails
+        console.log('finalWorkoutDetails are', finalWorkoutDetails)
        setWorkoutDetails(finalWorkoutDetails)
-        console.log('in complete workout modal, workoutDetails are', workoutDetails)
+        // console.log('in complete workout modal, workoutDetails are', workoutDetails)
     }
 
     const prepareSetsForBackend = (sets) => {
@@ -48,7 +49,7 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
     }
 
     const handleSave = async () => {
-        console.log('in handle save, workout details are', workoutDetails)
+        console.log('in handle save, workout details are', workoutDetails, "title is", title)
         const response = await postAxiosCall("http://localhost:8080/api/workouts/full/save", workoutDetails);
             if (response.success) {
             console.log('handleworkoutsave response', response)
@@ -60,7 +61,7 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
 
     useEffect(()=> {
         defineWorkoutDetails();
-      }, [activeWorkout])
+      }, [activeWorkout, title])
 
     return(
         <Dialog
