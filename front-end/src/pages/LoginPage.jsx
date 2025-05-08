@@ -18,7 +18,7 @@ export default function LoginPage({setActiveUsername}) {
     setLoggedIn(true)
     // setTimeout(navigate("/"), 3000)
     // the way above was making the navigation happens instantly — before the timeout starts
-    setTimeout(() => navigate("/"), 1500);
+    setTimeout(() => navigate("/"), 500);
   };
 
   

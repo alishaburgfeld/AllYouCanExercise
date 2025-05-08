@@ -24,11 +24,15 @@ public class ExerciseSet {
 
     private Integer reps;
     private Float weight;
+
+    @Column(name = "duration_seconds")
     private Integer durationSeconds;
-    private Integer distanceMeters;
+
+    @Column(name = "distance_meters")
+    private Float distanceMeters;
 
     public ExerciseSet(WorkoutExercise workoutExercise, Integer setOrder, Integer reps, Float weight,
-            Integer durationSeconds, Integer distanceMeters) {
+            Integer durationSeconds, Float distanceMeters) {
         this.workoutExercise = workoutExercise;
         this.setOrder = setOrder;
         this.reps = reps;
@@ -73,11 +77,11 @@ public class ExerciseSet {
         this.reps = reps;
     }
 
-    public float getWeight() {
+    public Float getWeight() {
         return weight;
     }
 
-    public void setWeight(float weight) {
+    public void setWeight(Float weight) {
         this.weight = weight;
     }
 
@@ -89,11 +93,11 @@ public class ExerciseSet {
         this.durationSeconds = durationSeconds;
     }
 
-    public Integer getDistanceMeters() {
+    public Float getDistanceMeters() {
         return distanceMeters;
     }
 
-    public void setDistanceMeters(Integer distanceMeters) {
+    public void setDistanceMeters(Float distanceMeters) {
         this.distanceMeters = distanceMeters;
     }
 }

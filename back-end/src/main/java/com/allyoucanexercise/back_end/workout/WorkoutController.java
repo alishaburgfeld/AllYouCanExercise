@@ -1,7 +1,9 @@
 package com.allyoucanexercise.back_end.workout;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,13 +72,15 @@ public class WorkoutController {
 
     @PostMapping("/full/save")
     public ResponseEntity<?> saveFullWorkout(@RequestBody WorkoutRequestDTO request) {
-        log.error("inside saveFullWorkout, request is {}", request);
+        // log.error("inside saveFullWorkout, request is {}", request);
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("Authenticated user: " + auth.getName());
-        // results in: Authenticated user: anonymousUser
         workoutService.saveFullWorkout(request);
-        return ResponseEntity.ok().build();
+        // return ResponseEntity.ok().build();
+
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("success", true);
+
+        return ResponseEntity.ok(responseBody);
     }
 }
 

@@ -45,7 +45,7 @@ export const postAxiosCall = async (url, body) => {
       withCredentials: true,
     });
 
-    if (response.data) {
+    if (response.data || response.success) {
       return { success: true, data: response.data };
     } else {
       console.log("no response.data in axios post call");

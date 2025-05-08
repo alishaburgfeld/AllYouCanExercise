@@ -4,7 +4,7 @@ public class ExerciseSetDTO {
     private Integer reps;
     private Float weight;
     private Integer durationSeconds; // durationSeconds in seconds
-    private Integer distanceMeters; // distanceMeters in meters
+    private Float distanceMeters; // distanceMeters in meters
 
     public Integer getReps() {
         return reps;
@@ -30,11 +30,11 @@ public class ExerciseSetDTO {
         this.durationSeconds = durationSeconds;
     }
 
-    public Integer getDistanceMeters() {
+    public Float getDistanceMeters() {
         return distanceMeters;
     }
 
-    public void setDistanceMeters(Integer distanceMeters) {
+    public void setDistanceMeters(Float distanceMeters) {
         this.distanceMeters = distanceMeters;
     }
 

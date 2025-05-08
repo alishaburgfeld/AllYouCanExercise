@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 // import com.allyoucanexercise.back_end.workout.WorkoutRepository;
@@ -51,10 +52,12 @@ public class WorkoutService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Exercise not found"));
     }
 
+    @Transactional
     public Workout saveWorkout(Workout workout) {
         return workoutRepository.save(workout);
     }
 
+    @Transactional
     public Workout updateWorkout(Workout workout, Long id) {
         if (!workoutRepository.existsById(id)) {
             throw new EntityNotFoundException("Workout with id " + id + " not found");
@@ -64,6 +67,7 @@ public class WorkoutService {
         return workoutRepository.save(workout);
     }
 
+    @Transactional
     public void deleteWorkout(Long id) {
         if (!workoutRepository.existsById(id)) {
             throw new EntityNotFoundException("Workout with id " + id + " not found");
@@ -78,24 +82,27 @@ public class WorkoutService {
         return workouts;
     }
 
+    @Transactional
     public Workout saveWorkout(User user, String title, LocalDateTime completedAt, String workoutNotes) {
         Workout workout = new Workout();
         workout.setUser(user);
         workout.setTitle(title);
         workout.setCompletedAt(completedAt);
+        workout.setCreatedAt(LocalDateTime.now());
         workout.setWorkoutNotes(workoutNotes);
-        return workout;
+        return workoutRepository.save(workout);
     }
 
+    @Transactional
     public void saveFullWorkout(WorkoutRequestDTO workoutRequestDTO) {
         log.error("**inside saveFullWorkout in workoutService, workoutRequest is {}", workoutRequestDTO);
         WorkoutDetailsDTO workoutDetailsDTO = workoutRequestDTO.getWorkoutDetails();
         List<WorkoutExerciseDetailsDTO> workoutExerciseDetails = workoutRequestDTO.getWorkoutExerciseDetails();
         User user = userService.getUserByUsername(workoutDetailsDTO.getUsername()).orElse(null);
-
+        // log.error("user in save workout is {}", user);
         Workout workout = this.saveWorkout(user, workoutDetailsDTO.getTitle(), workoutDetailsDTO.getCompletedAt(),
                 workoutDetailsDTO.getWorkoutNotes());
-
+        // log.error("workout in service is {}", workout);
         for (int i = 0; i < workoutExerciseDetails.size(); i++) {
             WorkoutExerciseDetailsDTO workoutExerciseDetailsDTO = workoutExerciseDetails.get(i);
             Exercise exercise = exerciseService.getExerciseById(workoutExerciseDetailsDTO.getExerciseId());
@@ -107,8 +114,19 @@ public class WorkoutService {
             for (int j = 0; j < exerciseSetDTOs.size(); j++) {
                 Integer setOrder = j + 1;
                 ExerciseSetDTO setDTO = exerciseSetDTOs.get(j);
-                exerciseSetService.saveExerciseSet(workoutExercise, setOrder, setDTO.getReps(), setDTO.getWeight(),
-                        setDTO.getDurationSeconds(), setDTO.getDistanceMeters());
+                // log.error("inside ex serv. workout save. exercise set is {}", setDTO);
+                try {
+                    exerciseSetService.saveExerciseSet(workoutExercise, setOrder,
+                            setDTO.getReps(), setDTO.getWeight(),
+                            setDTO.getDurationSeconds(), setDTO.getDistanceMeters());
+                } catch (Exception e) {
+                    log.error("Error saving exercise set: {}", setDTO, e);
+                    throw e; // rethrow to preserve behavior
+                }
+
+                // exerciseSetService.saveExerciseSet(workoutExercise, setOrder,
+                // setDTO.getReps(), setDTO.getWeight(),
+                // setDTO.getDurationSeconds(), setDTO.getDistanceMeters());
 
             }
         }

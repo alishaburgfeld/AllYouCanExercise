@@ -8,12 +8,14 @@ import { useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CompleteWorkoutModal from "../components/Workout/CompleteWorkoutModal";
 import SetsRepsDuration from "../components/Workout/SetsRepsDuration";
-
+import Alert from '@mui/material/Alert';
 
 export default function ActiveWorkoutPage({ activeWorkout, setActiveWorkout, activeUsername, updateActiveWorkoutWithNewStats}) {
     const theme = useTheme();
     const [openCompleteWorkoutModal, setOpenCompleteWorkoutModal] = useState(false);
-
+    const [isWorkoutSaved, setIsWorkoutSaved] = useState(false);
+    const [saveWorkoutError, setSaveWorkoutError] = useState(null);
+    
     // TO-DO: Change theme fontSize based on if there is 1 or more exercises in activeworkout
   
     const handleExerciseClick = (exerciseId) => {
@@ -56,7 +58,13 @@ export default function ActiveWorkoutPage({ activeWorkout, setActiveWorkout, act
         >
           Complete Workout
         </Button>
-        <CompleteWorkoutModal openCompleteWorkoutModal={openCompleteWorkoutModal} setOpenCompleteWorkoutModal={setOpenCompleteWorkoutModal} activeWorkout={activeWorkout} activeUsername={activeUsername}/>
+        {isWorkoutSaved ?
+                <Alert severity="success">You have saved your workout!</Alert>
+                : ""}
+                {saveWorkoutError!==null ?
+                <Alert severity="error">{saveWorkoutError}!</Alert>
+                : ""}
+        <CompleteWorkoutModal openCompleteWorkoutModal={openCompleteWorkoutModal} setOpenCompleteWorkoutModal={setOpenCompleteWorkoutModal} activeWorkout={activeWorkout} saveWorkoutError={saveWorkoutError} setSaveWorkoutError={setSaveWorkoutError} isWorkoutSaved={isWorkoutSaved} setIsWorkoutSaved={setIsWorkoutSaved} activeUsername={activeUsername}/>
       </Box>
     );
 }
