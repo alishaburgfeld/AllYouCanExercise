@@ -131,6 +131,8 @@ How to handle CSRF configuration: https://chatgpt.com/share/67992954-c8e0-800f-b
    // a way to potentially refactor these session states into one function:
    // search for "custom hook" https://chatgpt.com/share/67f3d8fb-12f8-800f-9475-560f78c153f4
 
+9. need to figure out how I want to view my workouts and exercises. also, do I want to clear the active workout upon saving the workout?
+
 May need to read this with testing with MUI Material UI:
 https://jskim1991.medium.com/react-dont-give-up-on-testing-when-using-material-ui-with-react-ff737969eec7
 
