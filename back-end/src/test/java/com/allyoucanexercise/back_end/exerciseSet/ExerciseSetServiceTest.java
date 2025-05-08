@@ -14,8 +14,6 @@ import com.allyoucanexercise.back_end.exercise.ExerciseType;
 import com.allyoucanexercise.back_end.user.User;
 import com.allyoucanexercise.back_end.workout.Workout;
 import com.allyoucanexercise.back_end.workoutExercise.WorkoutExercise;
-import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetRepository;
-import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetService;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -75,7 +73,7 @@ public class ExerciseSetServiceTest {
     @DisplayName("save works on all cardio workouts with distance and time")
     void testSaveCardioExercise() {
 
-        ExerciseSet exerciseSet = new ExerciseSet(workoutExercise, 1, null, null, 900, 300);
+        ExerciseSet exerciseSet = new ExerciseSet(workoutExercise, 1, null, null, 900, (float) 300);
         when(exerciseSetRepository.save(exerciseSet)).thenReturn(exerciseSet);
         ExerciseSet result = exerciseSetService.saveExerciseSet(exerciseSet);
 
@@ -90,7 +88,7 @@ public class ExerciseSetServiceTest {
     @Test
     @DisplayName("save fails if set order is missing")
     void testSaveFailsOnNullSetOrder() {
-        ExerciseSet invalidExerciseSet = new ExerciseSet(workoutExercise, 1, null, null, 900, 300);
+        ExerciseSet invalidExerciseSet = new ExerciseSet(workoutExercise, 1, null, null, 900, (float) 300);
         invalidExerciseSet.setSetOrder(null);
 
         // this is the type of exception thrown when you don't follow @NotNull, etc

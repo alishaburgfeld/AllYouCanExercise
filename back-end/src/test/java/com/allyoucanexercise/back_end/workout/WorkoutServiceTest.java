@@ -217,7 +217,7 @@ class WorkoutServiceTest {
 
         ExerciseSetDTO set1 = setupExerciseSetDTO(10, weight, null, null);
         ExerciseSetDTO set2 = setupExerciseSetDTO(10, weight, null, null);
-        ExerciseSetDTO set3 = setupExerciseSetDTO(null, null, 1200, 900);
+        ExerciseSetDTO set3 = setupExerciseSetDTO(null, null, 1200, (float) 900);
 
         WorkoutExerciseDetailsDTO workoutExerciseDetails1 = setupWorkoutExerciseDetailsDTO(id, List.of(set1, set2));
         WorkoutExerciseDetailsDTO workoutExerciseDetails2 = setupWorkoutExerciseDetailsDTO((long) 2,
@@ -332,7 +332,7 @@ class WorkoutServiceTest {
     }
 
     private ExerciseSetDTO setupExerciseSetDTO(Integer reps, Float weight, Integer durationSeconds,
-            Integer distanceMeters) {
+            Float distanceMeters) {
         ExerciseSetDTO exerciseSetDTO = new ExerciseSetDTO();
         exerciseSetDTO.setReps(reps);
         exerciseSetDTO.setWeight(weight);

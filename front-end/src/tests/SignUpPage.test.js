@@ -86,5 +86,5 @@ test("it does not submit the form when a field is missing", async () => {
   await userEvent.type(usernameInput, username);
   await userEvent.click(submitButton);
 
-  expect(axios.post).not.toHaveBeenCalledTimes(1);
+  expect(axios.post).not.toHaveBeenCalled();
 });
