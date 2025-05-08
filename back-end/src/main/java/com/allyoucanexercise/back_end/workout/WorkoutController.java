@@ -72,7 +72,7 @@ public class WorkoutController {
 
     @PostMapping("/full/save")
     public ResponseEntity<?> saveFullWorkout(@RequestBody WorkoutRequestDTO request) {
-        log.error("inside saveFullWorkout, request is {}", request);
+        // log.error("inside saveFullWorkout, request is {}", request);
 
         workoutService.saveFullWorkout(request);
         // return ResponseEntity.ok().build();

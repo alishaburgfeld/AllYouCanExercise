@@ -99,10 +99,10 @@ public class WorkoutService {
         WorkoutDetailsDTO workoutDetailsDTO = workoutRequestDTO.getWorkoutDetails();
         List<WorkoutExerciseDetailsDTO> workoutExerciseDetails = workoutRequestDTO.getWorkoutExerciseDetails();
         User user = userService.getUserByUsername(workoutDetailsDTO.getUsername()).orElse(null);
-        log.error("user in save workout is {}", user);
+        // log.error("user in save workout is {}", user);
         Workout workout = this.saveWorkout(user, workoutDetailsDTO.getTitle(), workoutDetailsDTO.getCompletedAt(),
                 workoutDetailsDTO.getWorkoutNotes());
-        log.error("workout in service is {}", workout);
+        // log.error("workout in service is {}", workout);
         for (int i = 0; i < workoutExerciseDetails.size(); i++) {
             WorkoutExerciseDetailsDTO workoutExerciseDetailsDTO = workoutExerciseDetails.get(i);
             Exercise exercise = exerciseService.getExerciseById(workoutExerciseDetailsDTO.getExerciseId());
@@ -114,9 +114,19 @@ public class WorkoutService {
             for (int j = 0; j < exerciseSetDTOs.size(); j++) {
                 Integer setOrder = j + 1;
                 ExerciseSetDTO setDTO = exerciseSetDTOs.get(j);
-                exerciseSetService.saveExerciseSet(workoutExercise, setOrder,
-                        setDTO.getReps(), setDTO.getWeight(),
-                        setDTO.getDurationSeconds(), setDTO.getDistanceMeters());
+                // log.error("inside ex serv. workout save. exercise set is {}", setDTO);
+                try {
+                    exerciseSetService.saveExerciseSet(workoutExercise, setOrder,
+                            setDTO.getReps(), setDTO.getWeight(),
+                            setDTO.getDurationSeconds(), setDTO.getDistanceMeters());
+                } catch (Exception e) {
+                    log.error("Error saving exercise set: {}", setDTO, e);
+                    throw e; // rethrow to preserve behavior
+                }
+
+                // exerciseSetService.saveExerciseSet(workoutExercise, setOrder,
+                // setDTO.getReps(), setDTO.getWeight(),
+                // setDTO.getDurationSeconds(), setDTO.getDistanceMeters());
 
             }
         }

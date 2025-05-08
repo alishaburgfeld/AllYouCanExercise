@@ -24,8 +24,9 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
             "workoutDetails": {
                 "username": activeUsername,
                 "title": title,
-                "notes": notes,
-                "completedAt": timeFormattedForJava
+                "completedAt": timeFormattedForJava,
+                "workoutNotes": notes
+                
             }
         }
         activeWorkout.forEach((exercise)=> {
@@ -43,11 +44,15 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
         sets.forEach((set)=> {
             let convertedSet = {...set}
             if (set.duration) {
-                convertedSet.duration = convertToSeconds(set.duration)
+                convertedSet.durationSeconds = convertToSeconds(set.duration)
+                delete convertedSet.duration;
             }
             if (set.distance) {
-                convertedSet.distance = toMeters(set.distance, set.distanceUnit)
+                let meters = toMeters(set.distance, set.distanceUnit)
+                let formattedMeters = Math.round(meters * 100) / 100
+                convertedSet.distanceMeters = formattedMeters
                 delete convertedSet.distanceUnit;
+                delete convertedSet.distance;
             }
             finalSets.push(convertedSet)
         })
