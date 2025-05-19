@@ -1,14 +1,31 @@
 services:
   mysql:
-    image: 'mysql:latest'
+    image: mysql:latest
     environment:
-      - 'MYSQL_DATABASE=exercise-database'
-      - 'MYSQL_PASSWORD=secret'
-      - 'MYSQL_ROOT_PASSWORD=verysecret'
-      - 'MYSQL_USER=alisha'
+      - MYSQL_DATABASE=exercise-database
+      - MYSQL_USER=alisha
+      - MYSQL_PASSWORD=secret
+      - MYSQL_ROOT_PASSWORD=verysecret
     ports:
       - '3306:3306'
     volumes:
       - ./back-end/src/main/resources/schema.sql:/docker-entrypoint-initdb.d/schema.sql
 
+  backend:
+    build:
+      context: ./back-end
+    environment:
+      - MYSQL_DATABASE=exercise-database
+      - MYSQL_USER=alisha
+      - MYSQL_PASSWORD=secret
+      - DB_HOST=mysql
+    ports:
+      - '8080:8080'
+    depends_on:
+      - mysql
 
+  frontend:
+    build:
+      context: ./front-end
+    ports:
+      - '3000:80'

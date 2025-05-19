@@ -4,18 +4,18 @@ import "./App.css";
 // import './App.css'
 import { BrowserRouter, Route, Routes } from "react-router";
 import { useState, useEffect } from "react"
-import Homepage from "../../front-end/src/pages/Homepage";
-import LoginPage from "../../front-end/src/pages/LoginPage";
-import SignUpPage from "../../front-end/src/pages/SignUpPage";
-import Navbar from "../../front-end/src/components/Navbar/Navbar";
-import ExercisePage from "../../front-end/src/pages/ExercisePage";
-import ActiveWorkoutPage from "../../front-end/src/pages/ActiveWorkoutPage";
-import ViewWorkoutPage from "../../front-end/src/pages/ViewWorkoutPage";
-import ExerciseGroupPage from "../../front-end/src/pages/ExerciseGroupPage";
+import Homepage from "./pages/Homepage"
+import LoginPage from "./pages/LoginPage";
+import SignUpPage from "./pages/SignUpPage";
+import Navbar from "./components/Navbar/Navbar"
+import ExercisePage from "./pages/ExercisePage";
+import ActiveWorkoutPage from "./pages/ActiveWorkoutPage";
+import ViewWorkoutPage from "./pages/ViewWorkoutPage";
+import ExerciseGroupPage from "./pages/ExerciseGroupPage";
 import { ThemeProvider } from "@mui/material/styles";
 import { getAxiosCall } from "./utils/HelperFunctions"
 import CssBaseline from "@mui/material/CssBaseline";
-import theme from "../../front-end/src/utils/theme";
+import theme from "./utils/theme";
 import TestPage from "./pages/TestPage"
 
 

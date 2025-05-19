@@ -1,6 +1,6 @@
 import { BrowserRouter } from "react-router";
 import { render, screen } from "@testing-library/react";
-import App from "../../../front-end/src/App";
+import App from "../App";
 
 test("renders Navbar text", () => {
   render(<App />);
