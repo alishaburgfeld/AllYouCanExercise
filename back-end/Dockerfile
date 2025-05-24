@@ -10,6 +10,9 @@ COPY target/*.jar app.jar
 # Expose the default Spring Boot port
 EXPOSE 8080
 
+COPY wait-for-it.sh /wait-for-it.sh
+RUN chmod +x /wait-for-it.sh
+
 # Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
 
