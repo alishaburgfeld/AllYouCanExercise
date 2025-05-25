@@ -30,4 +30,7 @@ services:
       context: ./front-end
     ports:
       - '3000:80'
-    command: ["nginx", "-g", "daemon off;"]
+    depends_on:
+      - backend  # Ensure backend is ready before frontend
+    volumes:
+      - ./front-end/build:/usr/share/nginx/html  # Optionally if you want to mount the build directly
