@@ -36,8 +36,7 @@ its not working with the security dependency, so for now I comment that out when
 # exec into the container: docker exec -it allyoucanexercise-mysql-1 sh
 
 <!-- After I dockerized it became allyoucanexercise-mysql sh
-Also other containers are: docker exec -it allyou
-canexercise-frontend-1 sh -->
+Also other containers are: docker exec -it allyoucanexercise-frontend-1 sh -->
 
 # then run this to connect to mysql: mysql -u alisha -psecret
 
@@ -57,8 +56,6 @@ drop table equipment;
 drop table exercise;
 
 <!-- App Information -->
-
-minikube location: /opt/homebrew/bin/minikube
 
 Start Docker: Open Docker Desktop on mac -- possible way to hide the desktop, try this next time: https://stackoverflow.com/questions/64533789/how-to-start-docker-desktop-with-a-cli-command-on-macos-without-showing-dashboar Start Minikube: minikube start --driver=docker
 

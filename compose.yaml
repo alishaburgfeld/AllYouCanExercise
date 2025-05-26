@@ -47,4 +47,4 @@ services:
     depends_on:
       - backend  # Ensure backend is ready before frontend
     volumes:
-      - ./front-end/build:/usr/share/nginx/html  # Optionally if you want to mount the build directly
+      - ./front-end/dist:/usr/share/nginx/html  # Optionally if you want to mount the build directly
