@@ -1,17 +1,10 @@
-import IMAGES from "../assets/images/images";
+import IMAGES from "./images";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { Box, Typography } from "@mui/material";
 
 export const getImageSource = (name) => {
-  let source;
-  if (IMAGES[name]) {
-    source = IMAGES[name];
-  } else {
-    let noImageString = "../assets/images/noexerciseimage.png";
-    source = new URL(noImageString, import.meta.url).href;
-  }
-  return source;
+  return IMAGES[name] || "/images/noexerciseimage.png";
 };
 
 export const getAxiosCall = async (url) => {

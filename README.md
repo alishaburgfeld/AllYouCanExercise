@@ -38,6 +38,8 @@ its not working with the security dependency, so for now I comment that out when
 <!-- After I dockerized it became allyoucanexercise-mysql sh
 Also other containers are: docker exec -it allyoucanexercise-frontend-1 sh -->
 
+<!-- cd /usr/share/nginx/html -->
+
 # then run this to connect to mysql: mysql -u alisha -psecret
 
 # then show databases
