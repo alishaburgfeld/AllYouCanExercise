@@ -16,7 +16,7 @@ My sql will use completedAt DATETIME
 4. This is the commit with all the security config to allow all subsequent post calls:
    0874023
    https://github.com/alishaburgfeld/AllYouCanExercise/commit/d774bc7a107b9db5f9e01f83ec209cf30f900048
-
+5. Used Nginx config to serve the front-end files. The "step 2" in my front-end dockerfile will compile all of my react files into just an index.html file. So if I want to see that all my react files are being copied over like I want, comment out the step 2 nginx stuff then exec into the container. However when I build the nginx container then all I should see is an assets folder (with all my images) and an index.html file. These are located inside /usr/share/nginx/html
 <!-- -------------------REST --------------------->
 
 When have security dependency invoked it prints a password in the console to connect to the localhost:
@@ -34,6 +34,10 @@ its not working with the security dependency, so for now I comment that out when
 <!-- Database -->
 
 # exec into the container: docker exec -it allyoucanexercise-mysql-1 sh
+
+<!-- After I dockerized it became allyoucanexercise-mysql sh
+Also other containers are: docker exec -it allyou
+canexercise-frontend-1 sh -->
 
 # then run this to connect to mysql: mysql -u alisha -psecret
 
@@ -64,12 +68,20 @@ To run application:
 
 Start Docker: Open Docker Desktop on mac -- possible way to hide the desktop, try this next time: https://stackoverflow.com/questions/64533789/how-to-start-docker-desktop-with-a-cli-command-on-macos-without-showing-dashboar
 
-<!-- Start Minikube: minikube start --driver=docker -->
+<!-- DOCKER DOCKER DOCKER -->
+
+To build just one of the containers (i.e react) cd into front-end then build the image: docker build -t <whatever-name-you-want> .
+
+to then run and exec into the container run:
+docker run -it --rm <whatever-name-you-made> sh
 
 Build both images and container: docker-compose up --build
 get docker image id: docker images
 exec into your docker container: docker exec -it exercise_app-exercise-react-app-1 sh
 ./mvnw spring-boot:run
+
+If I want to remove all containers: docker rm -vf $(docker ps -aq)
+THEN if I want to remove all images: docker rmi -f $(docker images -aq)
 
 Material UI Site: https://mui.com/material-ui/getting-started/supported-components/
 

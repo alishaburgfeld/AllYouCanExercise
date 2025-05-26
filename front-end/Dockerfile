@@ -19,22 +19,14 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-# This generates the static build files in /build
-RUN npm run build   
-#this will print out the contents of the build folder
-RUN ls -l /app
+RUN npm run build && echo "✅ Build succeeded" || (echo "❌ Build failed" && exit 1)   
 
 # Step 2: Use Nginx to serve the built files
 FROM nginx:alpine
-
-# Remove the default nginx.conf file
-RUN rm /etc/nginx/conf.d/default.conf
-
-# Copy custom Nginx config
 COPY nginx.conf /etc/nginx/nginx.conf
 
 # Copy the build files to Nginx's html directory
-COPY --from=build /app /usr/share/nginx/html
+COPY --from=build /app/dist /usr/share/nginx/html
 
 # Expose port 80 (default for HTTP)
 EXPOSE 80
