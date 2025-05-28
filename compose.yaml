@@ -45,6 +45,4 @@ services:
     ports:
       - '3000:80'
     depends_on:
-      - backend  # Ensure backend is ready before frontend
-    volumes:
-      - ./front-end/dist:/usr/share/nginx/html  # Optionally if you want to mount the build directly
+      - backend

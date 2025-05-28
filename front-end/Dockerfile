@@ -11,8 +11,8 @@ FROM nginx:alpine
 COPY nginx.conf /etc/nginx/nginx.conf
 
 # Copy the build files to Nginx's html directory
-COPY public/images /usr/share/nginx/html/assets
 COPY --from=build /app/dist /usr/share/nginx/html
+COPY public /usr/share/nginx/html/images
 
 # Expose port 80 (default for HTTP)
 EXPOSE 80
