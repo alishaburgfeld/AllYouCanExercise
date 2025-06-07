@@ -182,3 +182,20 @@ https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/
 <!-- setting up secrets and deploying: -->
 
 https://chatgpt.com/share/6840ef16-d8c4-800f-8648-ff8f17d04206
+
+Connect to my ec2 instance:
+Cd ~/Documents/Personal
+ssh -i all-you-can-exercise-key-pair.pem ec2-user@34.230.73.112
+
+run the very first time to set it up (haven't done it yet):
+sudo su (puts you in sudo so you don't have to write sudo in front of all the following commands)
+yum update -y
+
+install docker:
+amazon-linux-extras install docker
+service docker start
+usermod -a -G docker ec2-user
+
+log out/in
+
+then when back in should be able to run docker commands. i.e (docker ps)
