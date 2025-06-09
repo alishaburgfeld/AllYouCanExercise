@@ -26,12 +26,7 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-    # environment:
-    #   SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/exercise-database
-    #   SPRING_DATASOURCE_USERNAME: alisha
-    #   SPRING_DATASOURCE_PASSWORD: secret
     command: ["java", "-jar", "app.jar"]
-    # command: ["./wait-for-it.sh", "mysql:3306", "--timeout=60", "--", "java", "-jar", "app.jar"]
 
   frontend:
     build:
