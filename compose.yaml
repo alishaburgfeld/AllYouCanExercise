@@ -8,12 +8,11 @@ services:
       - '3306:3306'
     restart: always
     healthcheck:
-          #  This pings the MySQL server and returns mysqld is alive if it's healthy. The --silent flag suppresses unnecessary output.
-          #  test: ["CMD-SHELL", "mysqladmin ping -ualisha -psecret --silent"]
            test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
            interval: 10s
            timeout: 10s
            retries: 3
+    # don't remove for development: mounts your schema.sql file into the container in a special directory that MySQL only runs the very first time the container is created
     volumes:
       - ./back-end/src/main/resources/schema.sql:/docker-entrypoint-initdb.d/schema.sql
 
@@ -27,11 +26,12 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/exercise-database
-      SPRING_DATASOURCE_USERNAME: alisha
-      SPRING_DATASOURCE_PASSWORD: secret
-    command: ["./wait-for-it.sh", "mysql:3306", "--timeout=60", "--", "java", "-jar", "app.jar"]
+    # environment:
+    #   SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/exercise-database
+    #   SPRING_DATASOURCE_USERNAME: alisha
+    #   SPRING_DATASOURCE_PASSWORD: secret
+    command: ["java", "-jar", "app.jar"]
+    # command: ["./wait-for-it.sh", "mysql:3306", "--timeout=60", "--", "java", "-jar", "app.jar"]
 
   frontend:
     build:
