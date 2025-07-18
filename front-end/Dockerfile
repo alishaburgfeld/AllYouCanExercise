@@ -4,6 +4,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
+ENV NODE_OPTIONS=--max_old_space_size=1024
 RUN npm run build && echo "✅ Build succeeded" || (echo "❌ Build failed" && exit 1)   
 
 # Step 2: Use Nginx to serve the built files

@@ -184,11 +184,59 @@ https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/
 https://chatgpt.com/share/6840ef16-d8c4-800f-8648-ff8f17d04206
 
 Connect to my ec2 instance:
-cd Documents/Personal
-ssh -i all-you-can-exercise-key-pair.pem ec2-user@34.230.73.112
+cd Documents/AllYouCanExercise
+ssh -i all-you-can-exercise-key-pair.pem ec2-user@3.93.6.48
 
 sudo su (puts you in sudo so you don't have to write sudo in front of all the following commands)
 
 start docker: service docker start
 
+to make updates to my production I need to:
+
+1.  build the jar locally: Run mvn clean package -DskipTests from inside back-end/.
+2.  copy the jar and the dockerfile to my ec2:
+    scp -i all-you-can-exercise-key-pair.pem \
+     ./back-end/Dockerfile \
+     ec2-user@3.93.6.48:/home/ec2-user/back-end
+
+(this also renames the file to app.jar):
+scp -i all-you-can-exercise-key-pair.pem \
+ ./back-end/target/back-end-0.0.1-SNAPSHOT.jar \
+ ec2-user@3.93.6.48:/home/ec2-user/back-end/target
+
+3.  Copy over my front-end files:
+    scp -i all-you-can-exercise-key-pair.pem \
+     ./front-end/package.json \
+     ./front-end/package-lock.json \
+     ./front-end/nginx.conf \
+     ./front-end/Dockerfile \
+     ./front-end/index.html \
+     ./front-end/vite.config.js \
+     ec2-user@3.93.6.48:/home/ec2-user/front-end
+
+    scp -i all-you-can-exercise-key-pair.pem \
+     -r ./front-end/public \
+     ec2-user@3.93.6.48:/home/ec2-user/front-end
+
+    scp -i all-you-can-exercise-key-pair.pem \
+     -r ./front-end/src \
+     ec2-user@3.93.6.48:/home/ec2-user/front-end
+
+4.  copy over .env file:
+    scp -i all-you-can-exercise-key-pair.pem \
+     ./.env \
+     ec2-user@3.93.6.48:/home/ec2-user
+
+5.  Copy over the docker-compose.prod.yml file:
+    scp -i all-you-can-exercise-key-pair.pem \
+     ./docker-compose.prod.yml \
+     ec2-user@3.93.6.48:/home/ec2-user
+
+6.  Now inside ec2: rename docker-compose.yaml:
+    mv docker-compose.prod.yml docker-compose.yml
+
+7.  Inside ec2: After docker is started, build with docker compose:
+    docker-compose up --build -d
+
+one time steps I took:
 install docker-compose:https://stackoverflow.com/questions/63708035/installing-docker-compose-on-amazon-ec2-linux-2-9kb-docker-compose-file

@@ -4,14 +4,14 @@ FROM eclipse-temurin:21-jdk
 # Create app directory
 WORKDIR /app
 
-# Copy built JAR file (assumes you've built it already)
+# Copy built JAR file and rename it app.jar(assumes you've built it already)
 COPY target/*.jar app.jar
 
 # Expose the default Spring Boot port
 EXPOSE 8080
 
-COPY wait-for-it.sh /wait-for-it.sh
-RUN chmod +x /wait-for-it.sh
+# COPY wait-for-it.sh /wait-for-it.sh
+# RUN chmod +x /wait-for-it.sh
 
 # Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]

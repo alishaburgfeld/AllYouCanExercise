@@ -12,10 +12,12 @@ services:
       interval: 10s
       timeout: 10s
       retries: 3
+    volumes:
+      - mysql-data:/var/lib/mysql  
 
   backend:
     build:
-      context: ./backend
+      context: ./back-end
     env_file:
       - .env
     ports:
@@ -27,8 +29,11 @@ services:
 
   frontend:
     build:
-      context: ./frontend
+      context: ./front-end
     ports:
       - '80:80'
     depends_on:
       - backend
+
+volumes:
+  mysql-data:    
