@@ -204,39 +204,56 @@ scp -i all-you-can-exercise-key-pair.pem \
  ./back-end/target/back-end-0.0.1-SNAPSHOT.jar \
  ec2-user@3.93.6.48:/home/ec2-user/back-end/target
 
-3.  Copy over my front-end files:
+3. Build my front-end buil inside vs code:
+   npm run build
+
+4. Copy over my front-end files:
+   scp -i all-you-can-exercise-key-pair.pem \
+    ./front-end/package.json \
+    ./front-end/package-lock.json \
+    ./front-end/nginx.conf \
+    ./front-end/Dockerfile.prod \
+    ./front-end/index.html \
+    ./front-end/vite.config.js \
+    ec2-user@3.93.6.48:/home/ec2-user/front-end
+
+    <!-- 
+    single command to use:
     scp -i all-you-can-exercise-key-pair.pem \
-     ./front-end/package.json \
-     ./front-end/package-lock.json \
-     ./front-end/nginx.conf \
-     ./front-end/Dockerfile \
-     ./front-end/index.html \
-     ./front-end/vite.config.js \
-     ec2-user@3.93.6.48:/home/ec2-user/front-end
+    ./front-end/Dockerfile.prod \
+    ec2-user@3.93.6.48:/home/ec2-user/front-end -->
 
-    scp -i all-you-can-exercise-key-pair.pem \
-     -r ./front-end/public \
-     ec2-user@3.93.6.48:/home/ec2-user/front-end
+   scp -i all-you-can-exercise-key-pair.pem \
+    -r ./front-end/public \
+    ec2-user@3.93.6.48:/home/ec2-user/front-end
 
-    scp -i all-you-can-exercise-key-pair.pem \
-     -r ./front-end/src \
-     ec2-user@3.93.6.48:/home/ec2-user/front-end
+   scp -i all-you-can-exercise-key-pair.pem \
+    -r ./front-end/dist \
+    ec2-user@3.93.6.48:/home/ec2-user/front-end
 
-4.  copy over .env file:
-    scp -i all-you-can-exercise-key-pair.pem \
-     ./.env \
-     ec2-user@3.93.6.48:/home/ec2-user
+   scp -i all-you-can-exercise-key-pair.pem \
+    -r ./front-end/src \
+    ec2-user@3.93.6.48:/home/ec2-user/front-end
 
-5.  Copy over the docker-compose.prod.yml file:
-    scp -i all-you-can-exercise-key-pair.pem \
-     ./docker-compose.prod.yml \
-     ec2-user@3.93.6.48:/home/ec2-user
+5. copy over .env file:
+   scp -i all-you-can-exercise-key-pair.pem \
+    ./.env \
+    ec2-user@3.93.6.48:/home/ec2-user
 
-6.  Now inside ec2: rename docker-compose.yaml:
-    mv docker-compose.prod.yml docker-compose.yml
+6. Copy over the docker-compose.prod.yml file:
+   scp -i all-you-can-exercise-key-pair.pem \
+    ./docker-compose.prod.yml \
+    ec2-user@3.93.6.48:/home/ec2-user
 
-7.  Inside ec2: After docker is started, build with docker compose:
-    docker-compose up --build -d
+7. Now inside ec2: rename docker-compose.yaml:
+   mv docker-compose.prod.yml docker-compose.yml
+   rename dockerfile.prod inside front end folder
+   mv ./front-end/Dockerfile.prod ./front-end/Dockerfile
+
+8. Inside ec2: After docker is started, build with docker compose:
+   docker-compose up --build -d
+
+   -d does it in detached mode, if I need to see the logs because something is not working then remove the -d.
 
 one time steps I took:
 install docker-compose:https://stackoverflow.com/questions/63708035/installing-docker-compose-on-amazon-ec2-linux-2-9kb-docker-compose-file
