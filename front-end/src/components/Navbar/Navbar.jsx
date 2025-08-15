@@ -20,6 +20,7 @@ export default function Navbar({ activeUsername, setActiveUsername, setActiveWor
   // console.log("Is user null?", user === null);
   // console.log("Type of user:", typeof user);
   const navigate = useNavigate();
+  const API_BASE_URL = process.env.API_BASE_URL;
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -46,7 +47,7 @@ export default function Navbar({ activeUsername, setActiveUsername, setActiveWor
       const csrfToken = Cookies.get('XSRF-TOKEN')
       // console.log('csrf token is', csrfToken)
       const response = await axios.post(
-          "http://localhost:8080/auth/logout", 
+          `${API_BASE_URL}/auth/logout`, 
           {},
           {
             headers: {

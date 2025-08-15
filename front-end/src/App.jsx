@@ -31,6 +31,7 @@ const getInitialActiveWorkout = () => {
 
 function App() {
 
+  const API_BASE_URL = process.env.API_BASE_URL;
   const [activeWorkout, setActiveWorkout] = useState(getInitialActiveWorkout());
   const [exerciseToBeAdded, setExerciseToBeAdded] = useState(null);
   const [activeUsername, setActiveUsername] =useState(getInitialUsername());
@@ -102,7 +103,7 @@ const addToActiveWorkout = (exerciseToBeAdded) => {
 const checkForUserSession= async () => {
   // had to add checkForUser back in. Without it I was running into a problem where my backend hadn't yet created a session/csrf token, so I had to click the login button twice.
 
-    const response = await getAxiosCall('http://localhost:8080/auth/checkusersession');
+    const response = await getAxiosCall(`${API_BASE_URL}/auth/checkusersession`);
     if (response) {
       setActiveUsername(response);
     }

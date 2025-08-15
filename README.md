@@ -143,6 +143,7 @@ How to handle CSRF configuration: https://chatgpt.com/share/67992954-c8e0-800f-b
    // search for "custom hook" https://chatgpt.com/share/67f3d8fb-12f8-800f-9475-560f78c153f4
 
 9. need to figure out how I want to view my workouts and exercises. also, do I want to clear the active workout upon saving the workout?
+10. Create deployment script
 
 May need to read this with testing with MUI Material UI:
 https://jskim1991.medium.com/react-dont-give-up-on-testing-when-using-material-ui-with-react-ff737969eec7
@@ -199,7 +200,6 @@ to make updates to my production I need to:
      ./back-end/Dockerfile \
      ec2-user@3.93.6.48:/home/ec2-user/back-end
 
-(this also renames the file to app.jar):
 scp -i all-you-can-exercise-key-pair.pem \
  ./back-end/target/back-end-0.0.1-SNAPSHOT.jar \
  ec2-user@3.93.6.48:/home/ec2-user/back-end/target
@@ -235,9 +235,9 @@ scp -i all-you-can-exercise-key-pair.pem \
     -r ./front-end/src \
     ec2-user@3.93.6.48:/home/ec2-user/front-end
 
-5. copy over .env file:
+5. copy over .env.production file:
    scp -i all-you-can-exercise-key-pair.pem \
-    ./.env \
+    ./.env.production \
     ec2-user@3.93.6.48:/home/ec2-user
 
 6. Copy over the docker-compose.prod.yml file:
@@ -249,6 +249,8 @@ scp -i all-you-can-exercise-key-pair.pem \
    mv docker-compose.prod.yml docker-compose.yml
    rename dockerfile.prod inside front end folder
    mv ./front-end/Dockerfile.prod ./front-end/Dockerfile
+   rename .env.production to .env
+   mv .env.production .env
 
 8. Inside ec2: After docker is started, build with docker compose:
    docker-compose up --build -d
@@ -257,3 +259,14 @@ scp -i all-you-can-exercise-key-pair.pem \
 
 one time steps I took:
 install docker-compose:https://stackoverflow.com/questions/63708035/installing-docker-compose-on-amazon-ec2-linux-2-9kb-docker-compose-file
+
+docker stop all containers: docker stop $(docker ps -q)
+
+I need to re-build the jar then copy over the snapshot to ec2 (delete previous first)
+re-build front end then copy over src and dist folders
+
+cd Documents/AllYouCanExercise
+ssh -i all-you-can-exercise-key-pair.pem ec2-user@3.93.6.48
+
+then start docker
+docker-compose up

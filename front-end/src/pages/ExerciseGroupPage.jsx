@@ -11,13 +11,14 @@ import { getImageSource } from "../utils/HelperFunctions";
 function ExerciseGroupPage() {
 
     const theme = useTheme();
+    const API_BASE_URL = process.env.API_BASE_URL;
     const { exerciseGroup } = useParams();
     const navigate = useNavigate();
     const [exercisesByGroup, setExercisesByGroup] = useState([]);
     
     
     const getExercisesByGroup = async () => {
-        const response = await getAxiosCall(`http://localhost:8080/api/exercises/group/${exerciseGroup}`);
+        const response = await getAxiosCall(`${API_BASE_URL}/exercises/group/${exerciseGroup}`);
         if (response) {
             setExercisesByGroup(response);
         } else {
