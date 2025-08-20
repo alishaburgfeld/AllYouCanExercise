@@ -3,14 +3,14 @@ import { getAxiosCall } from "../utils/HelperFunctions";
 import { useParams, useNavigate } from "react-router-dom";
 
 export default function ViewWorkoutPage() {
-    const API_BASE_URL = process.env.API_BASE_URL;
+    const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
     const [workoutById, setWorkoutById] = useState({})
     const { workoutId } = useParams();
     const [userWorkouts, setUserWorkouts] = useState([])
     // console.log('workoutId is', workoutId)
 
 const getWorkoutById = async () => {
-    const response = await getAxiosCall(`${API_BASE_URL}/workouts/${workoutId}`)
+    const response = await getAxiosCall(`${VITE_API_BASE_URL}/workouts/${workoutId}`)
     if (response) {
         // console.log('response for workout by id is', response)
         setWorkoutById(response)
@@ -21,7 +21,7 @@ const getWorkoutById = async () => {
 }
 
 const getUserWorkouts = async () => {
-    const response = await getAxiosCall(`${API_BASE_URL}/workouts/user/${activeUsername}`)
+    const response = await getAxiosCall(`${VITE_API_BASE_URL}/workouts/user/${activeUsername}`)
     if (response) {
         // console.log('response for get User workouts', response)
         setUserWorkouts(response)

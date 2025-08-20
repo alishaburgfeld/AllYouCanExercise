@@ -7,18 +7,21 @@ import path from "path";
 //     "./ABDUCTORS/Abduction Machine.png",
 //     import.meta.url,
 //   ).href,
-const API_BASE_URL = process.env.API_BASE_URL;
+const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const IMAGES = {};
 
 const getExercises = async () => {
   const csrfToken = Cookies.get("X-XSRF-TOKEN");
   try {
-    const response = await axios.get(`${API_BASE_URL}/exercises`, {
-      headers: {
-        "X-XSRF-TOKEN": csrfToken,
+    const response = await axios.get(
+      `${VITE_API_BASE_URL}/exercises`,
+      {
+        headers: {
+          "X-XSRF-TOKEN": csrfToken,
+        },
+        withCredentials: true,
       },
-      withCredentials: true,
-    });
+    );
     return response.data;
   } catch (error) {
     console.error("Error fetching exercises:", error);

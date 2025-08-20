@@ -11,14 +11,14 @@ import { getImageSource } from "../utils/HelperFunctions";
 function ExerciseGroupPage() {
 
     const theme = useTheme();
-    const API_BASE_URL = process.env.API_BASE_URL;
+    const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
     const { exerciseGroup } = useParams();
     const navigate = useNavigate();
     const [exercisesByGroup, setExercisesByGroup] = useState([]);
     
     
     const getExercisesByGroup = async () => {
-        const response = await getAxiosCall(`${API_BASE_URL}/exercises/group/${exerciseGroup}`);
+        const response = await getAxiosCall(`${VITE_API_BASE_URL}/exercises/group/${exerciseGroup}`);
         if (response) {
             setExercisesByGroup(response);
         } else {

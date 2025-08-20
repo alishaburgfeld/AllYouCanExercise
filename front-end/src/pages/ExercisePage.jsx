@@ -15,7 +15,7 @@ import ExerciseAddedAlert from "../components/Exercise/ExerciseAddedAlert";
 
 function ExercisePage({ setExerciseToBeAdded, activeUsername }) {
     const theme = useTheme();
-    const API_BASE_URL = process.env.API_BASE_URL;
+    const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
     const { exerciseId } = useParams();
     const [exercise, setExercise] = useState({});
     const [openExerciseAddedAlert, setOpenExerciseAddedAlert] = useState(false);
@@ -23,7 +23,7 @@ function ExercisePage({ setExerciseToBeAdded, activeUsername }) {
     const [exerciseRecord, setExerciseRecord] = useState([])
     
     const getExercise = async () => {
-      const response = await getAxiosCall(`${API_BASE_URL}/exercises/${exerciseId}`);
+      const response = await getAxiosCall(`${VITE_API_BASE_URL}/exercises/${exerciseId}`);
       if (response) {
         setExercise(response);
       } else {

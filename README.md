@@ -59,7 +59,9 @@ drop table exercise;
 
 <!-- App Information -->
 
-Start Docker: Open Docker Desktop on mac -- possible way to hide the desktop, try this next time: https://stackoverflow.com/questions/64533789/how-to-start-docker-desktop-with-a-cli-command-on-macos-without-showing-dashboar Start Minikube: minikube start --driver=docker
+Start Docker: Open Docker Desktop on mac -- possible way to hide the desktop, try this next time: https://stackoverflow.com/questions/64533789/how-to-start-docker-desktop-with-a-cli-command-on-macos-without-showing-dashboar
+
+Start backend - go to a .java file, click run, run without debugging
 
 To start the front-end: cd into front-end and type npm start go to localhost:3000 to run tests: npm run test ( need to be in the react folder)
 
@@ -93,6 +95,10 @@ Things I have learned:
 Docker: -to delete docker image = docker rmi -to delete docker containers: docker compose down -to delete docker container manually = first stop it. docker stop then docker rm -to see all containers (even stopped ones) = docker ps -a -to see logs: Docker container logs lb -“Dockerfile” is the instructions for building a container image. https://www.youtube.com/watch?v=LQjaJINkQXY
 
 -docker cheatsheet: https://www.javainuse.com/devOps/docker/docker-commands-cheat-sheet
+
+VITE Environment variables:
+All environment variables intended for client-side access in a Vite application must be prefixed with VITE\_. For example, VITE_API_KEY=your_key_here
+Environment variables are accessed in the code using import.meta.env. For example: import.meta.env.VITE_API_KEY
 
 <!-- Helpful Videos and Tutorials-->
 
@@ -186,87 +192,109 @@ https://chatgpt.com/share/6840ef16-d8c4-800f-8648-ff8f17d04206
 
 Connect to my ec2 instance:
 cd Documents/AllYouCanExercise
-ssh -i all-you-can-exercise-key-pair.pem ec2-user@3.93.6.48
+ssh -i all-you-can-exercise-key-pair.pem ec2-user@174.129.170.29
 
 sudo su (puts you in sudo so you don't have to write sudo in front of all the following commands)
 
-start docker: service docker start
-
-to make updates to my production I need to:
-
-1.  build the jar locally: Run mvn clean package -DskipTests from inside back-end/.
-2.  copy the jar and the dockerfile to my ec2:
-    scp -i all-you-can-exercise-key-pair.pem \
-     ./back-end/Dockerfile \
-     ec2-user@3.93.6.48:/home/ec2-user/back-end
-
-scp -i all-you-can-exercise-key-pair.pem \
- ./back-end/target/back-end-0.0.1-SNAPSHOT.jar \
- ec2-user@3.93.6.48:/home/ec2-user/back-end/target
-
-3. Build my front-end buil inside vs code:
-   npm run build
-
-4. Copy over my front-end files:
-   scp -i all-you-can-exercise-key-pair.pem \
-    ./front-end/package.json \
-    ./front-end/package-lock.json \
-    ./front-end/nginx.conf \
-    ./front-end/Dockerfile.prod \
-    ./front-end/index.html \
-    ./front-end/vite.config.js \
-    ec2-user@3.93.6.48:/home/ec2-user/front-end
-
-    <!-- 
+   <!-- 
     single command to use:
     scp -i all-you-can-exercise-key-pair.pem \
     ./front-end/Dockerfile.prod \
-    ec2-user@3.93.6.48:/home/ec2-user/front-end -->
+    ec2-user@174.129.170.29:/home/ec2-user/front-end -->
 
-   scp -i all-you-can-exercise-key-pair.pem \
-    -r ./front-end/public \
-    ec2-user@3.93.6.48:/home/ec2-user/front-end
-
-   scp -i all-you-can-exercise-key-pair.pem \
-    -r ./front-end/dist \
-    ec2-user@3.93.6.48:/home/ec2-user/front-end
-
-   scp -i all-you-can-exercise-key-pair.pem \
-    -r ./front-end/src \
-    ec2-user@3.93.6.48:/home/ec2-user/front-end
-
-5. copy over .env.production file:
-   scp -i all-you-can-exercise-key-pair.pem \
-    ./.env.production \
-    ec2-user@3.93.6.48:/home/ec2-user
-
-6. Copy over the docker-compose.prod.yml file:
-   scp -i all-you-can-exercise-key-pair.pem \
-    ./docker-compose.prod.yml \
-    ec2-user@3.93.6.48:/home/ec2-user
-
-7. Now inside ec2: rename docker-compose.yaml:
-   mv docker-compose.prod.yml docker-compose.yml
-   rename dockerfile.prod inside front end folder
-   mv ./front-end/Dockerfile.prod ./front-end/Dockerfile
-   rename .env.production to .env
-   mv .env.production .env
-
-8. Inside ec2: After docker is started, build with docker compose:
-   docker-compose up --build -d
-
-   -d does it in detached mode, if I need to see the logs because something is not working then remove the -d.
+-d does it in detached mode, if I need to see the logs because something is not working then remove the -d.
 
 one time steps I took:
 install docker-compose:https://stackoverflow.com/questions/63708035/installing-docker-compose-on-amazon-ec2-linux-2-9kb-docker-compose-file
 
 docker stop all containers: docker stop $(docker ps -q)
 
-I need to re-build the jar then copy over the snapshot to ec2 (delete previous first)
-re-build front end then copy over src and dist folders
+# start ec2
 
-cd Documents/AllYouCanExercise
-ssh -i all-you-can-exercise-key-pair.pem ec2-user@3.93.6.48
+1. cd Documents/AllYouCanExercise
+2. ssh -i all-you-can-exercise-key-pair.pem ec2-user@174.129.170.29
+3. sudo su
+4. service docker start
+5. docker-compose up OR docker-compose up -d
 
-then start docker
-docker-compose up
+<!-- steps to take when having made front-end changes -->
+
+# Remove front-end folder in ec2:
+
+rm -rf front-end
+
+# build front-end build on vscode:
+
+cd front-end
+npm run build
+cd ..
+
+# copy over all front-end files on vscode:
+
+scp -i all-you-can-exercise-key-pair.pem \
+ ./front-end/package.json \
+ ./front-end/package-lock.json \
+ ./front-end/nginx.conf \
+ ./front-end/Dockerfile.prod \
+ ./front-end/index.html \
+ ./front-end/vite.config.js \
+ ec2-user@174.129.170.29:/home/ec2-user/front-end
+
+scp -i all-you-can-exercise-key-pair.pem \
+ -r ./front-end/public \
+ ec2-user@174.129.170.29:/home/ec2-user/front-end
+
+scp -i all-you-can-exercise-key-pair.pem \
+ -r ./front-end/dist \
+ ec2-user@174.129.170.29:/home/ec2-user/front-end
+
+scp -i all-you-can-exercise-key-pair.pem \
+ -r ./front-end/src \
+ ec2-user@174.129.170.29:/home/ec2-user/front-end
+
+# rename production files inside ec2:
+
+mv ./front-end/Dockerfile.prod ./front-end/Dockerfile
+
+<!-- steps to take when having made root level compose.yml/.env files: -->
+
+# Remove current .env, compose.yml inside ec2:
+
+rm -rf .env
+rm -rf docker-compose.yml
+
+# copy over new files from vscode:
+
+scp -i all-you-can-exercise-key-pair.pem \
+ ./.env.production \
+ ec2-user@174.129.170.29:/home/ec2-user
+
+scp -i all-you-can-exercise-key-pair.pem \
+ ./docker-compose.prod.yml \
+ ec2-user@174.129.170.29:/home/ec2-user
+
+# rename production files inside ec2:
+
+mv docker-compose.prod.yml docker-compose.yml
+mv .env.production .env
+
+<!-- steps to take when made backend changes: -->
+
+# remove existing files on ec2:
+
+rm -rf ./back-end/target
+rm -rf ./back-end/Dockerfile
+
+# build the jar in vscode:
+
+Run mvn clean package -DskipTests from inside back-end/.
+
+# copy the jar and the dockerfile within vscode:
+
+scp -i all-you-can-exercise-key-pair.pem \
+ ./back-end/Dockerfile \
+ ec2-user@174.129.170.29:/home/ec2-user/back-end
+
+scp -i all-you-can-exercise-key-pair.pem \
+ ./back-end/target/back-end-0.0.1-SNAPSHOT.jar \
+ ec2-user@174.129.170.29:/home/ec2-user/back-end/target

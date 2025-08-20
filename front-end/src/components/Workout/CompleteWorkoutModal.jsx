@@ -8,7 +8,7 @@ import DateTimeComponent from "./DateTimeComponent";
 
 export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpenCompleteWorkoutModal, activeWorkout, activeUsername, isWorkoutSaved, setIsWorkoutSaved, saveWorkoutError, setSaveWorkoutError}) {
     const theme = useTheme();
-    const API_BASE_URL = process.env.API_BASE_URL;
+    const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
     const [workoutDetails, setWorkoutDetails] = useState(null)
     const [title, setTitle] = useState("")
     const [notes, setNotes] = useState("")
@@ -68,7 +68,7 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
 
     const handleSave = async () => {
         console.log('in handle save, workout details are', workoutDetails, "title is", title)
-        const response = await postAxiosCall(`${API_BASE_URL}/workouts/full/save`, workoutDetails);
+        const response = await postAxiosCall(`${VITE_API_BASE_URL}/workouts/full/save`, workoutDetails);
             if (response.success) {
             console.log('handleworkoutsave response', response)
             handleSaveSuccess();
