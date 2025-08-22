@@ -111,6 +111,16 @@ For example, a request to /api/exercises/group/CARDIO gets forwarded to http://b
 
 If your controllers are mapped with @RequestMapping("/api"), Spring will not match the path, so it defaults to static resource handling → 403/404.
 
+The reason running "run without debugging" vs the actual java jar command was working is because:
+1 - I needed to build the mysql container first
+2 - Spring is literally seeing the string ${SPRING_DATASOURCE_URL} instead of a real JDBC URL. That means your environment variable is not being injected into the JAR. If you just run java -jar from the shell without exporting the datasource environment variables (in application.properties), Spring cannot substitute them. VS Code “Run Without Debugging” works because VS Code sets these environment variables automatically from your .env or launch config. So I had to pass them directly into the java jar command example:
+java -jar target/app.jar \
+--spring.datasource.url=jdbc:<> \
+--spring.datasource.username=<> \
+--spring.datasource.password=<>
+
+I also had to add the vite react variable to the front-end .env file so that when I do npm run dev it will grab the variable from that directory.
+
 <!-- Helpful Videos and Tutorials-->
 
 Create React App: -https://www.freecodecamp.org/news/how-to-build-a-react-project-with-create-react-app-in-10-steps/
@@ -312,3 +322,27 @@ scp -i all-you-can-exercise-key-pair.pem \
  ec2-user@44.208.25.2:/home/ec2-user/back-end/target/
 
 <!-- its not building my secrets at run-time. ask chat gpt for a smooth dockerfile, env, nginx.conf, compose.yml set up - send all files -->
+
+# local workflow w/o using docker:
+
+cd mysql
+docker build .
+cd ../back-end
+./mvnw clean package -DskipTests
+
+java -jar target/back-end-0.0.1-SNAPSHOT.jar \
+--spring.datasource.url=jdbc:mysql://localhost:3306/exercise-database \
+--spring.datasource.username=alisha \
+--spring.datasource.password=secret
+
+cd ../front-end
+npm install
+npm run dev
+
+# Dockerized local development:
+
+cd back-end
+./mvnw clean package -DskipTests
+cd ..
+docker compose up --build
+docker compose logs -f
