@@ -71,6 +71,9 @@ Start Docker: Open Docker Desktop on mac -- possible way to hide the desktop, tr
 
 <!-- DOCKER DOCKER DOCKER -->
 
+If I need to delete my persistent volume (mysql data) on my ec2 I need to run:
+If you had used docker compose down -v → that would delete named volumes too, including MySQL data.
+
 To build just one of the containers (i.e react) cd into front-end then build the image: docker build -t <whatever-name-you-want> .
 
 to then run and exec into the container run:
@@ -90,7 +93,7 @@ sx props: https://mui.com/system/getting-started/the-sx-prop/#spacing
 
 Material UI tutorials: https://www.youtube.com/watch?v=h9KevTtI5O0&list=PLDxCaNaYIuUlG5ZqoQzFE27CUOoQvOqnQ&index=1
 
-Things I have learned:
+<!-- Things I have learned: -->
 
 Docker: -to delete docker image = docker rmi -to delete docker containers: docker compose down -to delete docker container manually = first stop it. docker stop then docker rm -to see all containers (even stopped ones) = docker ps -a -to see logs: Docker container logs lb -“Dockerfile” is the instructions for building a container image. https://www.youtube.com/watch?v=LQjaJINkQXY
 
@@ -99,6 +102,14 @@ Docker: -to delete docker image = docker rmi -to delete docker containers: docke
 VITE Environment variables:
 All environment variables intended for client-side access in a Vite application must be prefixed with VITE\_. For example, VITE_API_KEY=your_key_here
 Environment variables are accessed in the code using import.meta.env. For example: import.meta.env.VITE_API_KEY
+
+These are also baked-in at build-time - so when I was attempting to build it locally and then copy the dist folder over, it was not working b/c it was copying the local env variables - i also had to add the arg into the dockerfile and compose.yaml.
+
+The trailing / at the end of proxy_pass replaces the URI path.
+
+For example, a request to /api/exercises/group/CARDIO gets forwarded to http://backend:8080/exercises/group/CARDIO → Spring sees /exercises/... instead of /api/exercises/....
+
+If your controllers are mapped with @RequestMapping("/api"), Spring will not match the path, so it defaults to static resource handling → 403/404.
 
 <!-- Helpful Videos and Tutorials-->
 
