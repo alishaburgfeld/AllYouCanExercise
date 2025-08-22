@@ -199,7 +199,7 @@ sudo su (puts you in sudo so you don't have to write sudo in front of all the fo
    <!-- 
     single command to use:
     scp -i all-you-can-exercise-key-pair.pem \
-    ./front-end/Dockerfile.prod \
+    ./front-end/nginx.conf \
     ec2-user@174.129.170.29:/home/ec2-user/front-end -->
 
 -d does it in detached mode, if I need to see the logs because something is not working then remove the -d.
@@ -298,3 +298,5 @@ scp -i all-you-can-exercise-key-pair.pem \
 scp -i all-you-can-exercise-key-pair.pem \
  ./back-end/target/back-end-0.0.1-SNAPSHOT.jar \
  ec2-user@174.129.170.29:/home/ec2-user/back-end/target
+
+<!-- its not building my secrets at run-time. ask chat gpt for a smooth dockerfile, env, nginx.conf, compose.yml set up - send all files -->
