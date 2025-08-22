@@ -192,7 +192,7 @@ https://chatgpt.com/share/6840ef16-d8c4-800f-8648-ff8f17d04206
 
 Connect to my ec2 instance:
 cd Documents/AllYouCanExercise
-ssh -i all-you-can-exercise-key-pair.pem ec2-user@174.129.170.29
+ssh -i all-you-can-exercise-key-pair.pem ec2-user@44.208.25.2
 
 sudo su (puts you in sudo so you don't have to write sudo in front of all the following commands)
 
@@ -200,7 +200,7 @@ sudo su (puts you in sudo so you don't have to write sudo in front of all the fo
     single command to use:
     scp -i all-you-can-exercise-key-pair.pem \
     ./front-end/nginx.conf \
-    ec2-user@174.129.170.29:/home/ec2-user/front-end -->
+    ec2-user@44.208.25.2:/home/ec2-user/front-end -->
 
 -d does it in detached mode, if I need to see the logs because something is not working then remove the -d.
 
@@ -212,10 +212,10 @@ docker stop all containers: docker stop $(docker ps -q)
 # start ec2
 
 1. cd Documents/AllYouCanExercise
-2. ssh -i all-you-can-exercise-key-pair.pem ec2-user@174.129.170.29
+2. ssh -i all-you-can-exercise-key-pair.pem ec2-user@44.208.25.2
 3. sudo su
 4. service docker start
-5. docker-compose up OR docker-compose up -d
+5. docker-compose up --build OR docker-compose up --build -d
 
 <!-- steps to take when having made front-end changes -->
 
@@ -223,38 +223,39 @@ docker stop all containers: docker stop $(docker ps -q)
 
 rm -rf front-end
 
-# build front-end build on vscode:
+<!-- # build front-end build on vscode:
 
 cd front-end
 npm run build
-cd ..
+cd .. -->
 
 # copy over all front-end files on vscode:
+
+If I don't have front-end and src and public folders yet:
+ssh -i all-you-can-exercise-key-pair.pem ec2-user@44.208.25.2 "mkdir -p /home/ec2-user/front-end/src"
+
+ssh -i all-you-can-exercise-key-pair.pem ec2-user@44.208.25.2 "mkdir -p /home/ec2-user/front-end/public"
+
+scp -i all-you-can-exercise-key-pair.pem \
+ -r ./front-end/src \
+ ec2-user@44.208.25.2:/home/ec2-user/front-end/
 
 scp -i all-you-can-exercise-key-pair.pem \
  ./front-end/package.json \
  ./front-end/package-lock.json \
  ./front-end/nginx.conf \
- ./front-end/Dockerfile.prod \
+ ./front-end/Dockerfile \
  ./front-end/index.html \
  ./front-end/vite.config.js \
- ec2-user@174.129.170.29:/home/ec2-user/front-end
+ ec2-user@44.208.25.2:/home/ec2-user/front-end
+
+ <!-- scp -i all-you-can-exercise-key-pair.pem \
+ ./front-end/nginx.conf \
+ ec2-user@44.208.25.2:/home/ec2-user/front-end -->
 
 scp -i all-you-can-exercise-key-pair.pem \
  -r ./front-end/public \
- ec2-user@174.129.170.29:/home/ec2-user/front-end
-
-scp -i all-you-can-exercise-key-pair.pem \
- -r ./front-end/dist \
- ec2-user@174.129.170.29:/home/ec2-user/front-end
-
-scp -i all-you-can-exercise-key-pair.pem \
- -r ./front-end/src \
- ec2-user@174.129.170.29:/home/ec2-user/front-end
-
-# rename production files inside ec2:
-
-mv ./front-end/Dockerfile.prod ./front-end/Dockerfile
+ ec2-user@44.208.25.2:/home/ec2-user/front-end
 
 <!-- steps to take when having made root level compose.yml/.env files: -->
 
@@ -267,11 +268,11 @@ rm -rf docker-compose.yml
 
 scp -i all-you-can-exercise-key-pair.pem \
  ./.env.production \
- ec2-user@174.129.170.29:/home/ec2-user
+ ec2-user@44.208.25.2:/home/ec2-user
 
 scp -i all-you-can-exercise-key-pair.pem \
  ./docker-compose.prod.yml \
- ec2-user@174.129.170.29:/home/ec2-user
+ ec2-user@44.208.25.2:/home/ec2-user
 
 # rename production files inside ec2:
 
@@ -285,18 +286,18 @@ mv .env.production .env
 rm -rf ./back-end/target
 rm -rf ./back-end/Dockerfile
 
-# build the jar in vscode:
-
-Run mvn clean package -DskipTests from inside back-end/.
-
 # copy the jar and the dockerfile within vscode:
+
+1. run in back-end in vscode: mvn clean package -DskipTests
+
+If I don't have back-end and target folders yet: ssh -i all-you-can-exercise-key-pair.pem ec2-user@44.208.25.2 "mkdir -p /home/ec2-user/back-end/target"
 
 scp -i all-you-can-exercise-key-pair.pem \
  ./back-end/Dockerfile \
- ec2-user@174.129.170.29:/home/ec2-user/back-end
+ ec2-user@44.208.25.2:/home/ec2-user/back-end/
 
 scp -i all-you-can-exercise-key-pair.pem \
  ./back-end/target/back-end-0.0.1-SNAPSHOT.jar \
- ec2-user@174.129.170.29:/home/ec2-user/back-end/target
+ ec2-user@44.208.25.2:/home/ec2-user/back-end/target/
 
 <!-- its not building my secrets at run-time. ask chat gpt for a smooth dockerfile, env, nginx.conf, compose.yml set up - send all files -->
