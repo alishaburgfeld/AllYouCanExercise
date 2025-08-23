@@ -134,10 +134,12 @@ public class WorkoutService {
 
             }
         }
+        // wait to do this after everything has been saved so you have the latest for
+        // the records
         for (int i = 0; i < workoutExerciseDetails.size(); i++) {
             WorkoutExerciseDetailsDTO workoutExerciseDetailsDTO = workoutExerciseDetails.get(i);
             Exercise exercise = exerciseService.getExerciseById(workoutExerciseDetailsDTO.getExerciseId());
-            exerciseRecordService.saveExerciseRecord(exercise, workoutExerciseDetailsDTO);
+            exerciseRecordService.saveExerciseRecord(exercise, workoutExerciseDetailsDTO, user);
         }
-
+    }
 }
