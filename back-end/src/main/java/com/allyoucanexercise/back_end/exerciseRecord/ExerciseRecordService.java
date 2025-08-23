@@ -39,7 +39,7 @@ public class ExerciseRecordService {
 
     public ExerciseRecord saveExerciseRecord(Exercise exercise, WorkoutExerciseDetailsDTO workoutExerciseDetailsDTO,
             User user) {
-
+        // always save last_exercised
         List<ExerciseSetDTO> exerciseSetDTOs = workoutExerciseDetailsDTO.getSets();
         int totalSets = exerciseSetDTOs.size();
         int maxRepsInWorkout = 0;

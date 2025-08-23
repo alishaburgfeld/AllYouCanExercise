@@ -11,4 +11,8 @@ import com.allyoucanexercise.back_end.exercise.Exercise;
 public interface ExerciseRecordRepository extends JpaRepository<ExerciseRecord, Long> {
 
     Optional<ExerciseRecord> findByUserAndExercise(User user, Exercise exercise);
+
+    // Optional<ExerciseRecord> findByUserUsernameAndExerciseId(String username,
+    // Long exerciseId);
+
 }

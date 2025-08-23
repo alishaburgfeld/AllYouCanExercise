@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 import com.allyoucanexercise.back_end.exercise.Exercise;
 import com.allyoucanexercise.back_end.user.User;
+import com.allyoucanexercise.back_end.workout.Workout;
 
 @Entity
 @Table(name = "exercise_record")
@@ -18,7 +19,7 @@ public class ExerciseRecord {
     private Long id;
 
     @NotNull
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "exercise_id", nullable = false)
     private Exercise exercise;
 
@@ -26,6 +27,41 @@ public class ExerciseRecord {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "max_sets_workout_id", nullable = false)
+    private Workout maxSetsWorkout;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "max_reps_workout_id", nullable = false)
+    private Workout maxRepsWorkout;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "max_weight_workout_id", nullable = false)
+    private Workout maxWeightWorkout;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "max_volume_workout_id", nullable = false)
+    private Workout maxVolumeWorkout;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "max_distance_workout_id", nullable = false)
+    private Workout maxDistanceWorkout;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "max_duration_workout_id", nullable = false)
+    private Workout maxDurationWorkout;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "max_pace_workout_id", nullable = false)
+    private Workout maxPaceWorkout;
 
     @NotNull
     @Column(name = "last_completed", nullable = false)
@@ -143,5 +179,62 @@ public class ExerciseRecord {
 
     public void setMaxDistanceMeters(Float maxDistanceMeters) {
         this.maxDistanceMeters = maxDistanceMeters;
+    }
+
+    public Workout getMaxSetsWorkout() {
+        return maxSetsWorkout;
+    }
+
+    public Workout getMaxRepsWorkout() {
+        return maxRepsWorkout;
+    }
+
+    public Workout getMaxWeightWorkout() {
+        return maxWeightWorkout;
+    }
+
+    public Workout getMaxVolumeWorkout() {
+        return maxVolumeWorkout;
+    }
+
+    public Workout getMaxDistanceWorkout() {
+        return maxDistanceWorkout;
+    }
+
+    public Workout getMaxDurationWorkout() {
+        return maxDurationWorkout;
+    }
+
+    public Workout getMaxPaceWorkout() {
+        return maxPaceWorkout;
+    }
+
+    // Setters
+    public void setMaxSetsWorkout(Workout maxSetsWorkout) {
+        this.maxSetsWorkout = maxSetsWorkout;
+    }
+
+    public void setMaxRepsWorkout(Workout maxRepsWorkout) {
+        this.maxRepsWorkout = maxRepsWorkout;
+    }
+
+    public void setMaxWeightWorkout(Workout maxWeightWorkout) {
+        this.maxWeightWorkout = maxWeightWorkout;
+    }
+
+    public void setMaxVolumeWorkout(Workout maxVolumeWorkout) {
+        this.maxVolumeWorkout = maxVolumeWorkout;
+    }
+
+    public void setMaxDistanceWorkout(Workout maxDistanceWorkout) {
+        this.maxDistanceWorkout = maxDistanceWorkout;
+    }
+
+    public void setMaxDurationWorkout(Workout maxDurationWorkout) {
+        this.maxDurationWorkout = maxDurationWorkout;
+    }
+
+    public void setMaxPaceWorkout(Workout maxPaceWorkout) {
+        this.maxPaceWorkout = maxPaceWorkout;
     }
 }
