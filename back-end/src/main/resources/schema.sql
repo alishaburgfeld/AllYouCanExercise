@@ -59,3 +59,20 @@ CREATE TABLE IF NOT EXISTS exercise_set (
     distance_meters DECIMAL(10,2) UNSIGNED DEFAULT NULL, -- put it a default null since most workouts won't use a distance
     FOREIGN KEY (workout_exercise_id) REFERENCES workout_exercise(id)
 );
+
+CREATE TABLE IF NOT EXISTS exercise_record (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    exercise_id BIGINT,
+    user_id BIGINT,
+    last_completed DATETIME,
+    max_sets INT,
+    max_reps INT,
+    max_weight DECIMAL(5,2) UNSIGNED,
+    max_volume DECIMAL(5,2) UNSIGNED,
+    max_duration_seconds INT DEFAULT NULL, -- put it a default null since most workouts won't use a time. only cardio. ie 930 = 15 minutes
+    max_distance_meters DECIMAL(10,2) UNSIGNED DEFAULT NULL, -- put it a default null since most workouts won't use a distance
+    FOREIGN KEY (exercise_id) REFERENCES exercise(id),
+    FOREIGN KEY (user_id) REFERENCES user(id),
+    UNIQUE KEY (user_id, exercise_id)
+
+);

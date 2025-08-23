@@ -30,6 +30,10 @@ function ExercisePage({ setExerciseToBeAdded, activeUsername }) {
         console.error("Error fetching exercise");
       }
     };
+
+    const getExerciseHistory = () => {
+      
+    }
   
     const handleClickToAddWorkout = (exercise) => {
       setExerciseToBeAdded(exercise); // Add the entire exercise object
@@ -72,7 +76,7 @@ function ExercisePage({ setExerciseToBeAdded, activeUsername }) {
                     <Typography className = "exercisePage_description_text"> {exercise.description} </Typography>
                 </Box>
                 <Box className="exercisePage_history" sx={{mt:"1rem", borderRadius: 1, border:2, borderColor: theme.palette.secondary.main }}>
-                    <Typography className = "exercisePage_history_title" sx={{fontSize:"1.2rem",fontWeight: "600", mt:".5rem", mb:".5rem"}}>Workout History</Typography>
+                    <Typography className = "exercisePage_history_title" sx={{fontSize:"1.2rem",fontWeight: "600", mt:".5rem", mb:".5rem"}}>Last Completed:</Typography>
                     {exerciseHistory[1]?
                         <span>{exerciseHistory[1]}</span>
                     :
