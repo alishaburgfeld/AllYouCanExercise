@@ -29,73 +29,94 @@ public class ExerciseRecord {
     private User user;
 
     @NotNull
+    @Column(name = "last_exercised", nullable = false)
+    private LocalDateTime lastExercised;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "last_exercised_workout_id", nullable = false)
+    private Workout lastExercisedWorkout;
+
+    @Column(name = "max_sets")
+    private Integer maxSets;
+
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "max_sets_workout_id", nullable = false)
     private Workout maxSetsWorkout;
+
+    @Column(name = "max_reps")
+    private Integer maxReps;
 
     @NotNull
     @ManyToOne
     @JoinColumn(name = "max_reps_workout_id", nullable = false)
     private Workout maxRepsWorkout;
 
+    @Column(name = "max_weight")
+    private Float maxWeight;
+
     @NotNull
     @ManyToOne
     @JoinColumn(name = "max_weight_workout_id", nullable = false)
     private Workout maxWeightWorkout;
+
+    @Column(name = "max_volume")
+    private Float maxVolume;
 
     @NotNull
     @ManyToOne
     @JoinColumn(name = "max_volume_workout_id", nullable = false)
     private Workout maxVolumeWorkout;
 
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "max_distance_workout_id", nullable = false)
-    private Workout maxDistanceWorkout;
+    @Column(name = "max_duration_seconds")
+    private Integer maxDurationSeconds;
 
     @NotNull
     @ManyToOne
     @JoinColumn(name = "max_duration_workout_id", nullable = false)
     private Workout maxDurationWorkout;
 
+    @Column(name = "max_distance_meters")
+    private Float maxDistanceMeters;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "max_distance_workout_id", nullable = false)
+    private Workout maxDistanceWorkout;
+
+    @Column(name = "max_pace_per_mile")
+    private Float maxPacePerMile;
+
     @NotNull
     @ManyToOne
     @JoinColumn(name = "max_pace_workout_id", nullable = false)
     private Workout maxPaceWorkout;
 
-    @NotNull
-    @Column(name = "last_completed", nullable = false)
-    private LocalDateTime lastCompleted;
-
-    @Column(name = "max_sets")
-    private Integer maxSets;
-
-    @Column(name = "max_reps")
-    private Integer maxReps;
-
-    @Column(name = "max_weight")
-    private Float maxWeight;
-
-    @Column(name = "max_volume")
-    private Float maxVolume;
-
-    @Column(name = "max_duration_seconds")
-    private Integer maxDurationSeconds;
-
-    @Column(name = "max_distance_meters")
-    private Float maxDistanceMeters;
-
-    public ExerciseRecord(Exercise exercise, User user, Integer maxSets, Integer maxReps, Float maxWeight,
-            Float maxVolume,
-            Integer maxDurationSeconds, Float maxDistanceMeters) {
+    public ExerciseRecord(Exercise exercise, User user, LocalDateTime lastExercised, Workout lastExercisedWorkout,
+            Integer maxSets, Workout maxSetsWorkout, Integer maxReps,
+            Workout maxRepsWorkout, Float maxWeight, Workout maxWeightWorkout,
+            Float maxVolume, Workout maxVolumeWorkout,
+            Integer maxDurationSeconds, Workout maxDurationWorkout, Float maxDistanceMeters, Workout maxDistanceWorkout,
+            Float maxPacePerMile, Workout maxPaceWorkout) {
         this.exercise = exercise;
         this.user = user;
+        this.lastExercised = lastExercised;
+        this.lastExercisedWorkout = lastExercisedWorkout;
         this.maxSets = maxSets;
+        this.maxSetsWorkout = maxSetsWorkout;
         this.maxReps = maxReps;
+        this.maxRepsWorkout = maxRepsWorkout;
         this.maxWeight = maxWeight;
+        this.maxWeightWorkout = maxWeightWorkout;
         this.maxVolume = maxVolume;
+        this.maxVolumeWorkout = maxVolumeWorkout;
         this.maxDurationSeconds = maxDurationSeconds;
+        this.maxDurationWorkout = maxDurationWorkout;
         this.maxDistanceMeters = maxDistanceMeters;
+        this.maxDistanceWorkout = maxDistanceWorkout;
+        this.maxPacePerMile = maxPacePerMile;
+        this.maxPaceWorkout = maxPaceWorkout;
     }
 
     protected ExerciseRecord() {
@@ -121,12 +142,20 @@ public class ExerciseRecord {
         return user;
     }
 
-    public LocalDateTime getLastCompleted() {
-        return lastCompleted;
+    public LocalDateTime getLastExercised() {
+        return lastExercised;
     }
 
-    public void setCompletedAt(LocalDateTime lastCompleted) {
-        this.lastCompleted = lastCompleted;
+    public void setLastExercised(LocalDateTime lastExercised) {
+        this.lastExercised = lastExercised;
+    }
+
+    public void setLastExercisedWorkout(Workout lastExercisedWorkout) {
+        this.lastExercisedWorkout = lastExercisedWorkout;
+    }
+
+    public Workout getLastExercisedWorkout() {
+        return lastExercisedWorkout;
     }
 
     public void setUser(User user) {
@@ -175,6 +204,14 @@ public class ExerciseRecord {
 
     public Float getMaxDistanceMeters() {
         return maxDistanceMeters;
+    }
+
+    public void setMaxPacePerMile(Float maxPacePerMile) {
+        this.maxPacePerMile = maxPacePerMile;
+    }
+
+    public Float getMaxPacePerMile() {
+        return maxPacePerMile;
     }
 
     public void setMaxDistanceMeters(Float maxDistanceMeters) {

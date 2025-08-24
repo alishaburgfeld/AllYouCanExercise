@@ -140,7 +140,7 @@ public class WorkoutService {
         for (int i = 0; i < workoutExerciseDetails.size(); i++) {
             WorkoutExerciseDetailsDTO workoutExerciseDetailsDTO = workoutExerciseDetails.get(i);
             Exercise exercise = exerciseService.getExerciseById(workoutExerciseDetailsDTO.getExerciseId());
-            exerciseRecordService.saveExerciseRecord(exercise, workoutExerciseDetailsDTO, user);
+            exerciseRecordService.saveExerciseRecord(workout, exercise, workoutExerciseDetailsDTO, user);
         }
     }
 }

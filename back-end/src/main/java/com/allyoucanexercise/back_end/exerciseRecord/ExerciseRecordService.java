@@ -1,5 +1,6 @@
 package com.allyoucanexercise.back_end.exerciseRecord;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,8 +15,10 @@ import com.allyoucanexercise.back_end.exercise.Exercise;
 import com.allyoucanexercise.back_end.exerciseRecord.ExerciseRecordRepository;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSet;
 import com.allyoucanexercise.back_end.user.User;
+import com.allyoucanexercise.back_end.workout.Workout;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetDTO;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetRepository;
+import com.allyoucanexercise.back_end.workoutExercise.WorkoutExercise;
 import com.allyoucanexercise.back_end.workoutExercise.WorkoutExerciseDetailsDTO;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -37,40 +40,112 @@ public class ExerciseRecordService {
         return exerciseRecordRepository.save(exerciseRecord);
     }
 
-    public ExerciseRecord saveExerciseRecord(Exercise exercise, WorkoutExerciseDetailsDTO workoutExerciseDetailsDTO,
+    public ExerciseRecord saveExerciseRecord(Exercise exercise, User user, LocalDateTime lastExercised,
+            Workout lastExercisedWorkout,
+            Integer maxSets, Workout maxSetsWorkout, Integer maxReps,
+            Workout maxRepsWorkout, Float maxWeight, Workout maxWeightWorkout,
+            Float maxVolume, Workout maxVolumeWorkout,
+            Integer maxDurationSeconds, Workout maxDurationWorkout, Float maxDistanceMeters, Workout maxDistanceWorkout,
+            Float maxPacePerMile, Workout maxPaceWorkout) {
+        ExerciseRecord exerciseRecord = new ExerciseRecord();
+        exerciseRecord.setExercise(exercise);
+        exerciseRecord.setUser(user);
+        exerciseRecord.setLastExercised(lastExercised);
+        exerciseRecord.setLastExercisedWorkout(lastExercisedWorkout);
+        exerciseRecord.setMaxSets(maxSets);
+        exerciseRecord.setMaxSetsWorkout(maxSetsWorkout);
+        exerciseRecord.setMaxReps(maxReps);
+        exerciseRecord.setMaxRepsWorkout(maxRepsWorkout);
+        exerciseRecord.setMaxWeight(maxWeight);
+        exerciseRecord.setMaxWeightWorkout(maxWeightWorkout);
+        exerciseRecord.setMaxVolume(maxVolume);
+        exerciseRecord.setMaxVolumeWorkout(maxVolumeWorkout);
+        exerciseRecord.setMaxDurationSeconds(maxDurationSeconds);
+        exerciseRecord.setMaxDurationWorkout(maxDurationWorkout);
+        exerciseRecord.setMaxDistanceMeters(maxDistanceMeters);
+        exerciseRecord.setMaxDistanceWorkout(maxDistanceWorkout);
+        exerciseRecord.setMaxPacePerMile(maxPacePerMile);
+        exerciseRecord.setMaxPaceWorkout(maxPaceWorkout);
+        return exerciseRecordRepository.save(exerciseRecord);
+    }
+
+    public ExerciseRecord saveExerciseRecord(Workout workout, Exercise exercise,
+            WorkoutExerciseDetailsDTO workoutExerciseDetailsDTO,
             User user) {
         // always save last_exercised
         List<ExerciseSetDTO> exerciseSetDTOs = workoutExerciseDetailsDTO.getSets();
-        int totalSets = exerciseSetDTOs.size();
-        int maxRepsInWorkout = 0;
-        float maxWeightInWorkout = 0f;
-        int maxDurationInWorkout = 0;
-        float maxDistanceInWorkout = 0f;
-        float volumeInWorkout = 0f;
+        LocalDateTime lastExercised = workout.getCompletedAt();
+        Integer totalSets = exerciseSetDTOs.size();
+        Integer maxRepsInWorkout = 0;
+        Float maxWeightInWorkout = 0f;
+        Integer maxDurationInWorkout = 0;
+        Float maxDistanceInWorkout = 0f;
+        Float maxPaceInWorkout = 0f;
+        Float volumeInWorkout = 0f;
 
         for (ExerciseSetDTO set : exerciseSetDTOs) {
             if (set.getReps() != null && set.getWeight() != null) {
                 volumeInWorkout += (set.getReps() * set.getWeight());
             }
-            if (set.getReps() != null && set.getReps() > maxRepsInWorkout) {
-                maxRepsInWorkout = set.getReps();
-            }
-            if (set.getWeight() != null && set.getWeight() > maxWeightInWorkout) {
-                maxWeightInWorkout = set.getWeight();
-            }
-            if (set.getDurationSeconds() != null && set.getDurationSeconds() > maxDurationInWorkout) {
-                maxDurationInWorkout = set.getDurationSeconds();
-            }
-            if (set.getDistanceMeters() != null && set.getDistanceMeters() > maxDistanceInWorkout) {
-                maxDistanceInWorkout = set.getDistanceMeters();
-            }
+            setMaxValueForWorkoutIfCurrentSetValueIsHigher(set.getReps(), maxRepsInWorkout);
+            setMaxValueForWorkoutIfCurrentSetValueIsHigher(set.getWeight(), maxWeightInWorkout);
+            setMaxValueForWorkoutIfCurrentSetValueIsHigher(set.getDurationSeconds(), maxDurationInWorkout);
+            setMaxValueForWorkoutIfCurrentSetValueIsHigher(set.getDistanceMeters(), maxDistanceInWorkout);
+            setMaxValueForWorkoutIfCurrentSetValueIsHigher(set.getPacePerMile(), maxPaceInWorkout);
         }
 
-        Optional<ExerciseRecord> exerciseRecord = getExerciseRecord(user, exercise);
-        // if no exerciseRecord then automatically save the exerciseRecord. if there is
-        // an exercise record then need to check if any of the maxes in the workout are
-        // higher than the record, then need to update it.
+        Optional<ExerciseRecord> existingExerciseRecordOpt = getExerciseRecord(user, exercise);
 
-        return ExerciseRecordRepository.save(exerciseRecord);
+        if (existingExerciseRecordOpt.isEmpty()) {
+            return this.saveExerciseRecord(exercise, user, lastExercised, workout, totalSets, workout,
+                    maxRepsInWorkout, workout, maxWeightInWorkout, workout, volumeInWorkout, workout,
+                    maxDurationInWorkout, workout, maxDistanceInWorkout, workout, maxPaceInWorkout, workout);
+
+        }
+
+        else {
+            ExerciseRecord existingExerciseRecord = existingExerciseRecordOpt.get();
+            if (isWorkoutValueHigherThanExistingExerciseRecordValue(maxRepsInWorkout,
+                    existingExerciseRecord.getMaxReps())) {
+                existingExerciseRecord.setMaxReps(maxRepsInWorkout);
+                existingExerciseRecord.setMaxRepsWorkout(workout);
+            }
+
+        }
     }
+
+    public void setRecordValueIfWorkoutHasHigherValue() {
+        )
+        // if (maxValueInWorkout > 0 &&
+        //         (existingExerciseRecord.getMaxValue() == null
+        //                 || maxRepsInWorkout > existingExerciseRecord.getMaxReps())) {
+        //     existingExerciseRecord.setMaxReps(maxRepsInWorkout);
+        //     existingExerciseRecord.setMaxRepsWorkout(workout);
+        // }
+    }
+
+    public boolean isWorkoutValueHigherThanExistingExerciseRecordValue(Integer workoutValue,
+            Integer existingExerciseRecordValue) {
+        if (workoutValue > 0 && (existingExerciseRecordValue != null) && (workoutValue > existingExerciseRecordValue)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void setMaxValueForWorkoutIfCurrentSetValueIsHigher(Integer setValue, Integer maxWorkoutValue) {
+        if (setValue != null && setValue > maxWorkoutValue) {
+            maxWorkoutValue = setValue;
+        }
+    }
+
+    public void setMaxValueForWorkoutIfCurrentSetValueIsHigher(Float setValue, Float maxWorkoutValue) {
+        if (setValue != null && setValue > maxWorkoutValue) {
+            maxWorkoutValue = setValue;
+
+        }
+    };
+
+    // if no exerciseRecord then automatically save the exerciseRecord.
+
 }

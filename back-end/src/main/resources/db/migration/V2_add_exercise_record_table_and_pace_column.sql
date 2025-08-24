@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS exercise_record (
     exercise_id BIGINT,
     user_id BIGINT,
     last_exercised DATETIME,
+    last_exercised_workout_id BIGINT,
     max_sets INT,
     max_sets_workout_id BIGINT,
     max_reps INT,
@@ -28,6 +29,7 @@ CREATE TABLE IF NOT EXISTS exercise_record (
     FOREIGN KEY (max_distance_workout_id) REFERENCES workout(id),
     FOREIGN KEY (max_duration_workout_id) REFERENCES workout(id),
     FOREIGN KEY (max_pace_workout_id) REFERENCES workout(id),
+    FOREIGN KEY (last_exercised_workout_id) REFERENCES workout(id),
     FOREIGN KEY (user_id) REFERENCES user(id),
     UNIQUE KEY (user_id, exercise_id)
 );
