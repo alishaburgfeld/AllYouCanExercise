@@ -57,7 +57,7 @@ public class ExerciseSetServiceTest {
     @DisplayName("save works on all weight workouts")
     void testSave() {
 
-        ExerciseSet exerciseSet = new ExerciseSet(workoutExercise, 1, 10, (float) 20, null, null);
+        ExerciseSet exerciseSet = new ExerciseSet(workoutExercise, 1, 10, (float) 20, null, null, null, null);
         when(exerciseSetRepository.save(exerciseSet)).thenReturn(exerciseSet);
         ExerciseSet result = exerciseSetService.saveExerciseSet(exerciseSet);
 
@@ -73,22 +73,26 @@ public class ExerciseSetServiceTest {
     @DisplayName("save works on all cardio workouts with distance and time")
     void testSaveCardioExercise() {
 
-        ExerciseSet exerciseSet = new ExerciseSet(workoutExercise, 1, null, null, 900, (float) 300);
+        ExerciseSet exerciseSet = new ExerciseSet(workoutExercise, 1, null, null, 160, (float) 800, "meters",
+                (float) 5.36);
         when(exerciseSetRepository.save(exerciseSet)).thenReturn(exerciseSet);
         ExerciseSet result = exerciseSetService.saveExerciseSet(exerciseSet);
 
         assertEquals(exerciseSet, result);
         assertEquals(result.getWorkoutExercise(), workoutExercise);
         assertEquals(result.getSetOrder(), 1);
-        assertEquals(result.getDurationSeconds(), 900);
-        assertEquals(result.getDistanceMeters(), 300);
+        assertEquals(result.getDurationSeconds(), 160);
+        assertEquals(result.getDistanceMeters(), 800);
+        assertEquals(result.getDistanceMeasurement(), "meters");
+        assertEquals((float) result.getPacePerMile(), (float) 5.36);
         verify(exerciseSetRepository).save(exerciseSet);
     }
 
     @Test
     @DisplayName("save fails if set order is missing")
     void testSaveFailsOnNullSetOrder() {
-        ExerciseSet invalidExerciseSet = new ExerciseSet(workoutExercise, 1, null, null, 900, (float) 300);
+        ExerciseSet invalidExerciseSet = new ExerciseSet(workoutExercise, 1, null, null, 160, (float) 800, "miles",
+                (float) 5.36);
         invalidExerciseSet.setSetOrder(null);
 
         // this is the type of exception thrown when you don't follow @NotNull, etc

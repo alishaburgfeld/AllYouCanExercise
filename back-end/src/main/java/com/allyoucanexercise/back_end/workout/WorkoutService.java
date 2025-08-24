@@ -122,7 +122,8 @@ public class WorkoutService {
                 try {
                     exerciseSetService.saveExerciseSet(workoutExercise, setOrder,
                             setDTO.getReps(), setDTO.getWeight(),
-                            setDTO.getDurationSeconds(), setDTO.getDistanceMeters());
+                            setDTO.getDurationSeconds(), setDTO.getDistanceMeters(), setDTO.getDistanceMeasurement(),
+                            setDTO.getPacePerMile());
                 } catch (Exception e) {
                     log.error("Error saving exercise set: {}", setDTO, e);
                     throw e; // rethrow to preserve behavior

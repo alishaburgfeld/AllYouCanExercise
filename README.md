@@ -359,3 +359,5 @@ In ec2 : docker-compose down
 docker-compose up --build
 
 <!-- should run the scripts automatically -->
+
+pace_per_mile = (duration_in_seconds / 60) / (distance_in_meters / 1609.34)

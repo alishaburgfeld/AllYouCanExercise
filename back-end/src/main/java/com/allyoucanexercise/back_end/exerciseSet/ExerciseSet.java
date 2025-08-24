@@ -31,14 +31,22 @@ public class ExerciseSet {
     @Column(name = "distance_meters")
     private Float distanceMeters;
 
+    @Column(name = "distance_measurement")
+    private String distanceMeasurement;
+
+    @Column(name = "pace_per_mile")
+    private Float pacePerMile;
+
     public ExerciseSet(WorkoutExercise workoutExercise, Integer setOrder, Integer reps, Float weight,
-            Integer durationSeconds, Float distanceMeters) {
+            Integer durationSeconds, Float distanceMeters, String distanceMeasurement, Float pacePerMile) {
         this.workoutExercise = workoutExercise;
         this.setOrder = setOrder;
         this.reps = reps;
         this.weight = weight;
         this.durationSeconds = durationSeconds;
         this.distanceMeters = distanceMeters;
+        this.distanceMeasurement = distanceMeasurement;
+        this.pacePerMile = pacePerMile;
     }
 
     protected ExerciseSet() {
@@ -99,5 +107,21 @@ public class ExerciseSet {
 
     public void setDistanceMeters(Float distanceMeters) {
         this.distanceMeters = distanceMeters;
+    }
+
+    public String getDistanceMeasurement() {
+        return distanceMeasurement;
+    }
+
+    public void setDistanceMeasurement(String distanceMeasurement) {
+        this.distanceMeasurement = distanceMeasurement;
+    }
+
+    public Float getPacePerMile() {
+        return pacePerMile;
+    }
+
+    public void setPacePerMile(Float pacePerMile) {
+        this.pacePerMile = pacePerMile;
     }
 }

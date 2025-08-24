@@ -27,7 +27,7 @@ public class ExerciseSetService {
     }
 
     public ExerciseSet saveExerciseSet(WorkoutExercise workoutExercise, Integer setOrder, Integer reps, Float weight,
-            Integer durationSeconds, Float distanceMeters) {
+            Integer durationSeconds, Float distanceMeters, String distanceMeasurement, Float pacePerMile) {
         ExerciseSet exerciseSet = new ExerciseSet();
         exerciseSet.setWorkoutExercise(workoutExercise);
         exerciseSet.setSetOrder(setOrder);
@@ -35,6 +35,8 @@ public class ExerciseSetService {
         exerciseSet.setWeight(weight);
         exerciseSet.setDurationSeconds(durationSeconds);
         exerciseSet.setDistanceMeters(distanceMeters);
+        exerciseSet.setDistanceMeasurement(distanceMeasurement);
+        exerciseSet.setPacePerMile(pacePerMile);
         return ExerciseSetRepository.save(exerciseSet);
     }
 

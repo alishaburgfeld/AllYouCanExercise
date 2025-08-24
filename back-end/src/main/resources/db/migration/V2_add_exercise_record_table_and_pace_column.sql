@@ -1,5 +1,5 @@
 ALTER TABLE exercise_set ADD COLUMN distance_measurement VARCHAR(250) DEFAULT NULL;
-ALTER TABLE exercise_set ADD COLUMN pace_seconds INT DEFAULT NULL;
+ALTER TABLE exercise_set ADD COLUMN pace_per_mile DECIMAL(5,2) UNSIGNED DEFAULT NULL;
 
 CREATE TABLE IF NOT EXISTS exercise_record (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS exercise_record (
     max_duration_workout_id BIGINT,
     max_distance_meters DECIMAL(10,2) UNSIGNED DEFAULT NULL, -- put it a default null since most workouts won't use a distance
     max_distance_workout_id BIGINT,
-    max_pace_seconds DECIMAL(10,2) UNSIGNED DEFAULT NULL, -- put it a default null since most workouts won't use a distance
+    max_pace_per_mile DECIMAL(10,2) UNSIGNED DEFAULT NULL, -- put it a default null since most workouts won't use a distance
     max_pace_workout_id BIGINT,
     FOREIGN KEY (exercise_id) REFERENCES exercise(id),
     FOREIGN KEY (max_sets_workout_id) REFERENCES workout(id),
