@@ -17,6 +17,11 @@ My sql will use completedAt DATETIME
    0874023
    https://github.com/alishaburgfeld/AllYouCanExercise/commit/d774bc7a107b9db5f9e01f83ec209cf30f900048
 5. Used Nginx config to serve the front-end files. The "step 2" in my front-end dockerfile will compile all of my react files into just an index.html file. So if I want to see that all my react files are being copied over like I want, comment out the step 2 nginx stuff then exec into the container. However when I build the nginx container then all I should see is an assets folder (with all my images) and an index.html file. These are located inside /usr/share/nginx/html
+
+6. added flyaway to do migration scripts - look for this message in the logs after a migration:
+   Flyway Community Edition ...
+   Successfully applied 1 migration to schema `exercise-database` (execution time 00:01)
+
 <!-- -------------------REST --------------------->
 
 When have security dependency invoked it prints a password in the console to connect to the localhost:
@@ -346,3 +351,11 @@ cd back-end
 cd ..
 docker compose up --build
 docker compose logs -f
+
+# Migrations
+
+Re-build jar
+In ec2 : docker-compose down
+docker-compose up --build
+
+<!-- should run the scripts automatically -->
