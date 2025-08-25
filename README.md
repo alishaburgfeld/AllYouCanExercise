@@ -126,6 +126,25 @@ java -jar target/app.jar \
 
 I also had to add the vite react variable to the front-end .env file so that when I do npm run dev it will grab the variable from that directory.
 
+functional java methods:
+To avoid repetitive if blocks when updating fields in an ExerciseRecord, Java functional interfaces can be used to pass in getters and setters as parameters. This allows for a single, reusable method to handle conditional field updates. The key interfaces used are: Supplier<T>, which represents a function that returns a value and takes no arguments (used to get a field value, e.g., existingExerciseRecord::getMaxReps); and BiConsumer<T, U>, which represents a function that takes two arguments and returns nothing (used to set a value or reference, e.g., ExerciseRecord::setMaxReps or ExerciseRecord::setMaxRepsWorkout). A generic method can be defined like this:
+private <T extends Number & Comparable<T>> void updateRecordIfWorkoutValueIsHigher(
+T workoutValue,
+Supplier<T> getExistingValue,
+BiConsumer<ExerciseRecord, T> setNewValue,
+BiConsumer<ExerciseRecord, Workout> setWorkout,
+ExerciseRecord record,
+Workout workout) {
+
+    T existingValue = getExistingValue.get();
+    if (workoutValue != null && existingValue != null && workoutValue.compareTo(existingValue) > 0) {
+        setNewValue.accept(record, workoutValue);
+        setWorkout.accept(record, workout);
+    }
+
+}
+This method compares the workoutValue to the existing value in the record using compareTo(). If it's higher, it updates the record with the new value and associates it with the given workout. This approach improves readability, reduces duplication, and makes the update logic extensible for any Number type like Integer or Float.
+
 <!-- Helpful Videos and Tutorials-->
 
 Create React App: -https://www.freecodecamp.org/news/how-to-build-a-react-project-with-create-react-app-in-10-steps/

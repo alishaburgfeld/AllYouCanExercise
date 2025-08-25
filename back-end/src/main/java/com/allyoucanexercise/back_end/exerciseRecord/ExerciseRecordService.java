@@ -3,6 +3,8 @@ package com.allyoucanexercise.back_end.exerciseRecord;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiConsumer;
+import java.util.function.Supplier;
 
 // import java.util.Optional;
 // import org.slf4j.Logger;
@@ -100,32 +102,107 @@ public class ExerciseRecordService {
             return this.saveExerciseRecord(exercise, user, lastExercised, workout, totalSets, workout,
                     maxRepsInWorkout, workout, maxWeightInWorkout, workout, volumeInWorkout, workout,
                     maxDurationInWorkout, workout, maxDistanceInWorkout, workout, maxPaceInWorkout, workout);
-
         }
 
         else {
             ExerciseRecord existingExerciseRecord = existingExerciseRecordOpt.get();
             if (isWorkoutValueHigherThanExistingExerciseRecordValue(maxRepsInWorkout,
                     existingExerciseRecord.getMaxReps())) {
-                existingExerciseRecord.setMaxReps(maxRepsInWorkout);
-                existingExerciseRecord.setMaxRepsWorkout(workout);
+                updateRecordWithHigherValue(
+                        maxRepsInWorkout,
+                        ExerciseRecord::setMaxReps,
+                        ExerciseRecord::setMaxRepsWorkout,
+                        existingExerciseRecord,
+                        workout);
             }
 
+            if (isWorkoutValueHigherThanExistingExerciseRecordValue(totalSets,
+                    existingExerciseRecord.getMaxSets())) {
+                updateRecordWithHigherValue(
+                        maxRepsInWorkout,
+                        ExerciseRecord::setMaxSets,
+                        ExerciseRecord::setMaxSetsWorkout,
+                        existingExerciseRecord,
+                        workout);
+            }
+
+            if (isWorkoutValueHigherThanExistingExerciseRecordValue(maxWeightInWorkout,
+                    existingExerciseRecord.getMaxWeight())) {
+                updateRecordWithHigherValue(
+                        maxWeightInWorkout,
+                        ExerciseRecord::setMaxWeight,
+                        ExerciseRecord::setMaxWeightWorkout,
+                        existingExerciseRecord,
+                        workout);
+            }
+
+            if (isWorkoutValueHigherThanExistingExerciseRecordValue(volumeInWorkout,
+                    existingExerciseRecord.getMaxVolume())) {
+                updateRecordWithHigherValue(
+                        volumeInWorkout,
+                        ExerciseRecord::setMaxVolume,
+                        ExerciseRecord::setMaxVolumeWorkout,
+                        existingExerciseRecord,
+                        workout);
+            }
+
+            if (isWorkoutValueHigherThanExistingExerciseRecordValue(maxDurationInWorkout,
+                    existingExerciseRecord.getMaxDurationSeconds())) {
+                updateRecordWithHigherValue(
+                        maxDurationInWorkout,
+                        ExerciseRecord::setMaxDurationSeconds,
+                        ExerciseRecord::setMaxDurationWorkout,
+                        existingExerciseRecord,
+                        workout);
+            }
+
+            if (isWorkoutValueHigherThanExistingExerciseRecordValue(maxDistanceInWorkout,
+                    existingExerciseRecord.getMaxDistanceMeters())) {
+                updateRecordWithHigherValue(
+                        maxDistanceInWorkout,
+                        ExerciseRecord::setMaxDistanceMeters,
+                        ExerciseRecord::setMaxDistanceWorkout,
+                        existingExerciseRecord,
+                        workout);
+            }
+
+            if (isWorkoutValueHigherThanExistingExerciseRecordValue(maxPaceInWorkout,
+                    existingExerciseRecord.getMaxPacePerMile())) {
+                updateRecordWithHigherValue(
+                        maxPaceInWorkout,
+                        ExerciseRecord::setMaxPacePerMile,
+                        ExerciseRecord::setMaxPaceWorkout,
+                        existingExerciseRecord,
+                        workout);
+            }
+            existingExerciseRecord.setLastExercised(lastExercised);
+            existingExerciseRecord.setLastExercisedWorkout(workout);
+            return existingExerciseRecord;
         }
     }
 
-    public void setRecordValueIfWorkoutHasHigherValue() {
-        )
-        // if (maxValueInWorkout > 0 &&
-        //         (existingExerciseRecord.getMaxValue() == null
-        //                 || maxRepsInWorkout > existingExerciseRecord.getMaxReps())) {
-        //     existingExerciseRecord.setMaxReps(maxRepsInWorkout);
-        //     existingExerciseRecord.setMaxRepsWorkout(workout);
-        // }
+    private <T extends Number & Comparable<T>> void updateRecordWithHigherValue(
+            T workoutValue,
+            BiConsumer<ExerciseRecord, T> setNewValue,
+            BiConsumer<ExerciseRecord, Workout> setWorkout,
+            ExerciseRecord existingRecord,
+            Workout workout) {
+
+        setNewValue.accept(existingRecord, workoutValue);
+        setWorkout.accept(existingRecord, workout);
     }
 
     public boolean isWorkoutValueHigherThanExistingExerciseRecordValue(Integer workoutValue,
             Integer existingExerciseRecordValue) {
+        if (workoutValue > 0 && (existingExerciseRecordValue != null) && (workoutValue > existingExerciseRecordValue)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isWorkoutValueHigherThanExistingExerciseRecordValue(Float workoutValue,
+            Float existingExerciseRecordValue) {
         if (workoutValue > 0 && (existingExerciseRecordValue != null) && (workoutValue > existingExerciseRecordValue)) {
             return true;
         } else {

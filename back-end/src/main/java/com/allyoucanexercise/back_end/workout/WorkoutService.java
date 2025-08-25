@@ -18,6 +18,7 @@ import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetDTO;
 import com.allyoucanexercise.back_end.user.User;
 import com.allyoucanexercise.back_end.user.UserService;
 import com.allyoucanexercise.back_end.exercise.ExerciseService;
+import com.allyoucanexercise.back_end.exerciseRecord.ExerciseRecord;
 import com.allyoucanexercise.back_end.exerciseRecord.ExerciseRecordService;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetService;
 import com.allyoucanexercise.back_end.exercise.Exercise;
@@ -140,7 +141,8 @@ public class WorkoutService {
         for (int i = 0; i < workoutExerciseDetails.size(); i++) {
             WorkoutExerciseDetailsDTO workoutExerciseDetailsDTO = workoutExerciseDetails.get(i);
             Exercise exercise = exerciseService.getExerciseById(workoutExerciseDetailsDTO.getExerciseId());
-            exerciseRecordService.saveExerciseRecord(workout, exercise, workoutExerciseDetailsDTO, user);
+            ExerciseRecord exerciseRecord = exerciseRecordService.saveExerciseRecord(workout, exercise,
+                    workoutExerciseDetailsDTO, user);
         }
     }
 }
