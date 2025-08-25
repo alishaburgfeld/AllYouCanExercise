@@ -14,9 +14,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.allyoucanexercise.back_end.exercise.Exercise;
+import com.allyoucanexercise.back_end.exercise.ExerciseService;
 import com.allyoucanexercise.back_end.exerciseRecord.ExerciseRecordRepository;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSet;
 import com.allyoucanexercise.back_end.user.User;
+import com.allyoucanexercise.back_end.user.UserService;
 import com.allyoucanexercise.back_end.workout.Workout;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetDTO;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetRepository;
@@ -29,12 +31,24 @@ import jakarta.persistence.EntityNotFoundException;
 public class ExerciseRecordService {
 
     private final ExerciseRecordRepository exerciseRecordRepository;
+    private final UserService userService;
+    private final ExerciseService exerciseService;
 
-    public ExerciseRecordService(ExerciseRecordRepository exerciseRecordRepository) {
+    public ExerciseRecordService(ExerciseRecordRepository exerciseRecordRepository, UserService userService,
+            ExerciseService exerciseService) {
         this.exerciseRecordRepository = exerciseRecordRepository;
+        this.userService = userService;
+        this.exerciseService = exerciseService;
     }
 
     public Optional<ExerciseRecord> getExerciseRecord(User user, Exercise exercise) {
+        return exerciseRecordRepository.findByUserAndExercise(user, exercise);
+    }
+
+    public Optional<ExerciseRecord> getExerciseRecord(String username, Long exerciseId) {
+        User user = userService.getUserByUsername(username).orElse(null);
+        Exercise exercise = exerciseService.getExerciseById(exerciseId);
+
         return exerciseRecordRepository.findByUserAndExercise(user, exercise);
     }
 

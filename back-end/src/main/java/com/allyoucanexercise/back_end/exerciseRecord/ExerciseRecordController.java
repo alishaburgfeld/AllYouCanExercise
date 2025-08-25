@@ -20,10 +20,10 @@ public class ExerciseRecordController {
         this.exerciseRecordService = exerciseRecordService;
     }
 
-    @GetMapping("/{username}/{exercise_name}")
+    @GetMapping("/{username}/{exercise_id}")
     public ResponseEntity<ExerciseRecord> getExerciseRecord(@PathVariable String username,
-            @PathVariable String exercise_name) {
-        ExerciseRecord exerciseRecord = exerciseRecordService.getExerciseRecord(username, exercise_name);
+            @PathVariable Long exercise_id) {
+        ExerciseRecord exerciseRecord = exerciseRecordService.getExerciseRecord(username, exercise_id).orElse(null);
         if (exerciseRecord != null) {
             return ResponseEntity.ok(exerciseRecord);
         } else {
