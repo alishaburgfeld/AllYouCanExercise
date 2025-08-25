@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
+import com.allyoucanexercise.back_end.exercise.ExerciseGroup;
 import com.allyoucanexercise.back_end.workoutExercise.WorkoutExercise;
 
 @Entity
@@ -31,14 +32,15 @@ public class ExerciseSet {
     @Column(name = "distance_meters")
     private Float distanceMeters;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "distance_measurement")
-    private String distanceMeasurement;
+    private DistanceMeasurement distanceMeasurement;
 
     @Column(name = "pace_per_mile")
     private Float pacePerMile;
 
     public ExerciseSet(WorkoutExercise workoutExercise, Integer setOrder, Integer reps, Float weight,
-            Integer durationSeconds, Float distanceMeters, String distanceMeasurement, Float pacePerMile) {
+            Integer durationSeconds, Float distanceMeters, DistanceMeasurement distanceMeasurement, Float pacePerMile) {
         this.workoutExercise = workoutExercise;
         this.setOrder = setOrder;
         this.reps = reps;
@@ -109,11 +111,11 @@ public class ExerciseSet {
         this.distanceMeters = distanceMeters;
     }
 
-    public String getDistanceMeasurement() {
+    public DistanceMeasurement getDistanceMeasurement() {
         return distanceMeasurement;
     }
 
-    public void setDistanceMeasurement(String distanceMeasurement) {
+    public void setDistanceMeasurement(DistanceMeasurement distanceMeasurement) {
         this.distanceMeasurement = distanceMeasurement;
     }
 

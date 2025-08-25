@@ -5,7 +5,7 @@ public class ExerciseSetDTO {
     private Float weight;
     private Integer durationSeconds; // durationSeconds in seconds
     private Float distanceMeters; // distanceMeters in meters
-    private String distanceMeasurement;
+    private DistanceMeasurement distanceMeasurement;
     private Float pacePerMile;
 
     public Integer getReps() {
@@ -48,11 +48,11 @@ public class ExerciseSetDTO {
         this.distanceMeters = distanceMeters;
     }
 
-    public String getDistanceMeasurement() {
+    public DistanceMeasurement getDistanceMeasurement() {
         return distanceMeasurement;
     }
 
-    public void setDistanceMeasurement(String distanceMeasurement) {
+    public void setDistanceMeasurement(DistanceMeasurement distanceMeasurement) {
         this.distanceMeasurement = distanceMeasurement;
     }
 

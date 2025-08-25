@@ -1,4 +1,4 @@
-ALTER TABLE exercise_set ADD COLUMN distance_measurement VARCHAR(250) DEFAULT NULL;
+ALTER TABLE exercise_set ADD COLUMN distance_measurement ENUM('MILES', 'YARDS', 'METERS') DEFAULT NULL;
 ALTER TABLE exercise_set ADD COLUMN pace_per_mile DECIMAL(5,2) UNSIGNED DEFAULT NULL;
 
 CREATE TABLE IF NOT EXISTS exercise_record (
