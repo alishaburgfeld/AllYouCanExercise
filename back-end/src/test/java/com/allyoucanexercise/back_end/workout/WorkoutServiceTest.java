@@ -12,6 +12,7 @@ import com.allyoucanexercise.back_end.exercise.Exercise;
 import com.allyoucanexercise.back_end.exercise.ExerciseGroup;
 import com.allyoucanexercise.back_end.exercise.ExerciseService;
 import com.allyoucanexercise.back_end.exercise.ExerciseType;
+import com.allyoucanexercise.back_end.exerciseSet.DistanceMeasurement;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSet;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetDTO;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetService;
@@ -217,7 +218,8 @@ class WorkoutServiceTest {
 
         ExerciseSetDTO set1 = setupExerciseSetDTO(10, weight, null, null, null, null);
         ExerciseSetDTO set2 = setupExerciseSetDTO(10, weight, null, null, null, null);
-        ExerciseSetDTO set3 = setupExerciseSetDTO(null, null, 120, (float) 900, "meters", (float) 3.58);
+        ExerciseSetDTO set3 = setupExerciseSetDTO(null, null, 120, (float) 900, DistanceMeasurement.METERS,
+                (float) 3.58);
 
         WorkoutExerciseDetailsDTO workoutExerciseDetails1 = setupWorkoutExerciseDetailsDTO(id, List.of(set1, set2));
         WorkoutExerciseDetailsDTO workoutExerciseDetails2 = setupWorkoutExerciseDetailsDTO((long) 2,
@@ -338,7 +340,7 @@ class WorkoutServiceTest {
     }
 
     private ExerciseSetDTO setupExerciseSetDTO(Integer reps, Float weight, Integer durationSeconds,
-            Float distanceMeters, String distanceMeasurement, Float pacePerMile) {
+            Float distanceMeters, DistanceMeasurement distanceMeasurement, Float pacePerMile) {
         ExerciseSetDTO exerciseSetDTO = new ExerciseSetDTO();
         exerciseSetDTO.setReps(reps);
         exerciseSetDTO.setWeight(weight);

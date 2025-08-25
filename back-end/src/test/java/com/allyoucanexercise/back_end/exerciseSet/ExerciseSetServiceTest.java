@@ -73,7 +73,8 @@ public class ExerciseSetServiceTest {
     @DisplayName("save works on all cardio workouts with distance and time")
     void testSaveCardioExercise() {
 
-        ExerciseSet exerciseSet = new ExerciseSet(workoutExercise, 1, null, null, 160, (float) 800, "meters",
+        ExerciseSet exerciseSet = new ExerciseSet(workoutExercise, 1, null, null, 160, (float) 800,
+                DistanceMeasurement.METERS,
                 (float) 5.36);
         when(exerciseSetRepository.save(exerciseSet)).thenReturn(exerciseSet);
         ExerciseSet result = exerciseSetService.saveExerciseSet(exerciseSet);
@@ -83,7 +84,7 @@ public class ExerciseSetServiceTest {
         assertEquals(result.getSetOrder(), 1);
         assertEquals(result.getDurationSeconds(), 160);
         assertEquals(result.getDistanceMeters(), 800);
-        assertEquals(result.getDistanceMeasurement(), "meters");
+        assertEquals(result.getDistanceMeasurement(), "METERS");
         assertEquals((float) result.getPacePerMile(), (float) 5.36);
         verify(exerciseSetRepository).save(exerciseSet);
     }
@@ -91,7 +92,8 @@ public class ExerciseSetServiceTest {
     @Test
     @DisplayName("save fails if set order is missing")
     void testSaveFailsOnNullSetOrder() {
-        ExerciseSet invalidExerciseSet = new ExerciseSet(workoutExercise, 1, null, null, 160, (float) 800, "miles",
+        ExerciseSet invalidExerciseSet = new ExerciseSet(workoutExercise, 1, null, null, 160, (float) 800,
+                DistanceMeasurement.MILES,
                 (float) 5.36);
         invalidExerciseSet.setSetOrder(null);
 
