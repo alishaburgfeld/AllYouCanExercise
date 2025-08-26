@@ -373,7 +373,7 @@ docker compose logs -f
 
 # Migrations
 
-Re-build jar
+Re-build jar and copy it over
 In ec2 : docker-compose down
 docker-compose up --build
 
