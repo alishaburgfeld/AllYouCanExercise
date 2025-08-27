@@ -37,7 +37,7 @@ useEffect(()=> {
 
   return (
     <>
-    <h3>Showing Workout with id 1</h3>
+    <h3>Showing Workout with id 2</h3>
         {workoutById !== null ? (
             <p >{workoutById.title}</p>)
         : (

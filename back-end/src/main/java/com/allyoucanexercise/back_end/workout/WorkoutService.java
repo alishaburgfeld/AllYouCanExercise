@@ -1,6 +1,7 @@
 package com.allyoucanexercise.back_end.workout;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,30 +60,31 @@ public class WorkoutService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Exercise not found"));
     }
 
-    public Workout getFullWorkoutAndExerciseDetailsById(Long id) {
-        // https://chatgpt.com/share/68ae5e12-a3f0-800f-8141-c4f6d3632190
-
-        Map<String, Object> fullWorkoutData = new HashMap<>();
-        Map<String, String> workoutDetails = new HashMap<>();
+    public WorkoutResponseDTO getFullWorkoutAndExerciseDetailsById(Long id) {
 
         Workout workout = workoutRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Exercise not found"));
 
-        workoutDetails.put("completedAt", workout.getCompletedAt().toString());
-        workoutDetails.put("title", workout.getTitle().toString());
-        workoutDetails.put("workoutNotes", workout.getWorkoutNotes().toString());
+        WorkoutDetailsDTO workoutDetailsDTO = addValuesToWorkoutDetailsDTO(workout);
 
-        fullWorkoutData.put("workoutDetails", workoutDetails);
-
-        // workoutExerciseDetails =
-        fullWorkoutData.put("workoutExerciseDetails", workoutExerciseDetails);
-
-        // List<ExerciseSet> allExerciseSets;
+        List<WorkoutExerciseDetailsDTO> allWorkoutExerciseDetails = new ArrayList<>();
         List<WorkoutExercise> allWorkoutExercises = workoutExerciseService.getAllWorkoutExercisesByWorkout(workout);
-
         for (WorkoutExercise workoutExercise : allWorkoutExercises) {
+            WorkoutExerciseDetailsDTO workoutExerciseDetailsDTO = new WorkoutExerciseDetailsDTO();
             List<ExerciseSet> exerciseSets = exerciseSetService.getAllExerciseSetsByWorkoutExercise(workoutExercise);
+            List<ExerciseSetDTO> exerciseSetDTOs = new ArrayList<>();
+            for (ExerciseSet exerciseSet : exerciseSets) {
+                ExerciseSetDTO exerciseSetDTODetails = addValuesToExerciseSetDTO(exerciseSet);
+                exerciseSetDTOs.add(exerciseSetDTODetails);
+            }
+            workoutExerciseDetailsDTO.setExerciseId(workoutExercise.getExercise().getId());
+            workoutExerciseDetailsDTO.setSets(exerciseSetDTOs);
+            allWorkoutExerciseDetails.add(workoutExerciseDetailsDTO);
         }
+        WorkoutResponseDTO workoutResponseDTO = new WorkoutResponseDTO();
+        workoutResponseDTO.setWorkoutDetails(workoutDetailsDTO);
+        workoutResponseDTO.setWorkoutExerciseDetails(allWorkoutExerciseDetails);
+        return workoutResponseDTO;
     }
 
     @Transactional
@@ -173,5 +175,24 @@ public class WorkoutService {
             ExerciseRecord exerciseRecord = exerciseRecordService.saveExerciseRecord(workout, exercise,
                     workoutExerciseDetailsDTO, user);
         }
+    }
+
+    WorkoutDetailsDTO addValuesToWorkoutDetailsDTO(Workout workout) {
+        WorkoutDetailsDTO workoutDetailsDTO = new WorkoutDetailsDTO();
+        workoutDetailsDTO.setUsername(workout.getUser().getUsername());
+        workoutDetailsDTO.setCompletedAt(workout.getCompletedAt());
+        workoutDetailsDTO.setTitle(workout.getTitle());
+        workoutDetailsDTO.setWorkoutNotes(workout.getWorkoutNotes());
+        return workoutDetailsDTO;
+    };
+
+    ExerciseSetDTO addValuesToExerciseSetDTO(ExerciseSet exerciseSet) {
+        ExerciseSetDTO exerciseSetDTODetails = new ExerciseSetDTO();
+        exerciseSetDTODetails.setReps(exerciseSet.getReps());
+        exerciseSetDTODetails.setWeight(exerciseSet.getWeight());
+        exerciseSetDTODetails.setDurationSeconds(exerciseSet.getDurationSeconds());
+        exerciseSetDTODetails.setDistanceMeters(exerciseSet.getDistanceMeters());
+        exerciseSetDTODetails.setDistanceMeasurement(exerciseSet.getDistanceMeasurement());
+        return exerciseSetDTODetails;
     }
 }

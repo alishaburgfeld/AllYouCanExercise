@@ -20,7 +20,10 @@ export const getAxiosCall = async (url) => {
     if (response.data) {
       return response.data;
     } else {
-      console.log("no response.data in axios get call");
+      console.log(
+        "no response.data in axios get call, response is",
+        response,
+      );
     }
   } catch (error) {
     console.log("Axios Call Failed", error);

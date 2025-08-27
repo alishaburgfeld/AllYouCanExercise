@@ -42,8 +42,8 @@ public class WorkoutController {
     }
 
     @GetMapping("/{id}")
-    Workout findById(@PathVariable Long id) {
-        return workoutService.getWorkoutById(id);
+    ResponseEntity<WorkoutResponseDTO> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(workoutService.getFullWorkoutAndExerciseDetailsById(id));
     }
 
     @ResponseStatus(HttpStatus.CREATED)
