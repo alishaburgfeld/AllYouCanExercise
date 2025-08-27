@@ -9,6 +9,7 @@ import "../css/SignUpPage.css";
 import Alert from '@mui/material/Alert';
 
 export default function SignUpPage() {
+  const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmedPassword, setConfirmedPassword] = useState('');
@@ -31,7 +32,7 @@ export default function SignUpPage() {
     }
     else {
       setMatchingPasswords(true);
-      const response = await postAxiosCall("http://localhost:8080/auth/register", { username, password });
+      const response = await postAxiosCall(`${VITE_API_BASE_URL}/auth/register`, { username, password });
       if (response) {
         setSignedUp(true)
         setTimeout(() => loginRedirect(), 1500);

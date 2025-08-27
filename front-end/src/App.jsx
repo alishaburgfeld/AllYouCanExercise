@@ -4,18 +4,18 @@ import "./App.css";
 // import './App.css'
 import { BrowserRouter, Route, Routes } from "react-router";
 import { useState, useEffect } from "react"
-import Homepage from "../../front-end/src/pages/Homepage";
-import LoginPage from "../../front-end/src/pages/LoginPage";
-import SignUpPage from "../../front-end/src/pages/SignUpPage";
-import Navbar from "../../front-end/src/components/Navbar/Navbar";
-import ExercisePage from "../../front-end/src/pages/ExercisePage";
-import ActiveWorkoutPage from "../../front-end/src/pages/ActiveWorkoutPage";
-import ViewWorkoutPage from "../../front-end/src/pages/ViewWorkoutPage";
-import ExerciseGroupPage from "../../front-end/src/pages/ExerciseGroupPage";
+import Homepage from "./pages/Homepage"
+import LoginPage from "./pages/LoginPage";
+import SignUpPage from "./pages/SignUpPage";
+import Navbar from "./components/Navbar/Navbar"
+import ExercisePage from "./pages/ExercisePage";
+import ActiveWorkoutPage from "./pages/ActiveWorkoutPage";
+import ViewWorkoutPage from "./pages/ViewWorkoutPage";
+import ExerciseGroupPage from "./pages/ExerciseGroupPage";
 import { ThemeProvider } from "@mui/material/styles";
 import { getAxiosCall } from "./utils/HelperFunctions"
 import CssBaseline from "@mui/material/CssBaseline";
-import theme from "../../front-end/src/utils/theme";
+import theme from "./utils/theme";
 import TestPage from "./pages/TestPage"
 
 
@@ -31,6 +31,7 @@ const getInitialActiveWorkout = () => {
 
 function App() {
 
+  const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const [activeWorkout, setActiveWorkout] = useState(getInitialActiveWorkout());
   const [exerciseToBeAdded, setExerciseToBeAdded] = useState(null);
   const [activeUsername, setActiveUsername] =useState(getInitialUsername());
@@ -102,7 +103,7 @@ const addToActiveWorkout = (exerciseToBeAdded) => {
 const checkForUserSession= async () => {
   // had to add checkForUser back in. Without it I was running into a problem where my backend hadn't yet created a session/csrf token, so I had to click the login button twice.
 
-    const response = await getAxiosCall('http://localhost:8080/auth/checkusersession');
+    const response = await getAxiosCall(`${VITE_API_BASE_URL}/auth/checkusersession`);
     if (response) {
       setActiveUsername(response);
     }

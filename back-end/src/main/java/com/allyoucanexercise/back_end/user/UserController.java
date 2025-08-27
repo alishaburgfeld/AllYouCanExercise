@@ -33,7 +33,7 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/auth/register")
+    @PostMapping("/api/auth/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
         // log.info("in register on controller. username is", username);
         try {
@@ -45,7 +45,7 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/auth/login")
+    @PostMapping("/api/auth/login")
     public ResponseEntity<String> login(@RequestBody User user, HttpServletRequest request) {
         boolean authenticated = userService.authenticateUser(user.getUsername(), user.getPassword());
 
@@ -61,7 +61,7 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/auth/logout")
+    @PostMapping("/api/auth/logout")
     public ResponseEntity<String> logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
@@ -70,7 +70,7 @@ public class UserController {
         return ResponseEntity.ok("Logged out successfully");
     }
 
-    @GetMapping("/auth/checkusersession")
+    @GetMapping("/api/auth/checkusersession")
     public String checkUserSession(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         log.error("session is {}", session);

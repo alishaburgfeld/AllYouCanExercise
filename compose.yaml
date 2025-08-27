@@ -1,14 +1,42 @@
 services:
   mysql:
-    image: 'mysql:latest'
-    environment:
-      - 'MYSQL_DATABASE=exercise-database'
-      - 'MYSQL_PASSWORD=secret'
-      - 'MYSQL_ROOT_PASSWORD=verysecret'
-      - 'MYSQL_USER=alisha'
+    container_name: 'allyoucanexercise-mysql'
+    env_file:
+      - .env
+    image: mysql:latest
     ports:
       - '3306:3306'
+    restart: always
+    healthcheck:
+           test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+           interval: 10s
+           timeout: 10s
+           retries: 3
+    # don't remove for development: mounts your schema.sql file into the container in a special directory that MySQL only runs the very first time the container is created
     volumes:
       - ./back-end/src/main/resources/schema.sql:/docker-entrypoint-initdb.d/schema.sql
 
+  backend:
+    env_file:
+      - .env
+    build:
+      context: ./back-end
+    ports:
+      - '8080:8080'
+    depends_on:
+      mysql:
+        condition: service_healthy
+    command: ["java", "-jar", "app.jar"]
 
+  frontend:
+    build:
+      context: ./front-end
+      args:
+      # need to add this for vite variable specifically b/c variables are compiled into the build at npm run build time. They are not dynamically read from .env after building 
+        VITE_API_BASE_URL: http://localhost:8080/api
+    env_file:
+      - .env
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend

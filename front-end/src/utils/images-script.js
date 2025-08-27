@@ -7,13 +7,14 @@ import path from "path";
 //     "./ABDUCTORS/Abduction Machine.png",
 //     import.meta.url,
 //   ).href,
+const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const IMAGES = {};
 
 const getExercises = async () => {
   const csrfToken = Cookies.get("X-XSRF-TOKEN");
   try {
     const response = await axios.get(
-      "http://localhost:8080/api/exercises",
+      `${VITE_API_BASE_URL}/exercises`,
       {
         headers: {
           "X-XSRF-TOKEN": csrfToken,

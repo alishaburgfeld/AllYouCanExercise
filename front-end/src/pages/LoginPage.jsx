@@ -7,6 +7,7 @@ import "../css/LoginPage.css";
 import Alert from '@mui/material/Alert';
 
 export default function LoginPage({setActiveUsername}) {
+  const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
@@ -26,7 +27,7 @@ export default function LoginPage({setActiveUsername}) {
   const handleLogin = async (event) => {
     event.preventDefault();
   
-    const response = await postAxiosCall("http://localhost:8080/auth/login", { username, password });
+    const response = await postAxiosCall(`${VITE_API_BASE_URL}/auth/login`, { username, password });
   
     if (response.success) {
       setActiveUsername(response.data);

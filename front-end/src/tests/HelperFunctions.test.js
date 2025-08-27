@@ -3,11 +3,9 @@ import { getImageSource } from "../utils/HelperFunctions";
 describe("getImageSource", () => {
   test("happy path", () => {
     const name = "Dumbbell Overhead Press";
-
     const response = getImageSource(name);
-
     expect(response).toEqual(
-      "file:///Users/alisha.burgfeld/Documents/AllYouCanExercise/front-end/src/assets/images/SHOULDERS/Dumbbell%20Overhead%20Press.png",
+      "/images/SHOULDERS/Dumbbell Overhead Press.png",
     );
   });
   test("unhappy path", () => {
@@ -15,8 +13,6 @@ describe("getImageSource", () => {
 
     const response = getImageSource(name);
 
-    expect(response).toEqual(
-      "file:///Users/alisha.burgfeld/Documents/AllYouCanExercise/front-end/src/assets/images/noexerciseimage.png",
-    );
+    expect(response).toEqual("/images/noexerciseimage.png");
   });
 });

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
-import front from "../assets/images/woman-front-two.png";
-import back from "../assets/images/woman-back-two.png";
+import front from "/images/woman-front-two.png";
+import back from "/images/woman-back-two.png";
 import Box from '@mui/material/Box';
 import CameraswitchIcon from '@mui/icons-material/Cameraswitch';
 import { useTheme } from '@mui/material/styles';

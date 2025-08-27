@@ -16,7 +16,7 @@ My sql will use completedAt DATETIME
 4. This is the commit with all the security config to allow all subsequent post calls:
    0874023
    https://github.com/alishaburgfeld/AllYouCanExercise/commit/d774bc7a107b9db5f9e01f83ec209cf30f900048
-
+5. Used Nginx config to serve the front-end files. The "step 2" in my front-end dockerfile will compile all of my react files into just an index.html file. So if I want to see that all my react files are being copied over like I want, comment out the step 2 nginx stuff then exec into the container. However when I build the nginx container then all I should see is an assets folder (with all my images) and an index.html file. These are located inside /usr/share/nginx/html
 <!-- -------------------REST --------------------->
 
 When have security dependency invoked it prints a password in the console to connect to the localhost:
@@ -34,6 +34,11 @@ its not working with the security dependency, so for now I comment that out when
 <!-- Database -->
 
 # exec into the container: docker exec -it allyoucanexercise-mysql-1 sh
+
+<!-- After I dockerized it became allyoucanexercise-mysql sh
+Also other containers are: docker exec -it allyoucanexercise-frontend-1 sh -->
+
+<!-- cd /usr/share/nginx/html -->
 
 # then run this to connect to mysql: mysql -u alisha -psecret
 
@@ -54,9 +59,9 @@ drop table exercise;
 
 <!-- App Information -->
 
-minikube location: /opt/homebrew/bin/minikube
+Start Docker: Open Docker Desktop on mac -- possible way to hide the desktop, try this next time: https://stackoverflow.com/questions/64533789/how-to-start-docker-desktop-with-a-cli-command-on-macos-without-showing-dashboar
 
-Start Docker: Open Docker Desktop on mac -- possible way to hide the desktop, try this next time: https://stackoverflow.com/questions/64533789/how-to-start-docker-desktop-with-a-cli-command-on-macos-without-showing-dashboar Start Minikube: minikube start --driver=docker
+Start backend - go to a .java file, click run, run without debugging
 
 To start the front-end: cd into front-end and type npm start go to localhost:3000 to run tests: npm run test ( need to be in the react folder)
 
@@ -64,12 +69,23 @@ To run application:
 
 Start Docker: Open Docker Desktop on mac -- possible way to hide the desktop, try this next time: https://stackoverflow.com/questions/64533789/how-to-start-docker-desktop-with-a-cli-command-on-macos-without-showing-dashboar
 
-<!-- Start Minikube: minikube start --driver=docker -->
+<!-- DOCKER DOCKER DOCKER -->
+
+If I need to delete my persistent volume (mysql data) on my ec2 I need to run:
+If you had used docker compose down -v → that would delete named volumes too, including MySQL data.
+
+To build just one of the containers (i.e react) cd into front-end then build the image: docker build -t <whatever-name-you-want> .
+
+to then run and exec into the container run:
+docker run -it --rm <whatever-name-you-made> sh
 
 Build both images and container: docker-compose up --build
 get docker image id: docker images
 exec into your docker container: docker exec -it exercise_app-exercise-react-app-1 sh
 ./mvnw spring-boot:run
+
+If I want to remove all containers: docker rm -vf $(docker ps -aq)
+THEN if I want to remove all images: docker rmi -f $(docker images -aq)
 
 Material UI Site: https://mui.com/material-ui/getting-started/supported-components/
 
@@ -77,11 +93,33 @@ sx props: https://mui.com/system/getting-started/the-sx-prop/#spacing
 
 Material UI tutorials: https://www.youtube.com/watch?v=h9KevTtI5O0&list=PLDxCaNaYIuUlG5ZqoQzFE27CUOoQvOqnQ&index=1
 
-Things I have learned:
+<!-- Things I have learned: -->
 
 Docker: -to delete docker image = docker rmi -to delete docker containers: docker compose down -to delete docker container manually = first stop it. docker stop then docker rm -to see all containers (even stopped ones) = docker ps -a -to see logs: Docker container logs lb -“Dockerfile” is the instructions for building a container image. https://www.youtube.com/watch?v=LQjaJINkQXY
 
 -docker cheatsheet: https://www.javainuse.com/devOps/docker/docker-commands-cheat-sheet
+
+VITE Environment variables:
+All environment variables intended for client-side access in a Vite application must be prefixed with VITE\_. For example, VITE_API_KEY=your_key_here
+Environment variables are accessed in the code using import.meta.env. For example: import.meta.env.VITE_API_KEY
+
+These are also baked-in at build-time - so when I was attempting to build it locally and then copy the dist folder over, it was not working b/c it was copying the local env variables - i also had to add the arg into the dockerfile and compose.yaml.
+
+The trailing / at the end of proxy_pass replaces the URI path.
+
+For example, a request to /api/exercises/group/CARDIO gets forwarded to http://backend:8080/exercises/group/CARDIO → Spring sees /exercises/... instead of /api/exercises/....
+
+If your controllers are mapped with @RequestMapping("/api"), Spring will not match the path, so it defaults to static resource handling → 403/404.
+
+The reason running "run without debugging" vs the actual java jar command was working is because:
+1 - I needed to build the mysql container first
+2 - Spring is literally seeing the string ${SPRING_DATASOURCE_URL} instead of a real JDBC URL. That means your environment variable is not being injected into the JAR. If you just run java -jar from the shell without exporting the datasource environment variables (in application.properties), Spring cannot substitute them. VS Code “Run Without Debugging” works because VS Code sets these environment variables automatically from your .env or launch config. So I had to pass them directly into the java jar command example:
+java -jar target/app.jar \
+--spring.datasource.url=jdbc:<> \
+--spring.datasource.username=<> \
+--spring.datasource.password=<>
+
+I also had to add the vite react variable to the front-end .env file so that when I do npm run dev it will grab the variable from that directory.
 
 <!-- Helpful Videos and Tutorials-->
 
@@ -132,6 +170,7 @@ How to handle CSRF configuration: https://chatgpt.com/share/67992954-c8e0-800f-b
    // search for "custom hook" https://chatgpt.com/share/67f3d8fb-12f8-800f-9475-560f78c153f4
 
 9. need to figure out how I want to view my workouts and exercises. also, do I want to clear the active workout upon saving the workout?
+10. Create deployment script
 
 May need to read this with testing with MUI Material UI:
 https://jskim1991.medium.com/react-dont-give-up-on-testing-when-using-material-ui-with-react-ff737969eec7
@@ -167,3 +206,143 @@ https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/
 2025-04-19T10:39:45.141-04:00  WARN 13476 --- [back-end] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=2m7s845ms).
 2025-04-19T10:40:32.889-04:00  WARN 13476 --- [back-end] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=47s748ms).
 2025-04-19T10:56:31.335-04:00  WARN 13476 --- [back-end] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m28s431ms). -->
+
+<!-- setting up secrets and deploying: -->
+
+https://chatgpt.com/share/6840ef16-d8c4-800f-8648-ff8f17d04206
+
+Connect to my ec2 instance:
+cd Documents/AllYouCanExercise
+ssh -i all-you-can-exercise-key-pair.pem ec2-user@44.208.25.2
+
+sudo su (puts you in sudo so you don't have to write sudo in front of all the following commands)
+
+   <!-- 
+    single command to use:
+    scp -i all-you-can-exercise-key-pair.pem \
+    ./front-end/nginx.conf \
+    ec2-user@44.208.25.2:/home/ec2-user/front-end -->
+
+-d does it in detached mode, if I need to see the logs because something is not working then remove the -d.
+
+one time steps I took:
+install docker-compose:https://stackoverflow.com/questions/63708035/installing-docker-compose-on-amazon-ec2-linux-2-9kb-docker-compose-file
+
+docker stop all containers: docker stop $(docker ps -q)
+
+# start ec2
+
+1. cd Documents/AllYouCanExercise
+2. ssh -i all-you-can-exercise-key-pair.pem ec2-user@44.208.25.2
+3. sudo su
+4. service docker start
+5. docker-compose up --build OR docker-compose up --build -d
+
+<!-- steps to take when having made front-end changes -->
+
+# Remove front-end folder in ec2:
+
+rm -rf front-end
+
+<!-- # build front-end build on vscode:
+
+cd front-end
+npm run build
+cd .. -->
+
+# copy over all front-end files on vscode:
+
+If I don't have front-end and src and public folders yet:
+ssh -i all-you-can-exercise-key-pair.pem ec2-user@44.208.25.2 "mkdir -p /home/ec2-user/front-end/src"
+
+ssh -i all-you-can-exercise-key-pair.pem ec2-user@44.208.25.2 "mkdir -p /home/ec2-user/front-end/public"
+
+scp -i all-you-can-exercise-key-pair.pem \
+ -r ./front-end/src \
+ ec2-user@44.208.25.2:/home/ec2-user/front-end/
+
+scp -i all-you-can-exercise-key-pair.pem \
+ ./front-end/package.json \
+ ./front-end/package-lock.json \
+ ./front-end/nginx.conf \
+ ./front-end/Dockerfile \
+ ./front-end/index.html \
+ ./front-end/vite.config.js \
+ ec2-user@44.208.25.2:/home/ec2-user/front-end
+
+ <!-- scp -i all-you-can-exercise-key-pair.pem \
+ ./front-end/nginx.conf \
+ ec2-user@44.208.25.2:/home/ec2-user/front-end -->
+
+scp -i all-you-can-exercise-key-pair.pem \
+ -r ./front-end/public \
+ ec2-user@44.208.25.2:/home/ec2-user/front-end
+
+<!-- steps to take when having made root level compose.yml/.env files: -->
+
+# Remove current .env, compose.yml inside ec2:
+
+rm -rf .env
+rm -rf docker-compose.yml
+
+# copy over new files from vscode:
+
+scp -i all-you-can-exercise-key-pair.pem \
+ ./.env.production \
+ ec2-user@44.208.25.2:/home/ec2-user
+
+scp -i all-you-can-exercise-key-pair.pem \
+ ./docker-compose.prod.yml \
+ ec2-user@44.208.25.2:/home/ec2-user
+
+# rename production files inside ec2:
+
+mv docker-compose.prod.yml docker-compose.yml
+mv .env.production .env
+
+<!-- steps to take when made backend changes: -->
+
+# remove existing files on ec2:
+
+rm -rf ./back-end/target
+rm -rf ./back-end/Dockerfile
+
+# copy the jar and the dockerfile within vscode:
+
+1. run in back-end in vscode: mvn clean package -DskipTests
+
+If I don't have back-end and target folders yet: ssh -i all-you-can-exercise-key-pair.pem ec2-user@44.208.25.2 "mkdir -p /home/ec2-user/back-end/target"
+
+scp -i all-you-can-exercise-key-pair.pem \
+ ./back-end/Dockerfile \
+ ec2-user@44.208.25.2:/home/ec2-user/back-end/
+
+scp -i all-you-can-exercise-key-pair.pem \
+ ./back-end/target/back-end-0.0.1-SNAPSHOT.jar \
+ ec2-user@44.208.25.2:/home/ec2-user/back-end/target/
+
+<!-- its not building my secrets at run-time. ask chat gpt for a smooth dockerfile, env, nginx.conf, compose.yml set up - send all files -->
+
+# local workflow w/o using docker:
+
+cd mysql
+docker build .
+cd ../back-end
+./mvnw clean package -DskipTests
+
+java -jar target/back-end-0.0.1-SNAPSHOT.jar \
+--spring.datasource.url=jdbc:mysql://localhost:3306/exercise-database \
+--spring.datasource.username=alisha \
+--spring.datasource.password=secret
+
+cd ../front-end
+npm install
+npm run dev
+
+# Dockerized local development:
+
+cd back-end
+./mvnw clean package -DskipTests
+cd ..
+docker compose up --build
+docker compose logs -f
