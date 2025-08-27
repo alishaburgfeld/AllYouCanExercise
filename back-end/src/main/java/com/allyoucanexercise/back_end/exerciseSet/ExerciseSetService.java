@@ -1,5 +1,7 @@
 package com.allyoucanexercise.back_end.exerciseSet;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -11,19 +13,23 @@ import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class ExerciseSetService {
-    private final ExerciseSetRepository ExerciseSetRepository;
+    private final ExerciseSetRepository exerciseSetRepository;
 
-    public ExerciseSetService(ExerciseSetRepository ExerciseSetRepository) {
-        this.ExerciseSetRepository = ExerciseSetRepository;
+    public ExerciseSetService(ExerciseSetRepository exerciseSetRepository) {
+        this.exerciseSetRepository = exerciseSetRepository;
     }
 
     public ExerciseSet getExerciseSetById(Long id) {
-        return ExerciseSetRepository.findById(id)
+        return exerciseSetRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Workout Exercise not found"));
     }
 
+    public List<ExerciseSet> getAllExerciseSetsByWorkoutExercise(WorkoutExercise workoutExercise) {
+        return exerciseSetRepository.findAllByWorkoutExercise(workoutExercise);
+    }
+
     public ExerciseSet saveExerciseSet(ExerciseSet exerciseSet) {
-        return ExerciseSetRepository.save(exerciseSet);
+        return exerciseSetRepository.save(exerciseSet);
     }
 
     public ExerciseSet saveExerciseSet(WorkoutExercise workoutExercise, Integer setOrder, Integer reps, Float weight,
@@ -37,24 +43,24 @@ public class ExerciseSetService {
         exerciseSet.setDistanceMeters(distanceMeters);
         exerciseSet.setDistanceMeasurement(distanceMeasurement);
         exerciseSet.setPacePerMile(pacePerMile);
-        return ExerciseSetRepository.save(exerciseSet);
+        return exerciseSetRepository.save(exerciseSet);
     }
 
     public ExerciseSet updateExerciseSet(ExerciseSet exerciseSet, Long id) {
-        if (!ExerciseSetRepository.existsById(id)) {
+        if (!exerciseSetRepository.existsById(id)) {
             throw new EntityNotFoundException("Exercise with id " + id + " not found");
         }
 
         exerciseSet.setId(id); // Make sure the entity has the correct ID. This ensures that the JPA context
         // understands this is an update, not a new insert.
-        return ExerciseSetRepository.save(exerciseSet);
+        return exerciseSetRepository.save(exerciseSet);
     }
 
     public void deleteExerciseSet(Long id) {
-        if (!ExerciseSetRepository.existsById(id)) {
+        if (!exerciseSetRepository.existsById(id)) {
             throw new EntityNotFoundException("Exercise with id " + id + " not found");
         }
-        ExerciseSetRepository.deleteById(id);
+        exerciseSetRepository.deleteById(id);
     }
 
 }

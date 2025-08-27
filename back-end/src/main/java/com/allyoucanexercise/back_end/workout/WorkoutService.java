@@ -1,7 +1,9 @@
 package com.allyoucanexercise.back_end.workout;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.persistence.EntityNotFoundException;
 
+import com.allyoucanexercise.back_end.exerciseSet.ExerciseSet;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetDTO;
 import com.allyoucanexercise.back_end.user.User;
 import com.allyoucanexercise.back_end.user.UserService;
@@ -54,6 +57,32 @@ public class WorkoutService {
     public Workout getWorkoutById(Long id) {
         return workoutRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Exercise not found"));
+    }
+
+    public Workout getFullWorkoutAndExerciseDetailsById(Long id) {
+        // https://chatgpt.com/share/68ae5e12-a3f0-800f-8141-c4f6d3632190
+
+        Map<String, Object> fullWorkoutData = new HashMap<>();
+        Map<String, String> workoutDetails = new HashMap<>();
+
+        Workout workout = workoutRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Exercise not found"));
+
+        workoutDetails.put("completedAt", workout.getCompletedAt().toString());
+        workoutDetails.put("title", workout.getTitle().toString());
+        workoutDetails.put("workoutNotes", workout.getWorkoutNotes().toString());
+
+        fullWorkoutData.put("workoutDetails", workoutDetails);
+
+        // workoutExerciseDetails =
+        fullWorkoutData.put("workoutExerciseDetails", workoutExerciseDetails);
+
+        // List<ExerciseSet> allExerciseSets;
+        List<WorkoutExercise> allWorkoutExercises = workoutExerciseService.getAllWorkoutExercisesByWorkout(workout);
+
+        for (WorkoutExercise workoutExercise : allWorkoutExercises) {
+            List<ExerciseSet> exerciseSets = exerciseSetService.getAllExerciseSetsByWorkoutExercise(workoutExercise);
+        }
     }
 
     @Transactional
@@ -115,7 +144,7 @@ public class WorkoutService {
                     exerciseOrder);
 
             List<ExerciseSetDTO> exerciseSetDTOs = workoutExerciseDetailsDTO.getSets();
-
+            String exerciseSetDistanceMeasurement;
             for (int j = 0; j < exerciseSetDTOs.size(); j++) {
                 Integer setOrder = j + 1;
                 ExerciseSetDTO setDTO = exerciseSetDTOs.get(j);

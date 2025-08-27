@@ -40,6 +40,8 @@ its not working with the security dependency, so for now I comment that out when
 
 # exec into the container: docker exec -it allyoucanexercise-mysql-1 sh
 
+docker exec -it allyoucanexercise-mysql sh
+
 <!-- After I dockerized it became allyoucanexercise-mysql sh
 Also other containers are: docker exec -it allyoucanexercise-frontend-1 sh -->
 
@@ -350,7 +352,7 @@ scp -i all-you-can-exercise-key-pair.pem \
 # local workflow w/o using docker:
 
 cd mysql
-docker build .
+docker compose -f docker-compose.mysql.yml up -d
 cd ../back-end
 ./mvnw clean package -DskipTests
 
@@ -360,10 +362,10 @@ java -jar target/back-end-0.0.1-SNAPSHOT.jar \
 --spring.datasource.password=secret
 
 cd ../front-end
-npm install
+npm install (if necessary)
 npm run dev
 
-# Dockerized local development:
+# Dockerized local development: (not recommended b/c won't do instant changes for front-end)
 
 cd back-end
 ./mvnw clean package -DskipTests

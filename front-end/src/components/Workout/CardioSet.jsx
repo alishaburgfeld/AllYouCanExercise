@@ -5,8 +5,8 @@ import { useState, useEffect } from "react";
 
 
 
-export default function CardioSet ({exercise, setInputDistance, setInputDistanceUnit, setInputDuration}) {
-  const [temporaryUnit, setTemporaryUnit] = useState(exercise?.sets?.[0]?.distanceUnit|| ""); // selected unit
+export default function CardioSet ({exercise, setInputDistance, setInputDistanceMeasurement, setInputDuration}) {
+  const [temporaryUnit, setTemporaryUnit] = useState(exercise?.sets?.[0]?.distanceMeasurement|| ""); // selected unit
   const [temporaryDistance, setTemporaryDistance] = useState(exercise?.sets?.[0]?.distance || "")
   const [temporaryHours, setTemporaryHours] = useState(exercise?.sets?.[0]?.duration?.hours || 0)
   const [temporaryMinutes, setTemporaryMinutes] = useState(exercise?.sets?.[0]?.duration?.minutes || 0)
@@ -16,9 +16,9 @@ export default function CardioSet ({exercise, setInputDistance, setInputDistance
     setInputDuration({"hours": hours, "minutes": minutes, "seconds": seconds});
   };
 
-  const handleDistanceInputChange = (distanceValue, distanceUnit) => {
+  const handleDistanceInputChange = (distanceValue, distanceMeasurement) => {
     setInputDistance(distanceValue)
-    setInputDistanceUnit(distanceUnit)
+    setInputDistanceMeasurement(distanceMeasurement)
   };
 
     return(
@@ -53,9 +53,9 @@ export default function CardioSet ({exercise, setInputDistance, setInputDistance
           label="Distance Unit"
           variant="standard"
         >
-          <MenuItem value="m">Meters</MenuItem>
-          <MenuItem value="yd">Yards</MenuItem>
-          <MenuItem value="mi">Miles</MenuItem>
+          <MenuItem value="METERS">Meters</MenuItem>
+          <MenuItem value="YARDS">Yards</MenuItem>
+          <MenuItem value="MILES">Miles</MenuItem>
         </Select>
       </FormControl>
         </Box>

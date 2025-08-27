@@ -12,7 +12,7 @@ export default function EditExerciseModal({ openEditExerciseModal, setOpenEditEx
     const [allReps, setAllReps] = useState([""]);
     const [allWeights, setAllWeights] = useState([""]);
     const [inputDistance, setInputDistance] = useState(null);
-    const [inputDistanceUnit, setInputDistanceUnit] = useState(null);
+    const [inputDistanceMeasurement, setInputDistanceMeasurement] = useState(null);
     const [inputDuration, setInputDuration] = useState(null);
 
     const exerciseType = exercise.exerciseType;
@@ -26,7 +26,7 @@ export default function EditExerciseModal({ openEditExerciseModal, setOpenEditEx
 
     const saveCardioEdits = () => {
         let updatedExerciseDetail = {...exercise}
-        const newSets = [{"distance": inputDistance, "duration": inputDuration, "distanceUnit": inputDistanceUnit}]
+        const newSets = [{"distance": inputDistance, "duration": inputDuration, "distanceMeasurement": inputDistanceMeasurement}]
         console.log('3) in savecardio edits newsets are', newSets)
         updatedExerciseDetail["sets"] = newSets;
         updateActiveWorkoutWithNewStats(updatedExerciseDetail)
@@ -74,7 +74,7 @@ export default function EditExerciseModal({ openEditExerciseModal, setOpenEditEx
                             ))}
                             <AddIcon onClick={addSet} sx={{ cursor: 'pointer' }} />
                         </>
-                        : <CardioSet exercise = {exercise} setInputDistance={setInputDistance} setInputDuration={setInputDuration} setInputDistanceUnit={setInputDistanceUnit}/>
+                        : <CardioSet exercise = {exercise} setInputDistance={setInputDistance} setInputDuration={setInputDuration} setInputDistanceMeasurement={setInputDistanceMeasurement}/>
                     }
                 <DialogActions>
                     <Box >

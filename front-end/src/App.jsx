@@ -52,7 +52,7 @@ function App() {
         "hours": 0,
         "minutes": 15,
         "seconds": 0
-      }, "distance": 1, "distanceUnit": "mi"},
+      }, "distance": 1, "distanceMeasurement": "MILES"},
     ]
     if (exercise) {
       let exerciseInfo = {

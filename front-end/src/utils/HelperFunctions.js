@@ -38,6 +38,10 @@ export const postAxiosCall = async (url, body) => {
       withCredentials: true,
     });
 
+    if (response.status === 409) {
+      return { success: false, error: response.data };
+    }
+
     if (response.data || response.success) {
       return { success: true, data: response.data };
     } else {
@@ -80,9 +84,9 @@ export const convertToSeconds = (duration) => {
 
 export const toMeters = (value, unit) => {
   let distance;
-  unit === "mi"
+  unit === "MILES"
     ? (distance = (value * 1609.34).toFixed(2))
-    : unit === "yd"
+    : unit === "YARDS"
     ? (distance = (value * 0.9144).toFixed(2)) //yards
     : (distance = value); //meters
   return distance;
@@ -90,9 +94,9 @@ export const toMeters = (value, unit) => {
 
 export const fromMeters = (meters, toUnit) => {
   let distance;
-  toUnit === "mi"
+  toUnit === "MILES"
     ? (distance = +(meters / 1609.34).toFixed(2))
-    : toUnit === "yd"
+    : toUnit === "YARDS"
     ? (distance = +(meters / 0.9144).toFixed(2))
     : (distance = meters);
   return distance;
@@ -102,7 +106,7 @@ export const displayCardioText = (exercise) => {
   const cardioSet = exercise?.sets?.[0];
   if (!cardioSet) return null;
 
-  const { distance, distanceUnit, duration } = cardioSet;
+  const { distance, distanceMeasurement, duration } = cardioSet;
   const { hours, minutes, seconds } = duration || {};
 
   let cardioValues = {};
@@ -114,7 +118,7 @@ export const displayCardioText = (exercise) => {
     }`;
   }
   if (distance) {
-    displayDuration = `${distance} ${distanceUnit}`;
+    displayDuration = `${distance} ${distanceMeasurement}`;
   }
   cardioValues["displayDistance"] = displayDistance;
   cardioValues["displayDuration"] = displayDuration;
