@@ -55,10 +55,10 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
                 delete convertedSet.duration;
             }
             if (set.distance) {
-                let meters = toMeters(set.distance, set.distanceUnit)
+                let meters = toMeters(set.distance, set.distanceMeasurement)
                 let formattedMeters = Math.round(meters * 100) / 100
                 convertedSet.distanceMeters = formattedMeters
-                delete convertedSet.distanceUnit;
+                // delete convertedSet.distanceMeasurement;
                 delete convertedSet.distance;
             }
             finalSets.push(convertedSet)

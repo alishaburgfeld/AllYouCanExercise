@@ -5,6 +5,8 @@ public class ExerciseSetDTO {
     private Float weight;
     private Integer durationSeconds; // durationSeconds in seconds
     private Float distanceMeters; // distanceMeters in meters
+    private DistanceMeasurement distanceMeasurement;
+    private Float pacePerMile;
 
     public Integer getReps() {
         return reps;
@@ -30,12 +32,28 @@ public class ExerciseSetDTO {
         this.durationSeconds = durationSeconds;
     }
 
+    public Float getPacePerMile() {
+        return pacePerMile;
+    }
+
+    public void setPacePerMile(Float pacePerMile) {
+        this.pacePerMile = pacePerMile;
+    }
+
     public Float getDistanceMeters() {
         return distanceMeters;
     }
 
     public void setDistanceMeters(Float distanceMeters) {
         this.distanceMeters = distanceMeters;
+    }
+
+    public DistanceMeasurement getDistanceMeasurement() {
+        return distanceMeasurement;
+    }
+
+    public void setDistanceMeasurement(DistanceMeasurement distanceMeasurement) {
+        this.distanceMeasurement = distanceMeasurement;
     }
 
     @Override
@@ -45,6 +63,8 @@ public class ExerciseSetDTO {
                 ", weight=" + weight +
                 ", durationSeconds=" + durationSeconds +
                 ", distanceMeters=" + distanceMeters +
+                ", distanceMeasurement=" + distanceMeasurement +
+                ", pacePerMile=" + pacePerMile +
                 '}';
     }
 

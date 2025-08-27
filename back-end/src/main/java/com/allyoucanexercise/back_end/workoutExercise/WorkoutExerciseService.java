@@ -27,6 +27,10 @@ public class WorkoutExerciseService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Workout Exercise not found"));
     }
 
+    public List<WorkoutExercise> getAllWorkoutExercisesByWorkout(Workout workout) {
+        return workoutExerciseRepository.findAllByWorkout(workout);
+    }
+
     public WorkoutExercise saveWorkoutExercise(WorkoutExercise workoutExercise) {
         return workoutExerciseRepository.save(workoutExercise);
     }

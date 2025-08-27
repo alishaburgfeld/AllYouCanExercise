@@ -17,6 +17,11 @@ My sql will use completedAt DATETIME
    0874023
    https://github.com/alishaburgfeld/AllYouCanExercise/commit/d774bc7a107b9db5f9e01f83ec209cf30f900048
 5. Used Nginx config to serve the front-end files. The "step 2" in my front-end dockerfile will compile all of my react files into just an index.html file. So if I want to see that all my react files are being copied over like I want, comment out the step 2 nginx stuff then exec into the container. However when I build the nginx container then all I should see is an assets folder (with all my images) and an index.html file. These are located inside /usr/share/nginx/html
+
+6. added flyaway to do migration scripts - look for this message in the logs after a migration:
+   Flyway Community Edition ...
+   Successfully applied 1 migration to schema `exercise-database` (execution time 00:01)
+
 <!-- -------------------REST --------------------->
 
 When have security dependency invoked it prints a password in the console to connect to the localhost:
@@ -34,6 +39,8 @@ its not working with the security dependency, so for now I comment that out when
 <!-- Database -->
 
 # exec into the container: docker exec -it allyoucanexercise-mysql-1 sh
+
+docker exec -it allyoucanexercise-mysql sh
 
 <!-- After I dockerized it became allyoucanexercise-mysql sh
 Also other containers are: docker exec -it allyoucanexercise-frontend-1 sh -->
@@ -120,6 +127,25 @@ java -jar target/app.jar \
 --spring.datasource.password=<>
 
 I also had to add the vite react variable to the front-end .env file so that when I do npm run dev it will grab the variable from that directory.
+
+functional java methods:
+To avoid repetitive if blocks when updating fields in an ExerciseRecord, Java functional interfaces can be used to pass in getters and setters as parameters. This allows for a single, reusable method to handle conditional field updates. The key interfaces used are: Supplier<T>, which represents a function that returns a value and takes no arguments (used to get a field value, e.g., existingExerciseRecord::getMaxReps); and BiConsumer<T, U>, which represents a function that takes two arguments and returns nothing (used to set a value or reference, e.g., ExerciseRecord::setMaxReps or ExerciseRecord::setMaxRepsWorkout). A generic method can be defined like this:
+private <T extends Number & Comparable<T>> void updateRecordIfWorkoutValueIsHigher(
+T workoutValue,
+Supplier<T> getExistingValue,
+BiConsumer<ExerciseRecord, T> setNewValue,
+BiConsumer<ExerciseRecord, Workout> setWorkout,
+ExerciseRecord record,
+Workout workout) {
+
+    T existingValue = getExistingValue.get();
+    if (workoutValue != null && existingValue != null && workoutValue.compareTo(existingValue) > 0) {
+        setNewValue.accept(record, workoutValue);
+        setWorkout.accept(record, workout);
+    }
+
+}
+This method compares the workoutValue to the existing value in the record using compareTo(). If it's higher, it updates the record with the new value and associates it with the given workout. This approach improves readability, reduces duplication, and makes the update logic extensible for any Number type like Integer or Float.
 
 <!-- Helpful Videos and Tutorials-->
 
@@ -326,7 +352,7 @@ scp -i all-you-can-exercise-key-pair.pem \
 # local workflow w/o using docker:
 
 cd mysql
-docker build .
+docker compose -f docker-compose.mysql.yml up -d
 cd ../back-end
 ./mvnw clean package -DskipTests
 
@@ -336,13 +362,23 @@ java -jar target/back-end-0.0.1-SNAPSHOT.jar \
 --spring.datasource.password=secret
 
 cd ../front-end
-npm install
+npm install (if necessary)
 npm run dev
 
-# Dockerized local development:
+# Dockerized local development: (not recommended b/c won't do instant changes for front-end)
 
 cd back-end
 ./mvnw clean package -DskipTests
 cd ..
 docker compose up --build
 docker compose logs -f
+
+# Migrations
+
+Re-build jar and copy it over
+In ec2 : docker-compose down
+docker-compose up --build
+
+<!-- should run the scripts automatically -->
+
+pace_per_mile = (duration_in_seconds / 60) / (distance_in_meters / 1609.34)
