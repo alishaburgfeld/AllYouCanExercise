@@ -94,19 +94,21 @@ class WorkoutServiceTest {
         verify(workoutRepository, times(1)).findById(id);
     }
 
-    @Test
-    void testGetUserWorkouts() {
+    // @Test
+    // void testGetUserWorkouts() {
 
-        when(workoutRepository.findByUser(user)).thenReturn(List.of(workout, workout2));
-        when(userService.getUserByUsername(user.getUsername())).thenReturn(Optional.of(user));
+    // when(workoutRepository.findByUser(user)).thenReturn(List.of(workout,
+    // workout2));
+    // when(userService.getUserByUsername(user.getUsername())).thenReturn(Optional.of(user));
 
-        List<Workout> results = workoutService.getWorkoutsByUsername(user.getUsername());
-        assertThat(results).hasSize(2);
-        assertThat(results.get(0).getTitle()).isEqualTo(workout.getTitle());
-        assertThat(results.get(1).getTitle()).isEqualTo(workout2.getTitle());
+    // List<Workout> results =
+    // workoutService.getWorkoutsByUsername(user.getUsername());
+    // assertThat(results).hasSize(2);
+    // assertThat(results.get(0).getTitle()).isEqualTo(workout.getTitle());
+    // assertThat(results.get(1).getTitle()).isEqualTo(workout2.getTitle());
 
-        verify(workoutRepository).findByUser(user);
-    }
+    // verify(workoutRepository).findByUser(user);
+    // }
 
     @Test
     void testSaveWorkout() {
@@ -352,3 +354,24 @@ class WorkoutServiceTest {
     }
 
 }
+
+// may need in the future for viewing a workout:
+// WorkoutResponseDTO dto = new WorkoutResponseDTO();
+// WorkoutDetailsDTO wddto = new WorkoutDetailsDTO();
+// wddto.setCompletedAt(LocalDateTime.now());
+// wddto.setTitle("test title");
+// wddto.setUsername("alb");
+// wddto.setWorkoutNotes("test notes");
+
+// dto.setWorkoutDetails(wddto);
+// WorkoutExerciseDetailsDTO wedto1 = new WorkoutExerciseDetailsDTO();
+// ExerciseSetDTO esdto1 = new ExerciseSetDTO();
+// esdto1.setReps(10);
+// esdto1.setWeight(20f);
+
+// List<ExerciseSetDTO> exerciseSetDTOs = List.of(esdto1);
+// List<WorkoutExerciseDetailsDTO> workoutExerciseDetailDTOs = List.of(wedto1);
+// wedto1.setExerciseId(1l);
+// wedto1.setSets(exerciseSetDTOs);
+// dto.setWorkoutExerciseDetails(workoutExerciseDetailDTOs);
+// return dto;

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { getAxiosCall } from "../utils/HelperFunctions";
 import { useParams, useNavigate } from "react-router-dom";
 
-export default function ViewWorkoutPage() {
+export default function ViewWorkoutPage({activeUsername}) {
     const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
     const [workoutById, setWorkoutById] = useState({})
     const { workoutId } = useParams();
@@ -13,6 +13,7 @@ const getWorkoutById = async () => {
     const response = await getAxiosCall(`${VITE_API_BASE_URL}/workouts/${workoutId}`)
     if (response) {
         // console.log('response for workout by id is', response)
+        console.log('🎯 FINAL Axios response:', response);
         setWorkoutById(response)
     }
     else {
@@ -25,6 +26,23 @@ const getUserWorkouts = async () => {
     if (response) {
         // console.log('response for get User workouts', response)
         setUserWorkouts(response)
+        console.log(
+            'response in getUserWorkouts is', response
+        )
+    }
+    else {
+        // console.log("no response for get user workouts")
+    }
+}
+
+const getWorkoutTest = async () => {
+    const response = await getAxiosCall(`${VITE_API_BASE_URL}/workouts/test`)
+    if (response) {
+        // console.log('response for get User workouts', response)
+        // setUserWorkouts(response)
+        console.log(
+            'response in getWorkoutTest is', response
+        )
     }
     else {
         // console.log("no response for get user workouts")
@@ -33,6 +51,9 @@ const getUserWorkouts = async () => {
 
 useEffect(()=> {
     getWorkoutById();
+    // getUserWorkouts();
+    // getWorkoutTest();
+    console.count("💥 useEffect - getWorkoutById called");
   }, [workoutId])
 
   return (

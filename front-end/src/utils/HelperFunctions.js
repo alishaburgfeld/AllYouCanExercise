@@ -7,8 +7,30 @@ export const getImageSource = (name) => {
   return IMAGES[name] || "/images/noexerciseimage.png";
 };
 
+// export const getAxiosCall = async (url) => {
+//   // console.log("url in get axios call is", url);
+//   try {
+//     const csrfToken = Cookies.get("XSRF-TOKEN");
+//     const response = await axios.get(url, {
+//       headers: {
+//         "X-XSRF-TOKEN": csrfToken,
+//       },
+//       withCredentials: true,
+//     });
+//     if (response.data) {
+//       return response.data;
+//     } else {
+//       console.log(
+//         "no response.data in axios get call, response is",
+//         response,
+//       );
+//     }
+//   } catch (error) {
+//     console.log("Axios Call Failed", error);
+//   }
+// };
+
 export const getAxiosCall = async (url) => {
-  // console.log("url in get axios call is", url);
   try {
     const csrfToken = Cookies.get("XSRF-TOKEN");
     const response = await axios.get(url, {
@@ -17,16 +39,14 @@ export const getAxiosCall = async (url) => {
       },
       withCredentials: true,
     });
-    if (response.data) {
-      return response.data;
-    } else {
-      console.log(
-        "no response.data in axios get call, response is",
-        response,
-      );
-    }
+
+    console.log("✅ Raw Axios response:", response);
+    // console.log("✅ Raw response.data type:", typeof response.data);
+    // console.log("✅ Raw response.data value:", response.data);
+
+    return response.data;
   } catch (error) {
-    console.log("Axios Call Failed", error);
+    console.log("❌ Axios Call Failed", error);
   }
 };
 

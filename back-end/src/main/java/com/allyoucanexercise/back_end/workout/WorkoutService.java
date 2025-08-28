@@ -60,6 +60,7 @@ public class WorkoutService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Exercise not found"));
     }
 
+    // public WorkoutDetailsDTO getFullWorkoutAndExerciseDetailsById(Long id) {
     public WorkoutResponseDTO getFullWorkoutAndExerciseDetailsById(Long id) {
 
         Workout workout = workoutRepository.findById(id)
@@ -84,7 +85,9 @@ public class WorkoutService {
         WorkoutResponseDTO workoutResponseDTO = new WorkoutResponseDTO();
         workoutResponseDTO.setWorkoutDetails(workoutDetailsDTO);
         workoutResponseDTO.setWorkoutExerciseDetails(allWorkoutExerciseDetails);
+        // log.error("*****", workoutResponseDTO);
         return workoutResponseDTO;
+        // return workoutDetailsDTO;
     }
 
     @Transactional
@@ -110,12 +113,18 @@ public class WorkoutService {
         workoutRepository.deleteById(id);
     }
 
-    public List<Workout> getWorkoutsByUsername(String username) {
-        // what exception does this throw?
-        User user = userService.getUserByUsername(username).orElse(null);
-        List<Workout> workouts = workoutRepository.findByUser(user);
-        return workouts;
-    }
+    // public List<WorkoutResponseDTO> getWorkoutsByUsername(String username) {
+    // // what exception does this throw?
+    // User user = userService.getUserByUsername(username).orElse(null);
+    // List<Workout> workouts = workoutRepository.findByUser(user);
+    // List<WorkoutResponseDTO> allUserWorkouts = new ArrayList<>();
+    // for (Workout workout : workouts) {
+    // WorkoutResponseDTO workoutResponseDTO =
+    // this.getFullWorkoutAndExerciseDetailsById(workout.getId());
+    // allUserWorkouts.add(workoutResponseDTO);
+    // }
+    // return allUserWorkouts;
+    // }
 
     @Transactional
     public Workout saveWorkout(User user, String title, LocalDateTime completedAt, String workoutNotes) {

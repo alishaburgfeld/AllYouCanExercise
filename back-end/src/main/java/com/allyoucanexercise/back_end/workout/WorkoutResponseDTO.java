@@ -3,11 +3,14 @@ package com.allyoucanexercise.back_end.workout;
 import java.util.List;
 
 import com.allyoucanexercise.back_end.workoutExercise.WorkoutExerciseDetailsDTO;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class WorkoutResponseDTO {
 
+    // @JsonProperty("workoutDetails")
     private WorkoutDetailsDTO workoutDetails;
 
+    // @JsonProperty("workoutExerciseDetails")
     private List<WorkoutExerciseDetailsDTO> workoutExerciseDetails;
 
     public WorkoutResponseDTO() {
