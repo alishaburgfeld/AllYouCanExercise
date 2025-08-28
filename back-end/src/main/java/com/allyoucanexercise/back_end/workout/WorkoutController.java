@@ -46,54 +46,9 @@ public class WorkoutController {
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     WorkoutResponseDTO findById(@PathVariable Long id) {
-        System.out.println("🏋️‍♀️ WorkoutController - findById called with id = " + id);
         WorkoutResponseDTO fullWorkout = workoutService.getFullWorkoutAndExerciseDetailsById(id);
-        System.out.println("*************** FULLWORKOUTdetails = " + fullWorkout);
         return fullWorkout;
     }
-
-    // @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    // WorkoutDetailsDTO findById(@PathVariable Long id) {
-    // System.out.println("🏋️‍♀️ WorkoutController - findById called with id = " +
-    // id);
-    // WorkoutDetailsDTO fullWorkout =
-    // workoutService.getFullWorkoutAndExerciseDetailsById(id);
-    // System.out.println("*************** FULLWORKOUTdetails = " + fullWorkout);
-    // return fullWorkout;
-    // }
-
-    @GetMapping("/test")
-    WorkoutResponseDTO test() {
-        WorkoutResponseDTO dto = new WorkoutResponseDTO();
-        WorkoutDetailsDTO wddto = new WorkoutDetailsDTO();
-        wddto.setCompletedAt(LocalDateTime.now());
-        wddto.setTitle("test title");
-        wddto.setUsername("alb");
-        wddto.setWorkoutNotes("test notes");
-
-        dto.setWorkoutDetails(wddto);
-        WorkoutExerciseDetailsDTO wedto1 = new WorkoutExerciseDetailsDTO();
-        ExerciseSetDTO esdto1 = new ExerciseSetDTO();
-        esdto1.setReps(10);
-        esdto1.setWeight(20f);
-
-        List<ExerciseSetDTO> exerciseSetDTOs = List.of(esdto1);
-        List<WorkoutExerciseDetailsDTO> workoutExerciseDetailDTOs = List.of(wedto1);
-        wedto1.setExerciseId(1l);
-        wedto1.setSets(exerciseSetDTOs);
-        dto.setWorkoutExerciseDetails(workoutExerciseDetailDTOs);
-        return dto;
-    }
-
-    // @GetMapping("/{id}")
-    // List<WorkoutExerciseDetailsDTO> findById(@PathVariable Long id) {
-    // WorkoutResponseDTO fullWorkout =
-    // workoutService.getFullWorkoutAndExerciseDetailsById(id);
-    // List<WorkoutExerciseDetailsDTO> details =
-    // fullWorkout.getWorkoutExerciseDetails();
-    // System.out.println("*************** details = " + details);
-    // return details;
-    // }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping()
@@ -114,10 +69,12 @@ public class WorkoutController {
         workoutService.deleteWorkout(id);
     }
 
-    // @GetMapping("/user/{username}")
-    // List<WorkoutResponseDTO> findByUsername(@PathVariable String username) {
-    // return workoutService.getWorkoutsByUsername(username);
-    // }
+    @GetMapping("/user/{username}")
+    List<WorkoutResponseDTO> findByUsername(@PathVariable String username) {
+        List<WorkoutResponseDTO> allWorkouts = workoutService.getWorkoutsByUsername(username);
+        // System.out.println("***** FULLWORKOUTdetails = " + allWorkouts);
+        return allWorkouts;
+    }
 
     @PostMapping("/full/save")
     public ResponseEntity<?> saveFullWorkout(@RequestBody WorkoutRequestDTO request) {

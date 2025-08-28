@@ -78,7 +78,11 @@ public class WorkoutService {
                 ExerciseSetDTO exerciseSetDTODetails = addValuesToExerciseSetDTO(exerciseSet);
                 exerciseSetDTOs.add(exerciseSetDTODetails);
             }
+            System.err.println("workoutExercise line 81 is" + workoutExercise);
+            System.err.println("workoutExercise line 81 is" + workoutExercise.getExercise());
             workoutExerciseDetailsDTO.setExerciseId(workoutExercise.getExercise().getId());
+            workoutExerciseDetailsDTO.setExerciseName(workoutExercise.getExercise().getName());
+            workoutExerciseDetailsDTO.setExerciseGroup(workoutExercise.getExercise().getExerciseGroup());
             workoutExerciseDetailsDTO.setSets(exerciseSetDTOs);
             allWorkoutExerciseDetails.add(workoutExerciseDetailsDTO);
         }
@@ -113,18 +117,17 @@ public class WorkoutService {
         workoutRepository.deleteById(id);
     }
 
-    // public List<WorkoutResponseDTO> getWorkoutsByUsername(String username) {
-    // // what exception does this throw?
-    // User user = userService.getUserByUsername(username).orElse(null);
-    // List<Workout> workouts = workoutRepository.findByUser(user);
-    // List<WorkoutResponseDTO> allUserWorkouts = new ArrayList<>();
-    // for (Workout workout : workouts) {
-    // WorkoutResponseDTO workoutResponseDTO =
-    // this.getFullWorkoutAndExerciseDetailsById(workout.getId());
-    // allUserWorkouts.add(workoutResponseDTO);
-    // }
-    // return allUserWorkouts;
-    // }
+    public List<WorkoutResponseDTO> getWorkoutsByUsername(String username) {
+        // what exception does this throw?
+        User user = userService.getUserByUsername(username).orElse(null);
+        List<Workout> workouts = workoutRepository.findByUser(user);
+        List<WorkoutResponseDTO> allUserWorkouts = new ArrayList<>();
+        for (Workout workout : workouts) {
+            WorkoutResponseDTO workoutResponseDTO = this.getFullWorkoutAndExerciseDetailsById(workout.getId());
+            allUserWorkouts.add(workoutResponseDTO);
+        }
+        return allUserWorkouts;
+    }
 
     @Transactional
     public Workout saveWorkout(User user, String title, LocalDateTime completedAt, String workoutNotes) {

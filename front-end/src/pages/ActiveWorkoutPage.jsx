@@ -6,8 +6,8 @@ import { useTheme } from '@mui/material/styles';
 import { getImageSource, getAxiosCall } from "../utils/HelperFunctions";
 import { useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
-import CompleteWorkoutModal from "../components/Workout/CompleteWorkoutModal";
-import SetsRepsDuration from "../components/Workout/SetsRepsDuration";
+import CompleteWorkoutModal from "../components/ActiveWorkout/CompleteWorkoutModal";
+import SetsRepsDuration from "../components/ActiveWorkout/SetsRepsDuration";
 import Alert from '@mui/material/Alert';
 
 export default function ActiveWorkoutPage({ activeWorkout, setActiveWorkout, activeUsername, updateActiveWorkoutWithNewStats}) {

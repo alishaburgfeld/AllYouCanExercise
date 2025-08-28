@@ -21,19 +21,6 @@ const getWorkoutById = async () => {
     }
 }
 
-const getUserWorkouts = async () => {
-    const response = await getAxiosCall(`${VITE_API_BASE_URL}/workouts/user/${activeUsername}`)
-    if (response) {
-        // console.log('response for get User workouts', response)
-        setUserWorkouts(response)
-        console.log(
-            'response in getUserWorkouts is', response
-        )
-    }
-    else {
-        // console.log("no response for get user workouts")
-    }
-}
 
 const getWorkoutTest = async () => {
     const response = await getAxiosCall(`${VITE_API_BASE_URL}/workouts/test`)
@@ -51,9 +38,7 @@ const getWorkoutTest = async () => {
 
 useEffect(()=> {
     getWorkoutById();
-    // getUserWorkouts();
-    // getWorkoutTest();
-    console.count("💥 useEffect - getWorkoutById called");
+    
   }, [workoutId])
 
   return (

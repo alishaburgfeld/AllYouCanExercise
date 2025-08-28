@@ -147,6 +147,8 @@ Workout workout) {
 }
 This method compares the workoutValue to the existing value in the record using compareTo(). If it's higher, it updates the record with the new value and associates it with the given workout. This approach improves readability, reduces duplication, and makes the update logic extensible for any Number type like Integer or Float.
 
+The issue appeared as Axios logging two responses: one with an empty string and one with the correct DTO, even though only one real HTTP request was made. The root cause was a backend HttpLoggingFilter that used ContentCachingResponseWrapper to log the response, but did not flush the response buffer before logging. This caused the logging code to capture the response body before it was written, leading to an empty string being logged and misinterpreted on the frontend. The fix was to call responseWrapper.flushBuffer() before logging the response body and ensure responseWrapper.copyBodyToResponse() is called afterward to properly forward the buffered response to the client. On the frontend, Axios was logging every response globally in the helper function, which included unrelated or empty responses (like preflight calls or other API responses), creating the illusion of a duplicate or faulty response. Once we moved the relevant console log to the getWorkoutById() function and filtered out the global logging noise, we confirmed everything was working correctly. Final changes: updated the logging filter to flush the buffer before reading the response, and removed or scoped Axios console logs to avoid confusion.
+
 <!-- Helpful Videos and Tutorials-->
 
 Create React App: -https://www.freecodecamp.org/news/how-to-build-a-react-project-with-create-react-app-in-10-steps/
@@ -382,3 +384,37 @@ docker-compose up --build
 <!-- should run the scripts automatically -->
 
 pace_per_mile = (duration_in_seconds / 60) / (distance_in_meters / 1609.34)
+
+<!-- helpful debugging logs: -->
+
+// System.out.println("🏋️‍♀️ WorkoutController - findById called with id = " + id);
+
+// System.out.println("**\*\***\*\*\***\*\*** FULLWORKOUTdetails = " + fullWorkout);
+
+<!-- used to test my dto response:
+
+@GetMapping("/test")
+    WorkoutResponseDTO test() {
+        WorkoutResponseDTO dto = new WorkoutResponseDTO();
+        WorkoutDetailsDTO wddto = new WorkoutDetailsDTO();
+        wddto.setCompletedAt(LocalDateTime.now());
+        wddto.setTitle("test title");
+        wddto.setUsername("alb");
+        wddto.setWorkoutNotes("test notes");
+
+        dto.setWorkoutDetails(wddto);
+        WorkoutExerciseDetailsDTO wedto1 = new WorkoutExerciseDetailsDTO();
+        ExerciseSetDTO esdto1 = new ExerciseSetDTO();
+        esdto1.setReps(10);
+        esdto1.setWeight(20f);
+
+        List<ExerciseSetDTO> exerciseSetDTOs = List.of(esdto1);
+        List<WorkoutExerciseDetailsDTO> workoutExerciseDetailDTOs = List.of(wedto1);
+        wedto1.setExerciseId(1l);
+        wedto1.setSets(exerciseSetDTOs);
+        dto.setWorkoutExerciseDetails(workoutExerciseDetailDTOs);
+        return dto;
+    } -->
+
+<!-- count how many times a function is used in the useeffect:
+console.count("💥 useEffect - getWorkoutById called"); -->
