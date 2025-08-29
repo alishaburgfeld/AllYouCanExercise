@@ -5,7 +5,8 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
+import { toTitleCase, convertJavaLocalDateTimeToUserLocalTime } from "../../utils/HelperFunctions"
 
 
 export default function WorkoutHistoryCard({workout}) {
@@ -23,16 +24,29 @@ const handleWorkoutClick = () => {
     const workoutDetails = workout.workoutDetails;
     const workoutExerciseDetails = workout.workoutExerciseDetails;
     setWorkoutTitle(workoutDetails.title);
-    setWorkoutCompletedDate(workoutDetails.completedAt);
+    // console.log('typeOf', typeof(workoutDetails.completedAt))
+    const formattedCompletedDate = convertJavaLocalDateTimeToUserLocalTime(workoutDetails.completedAt)
+    setWorkoutCompletedDate(formattedCompletedDate);
     console.log('workoutexerciseDetails', workoutExerciseDetails)
+    determineExerciseGroups(workoutExerciseDetails);
+  }
+
+  const determineExerciseGroups = (workoutExerciseDetails) => {
     const exerciseGroups = [];
     workoutExerciseDetails.forEach((exercise)=> {
         console.log('exercise is', exercise)
-        exerciseGroups.push(exercise.exerciseGroup);
+        const eg = exercise.exerciseGroup
+        const egTitleCase = toTitleCase(eg);
+        if(!exerciseGroups.includes(egTitleCase)) {
+          exerciseGroups.push(egTitleCase);
+        }
     })
     console.log('exercisegroups are', exerciseGroups)
-    setWorkoutExerciseGroups(exerciseGroups);
+
+    setWorkoutExerciseGroups(exerciseGroups.join());
   }
+
+  
 
   useEffect(()=> {
     setWorkoutInformation();
@@ -40,17 +54,23 @@ const handleWorkoutClick = () => {
   }, [workout])
 
     return (
-    <Box sx={{ minWidth: 275 }}>
-      <Card variant="outlined">
+    <Box sx={{ minWidth: 8/10, maxWidth:9/10, mt:"1rem", maxHeight: 3/10, display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center', }}>
+        
+      <Card variant="outlined" sx={{borderRadius:7, display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',}}>
         <>
         
         <CardContent>
         <Typography variant="h5" component="div">
             {workoutTitle}
         </Typography>
-        <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>Completed: </Typography>
-        <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>{workoutCompletedDate}</Typography>
-        <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>Targeted:</Typography>
+        <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>Completed: {workoutCompletedDate}</Typography>
+        <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>Targeted: </Typography>
         <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>{workoutExerciseGroups}</Typography>
         </CardContent>
         <CardActions>
@@ -58,7 +78,8 @@ const handleWorkoutClick = () => {
             size="small"
             onClick={handleWorkoutClick}
             >
-                View Details</Button>
+              <Typography variant="h6">View Details</Typography>    
+            </Button>
         </CardActions>
         </>
       </Card>

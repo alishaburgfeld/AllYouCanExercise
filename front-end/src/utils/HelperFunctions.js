@@ -85,6 +85,29 @@ export const postAxiosCall = async (url, body) => {
   }
 };
 
+export const toTitleCase = (str) => {
+  return str.replace(/\w\S*/g, function (txt) {
+    return (
+      txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase()
+    );
+  });
+};
+
+export const convertJavaLocalDateTimeToUserLocalTime = (
+  javaLocalDateTimeString,
+) => {
+  const dateObject = new Date(javaLocalDateTimeString);
+  const formatter = new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  });
+  const formattedDate = formatter.format(dateObject); // e.g., "Aug 29, 2025, 5:02 PM"
+  return formattedDate;
+};
+
 export const formatExerciseDurationIntoMinutesAndSeconds = (
   durationInSeconds,
 ) => {

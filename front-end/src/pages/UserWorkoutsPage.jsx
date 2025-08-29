@@ -34,7 +34,15 @@ useEffect(()=> {
         <Typography className="userWorkouts_title" sx={{ fontSize: "1.8rem", pt: "4rem", color: theme.palette.secondary.main }}>
           Workout History
         </Typography>
-        <Box className="userWorkouts_ItemContainer">
+        <Box className="userWorkouts_ItemContainer"
+        sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        // minHeight: '100vh',
+        // padding: 1,
+      }}>
           {userWorkouts?.length > 0 ? (
             userWorkouts.map((workout, index) => (
                 <WorkoutHistoryCard workout = {workout}/>
