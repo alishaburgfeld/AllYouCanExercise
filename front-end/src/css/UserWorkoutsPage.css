@@ -1,0 +1,14 @@
+.userWorkouts{
+    background-image: url("/images/BG5.jpg"); 
+    background-size: cover; /* Ensures the image covers the entire area */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents tiling */
+    
+}
+
+.workoutHistoryCard {
+    /* background-image: url("/images/BG5.jpg");  */
+    /* background-size: 'contain'; */
+    /* background-position: 'left'; */
+    /* background-repeat: 'no-repeat'; */
+}

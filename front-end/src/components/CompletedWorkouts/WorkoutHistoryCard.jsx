@@ -4,12 +4,15 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useTheme } from '@mui/material/styles';
 import { toTitleCase, convertJavaLocalDateTimeToUserLocalTime } from "../../utils/HelperFunctions"
 
 
 export default function WorkoutHistoryCard({workout}) {
+  const theme = useTheme();
     const navigate = useNavigate();
   const [userWorkouts, setUserWorkouts] = useState(null);
   const [workoutTitle, setWorkoutTitle] = useState(null);
@@ -57,28 +60,42 @@ const handleWorkoutClick = () => {
     <Box sx={{ minWidth: 8/10, maxWidth:9/10, mt:"1rem", maxHeight: 3/10, display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center', }}>
+        justifyContent: 'center', 
+        }}>
         
-      <Card variant="outlined" sx={{borderRadius:7, display: 'flex',
-        flexDirection: 'column',
+      <Card variant="outlined" className= "workoutHistoryCard" sx={{borderRadius:7, display: 'flex',
+        flexDirection: 'column', borderColor: theme.palette.secondary.main,
+        borderWidth: 2,
+        borderStyle: 'solid', 
         alignItems: 'center',
-        justifyContent: 'center',}}>
+        justifyContent: 'center',
+        mb:0,
+        backgroundColor: "transparent"
+        }}>
         <>
         
         <CardContent>
-        <Typography variant="h5" component="div">
+        <Typography variant="h5" component="div" sx={{mb: 1.5}}>
             {workoutTitle}
         </Typography>
-        <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>Completed: {workoutCompletedDate}</Typography>
-        <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>Targeted: </Typography>
-        <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>{workoutExerciseGroups}</Typography>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center' }}>
+          <Typography sx={{ color: 'text.primary', mb: 1.5, mr:"5px" }}>Completed: </Typography>
+          <Typography sx={{ color: 'text.primary', mb: 1.5 }}>{workoutCompletedDate}</Typography>
+        </Box>
+        
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', mb: 1 }}>
+          <Typography sx={{ color: 'text.primary', mb: 1.5, mr:"5px" }}>Targeted: </Typography>
+          <Typography sx={{ color: 'text.primary', mb: 1.5 }}>{workoutExerciseGroups}</Typography>
+        </Box>
+        <Divider sx={{ mb: 0 }} />
         </CardContent>
-        <CardActions>
+        <CardActions sx={{ pt: 0 }}>
             <Button 
             size="small"
             onClick={handleWorkoutClick}
+            sx={{ textTransform: 'none' }}
             >
-              <Typography variant="h6">View Details</Typography>    
+              <Typography variant="h5" component="div" sx={{ color: theme.palette.primary.dark}}>View Details</Typography>    
             </Button>
         </CardActions>
         </>
