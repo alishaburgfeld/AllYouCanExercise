@@ -40,12 +40,16 @@
     background: rgba(255, 255, 255, 0.8);
     border: 1px solid #ccc;
     border-radius: 4px;
+    border-color: transparent;
     padding: 3px;
     font-size: 0.7em;
     text-align: center;
     cursor: pointer;
     transform: translate(-50%, -50%); /* Center the label */
     white-space: nowrap;
+    /* background-color: #ffa500; */
+    /* background-color: #ffa500b8; */
+    background-color: #fdbc47;
   }
 
   

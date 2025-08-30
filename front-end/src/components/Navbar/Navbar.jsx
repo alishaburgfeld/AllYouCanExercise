@@ -80,7 +80,7 @@ export default function Navbar({ activeUsername, setActiveUsername, setActiveWor
               <MenuIcon />
             </FitnessCenterIcon>
           </Link>
-          <Typography component="div" className="navbar_title" sx={{ flexGrow: 1, color: theme.palette.secondary.main, fontSize: "1.2rem", fontWeight: "600" }}>
+          <Typography component="div" className="navbar_title" sx={{ flexGrow: 1, color: theme.palette.secondary.main, fontSize: "1.3rem", fontWeight: "600" }}>
             All You Can Exercise
           </Typography>
           {activeUsername!=null ? (

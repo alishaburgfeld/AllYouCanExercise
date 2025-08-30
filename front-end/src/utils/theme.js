@@ -12,6 +12,7 @@ const theme = createTheme({
     // orange
     secondary: {
       main: "#FF5733",
+      light: "#ffa500",
       dark: "#eb330c",
     },
   },

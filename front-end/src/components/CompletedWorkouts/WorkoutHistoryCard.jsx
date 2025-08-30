@@ -9,16 +9,18 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useTheme } from '@mui/material/styles';
 import { toTitleCase, convertJavaLocalDateTimeToUserLocalTime } from "../../utils/HelperFunctions"
+import WorkoutAccordion from './WorkoutAccordion';
 
 
 export default function WorkoutHistoryCard({workout}) {
   const theme = useTheme();
     const navigate = useNavigate();
-  const [userWorkouts, setUserWorkouts] = useState(null);
   const [workoutTitle, setWorkoutTitle] = useState(null);
   const [workoutCompletedDate, setWorkoutCompletedDate] = useState(null);
-    const[workoutExerciseGroups, setWorkoutExerciseGroups] = useState(null);
-
+  const[workoutExerciseGroups, setWorkoutExerciseGroups] = useState(null);
+  const [workoutNotes, setWorkoutNotes] = useState(null);
+  const [workoutExerciseDetails, setWorkoutExerciseDetails] = useState(null);
+  const [joinedExerciseGroups, setJoinedExerciseGroups] = useState(null);
 const handleWorkoutClick = () => {
     navigate(`/workout/${workout.workoutId}`);
   }
@@ -26,7 +28,9 @@ const handleWorkoutClick = () => {
   const setWorkoutInformation = () => {
     const workoutDetails = workout.workoutDetails;
     const workoutExerciseDetails = workout.workoutExerciseDetails;
+    setWorkoutExerciseDetails(workoutExerciseDetails);
     setWorkoutTitle(workoutDetails.title);
+    setWorkoutNotes(workoutDetails.workoutNotes);
     // console.log('typeOf', typeof(workoutDetails.completedAt))
     const formattedCompletedDate = convertJavaLocalDateTimeToUserLocalTime(workoutDetails.completedAt)
     setWorkoutCompletedDate(formattedCompletedDate);
@@ -46,7 +50,8 @@ const handleWorkoutClick = () => {
     })
     console.log('exercisegroups are', exerciseGroups)
 
-    setWorkoutExerciseGroups(exerciseGroups.join());
+    setWorkoutExerciseGroups(exerciseGroups);
+    setJoinedExerciseGroups(exerciseGroups.join());
   }
 
   
@@ -85,19 +90,20 @@ const handleWorkoutClick = () => {
         
         <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', mb: 1 }}>
           <Typography sx={{ color: 'text.primary', mb: 1.5, mr:"5px" }}>Targeted: </Typography>
-          <Typography sx={{ color: 'text.primary', mb: 1.5 }}>{workoutExerciseGroups}</Typography>
+          <Typography sx={{ color: 'text.primary', mb: 1.5 }}>{joinedExerciseGroups}</Typography>
         </Box>
         <Divider sx={{ mb: 0 }} />
         </CardContent>
-        <CardActions sx={{ pt: 0 }}>
-            <Button 
+        {/* <CardActions sx={{ pt: 0 }}> */}
+            {/* <Button 
             size="small"
             onClick={handleWorkoutClick}
             sx={{ textTransform: 'none' }}
             >
               <Typography variant="h5" component="div" sx={{ color: theme.palette.primary.dark}}>View Details</Typography>    
-            </Button>
-        </CardActions>
+            </Button> */}
+            <WorkoutAccordion workoutNotes={workoutNotes} workoutExerciseDetails={workoutExerciseDetails} workoutExerciseGroups={workoutExerciseGroups}/>
+        {/* </CardActions> */}
         </>
       </Card>
     </Box>
