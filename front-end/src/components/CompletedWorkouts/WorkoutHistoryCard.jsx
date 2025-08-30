@@ -21,7 +21,9 @@ export default function WorkoutHistoryCard({workout}) {
   const [workoutNotes, setWorkoutNotes] = useState(null);
   const [workoutExerciseDetails, setWorkoutExerciseDetails] = useState(null);
   const [joinedExerciseGroups, setJoinedExerciseGroups] = useState(null);
-const handleWorkoutClick = () => {
+
+  console.log('workoutEx group on history card', workoutExerciseGroups)
+  const handleWorkoutClick = () => {
     navigate(`/workout/${workout.workoutId}`);
   }
 
@@ -34,7 +36,7 @@ const handleWorkoutClick = () => {
     // console.log('typeOf', typeof(workoutDetails.completedAt))
     const formattedCompletedDate = convertJavaLocalDateTimeToUserLocalTime(workoutDetails.completedAt)
     setWorkoutCompletedDate(formattedCompletedDate);
-    console.log('workoutexerciseDetails', workoutExerciseDetails)
+    console.log('workoutexerciseDetails on history card', workoutExerciseDetails)
     determineExerciseGroups(workoutExerciseDetails);
   }
 
@@ -48,7 +50,7 @@ const handleWorkoutClick = () => {
           exerciseGroups.push(egTitleCase);
         }
     })
-    console.log('exercisegroups are', exerciseGroups)
+    console.log('exercisegroups are on history card', exerciseGroups)
 
     setWorkoutExerciseGroups(exerciseGroups);
     setJoinedExerciseGroups(exerciseGroups.join());
@@ -62,50 +64,58 @@ const handleWorkoutClick = () => {
   }, [workout])
 
     return (
-    <Box sx={{ minWidth: 8/10, maxWidth:9/10, mt:"1rem", maxHeight: 3/10, display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center', 
-        }}>
-        
-      <Card variant="outlined" className= "workoutHistoryCard" sx={{borderRadius:7, display: 'flex',
-        flexDirection: 'column', borderColor: theme.palette.secondary.main,
-        borderWidth: 2,
-        borderStyle: 'solid', 
-        alignItems: 'center',
-        justifyContent: 'center',
-        mb:0,
-        backgroundColor: "transparent"
-        }}>
-        <>
-        
-        <CardContent>
-        <Typography variant="h5" component="div" sx={{mb: 1.5}}>
-            {workoutTitle}
-        </Typography>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center' }}>
-          <Typography sx={{ color: 'text.primary', mb: 1.5, mr:"5px" }}>Completed: </Typography>
-          <Typography sx={{ color: 'text.primary', mb: 1.5 }}>{workoutCompletedDate}</Typography>
+      <>
+      {workoutExerciseGroups !== null ?
+
+        <Box sx={{ minWidth: 8/10, maxWidth:9/10, mt:"1rem", maxHeight: 3/10, display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center', 
+            }}>
+            
+          <Card variant="outlined" className= "workoutHistoryCard" sx={{borderRadius:7, display: 'flex',
+            flexDirection: 'column', borderColor: theme.palette.secondary.main,
+            borderWidth: 2,
+            borderStyle: 'solid', 
+            alignItems: 'center',
+            justifyContent: 'center',
+            mb:0,
+            backgroundColor: "transparent"
+            }}>
+            <>
+            
+            <CardContent>
+            <Typography variant="h5" component="div" sx={{mb: 1.5}}>
+                {workoutTitle}
+            </Typography>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center' }}>
+              <Typography sx={{ color: 'text.primary', mb: 1.5, mr:"5px" }}>Completed: </Typography>
+              <Typography sx={{ color: 'text.primary', mb: 1.5 }}>{workoutCompletedDate}</Typography>
+            </Box>
+            
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', mb: 1 }}>
+              <Typography sx={{ color: 'text.primary', mb: 1.5, mr:"5px" }}>Targeted: </Typography>
+              <Typography sx={{ color: 'text.primary', mb: 1.5 }}>{joinedExerciseGroups}</Typography>
+            </Box>
+            {/* <Divider sx={{ mb: 0 }} /> */}
+            </CardContent>
+            {/* <CardActions sx={{ pt: 0 }}> */}
+                {/* <Button 
+                size="small"
+                onClick={handleWorkoutClick}
+                sx={{ textTransform: 'none' }}
+                >
+                  <Typography variant="h5" component="div" sx={{ color: theme.palette.primary.dark}}>View Details</Typography>    
+                </Button> */}
+                <WorkoutAccordion workoutNotes={workoutNotes} workoutExerciseDetails={workoutExerciseDetails} workoutExerciseGroups={workoutExerciseGroups}/>
+            {/* </CardActions> */}
+            </>
+          </Card>
         </Box>
-        
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', mb: 1 }}>
-          <Typography sx={{ color: 'text.primary', mb: 1.5, mr:"5px" }}>Targeted: </Typography>
-          <Typography sx={{ color: 'text.primary', mb: 1.5 }}>{joinedExerciseGroups}</Typography>
-        </Box>
-        <Divider sx={{ mb: 0 }} />
-        </CardContent>
-        {/* <CardActions sx={{ pt: 0 }}> */}
-            {/* <Button 
-            size="small"
-            onClick={handleWorkoutClick}
-            sx={{ textTransform: 'none' }}
-            >
-              <Typography variant="h5" component="div" sx={{ color: theme.palette.primary.dark}}>View Details</Typography>    
-            </Button> */}
-            <WorkoutAccordion workoutNotes={workoutNotes} workoutExerciseDetails={workoutExerciseDetails} workoutExerciseGroups={workoutExerciseGroups}/>
-        {/* </CardActions> */}
-        </>
-      </Card>
-    </Box>
+      
+      : ""
+      }
+      
+      </>
   );
 }

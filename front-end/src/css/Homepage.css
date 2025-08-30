@@ -28,7 +28,7 @@
   }
 
   .homepage_image_back {
-    margin-top:1em;
+    margin-top:5em;
     transform: scale(0.9); /* Shrinks the image to 80% of its original size */
     /* transition: transform 0.3s ease;  */
     /* Smooth transition */
@@ -52,7 +52,25 @@
     background-color: #fdbc47;
   }
 
-  
+  .homepage_camera {
+  position: absolute;
+  right: 42%;
+  top: 13%;
+  color: var(--mui-palette-secondary-main); /* You can override this with your theme if needed */
+  background-color: transparent !important;
+}
+
+.homepage_camera:hover,
+.homepage_camera:focus,
+.homepage_camera:active {
+  background-color: transparent !important;
+  outline: none;
+}
+
+/* Disable MUI ripple effect */
+.homepage_camera .MuiTouchRipple-root {
+  display: none !important;
+}
 
   .homepage_label_SHOULDERS { top: 37%; right:5%; }
   .homepage_label_CHEST { bottom: 46%; left: 30%; }
@@ -64,13 +82,13 @@
   .homepage_label_ABS { bottom: 28%; right: 15%; }
   .homepage_label_ADDUCTORS { bottom: 18%; left: 15%; }
   .homepage_label_GLUTES { bottom: 28%; right: 5%; }
-  .homepage_label_LOWER_BACK { bottom: 37%; left: 15%; }
-  .homepage_label_LATS { top: 45%; right: 13%; }
+  .homepage_label_LOWER_BACK { bottom: 34%; left: 15%; }
+  .homepage_label_LATS { top: 50%; right: 20%; }
   .homepage_label_CALVES { bottom: 5%; left: 10%; }
   .homepage_label_HAMSTRINGS { bottom: 14%; right: -6%; }
   .homepage_label_ABDUCTORS { bottom: 18%; left: 15%; }
-  .homepage_label_TRICEPS { top: 44%; left: 20%; }
-  .homepage_label_TRAPS { top: 30%; left: 23%; }
+  .homepage_label_TRICEPS { top: 51%; left: 20%; }
+  .homepage_label_TRAPS { top: 38%; left: 30%; }
 
 
   /* for larger screens */
@@ -80,6 +98,8 @@
       padding: 5px;
     }
 
+    .homepage_label_CALVES { bottom: 8%; left: 12%; }
     .homepage_label_CARDIO { top: 20%; right: -16%; }
+    .homepage_label_TRAPS { top: 35%; left: 30%; }
     .homepage_camera { top:15% !important; left: -10% !important;}
   }
