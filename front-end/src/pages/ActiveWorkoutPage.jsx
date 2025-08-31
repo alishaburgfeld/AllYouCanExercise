@@ -64,7 +64,7 @@ export default function ActiveWorkoutPage({ activeWorkout, setActiveWorkout, act
                 {saveWorkoutError!==null ?
                 <Alert severity="error">{saveWorkoutError}!</Alert>
                 : ""}
-        <CompleteWorkoutModal openCompleteWorkoutModal={openCompleteWorkoutModal} setOpenCompleteWorkoutModal={setOpenCompleteWorkoutModal} activeWorkout={activeWorkout} saveWorkoutError={saveWorkoutError} setSaveWorkoutError={setSaveWorkoutError} isWorkoutSaved={isWorkoutSaved} setIsWorkoutSaved={setIsWorkoutSaved} activeUsername={activeUsername}/>
+        <CompleteWorkoutModal openCompleteWorkoutModal={openCompleteWorkoutModal} setOpenCompleteWorkoutModal={setOpenCompleteWorkoutModal} activeWorkout={activeWorkout} setActiveWorkout={setActiveWorkout} saveWorkoutError={saveWorkoutError} setSaveWorkoutError={setSaveWorkoutError} isWorkoutSaved={isWorkoutSaved} setIsWorkoutSaved={setIsWorkoutSaved} activeUsername={activeUsername}/>
       </Box>
     );
 }

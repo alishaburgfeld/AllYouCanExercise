@@ -418,3 +418,10 @@ pace_per_mile = (duration_in_seconds / 60) / (distance_in_meters / 1609.34)
 
 <!-- count how many times a function is used in the useeffect:
 console.count("💥 useEffect - getWorkoutById called"); -->
+
+need to sort completed workouts by the date completed on top.
+need to create space between the exercise sets and the title of the exercise
+
+need to make assisted pull up record the opposite -- smaller weight would be a record
+
+need to not return user credentials and all the workout details with the record -- create a DTO and send that back.

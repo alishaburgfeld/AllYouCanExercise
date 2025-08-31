@@ -142,7 +142,8 @@ public class WorkoutService {
 
     @Transactional
     public void saveFullWorkout(WorkoutRequestDTO workoutRequestDTO) {
-        log.error("**inside saveFullWorkout in workoutService, workoutRequest is {}", workoutRequestDTO);
+        // log.error("**inside saveFullWorkout in workoutService, workoutRequest is {}",
+        // workoutRequestDTO);
         WorkoutDetailsDTO workoutDetailsDTO = workoutRequestDTO.getWorkoutDetails();
         List<WorkoutExerciseDetailsDTO> workoutExerciseDetails = workoutRequestDTO.getWorkoutExerciseDetails();
         User user = userService.getUserByUsername(workoutDetailsDTO.getUsername()).orElse(null);
@@ -182,10 +183,12 @@ public class WorkoutService {
         // wait to do this after everything has been saved so you have the latest for
         // the records
         for (int i = 0; i < workoutExerciseDetails.size(); i++) {
+            System.out.println("🏋️‍♀️ Inside Workout Service, part where I save the record");
             WorkoutExerciseDetailsDTO workoutExerciseDetailsDTO = workoutExerciseDetails.get(i);
             Exercise exercise = exerciseService.getExerciseById(workoutExerciseDetailsDTO.getExerciseId());
             ExerciseRecord exerciseRecord = exerciseRecordService.saveExerciseRecord(workout, exercise,
                     workoutExerciseDetailsDTO, user);
+            System.out.println("🏋️‍♀️ ********* Workout service - exercise record is" + exerciseRecord);
         }
     }
 

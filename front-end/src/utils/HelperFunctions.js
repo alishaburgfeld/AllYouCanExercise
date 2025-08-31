@@ -196,6 +196,6 @@ export const displayReps = (exercise) => {
       count = 1;
     }
   }
-  console.log("combinedSets are", combinedSets);
+  // console.log("combinedSets are", combinedSets);
   return combinedSets;
 };

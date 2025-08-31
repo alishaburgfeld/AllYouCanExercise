@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
+import CompletedExercise from '../Exercise/CompletedExercise';
 
 export default function WorkoutAccordion({workoutNotes, workoutExerciseDetails, workoutExerciseGroups}) {
     const [groupedWorkoutDetails, setGroupedWorkoutDetails] = useState(null);
@@ -30,32 +31,10 @@ export default function WorkoutAccordion({workoutNotes, workoutExerciseDetails, 
     // }
     }
 
-    function formatSet(set, index) {
-        if (set.reps && set.weight) {
-            return `Set ${index + 1}: ${set.reps} reps at ${set.weight} lbs`;
-        }
-        if (set.durationSeconds && set.distanceMeters) {
-            const minutes = Math.floor(set.durationSeconds / 60);
-            const seconds = set.durationSeconds % 60;
-            const distanceMiles = (set.distanceMeters / 1609.34).toFixed(2);
-            return `Set ${index + 1}: ${minutes}m ${seconds}s for ${distanceMiles} miles`;
-        }
-        if (set.durationSeconds) {
-            const minutes = Math.floor(set.durationSeconds / 60);
-            const seconds = set.durationSeconds % 60;
-            return `Set ${index + 1}: ${minutes}m ${seconds}s`;
-        }
-        return `Set ${index + 1}: No data`;
-    }
-
-    // https://chatgpt.com/share/68b25999-b5f0-800f-953a-9e40ee289410
-
     useEffect(()=> {
     groupByExerciseGroup();
     
   }, [])
-
-
 
     return (
         <>
@@ -104,20 +83,7 @@ export default function WorkoutAccordion({workoutNotes, workoutExerciseDetails, 
                     </Typography>
 
                     {groupedWorkoutDetails[exerciseGroup.toUpperCase()].map((exercise, i) => (
-                    <Box key={i} sx={{ pl: 2, mb: 1 }}>
-                        <Typography sx={{fontSize: "1.1em", mb:".3em"}} fontWeight={500}>
-                        {exercise.exerciseName}
-                        </Typography>
-
-                        {exercise.sets.map((set, j) => (
-                        <Typography
-                            key={j}
-                            sx={{ ml: 2, fontSize: "1.1em", mb: ".3em" }}
-                        >
-                            {formatSet(set, j)}
-                        </Typography>
-                        ))}
-                    </Box>
+                      <CompletedExercise exercise={exercise} index={index}/>
                     ))}
                 </Box>
                 ))}

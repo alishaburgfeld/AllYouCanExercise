@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom";
-import { getAxiosCall } from "../utils/HelperFunctions"
+import { getAxiosCall, convertJavaLocalDateTimeToUserLocalTime } from "../utils/HelperFunctions"
 import { getImageSource } from "../utils/HelperFunctions";
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import { Typography } from "@mui/material";
@@ -12,6 +12,7 @@ import "../css/ExercisePage.css"
 import Alert from '@mui/material/Alert';
 import ExerciseAddedAlert from "../components/Exercise/ExerciseAddedAlert";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ExerciseRecord from "../components/Exercise/ExerciseRecord";
 
 
 function ExercisePage({ setExerciseToBeAdded, activeUsername }) {
@@ -21,7 +22,8 @@ function ExercisePage({ setExerciseToBeAdded, activeUsername }) {
     const [exercise, setExercise] = useState({});
     const [openExerciseAddedAlert, setOpenExerciseAddedAlert] = useState(false);
     const [exerciseHistory, setExerciseHistory] = useState([])
-    const [exerciseRecord, setExerciseRecord] = useState([])
+    const [exerciseRecord, setExerciseRecord] = useState(null)
+    const [lastExercised, setLastExercised] = useState(null);
     const navigate = useNavigate();
     
     const getExercise = async () => {
@@ -45,9 +47,21 @@ function ExercisePage({ setExerciseToBeAdded, activeUsername }) {
     const handleBackClick= () => {
         navigate(`/exercises/${exercise.exerciseGroup}`);
     }
+
+    const getExerciseRecord = async () => {
+      const er = await getAxiosCall(`${VITE_API_BASE_URL}/exercise-records/${activeUsername}/${exerciseId}`);
+      if (er) {
+        console.log('exerciseRecord on exercise page', er)
+        setExerciseRecord(er)
+        const lastExercisedJava = er.lastExercised;
+        const formattedLastExercised = convertJavaLocalDateTimeToUserLocalTime(lastExercisedJava);
+        setLastExercised(formattedLastExercised);
+      }
+    }
   
     useEffect(() => {
       getExercise();
+      getExerciseRecord();
     }, [exerciseId]);
   
     return (
@@ -61,7 +75,7 @@ function ExercisePage({ setExerciseToBeAdded, activeUsername }) {
                 top: "8%",
                 left: "6%",}}
             onClick={() => handleBackClick()}/>
-        <Typography className="exercisePage_title" sx={{ fontSize: "1.8rem", pt: "4rem", mb: "1rem", color: theme.palette.secondary.main }}>
+        <Typography className="exercisePage_title" sx={{ fontSize: "1.2rem", pr: "1rem", pl: "1rem", pt: "5rem", mb: "1rem", color: theme.palette.secondary.main }}>
           {exercise.name}
         </Typography>
         {activeUsername !== null ? (
@@ -72,8 +86,8 @@ function ExercisePage({ setExerciseToBeAdded, activeUsername }) {
               sx={{
                 color: theme.palette.secondary.main,
                 position: "absolute",
-                top: "8%",
-                right: "45%",
+                top: "7%",
+                right: "2%",
               }}
               onClick={() => handleClickToAddWorkout(exercise)}
             >
@@ -90,10 +104,11 @@ function ExercisePage({ setExerciseToBeAdded, activeUsername }) {
                     <Typography className = "exercisePage_description_title" sx={{fontSize:"1.2rem",fontWeight: "600", mt:".5rem", mb:".5rem"}}> Description </Typography>
                     <Typography className = "exercisePage_description_text"> {exercise.description} </Typography>
                 </Box>
-                <Box className="exercisePage_history" sx={{mt:"1rem", borderRadius: 1, border:2, borderColor: theme.palette.secondary.main }}>
+                <Box className="exercisePage_history" sx={{mt:"1rem", borderRadius: 1, border:2, borderColor: theme.palette.secondary.main, display: 'flex', alignItems: 'center', flexDirection: "column" }}>
                     <Typography className = "exercisePage_history_title" sx={{fontSize:"1.2rem",fontWeight: "600", mt:".5rem", mb:".5rem"}}>Last Completed:</Typography>
-                    {exerciseHistory[1]?
-                        <span>{exerciseHistory[1]}</span>
+                    {exerciseRecord!== null?
+                    
+                          <Typography sx={{ color: 'text.primary', mb: 1.5 }}>{lastExercised}</Typography>
                     :
                         <span>Complete a workout to see your history!</span>
                     }
@@ -101,10 +116,10 @@ function ExercisePage({ setExerciseToBeAdded, activeUsername }) {
                 <Box className="exercisePage_records" sx={{mt:"1rem", borderRadius: 1, border:2, borderColor: theme.palette.secondary.main }}>
                 <Typography className = "exercisePage_records_title" sx={{fontSize:"1.2rem",fontWeight: "600", mt:".5rem", mb:".5rem"}}>Records</Typography>
                     
-                    {exerciseRecord[1]?
-                        <span>{exerciseRecord["date or whatever"]}</span>
+                    {exerciseRecord!== null?
+                        <ExerciseRecord exerciseRecord={exerciseRecord} />
                     :
-                        <span>Complete a workout to see your max reps/weight!</span>
+                        <Typography>Complete a workout to see your records!</Typography>
                     }
                 </Box>
                    

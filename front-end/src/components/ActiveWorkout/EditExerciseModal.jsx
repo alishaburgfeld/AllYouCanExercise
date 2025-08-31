@@ -40,7 +40,7 @@ export default function EditExerciseModal({ openEditExerciseModal, setOpenEditEx
                 newSets[i] = {"reps": allReps[i], "weight": allWeights[i]}
             }
             updatedExerciseDetail["sets"] = newSets;
-        console.log('4) EEM updatedexdetails are', updatedExerciseDetail)
+        // console.log('4) EEM updatedexdetails are', updatedExerciseDetail)
         updateActiveWorkoutWithNewStats(updatedExerciseDetail)
         setOpenEditExerciseModal(false);
     };
