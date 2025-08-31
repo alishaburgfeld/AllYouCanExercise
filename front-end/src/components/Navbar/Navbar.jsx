@@ -42,6 +42,11 @@ export default function Navbar({ activeUsername, setActiveUsername, setActiveWor
     handleClose();
   }
 
+  const handleWorkoutHistoryClick = () => {
+    navigate("/workout/history")
+    handleClose();
+  }
+
   const logout = async () => {
     try {
       const csrfToken = Cookies.get('XSRF-TOKEN')
@@ -72,10 +77,11 @@ export default function Navbar({ activeUsername, setActiveUsername, setActiveWor
         <Toolbar>
           <Link to="/">
             <FitnessCenterIcon
-              size="large"
+              className= "fitnessIcon"
+              
               edge="start"
               color="inherit"
-              sx={{ mr: 2, color: theme.palette.secondary.main }}
+              sx={{ pt:1, mr: 2, color: theme.palette.secondary.main, fontSize: "2.3rem" }}
             >
               <MenuIcon />
             </FitnessCenterIcon>
@@ -107,9 +113,10 @@ export default function Navbar({ activeUsername, setActiveUsername, setActiveWor
                   'aria-labelledby': 'basic-button',
                 }}
               >
-                <MenuItem onClick={handleClose}>Records</MenuItem>
+                {/* <MenuItem onClick={handleClose}>Records</MenuItem> */}
                 <MenuItem onClick={()=> {handleActiveWorkoutClick()}}>Active Workout</MenuItem>
-                <MenuItem onClick={handleClose}>Calendar</MenuItem>
+                <MenuItem onClick={()=> {handleWorkoutHistoryClick()}}>Workout History</MenuItem>
+                {/* <MenuItem onClick={handleClose}>Calendar</MenuItem> */}
                 <MenuItem onClick={logout}>Logout</MenuItem>
               </Menu>
             </>

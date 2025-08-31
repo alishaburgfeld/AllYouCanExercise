@@ -11,6 +11,7 @@ import { IconButton } from "@mui/material";
 import "../css/ExercisePage.css"
 import Alert from '@mui/material/Alert';
 import ExerciseAddedAlert from "../components/Exercise/ExerciseAddedAlert";
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 
 function ExercisePage({ setExerciseToBeAdded, activeUsername }) {
@@ -21,6 +22,7 @@ function ExercisePage({ setExerciseToBeAdded, activeUsername }) {
     const [openExerciseAddedAlert, setOpenExerciseAddedAlert] = useState(false);
     const [exerciseHistory, setExerciseHistory] = useState([])
     const [exerciseRecord, setExerciseRecord] = useState([])
+    const navigate = useNavigate();
     
     const getExercise = async () => {
       const response = await getAxiosCall(`${VITE_API_BASE_URL}/exercises/${exerciseId}`);
@@ -39,6 +41,10 @@ function ExercisePage({ setExerciseToBeAdded, activeUsername }) {
       setExerciseToBeAdded(exercise); // Add the entire exercise object
       setOpenExerciseAddedAlert(true);
     };
+
+    const handleBackClick= () => {
+        navigate(`/exercises/${exercise.exerciseGroup}`);
+    }
   
     useEffect(() => {
       getExercise();
@@ -46,7 +52,16 @@ function ExercisePage({ setExerciseToBeAdded, activeUsername }) {
   
     return (
       <Box className="exercisePage">
-        <Typography className="exercisePage_title" sx={{ fontSize: "1.8rem", pt: "4rem", mt: "3.2rem", mb: "1rem", color: theme.palette.secondary.main }}>
+        <ArrowBackIosIcon sx={{
+                color: theme.palette.secondary.main,
+                fill: theme.palette.secondary.main, // force fill color
+                // stroke: theme.palette.secondary.main,
+                fontSize: "2rem",
+                position: "absolute",
+                top: "8%",
+                left: "6%",}}
+            onClick={() => handleBackClick()}/>
+        <Typography className="exercisePage_title" sx={{ fontSize: "1.8rem", pt: "4rem", mb: "1rem", color: theme.palette.secondary.main }}>
           {exercise.name}
         </Typography>
         {activeUsername !== null ? (
