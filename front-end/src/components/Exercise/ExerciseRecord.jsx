@@ -21,7 +21,7 @@ export default function ExerciseRecord({exerciseRecord}) {
         setMaxVolume(exerciseRecord.maxVolume);
         setMaxDistance(exerciseRecord.maxDistanceMeters);
         const duration = formatExerciseDurationIntoMinutesAndSeconds(exerciseRecord.maxDurationSeconds)
-        console.log('er duration is', duration)
+        // console.log('er duration is', duration)
         setMaxDuration(duration);
         setMaxPacePerMile(exerciseRecord.maxPacePerMile);
     }
@@ -57,7 +57,7 @@ export default function ExerciseRecord({exerciseRecord}) {
     <>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start' }}>
             <Typography sx={{ color: 'text.primary', mb: 1.5, mr:"5px" }}>Max Distance: </Typography>
-            <Typography sx={{ color: 'text.primary', mb: 1.5 }}>{maxDistance}</Typography>
+            <Typography sx={{ color: 'text.primary', mb: 1.5 }}>{maxDistance} meters</Typography>
         </Box>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start' }}>
             <Typography sx={{ color: 'text.primary', mb: 1.5, mr:"5px" }}>Max Duration: </Typography>

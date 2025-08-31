@@ -53,7 +53,7 @@ public class UserController {
             userService.setSessionAndSecurityContext(user, request);
 
             Authentication authtest = SecurityContextHolder.getContext().getAuthentication();
-            System.out.println("Authenticated user: " + authtest.getName());
+            // System.out.println("Authenticated user: " + authtest.getName());
             return ResponseEntity.ok(user.getUsername());
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");

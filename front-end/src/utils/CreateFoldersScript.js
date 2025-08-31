@@ -30,9 +30,9 @@ muscleGroups.forEach((group) => {
 
   if (!fs.existsSync(folderPath)) {
     fs.mkdirSync(folderPath);
-    console.log(`Created folder: ${folderPath}`);
+    // console.log(`Created folder: ${folderPath}`);
   } else {
-    console.log(`Folder already exists: ${folderPath}`);
+    // console.log(`Folder already exists: ${folderPath}`);
   }
 });
 

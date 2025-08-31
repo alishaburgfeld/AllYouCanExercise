@@ -35,7 +35,7 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
             workoutExerciseDetails.push({"exerciseId": exercise.exerciseId, "sets": sets})
         })
         finalWorkoutDetails["workoutExerciseDetails"] = workoutExerciseDetails
-        console.log('finalWorkoutDetails are', finalWorkoutDetails)
+        // console.log('finalWorkoutDetails are', finalWorkoutDetails)
        setWorkoutDetails(finalWorkoutDetails)
         // console.log('in complete workout modal, workoutDetails are', workoutDetails)
     }
@@ -68,7 +68,7 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
     }
 
     const handleSave = async () => {
-        console.log('in handle save, workout details are', workoutDetails, "title is", title)
+        // console.log('in handle save, workout details are', workoutDetails, "title is", title)
         const response = await postAxiosCall(`${VITE_API_BASE_URL}/workouts/full/save`, workoutDetails);
             if (response.success) {
             console.log('handleworkoutsave response', response)

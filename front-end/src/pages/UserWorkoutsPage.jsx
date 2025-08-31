@@ -16,9 +16,9 @@ const getUserWorkouts = async () => {
     if (response) {
         // console.log('response for get User workouts', response)
         setUserWorkouts(response)
-        console.log(
-            'response in getUserWorkouts is', response
-        )
+        // console.log(
+        //     'response in getUserWorkouts is', response
+        // )
     }
     else {
         // console.log("no response for get user workouts")

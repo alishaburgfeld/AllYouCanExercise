@@ -8,7 +8,6 @@ export default function ViewWorkoutPage({activeUsername}) {
     const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
     const [workoutById, setWorkoutById] = useState(null)
     const { workoutId } = useParams();
-    console.log('workoutId is', workoutId)
 
 const getWorkoutById = async () => {
     const response = await getAxiosCall(`${VITE_API_BASE_URL}/workouts/${workoutId}`)

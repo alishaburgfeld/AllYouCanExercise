@@ -51,7 +51,7 @@ export const getAxiosCall = async (url) => {
 };
 
 export const postAxiosCall = async (url, body) => {
-  console.log("url in post axios call is", url, "body is", body);
+  // console.log("url in post axios call is", url, "body is", body);
   try {
     const csrfToken = Cookies.get("XSRF-TOKEN");
     const response = await axios.post(url, body, {
@@ -104,7 +104,13 @@ export const convertToJavaTime = (dateTime) => {
       second: "2-digit",
       hour12: false, // 24-hour format (matches Java LocalDateTime format)
     })
-    .replace(",", ""); // Remove comma for Java compatibility
+    .replace(",", "") // Remove the comma for Java compatibility
+    .replace(
+      /(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2}):(\d{2})/,
+      "$3-$1-$2T$4:$5:$6",
+    );
+
+  console.log("time formated for java", timeFormattedForJava);
   return timeFormattedForJava;
 };
 

@@ -97,7 +97,7 @@ const addToActiveWorkout = (exerciseToBeAdded) => {
     updatedActiveWorkout = [setExerciseInfo(exerciseToBeAdded)]
   }
 
-  console.log('updatedActiveWorkout is', updatedActiveWorkout);
+  // console.log('updatedActiveWorkout is', updatedActiveWorkout);
   setActiveWorkout(updatedActiveWorkout);
 };
 

@@ -27,7 +27,7 @@ export default function EditExerciseModal({ openEditExerciseModal, setOpenEditEx
     const saveCardioEdits = () => {
         let updatedExerciseDetail = {...exercise}
         const newSets = [{"distance": inputDistance, "duration": inputDuration, "distanceMeasurement": inputDistanceMeasurement}]
-        console.log('3) in savecardio edits newsets are', newSets)
+        // console.log('3) in savecardio edits newsets are', newSets)
         updatedExerciseDetail["sets"] = newSets;
         updateActiveWorkoutWithNewStats(updatedExerciseDetail)
         setOpenEditExerciseModal(false);

@@ -48,12 +48,13 @@ const addToImages = async () => {
         ] = `new URL('./${exercise.exerciseGroup}/${exercise.name}.png', import.meta.url).href`;
         // console.log(IMAGES[exercise.name]);
       } else {
-        console.log(exercise.name, "already in images");
+        // console.log(exercise.name, "already in images");
       }
     } else {
-      console.log(
-        `Image for ${exercise.name} does not exist in the folder`,
-      );
+      console
+        .log
+        // `Image for ${exercise.name} does not exist in the folder`,
+        ();
     }
   });
 
