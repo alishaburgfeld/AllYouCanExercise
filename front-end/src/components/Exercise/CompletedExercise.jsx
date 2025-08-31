@@ -8,15 +8,17 @@ export default function CompletedExercise({exercise, index}) {
                 return `Set ${index + 1}: ${set.reps} reps at ${set.weight} lbs`;
             }
             if (set.durationSeconds && set.distanceMeters) {
-                const minutes = Math.floor(set.durationSeconds / 60);
+                const hours = Math.floor(set.durationSeconds / 3600);
+                const minutes = Math.floor((set.durationSeconds % 3600) / 60);
                 const seconds = set.durationSeconds % 60;
                 const distanceMiles = (set.distanceMeters / 1609.34).toFixed(2);
-                return `Set ${index + 1}: ${minutes}m ${seconds}s for ${distanceMiles} miles`;
+                return `Set ${index + 1}: ${hours > 0 ? hours + 'h ' : ""} ${minutes}m ${seconds}s for ${distanceMiles} miles`;
             }
             if (set.durationSeconds) {
+                const hours = Math.floor(set.durationSeconds / 3600);
                 const minutes = Math.floor(set.durationSeconds / 60);
                 const seconds = set.durationSeconds % 60;
-                return `Set ${index + 1}: ${minutes}m ${seconds}s`;
+                return `Set ${index + 1}: ${hours > 0 ? hours + 'h ' : ""} ${minutes}m ${seconds}s`;
             }
             return `Set ${index + 1}: No data`;
         }

@@ -1,7 +1,7 @@
 import { Button, Box, Typography, Dialog, DialogActions, DialogContent, DialogTitle, TextField, DialogContentText } from "@mui/material";
 import { useTheme } from '@mui/material/styles';
 import SetsRepsDuration from "./SetsRepsDuration"
-import { postAxiosCall, toMeters, convertToSeconds } from "../../utils/HelperFunctions";
+import { postAxiosCall, toMeters, convertToSeconds, convertToJavaTime } from "../../utils/HelperFunctions";
 import { useState, useEffect } from 'react';
 import DateTimeComponent from "./DateTimeComponent";
 
@@ -17,7 +17,7 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
 
     
     const defineWorkoutDetails = () => {
-        const timeFormattedForJava = selectedDateTime.toISOString().slice(0, 19);
+        const timeFormattedForJava = convertToJavaTime(selectedDateTime);
 
         // console.log('in complete workout modal, active workout is', activeWorkout)
         let workoutExerciseDetails = [];
@@ -35,7 +35,7 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
             workoutExerciseDetails.push({"exerciseId": exercise.exerciseId, "sets": sets})
         })
         finalWorkoutDetails["workoutExerciseDetails"] = workoutExerciseDetails
-        console.log('finalWorkoutDetails are', finalWorkoutDetails)
+        // console.log('finalWorkoutDetails are', finalWorkoutDetails)
        setWorkoutDetails(finalWorkoutDetails)
         // console.log('in complete workout modal, workoutDetails are', workoutDetails)
     }
@@ -68,7 +68,7 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
     }
 
     const handleSave = async () => {
-        console.log('in handle save, workout details are', workoutDetails, "title is", title)
+        // console.log('in handle save, workout details are', workoutDetails, "title is", title)
         const response = await postAxiosCall(`${VITE_API_BASE_URL}/workouts/full/save`, workoutDetails);
             if (response.success) {
             console.log('handleworkoutsave response', response)

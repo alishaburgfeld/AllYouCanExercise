@@ -9,9 +9,9 @@ import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import CompletedExercise from '../Exercise/CompletedExercise';
 
-export default function WorkoutAccordion({workoutNotes, workoutExerciseDetails, workoutExerciseGroups}) {
+export default function WorkoutExerciseDetails({workoutNotes, workoutExerciseDetails, workoutExerciseGroups}) {
     const [groupedWorkoutDetails, setGroupedWorkoutDetails] = useState(null);
-    console.log('workout exercise groups on accordion', workoutExerciseGroups)
+    // console.log('workout exercise groups on accordion', workoutExerciseGroups)
     const groupByExerciseGroup = () =>{
         const grouped = workoutExerciseDetails.reduce((acc, exercise) => {
             const { exerciseGroup } = exercise;

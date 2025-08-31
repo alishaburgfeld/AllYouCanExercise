@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useTheme } from '@mui/material/styles';
 import { toTitleCase, convertJavaLocalDateTimeToUserLocalTime } from "../../utils/HelperFunctions"
-import WorkoutAccordion from './WorkoutAccordion';
+import WorkoutAccordion from './WorkoutExerciseDetails';
 
 
 export default function WorkoutHistoryCard({workout}) {
@@ -36,21 +36,19 @@ export default function WorkoutHistoryCard({workout}) {
     // console.log('typeOf', typeof(workoutDetails.completedAt))
     const formattedCompletedDate = convertJavaLocalDateTimeToUserLocalTime(workoutDetails.completedAt)
     setWorkoutCompletedDate(formattedCompletedDate);
-    console.log('workoutexerciseDetails on history card', workoutExerciseDetails)
+    // console.log('workoutexerciseDetails on history card', workoutExerciseDetails)
     determineExerciseGroups(workoutExerciseDetails);
   }
 
   const determineExerciseGroups = (workoutExerciseDetails) => {
     const exerciseGroups = [];
     workoutExerciseDetails.forEach((exercise)=> {
-        console.log('exercise is', exercise)
         const eg = exercise.exerciseGroup
         const egTitleCase = toTitleCase(eg);
         if(!exerciseGroups.includes(egTitleCase)) {
           exerciseGroups.push(egTitleCase);
         }
     })
-    console.log('exercisegroups are on history card', exerciseGroups)
 
     setWorkoutExerciseGroups(exerciseGroups);
     setJoinedExerciseGroups(exerciseGroups.join());

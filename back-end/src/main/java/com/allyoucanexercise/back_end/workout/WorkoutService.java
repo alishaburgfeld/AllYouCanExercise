@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.persistence.EntityNotFoundException;
 
+import com.allyoucanexercise.back_end.exerciseSet.DistanceMeasurement;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSet;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetDTO;
 import com.allyoucanexercise.back_end.user.User;
@@ -163,12 +164,13 @@ public class WorkoutService {
             for (int j = 0; j < exerciseSetDTOs.size(); j++) {
                 Integer setOrder = j + 1;
                 ExerciseSetDTO setDTO = exerciseSetDTOs.get(j);
+                Float pace = calculatePace(setDTO.getDistanceMeters(), setDTO.getDurationSeconds());
                 // log.error("inside ex serv. workout save. exercise set is {}", setDTO);
                 try {
                     exerciseSetService.saveExerciseSet(workoutExercise, setOrder,
                             setDTO.getReps(), setDTO.getWeight(),
                             setDTO.getDurationSeconds(), setDTO.getDistanceMeters(), setDTO.getDistanceMeasurement(),
-                            setDTO.getPacePerMile());
+                            pace);
                 } catch (Exception e) {
                     log.error("Error saving exercise set: {}", setDTO, e);
                     throw e; // rethrow to preserve behavior
@@ -183,12 +185,14 @@ public class WorkoutService {
         // wait to do this after everything has been saved so you have the latest for
         // the records
         for (int i = 0; i < workoutExerciseDetails.size(); i++) {
-            System.out.println("🏋️‍♀️ Inside Workout Service, part where I save the record");
+            // System.out.println("🏋️‍♀️ Inside Workout Service, part where I save the
+            // record");
             WorkoutExerciseDetailsDTO workoutExerciseDetailsDTO = workoutExerciseDetails.get(i);
             Exercise exercise = exerciseService.getExerciseById(workoutExerciseDetailsDTO.getExerciseId());
             ExerciseRecord exerciseRecord = exerciseRecordService.saveExerciseRecord(workout, exercise,
                     workoutExerciseDetailsDTO, user);
-            System.out.println("🏋️‍♀️ ********* Workout service - exercise record is" + exerciseRecord);
+            // System.out.println("🏋️‍♀️ ********* Workout service - exercise record is" +
+            // exerciseRecord);
         }
     }
 
@@ -209,5 +213,19 @@ public class WorkoutService {
         exerciseSetDTODetails.setDistanceMeters(exerciseSet.getDistanceMeters());
         exerciseSetDTODetails.setDistanceMeasurement(exerciseSet.getDistanceMeasurement());
         return exerciseSetDTODetails;
+    }
+
+    public Float calculatePace(Float distanceMeters, Integer durationSeconds) {
+        Float pace = 0f;
+        if (distanceMeters == null || durationSeconds == null) {
+            return pace;
+        }
+        if (distanceMeters > 0 && durationSeconds > 0) {
+            pace = ((float) (durationSeconds / 60)) / ((float) (distanceMeters / 1609.34));
+        }
+        // System.out.println("🏋️‍♀️ WS - pace - pace is and distanceMeters is" +
+        // pace);
+        // System.out.println("🏋️‍♀️ WS - pace - distanceMeters is" + distanceMeters);
+        return pace;
     }
 }

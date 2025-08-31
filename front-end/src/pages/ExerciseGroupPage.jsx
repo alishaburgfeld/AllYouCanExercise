@@ -49,7 +49,7 @@ function ExerciseGroupPage() {
                 fontSize: "2rem",
                 position: "absolute",
                 top: "8%",
-                left: "6%",}}
+                left: "4%",}}
             onClick={() => handleBackClick()}/>
             <Typography className="exerciseGroup_title" sx={{fontSize:"1.8rem", pt:"4rem", color: theme.palette.secondary.main}}>
                 {exerciseGroup}

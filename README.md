@@ -425,3 +425,11 @@ need to create space between the exercise sets and the title of the exercise
 need to make assisted pull up record the opposite -- smaller weight would be a record
 
 need to not return user credentials and all the workout details with the record -- create a DTO and send that back.
+
+# BUGS BUGS BUGS
+
+P2: If you hit save on a cardio exercise when you haven't edited anything on the active workout it clears out all the values.
+
+P2: If you try to add an exercise to an active workout that already had one it will replace the entire active workout with that exercise
+
+P3: titles and buttons on exercises look weird on desktop

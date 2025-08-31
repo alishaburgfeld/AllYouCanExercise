@@ -42,6 +42,7 @@ public class ExerciseSetService {
         exerciseSet.setDurationSeconds(durationSeconds);
         exerciseSet.setDistanceMeters(distanceMeters);
         exerciseSet.setDistanceMeasurement(distanceMeasurement);
+        // System.out.println("🏋️‍♀️ iside ex set save, pace is" + pacePerMile);
         exerciseSet.setPacePerMile(pacePerMile);
         return exerciseSetRepository.save(exerciseSet);
     }

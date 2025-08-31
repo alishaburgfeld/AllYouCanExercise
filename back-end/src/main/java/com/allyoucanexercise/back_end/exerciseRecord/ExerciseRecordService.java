@@ -45,12 +45,34 @@ public class ExerciseRecordService {
         return exerciseRecordRepository.findByUserAndExercise(user, exercise);
     }
 
-    public Optional<ExerciseRecord> getExerciseRecord(String username, Long exerciseId) {
+    public ExerciseRecordResponseDTO getExerciseRecord(String username, Long exerciseId) {
         User user = userService.getUserByUsername(username).orElse(null);
         Exercise exercise = exerciseService.getExerciseById(exerciseId);
         ExerciseRecord exerciseRecord = exerciseRecordRepository.findByUserAndExercise(user, exercise).orElse(null);
-        System.out.println("exercise record in getExercise Record is" + exerciseRecord + "exerciseId is" + exerciseId);
-        return exerciseRecordRepository.findByUserAndExercise(user, exercise);
+        if (exerciseRecord != null) {
+
+            ExerciseRecordResponseDTO exerciseRecordResponseDTO = new ExerciseRecordResponseDTO(
+                    exerciseId,
+                    exerciseRecord.getLastExercised(),
+                    exerciseRecord.getLastExercisedWorkout().getId(),
+                    exerciseRecord.getMaxSets(),
+                    exerciseRecord.getMaxSetsWorkout().getId(),
+                    exerciseRecord.getMaxReps(),
+                    exerciseRecord.getMaxRepsWorkout().getId(),
+                    exerciseRecord.getMaxWeight(),
+                    exerciseRecord.getMaxWeightWorkout().getId(),
+                    exerciseRecord.getMaxVolume(),
+                    exerciseRecord.getMaxVolumeWorkout().getId(),
+                    exerciseRecord.getMaxDurationSeconds(),
+                    exerciseRecord.getMaxDurationWorkout().getId(),
+                    exerciseRecord.getMaxDistanceMeters(),
+                    exerciseRecord.getMaxDistanceWorkout().getId(),
+                    exerciseRecord.getMaxPacePerMile(),
+                    exerciseRecord.getMaxPaceWorkout().getId());
+            return exerciseRecordResponseDTO;
+        } else {
+            return null;
+        }
     }
 
     public ExerciseRecord saveExerciseRecord(ExerciseRecord exerciseRecord) {
@@ -103,10 +125,11 @@ public class ExerciseRecordService {
         for (ExerciseSetDTO set : exerciseSetDTOs) {
             if (set.getReps() != null && set.getWeight() != null) {
                 volumeInWorkout += (set.getReps() * set.getWeight());
+                maxRepsInWorkout = setMaxValueForWorkoutIfCurrentSetValueIsHigher(set.getReps(), maxRepsInWorkout);
+                maxWeightInWorkout = setMaxValueForWorkoutIfCurrentSetValueIsHigher((float) set.getWeight(),
+                        (float) maxWeightInWorkout);
             }
-            maxRepsInWorkout = setMaxValueForWorkoutIfCurrentSetValueIsHigher(set.getReps(), maxRepsInWorkout);
-            maxWeightInWorkout = setMaxValueForWorkoutIfCurrentSetValueIsHigher((float) set.getWeight(),
-                    (float) maxWeightInWorkout);
+
             maxDurationInWorkout = setMaxValueForWorkoutIfCurrentSetValueIsHigher(set.getDurationSeconds(),
                     maxDurationInWorkout);
             maxDistanceInWorkout = setMaxValueForWorkoutIfCurrentSetValueIsHigher(set.getDistanceMeters(),
@@ -117,14 +140,14 @@ public class ExerciseRecordService {
         Optional<ExerciseRecord> existingExerciseRecordOpt = getExerciseRecord(user, exercise);
 
         if (existingExerciseRecordOpt.isEmpty()) {
-            System.out.println("🏋️‍♀️ ERS - record is empty.");
+            // System.out.println("🏋️‍♀️ ERS - record is empty.");
             return this.saveExerciseRecord(exercise, user, lastExercised, workout, totalSets, workout,
                     maxRepsInWorkout, workout, maxWeightInWorkout, workout, volumeInWorkout, workout,
                     maxDurationInWorkout, workout, maxDistanceInWorkout, workout, maxPaceInWorkout, workout);
         }
 
         else {
-            System.out.println("🏋️‍♀️ ERS - record is NOT empty.");
+            // System.out.println("🏋️‍♀️ ERS - record is NOT empty.");
             ExerciseRecord existingExerciseRecord = existingExerciseRecordOpt.get();
             if (isWorkoutValueHigherThanExistingExerciseRecordValue(maxRepsInWorkout,
                     existingExerciseRecord.getMaxReps())) {

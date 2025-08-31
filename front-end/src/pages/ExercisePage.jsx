@@ -51,7 +51,7 @@ function ExercisePage({ setExerciseToBeAdded, activeUsername }) {
     const getExerciseRecord = async () => {
       const er = await getAxiosCall(`${VITE_API_BASE_URL}/exercise-records/${activeUsername}/${exerciseId}`);
       if (er) {
-        console.log('exerciseRecord on exercise page', er)
+        // console.log('exerciseRecord on exercise page', er)
         setExerciseRecord(er)
         const lastExercisedJava = er.lastExercised;
         const formattedLastExercised = convertJavaLocalDateTimeToUserLocalTime(lastExercisedJava);
@@ -87,7 +87,7 @@ function ExercisePage({ setExerciseToBeAdded, activeUsername }) {
                 color: theme.palette.secondary.main,
                 position: "absolute",
                 top: "7%",
-                right: "2%",
+                right: "1%",
               }}
               onClick={() => handleClickToAddWorkout(exercise)}
             >
@@ -106,21 +106,35 @@ function ExercisePage({ setExerciseToBeAdded, activeUsername }) {
                 </Box>
                 <Box className="exercisePage_history" sx={{mt:"1rem", borderRadius: 1, border:2, borderColor: theme.palette.secondary.main, display: 'flex', alignItems: 'center', flexDirection: "column" }}>
                     <Typography className = "exercisePage_history_title" sx={{fontSize:"1.2rem",fontWeight: "600", mt:".5rem", mb:".5rem"}}>Last Completed:</Typography>
-                    {exerciseRecord!== null?
-                    
-                          <Typography sx={{ color: 'text.primary', mb: 1.5 }}>{lastExercised}</Typography>
-                    :
+                    {activeUsername === null ? (
+                      <>
+                        <span>Login to add workout</span>
+                      </>
+                      ) : (
+                      exerciseRecord !== null ? (
+                        <Typography sx={{ color: 'text.primary', mb: 1.5 }}>
+                          {lastExercised}
+                        </Typography>
+                      ) : (
                         <span>Complete a workout to see your history!</span>
-                    }
+                      )
+                    )}
                 </Box>
                 <Box className="exercisePage_records" sx={{mt:"1rem", borderRadius: 1, border:2, borderColor: theme.palette.secondary.main }}>
                 <Typography className = "exercisePage_records_title" sx={{fontSize:"1.2rem",fontWeight: "600", mt:".5rem", mb:".5rem"}}>Records</Typography>
-                    
+                  {activeUsername === null ? (
+                      <>
+                        <span>Login to add workout</span>
+                      </>
+                      ) : (  
+                    <>
                     {exerciseRecord!== null?
                         <ExerciseRecord exerciseRecord={exerciseRecord} />
                     :
                         <Typography>Complete a workout to see your records!</Typography>
                     }
+                    </>    
+                  )}
                 </Box>
                    
             </Box>

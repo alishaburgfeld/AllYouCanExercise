@@ -21,11 +21,12 @@ public class ExerciseRecordController {
     }
 
     @GetMapping("/{username}/{exercise_id}")
-    public ResponseEntity<ExerciseRecord> getExerciseRecord(@PathVariable String username,
+    public ResponseEntity<ExerciseRecordResponseDTO> getExerciseRecord(@PathVariable String username,
             @PathVariable Long exercise_id) {
-        ExerciseRecord exerciseRecord = exerciseRecordService.getExerciseRecord(username, exercise_id).orElse(null);
-        if (exerciseRecord != null) {
-            return ResponseEntity.ok(exerciseRecord);
+        ExerciseRecordResponseDTO exerciseRecordResponseDTO = exerciseRecordService.getExerciseRecord(username,
+                exercise_id);
+        if (exerciseRecordResponseDTO != null) {
+            return ResponseEntity.ok(exerciseRecordResponseDTO);
         } else {
             return ResponseEntity.notFound().build();
         }
