@@ -55,7 +55,7 @@ export default function SetsRepsDuration({ exercise, updateActiveWorkoutWithNewS
   }
 
   return (
-    <Box sx={{ position: "absolute", bottom: 4, right: 0, left: 0, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+    <Box sx={{ position: "absolute", bottom: 4, right: 0, left: 0, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
       {exercise.exerciseType === 'CARDIO' ? displayCardioSets() : displayRepSets()}
       <IconButton onClick={handleEditClick}>
         <Edit />

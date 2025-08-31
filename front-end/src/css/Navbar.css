@@ -6,6 +6,10 @@
     z-index: 10; /* Ensures navbar is above other content */
 }
 
+.fitnessIcon {
+  transform: rotate(315deg);
+}
+
 
  /* for larger screens */
  @media (min-width: 769px) {

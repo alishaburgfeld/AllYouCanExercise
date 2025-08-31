@@ -11,6 +11,7 @@ import Navbar from "./components/Navbar/Navbar"
 import ExercisePage from "./pages/ExercisePage";
 import ActiveWorkoutPage from "./pages/ActiveWorkoutPage";
 import ViewWorkoutPage from "./pages/ViewWorkoutPage";
+import UserWorkoutsPage from "./pages/UserWorkoutsPage";
 import ExerciseGroupPage from "./pages/ExerciseGroupPage";
 import { ThemeProvider } from "@mui/material/styles";
 import { getAxiosCall } from "./utils/HelperFunctions"
@@ -52,7 +53,7 @@ function App() {
         "hours": 0,
         "minutes": 15,
         "seconds": 0
-      }, "distance": 1, "distanceUnit": "mi"},
+      }, "distance": 1, "distanceMeasurement": "MILES"},
     ]
     if (exercise) {
       let exerciseInfo = {
@@ -71,7 +72,7 @@ function App() {
   };
 
   const updateActiveWorkoutWithNewStats = (updatedExerciseInfo) => {
-    console.log('on app.jsx, updatedExerciseInfo is', updatedExerciseInfo)
+    // console.log('on app.jsx, updatedExerciseInfo is', updatedExerciseInfo)
     const updatedActiveWorkout = activeWorkout.map(exerciseDetail => {
       if (exerciseDetail.exerciseId === updatedExerciseInfo.exerciseId) {
         return updatedExerciseInfo;  // Replace the exercise with updated one
@@ -149,7 +150,8 @@ useEffect(()=> {
             />
             <Route path="/exercise/:exerciseId" element={<ExercisePage setExerciseToBeAdded= {setExerciseToBeAdded} activeUsername={activeUsername}/>} />
             <Route path="/workout" element={<ActiveWorkoutPage activeWorkout={activeWorkout} activeUsername={activeUsername} setActiveWorkout={setActiveWorkout} updateActiveWorkoutWithNewStats={updateActiveWorkoutWithNewStats}/>} />
-            <Route path="/workout/:workoutId" element={<ViewWorkoutPage />} /> 
+            <Route path="/workout/history" element={<UserWorkoutsPage activeUsername={activeUsername} />} />
+            <Route path="/workout/:workoutId" element={<ViewWorkoutPage activeUsername={activeUsername}/>} /> 
           {/* the variable name after : must match the variable name you set with <variable> = useParams() */}
           </Routes>
         </BrowserRouter>

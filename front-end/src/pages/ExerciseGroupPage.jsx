@@ -6,6 +6,7 @@ import "../css/ExerciseGroupPage.css";
 import { Typography} from "@mui/material";
 import { useTheme } from '@mui/material/styles';
 import { getImageSource } from "../utils/HelperFunctions";
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 // TO-DO: Eventually I can create a component for "records" etc. each of these components can be querying different tables in my database so that I don't have to worry about everything being on one record
 function ExerciseGroupPage() {
@@ -30,10 +31,10 @@ function ExerciseGroupPage() {
         navigate(`/exercise/${exerciseId}`);
     }
 
+    const handleBackClick= () => {
+        navigate(`/`);
+    }
     
-    
-
-
   useEffect(()=> {
     getExercisesByGroup();
   }, [exerciseGroup])
@@ -41,6 +42,15 @@ function ExerciseGroupPage() {
     return (
         
         <Box className="exerciseGroup">
+            <ArrowBackIosIcon sx={{
+                color: theme.palette.secondary.main,
+                fill: theme.palette.secondary.main, // force fill color
+                // stroke: theme.palette.secondary.main,
+                fontSize: "2rem",
+                position: "absolute",
+                top: "8%",
+                left: "6%",}}
+            onClick={() => handleBackClick()}/>
             <Typography className="exerciseGroup_title" sx={{fontSize:"1.8rem", pt:"4rem", color: theme.palette.secondary.main}}>
                 {exerciseGroup}
             </Typography>

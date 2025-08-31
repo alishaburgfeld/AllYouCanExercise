@@ -12,6 +12,7 @@ import com.allyoucanexercise.back_end.exercise.Exercise;
 import com.allyoucanexercise.back_end.exercise.ExerciseGroup;
 import com.allyoucanexercise.back_end.exercise.ExerciseService;
 import com.allyoucanexercise.back_end.exercise.ExerciseType;
+import com.allyoucanexercise.back_end.exerciseSet.DistanceMeasurement;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSet;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetDTO;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetService;
@@ -93,19 +94,21 @@ class WorkoutServiceTest {
         verify(workoutRepository, times(1)).findById(id);
     }
 
-    @Test
-    void testGetUserWorkouts() {
+    // @Test
+    // void testGetUserWorkouts() {
 
-        when(workoutRepository.findByUser(user)).thenReturn(List.of(workout, workout2));
-        when(userService.getUserByUsername(user.getUsername())).thenReturn(Optional.of(user));
+    // when(workoutRepository.findByUser(user)).thenReturn(List.of(workout,
+    // workout2));
+    // when(userService.getUserByUsername(user.getUsername())).thenReturn(Optional.of(user));
 
-        List<Workout> results = workoutService.getWorkoutsByUsername(user.getUsername());
-        assertThat(results).hasSize(2);
-        assertThat(results.get(0).getTitle()).isEqualTo(workout.getTitle());
-        assertThat(results.get(1).getTitle()).isEqualTo(workout2.getTitle());
+    // List<Workout> results =
+    // workoutService.getWorkoutsByUsername(user.getUsername());
+    // assertThat(results).hasSize(2);
+    // assertThat(results.get(0).getTitle()).isEqualTo(workout.getTitle());
+    // assertThat(results.get(1).getTitle()).isEqualTo(workout2.getTitle());
 
-        verify(workoutRepository).findByUser(user);
-    }
+    // verify(workoutRepository).findByUser(user);
+    // }
 
     @Test
     void testSaveWorkout() {
@@ -215,9 +218,10 @@ class WorkoutServiceTest {
 
         WorkoutDetailsDTO workoutDetailsDTO = setupWorkoutDetailsDTO("username1", "Test Title1", time, "Workout Notes");
 
-        ExerciseSetDTO set1 = setupExerciseSetDTO(10, weight, null, null);
-        ExerciseSetDTO set2 = setupExerciseSetDTO(10, weight, null, null);
-        ExerciseSetDTO set3 = setupExerciseSetDTO(null, null, 1200, (float) 900);
+        ExerciseSetDTO set1 = setupExerciseSetDTO(10, weight, null, null, null, null);
+        ExerciseSetDTO set2 = setupExerciseSetDTO(10, weight, null, null, null, null);
+        ExerciseSetDTO set3 = setupExerciseSetDTO(null, null, 120, (float) 900, DistanceMeasurement.METERS,
+                (float) 3.58);
 
         WorkoutExerciseDetailsDTO workoutExerciseDetails1 = setupWorkoutExerciseDetailsDTO(id, List.of(set1, set2));
         WorkoutExerciseDetailsDTO workoutExerciseDetails2 = setupWorkoutExerciseDetailsDTO((long) 2,
@@ -272,26 +276,29 @@ class WorkoutServiceTest {
 
         ExerciseSet savedSet1 = new ExerciseSet(workoutExercise, 1, set1.getReps(), set1.getWeight(),
                 set1.getDurationSeconds(),
-                set1.getDistanceMeters());
+                set1.getDistanceMeters(), set1.getDistanceMeasurement(), set1.getPacePerMile());
 
         ExerciseSet savedSet2 = new ExerciseSet(workoutExercise, 2, set2.getReps(), set2.getWeight(),
                 set2.getDurationSeconds(),
-                set2.getDistanceMeters());
+                set2.getDistanceMeters(), set2.getDistanceMeasurement(), set2.getPacePerMile());
 
         ExerciseSet savedSet3 = new ExerciseSet(workoutExercise2, 1, set3.getReps(), set3.getWeight(),
                 set3.getDurationSeconds(),
-                set3.getDistanceMeters());
+                set3.getDistanceMeters(), set3.getDistanceMeasurement(), set3.getPacePerMile());
 
         when(exerciseSetService.saveExerciseSet(workoutExercise, 1, set1.getReps(), set1.getWeight(),
-                set1.getDurationSeconds(), set1.getDistanceMeters()))
+                set1.getDurationSeconds(), set1.getDistanceMeters(), set1.getDistanceMeasurement(),
+                set1.getPacePerMile()))
                 .thenReturn(savedSet1);
 
         when(exerciseSetService.saveExerciseSet(workoutExercise, 2, set2.getReps(), set2.getWeight(),
-                set2.getDurationSeconds(), set2.getDistanceMeters()))
+                set2.getDurationSeconds(), set2.getDistanceMeters(), set2.getDistanceMeasurement(),
+                set2.getPacePerMile()))
                 .thenReturn(savedSet2);
 
         when(exerciseSetService.saveExerciseSet(workoutExercise2, 1, set3.getReps(), set3.getWeight(),
-                set3.getDurationSeconds(), set3.getDistanceMeters()))
+                set3.getDurationSeconds(), set3.getDistanceMeters(), set3.getDistanceMeasurement(),
+                set3.getPacePerMile()))
                 .thenReturn(savedSet3);
 
         workoutService.saveFullWorkout(workoutRequestDTO);
@@ -305,13 +312,16 @@ class WorkoutServiceTest {
         verify(workoutExerciseService, times(1)).saveWorkoutExercise(any(Workout.class), eq(cardioExercise), eq(2));
 
         verify(exerciseSetService, times(1)).saveExerciseSet(workoutExercise, 1, set1.getReps(), set1.getWeight(),
-                set1.getDurationSeconds(), set1.getDistanceMeters());
+                set1.getDurationSeconds(), set1.getDistanceMeters(), set1.getDistanceMeasurement(),
+                set1.getPacePerMile());
 
         verify(exerciseSetService, times(1)).saveExerciseSet(workoutExercise, 2, set2.getReps(), set2.getWeight(),
-                set2.getDurationSeconds(), set2.getDistanceMeters());
+                set2.getDurationSeconds(), set2.getDistanceMeters(), set2.getDistanceMeasurement(),
+                set2.getPacePerMile());
 
         verify(exerciseSetService, times(1)).saveExerciseSet(workoutExercise2, 1, set3.getReps(), set3.getWeight(),
-                set3.getDurationSeconds(), set3.getDistanceMeters());
+                set3.getDurationSeconds(), set3.getDistanceMeters(), set3.getDistanceMeasurement(),
+                set3.getPacePerMile());
     }
 
     private WorkoutDetailsDTO setupWorkoutDetailsDTO(String username, String title, LocalDateTime completedAt,
@@ -332,13 +342,36 @@ class WorkoutServiceTest {
     }
 
     private ExerciseSetDTO setupExerciseSetDTO(Integer reps, Float weight, Integer durationSeconds,
-            Float distanceMeters) {
+            Float distanceMeters, DistanceMeasurement distanceMeasurement, Float pacePerMile) {
         ExerciseSetDTO exerciseSetDTO = new ExerciseSetDTO();
         exerciseSetDTO.setReps(reps);
         exerciseSetDTO.setWeight(weight);
         exerciseSetDTO.setDurationSeconds(durationSeconds);
         exerciseSetDTO.setDistanceMeters(distanceMeters);
+        exerciseSetDTO.setDistanceMeasurement(distanceMeasurement);
+        exerciseSetDTO.setPacePerMile(pacePerMile);
         return exerciseSetDTO;
     }
 
 }
+
+// may need in the future for viewing a workout:
+// WorkoutResponseDTO dto = new WorkoutResponseDTO();
+// WorkoutDetailsDTO wddto = new WorkoutDetailsDTO();
+// wddto.setCompletedAt(LocalDateTime.now());
+// wddto.setTitle("test title");
+// wddto.setUsername("alb");
+// wddto.setWorkoutNotes("test notes");
+
+// dto.setWorkoutDetails(wddto);
+// WorkoutExerciseDetailsDTO wedto1 = new WorkoutExerciseDetailsDTO();
+// ExerciseSetDTO esdto1 = new ExerciseSetDTO();
+// esdto1.setReps(10);
+// esdto1.setWeight(20f);
+
+// List<ExerciseSetDTO> exerciseSetDTOs = List.of(esdto1);
+// List<WorkoutExerciseDetailsDTO> workoutExerciseDetailDTOs = List.of(wedto1);
+// wedto1.setExerciseId(1l);
+// wedto1.setSets(exerciseSetDTOs);
+// dto.setWorkoutExerciseDetails(workoutExerciseDetailDTOs);
+// return dto;

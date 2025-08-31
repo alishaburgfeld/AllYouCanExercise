@@ -1,9 +1,10 @@
 .exercisePage {
     justify-content: center;
     align-items: center;
-    height: 100%;
+    height: 100vh;
     width: 100vw;
     background-color: #BDBDBD;
+    overflow-y: auto;
     /* overflow: hidden; */
 }
 
@@ -25,8 +26,11 @@
 
     .exercisePage_title {
       font-size:2rem !important;
-      padding-top:5rem !important;
-      margin-top:2rem !important;
+      /* padding-top:5rem !important; */
+      /* margin-top:2rem !important; */
+      word-wrap: break-word;
+    max-width: 70vw;
+    overflow-wrap: normal
     }
 
     .exercisePage_image {

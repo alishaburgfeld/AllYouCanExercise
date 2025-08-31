@@ -59,7 +59,8 @@ function Homepage() {
                     <span key={label} role="link" className={`homepage_label_${label}`} aria-label={`homepage_label_${label}`} onClick={() => handleLabelClick(label)}>{label}</span>
                 ))}
                 </Box>
-            <IconButton className = "homepage_camera" aria-label="camera-switch" sx={{color: theme.palette.secondary.main, position: "absolute", right: "42%", top: "13%"}} onClick={() => handleAngleSwitch()}>
+            <IconButton className = "homepage_camera" aria-label="camera-switch" sx={{color: theme.palette.secondary.main, position: "absolute", right: "42%", top: "13%"}} 
+                onClick={() => handleAngleSwitch()}>
                 <CameraswitchIcon fontSize ="large"/>
             </IconButton>
         </Box>

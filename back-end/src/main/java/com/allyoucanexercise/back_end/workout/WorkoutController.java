@@ -8,6 +8,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,6 +23,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.allyoucanexercise.back_end.ExerciseApplication;
+import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetDTO;
+import com.allyoucanexercise.back_end.workoutExercise.WorkoutExerciseDetailsDTO;
 
 import jakarta.validation.Valid;
 
@@ -41,9 +44,10 @@ public class WorkoutController {
         return workoutService.getAllWorkouts();
     }
 
-    @GetMapping("/{id}")
-    Workout findById(@PathVariable Long id) {
-        return workoutService.getWorkoutById(id);
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    WorkoutResponseDTO findById(@PathVariable Long id) {
+        WorkoutResponseDTO fullWorkout = workoutService.getFullWorkoutAndExerciseDetailsById(id);
+        return fullWorkout;
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -66,8 +70,10 @@ public class WorkoutController {
     }
 
     @GetMapping("/user/{username}")
-    List<Workout> findByUsername(@PathVariable String username) {
-        return workoutService.getWorkoutsByUsername(username);
+    List<WorkoutResponseDTO> findByUsername(@PathVariable String username) {
+        List<WorkoutResponseDTO> allWorkouts = workoutService.getWorkoutsByUsername(username);
+        // System.out.println("***** FULLWORKOUTdetails = " + allWorkouts);
+        return allWorkouts;
     }
 
     @PostMapping("/full/save")
@@ -91,21 +97,21 @@ public class WorkoutController {
 // "username": "xusername",
 // "title": "xtitle",
 // "completedAt": "2025-04-13T14:00:00",
-// "notes": "xnotes"
+// "workoutNotes": "xnotes"
 // },
 // "workoutExerciseDetails": [
 // {
 // "exerciseId": 1,
 // "sets": [
-// { "reps": 10, "weight": 50.0, "duration": 0, "distance": 0 },
-// { "reps": 8, "weight": 55.0, "duration": 0, "distance": 0 }
+// { "reps": 10, "weight": 50.0},
+// { "reps": 8, "weight": 55.0 }
 // ]
 // },
 // {
-// "id": 2,
+// "exerciseId": 2,
 // "sets": [
-// { "reps": 15, "weight": 0.0, "duration": 900, "distance": 2000 },
-// { "reps": 10, "weight": 0.0, "duration": 600, "distance": 1500 }
+// { "durationSeconds": 900, "distanceMeters": 2000, "distanceMeasurement":
+// "MILES" },
 // ]
 // }
 // ]

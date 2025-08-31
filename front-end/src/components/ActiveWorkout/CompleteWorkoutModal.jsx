@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import DateTimeComponent from "./DateTimeComponent";
 
 
-export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpenCompleteWorkoutModal, activeWorkout, activeUsername, isWorkoutSaved, setIsWorkoutSaved, saveWorkoutError, setSaveWorkoutError}) {
+export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpenCompleteWorkoutModal, activeWorkout, setActiveWorkout, activeUsername, isWorkoutSaved, setIsWorkoutSaved, saveWorkoutError, setSaveWorkoutError}) {
     const theme = useTheme();
     const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
     const [workoutDetails, setWorkoutDetails] = useState(null)
@@ -19,7 +19,7 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
     const defineWorkoutDetails = () => {
         const timeFormattedForJava = selectedDateTime.toISOString().slice(0, 19);
 
-        console.log('in complete workout modal, active workout is', activeWorkout)
+        // console.log('in complete workout modal, active workout is', activeWorkout)
         let workoutExerciseDetails = [];
         let finalWorkoutDetails = {
             "workoutDetails": {
@@ -43,6 +43,7 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
     const handleSaveSuccess = () => {
         setIsWorkoutSaved(true)
         setTimeout(() => setOpenCompleteWorkoutModal(false), 500);
+        setTimeout(() => setActiveWorkout(null), 500);
         // probably need to set the activeworkout to null and then redirect to homepage
       };
 
@@ -55,10 +56,10 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
                 delete convertedSet.duration;
             }
             if (set.distance) {
-                let meters = toMeters(set.distance, set.distanceUnit)
+                let meters = toMeters(set.distance, set.distanceMeasurement)
                 let formattedMeters = Math.round(meters * 100) / 100
                 convertedSet.distanceMeters = formattedMeters
-                delete convertedSet.distanceUnit;
+                // delete convertedSet.distanceMeasurement;
                 delete convertedSet.distance;
             }
             finalSets.push(convertedSet)

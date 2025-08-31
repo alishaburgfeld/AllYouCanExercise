@@ -1,7 +1,10 @@
 package com.allyoucanexercise.back_end.workout;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,10 +17,13 @@ import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.persistence.EntityNotFoundException;
 
+import com.allyoucanexercise.back_end.exerciseSet.ExerciseSet;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetDTO;
 import com.allyoucanexercise.back_end.user.User;
 import com.allyoucanexercise.back_end.user.UserService;
 import com.allyoucanexercise.back_end.exercise.ExerciseService;
+import com.allyoucanexercise.back_end.exerciseRecord.ExerciseRecord;
+import com.allyoucanexercise.back_end.exerciseRecord.ExerciseRecordService;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetService;
 import com.allyoucanexercise.back_end.exercise.Exercise;
 import com.allyoucanexercise.back_end.workoutExercise.WorkoutExercise;
@@ -30,15 +36,17 @@ public class WorkoutService {
     private final UserService userService;
     private final WorkoutExerciseService workoutExerciseService;
     private final ExerciseService exerciseService;
+    private final ExerciseRecordService exerciseRecordService;
     private final ExerciseSetService exerciseSetService;
     private static final Logger log = LoggerFactory.getLogger(WorkoutService.class);
 
     public WorkoutService(WorkoutRepository workoutRepository, UserService userService,
             WorkoutExerciseService workoutExerciseService, ExerciseService exerciseService,
-            ExerciseSetService exerciseSetService) {
+            ExerciseSetService exerciseSetService, ExerciseRecordService exerciseRecordService) {
         this.workoutRepository = workoutRepository;
         this.userService = userService;
         this.exerciseService = exerciseService;
+        this.exerciseRecordService = exerciseRecordService;
         this.exerciseSetService = exerciseSetService;
         this.workoutExerciseService = workoutExerciseService;
     }
@@ -50,6 +58,40 @@ public class WorkoutService {
     public Workout getWorkoutById(Long id) {
         return workoutRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Exercise not found"));
+    }
+
+    // public WorkoutDetailsDTO getFullWorkoutAndExerciseDetailsById(Long id) {
+    public WorkoutResponseDTO getFullWorkoutAndExerciseDetailsById(Long id) {
+
+        Workout workout = workoutRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Exercise not found"));
+
+        WorkoutDetailsDTO workoutDetailsDTO = addValuesToWorkoutDetailsDTO(workout);
+
+        List<WorkoutExerciseDetailsDTO> allWorkoutExerciseDetails = new ArrayList<>();
+        List<WorkoutExercise> allWorkoutExercises = workoutExerciseService.getAllWorkoutExercisesByWorkout(workout);
+        for (WorkoutExercise workoutExercise : allWorkoutExercises) {
+            WorkoutExerciseDetailsDTO workoutExerciseDetailsDTO = new WorkoutExerciseDetailsDTO();
+            List<ExerciseSet> exerciseSets = exerciseSetService.getAllExerciseSetsByWorkoutExercise(workoutExercise);
+            List<ExerciseSetDTO> exerciseSetDTOs = new ArrayList<>();
+            for (ExerciseSet exerciseSet : exerciseSets) {
+                ExerciseSetDTO exerciseSetDTODetails = addValuesToExerciseSetDTO(exerciseSet);
+                exerciseSetDTOs.add(exerciseSetDTODetails);
+            }
+            System.err.println("workoutExercise line 81 is" + workoutExercise);
+            System.err.println("workoutExercise line 81 is" + workoutExercise.getExercise());
+            workoutExerciseDetailsDTO.setExerciseId(workoutExercise.getExercise().getId());
+            workoutExerciseDetailsDTO.setExerciseName(workoutExercise.getExercise().getName());
+            workoutExerciseDetailsDTO.setExerciseGroup(workoutExercise.getExercise().getExerciseGroup());
+            workoutExerciseDetailsDTO.setSets(exerciseSetDTOs);
+            allWorkoutExerciseDetails.add(workoutExerciseDetailsDTO);
+        }
+        WorkoutResponseDTO workoutResponseDTO = new WorkoutResponseDTO();
+        workoutResponseDTO.setWorkoutDetails(workoutDetailsDTO);
+        workoutResponseDTO.setWorkoutExerciseDetails(allWorkoutExerciseDetails);
+        // log.error("*****", workoutResponseDTO);
+        return workoutResponseDTO;
+        // return workoutDetailsDTO;
     }
 
     @Transactional
@@ -75,11 +117,16 @@ public class WorkoutService {
         workoutRepository.deleteById(id);
     }
 
-    public List<Workout> getWorkoutsByUsername(String username) {
+    public List<WorkoutResponseDTO> getWorkoutsByUsername(String username) {
         // what exception does this throw?
         User user = userService.getUserByUsername(username).orElse(null);
         List<Workout> workouts = workoutRepository.findByUser(user);
-        return workouts;
+        List<WorkoutResponseDTO> allUserWorkouts = new ArrayList<>();
+        for (Workout workout : workouts) {
+            WorkoutResponseDTO workoutResponseDTO = this.getFullWorkoutAndExerciseDetailsById(workout.getId());
+            allUserWorkouts.add(workoutResponseDTO);
+        }
+        return allUserWorkouts;
     }
 
     @Transactional
@@ -95,7 +142,8 @@ public class WorkoutService {
 
     @Transactional
     public void saveFullWorkout(WorkoutRequestDTO workoutRequestDTO) {
-        log.error("**inside saveFullWorkout in workoutService, workoutRequest is {}", workoutRequestDTO);
+        // log.error("**inside saveFullWorkout in workoutService, workoutRequest is {}",
+        // workoutRequestDTO);
         WorkoutDetailsDTO workoutDetailsDTO = workoutRequestDTO.getWorkoutDetails();
         List<WorkoutExerciseDetailsDTO> workoutExerciseDetails = workoutRequestDTO.getWorkoutExerciseDetails();
         User user = userService.getUserByUsername(workoutDetailsDTO.getUsername()).orElse(null);
@@ -111,6 +159,7 @@ public class WorkoutService {
                     exerciseOrder);
 
             List<ExerciseSetDTO> exerciseSetDTOs = workoutExerciseDetailsDTO.getSets();
+            String exerciseSetDistanceMeasurement;
             for (int j = 0; j < exerciseSetDTOs.size(); j++) {
                 Integer setOrder = j + 1;
                 ExerciseSetDTO setDTO = exerciseSetDTOs.get(j);
@@ -118,7 +167,8 @@ public class WorkoutService {
                 try {
                     exerciseSetService.saveExerciseSet(workoutExercise, setOrder,
                             setDTO.getReps(), setDTO.getWeight(),
-                            setDTO.getDurationSeconds(), setDTO.getDistanceMeters());
+                            setDTO.getDurationSeconds(), setDTO.getDistanceMeters(), setDTO.getDistanceMeasurement(),
+                            setDTO.getPacePerMile());
                 } catch (Exception e) {
                     log.error("Error saving exercise set: {}", setDTO, e);
                     throw e; // rethrow to preserve behavior
@@ -130,6 +180,34 @@ public class WorkoutService {
 
             }
         }
+        // wait to do this after everything has been saved so you have the latest for
+        // the records
+        for (int i = 0; i < workoutExerciseDetails.size(); i++) {
+            System.out.println("🏋️‍♀️ Inside Workout Service, part where I save the record");
+            WorkoutExerciseDetailsDTO workoutExerciseDetailsDTO = workoutExerciseDetails.get(i);
+            Exercise exercise = exerciseService.getExerciseById(workoutExerciseDetailsDTO.getExerciseId());
+            ExerciseRecord exerciseRecord = exerciseRecordService.saveExerciseRecord(workout, exercise,
+                    workoutExerciseDetailsDTO, user);
+            System.out.println("🏋️‍♀️ ********* Workout service - exercise record is" + exerciseRecord);
+        }
     }
 
+    WorkoutDetailsDTO addValuesToWorkoutDetailsDTO(Workout workout) {
+        WorkoutDetailsDTO workoutDetailsDTO = new WorkoutDetailsDTO();
+        workoutDetailsDTO.setUsername(workout.getUser().getUsername());
+        workoutDetailsDTO.setCompletedAt(workout.getCompletedAt());
+        workoutDetailsDTO.setTitle(workout.getTitle());
+        workoutDetailsDTO.setWorkoutNotes(workout.getWorkoutNotes());
+        return workoutDetailsDTO;
+    };
+
+    ExerciseSetDTO addValuesToExerciseSetDTO(ExerciseSet exerciseSet) {
+        ExerciseSetDTO exerciseSetDTODetails = new ExerciseSetDTO();
+        exerciseSetDTODetails.setReps(exerciseSet.getReps());
+        exerciseSetDTODetails.setWeight(exerciseSet.getWeight());
+        exerciseSetDTODetails.setDurationSeconds(exerciseSet.getDurationSeconds());
+        exerciseSetDTODetails.setDistanceMeters(exerciseSet.getDistanceMeters());
+        exerciseSetDTODetails.setDistanceMeasurement(exerciseSet.getDistanceMeasurement());
+        return exerciseSetDTODetails;
+    }
 }

@@ -15,6 +15,7 @@ export default function SignUpPage() {
   const [confirmedPassword, setConfirmedPassword] = useState('');
   const [matchingPasswords,setMatchingPasswords] = useState(true)
   const [signedUp, setSignedUp] = useState(false)
+  const [signUpError, setSignUpError] = useState(null);
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -33,9 +34,12 @@ export default function SignUpPage() {
     else {
       setMatchingPasswords(true);
       const response = await postAxiosCall(`${VITE_API_BASE_URL}/auth/register`, { username, password });
-      if (response) {
+      if (response.success=== true) {
         setSignedUp(true)
         setTimeout(() => loginRedirect(), 1500);
+      }
+      else if (response.success=== false) {
+        setSignUpError("Username is already taken");
       }
     }
   }
@@ -118,6 +122,9 @@ export default function SignUpPage() {
         {signedUp ?
           <Alert severity="success">You have successfully signed up, you can now login!</Alert>
           : ""}
+        {signUpError!==null ?
+                <Alert severity="error">{signUpError}!</Alert>
+                : ""}
       </form>
     </Box>
   );
