@@ -6,6 +6,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useState, useEffect } from "react";
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
 
 export default function WorkoutAccordion({workoutNotes, workoutExerciseDetails, workoutExerciseGroups}) {
     const [groupedWorkoutDetails, setGroupedWorkoutDetails] = useState(null);
@@ -61,39 +62,58 @@ export default function WorkoutAccordion({workoutNotes, workoutExerciseDetails, 
         
         {groupedWorkoutDetails !==null?
 
-            <Accordion sx={{width: "100%", 
+            <Accordion sx={{
+            width: "100%", 
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'flex-start',
             justifyContent: 'flex-start', 
-            backgroundColor: "transparent"
+            backgroundColor: "transparent",
+            borderTop: "1px solid",
             }}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
+              
               aria-controls="panel1-content"
               id="panel1-header"
               sx={{
                  display: 'flex',
+                 mb: 0,
+                 justifyContent: "center",
             // flexDirection: 'column',
-            // alignItems: 'center',
+            alignItems: 'center',
               }}
             >
-              <Typography component="span" sx={{alignSelf:"center"}}>View More</Typography>
+              <Typography variant = "h6" sx={{alignSelf:"center", mb: 0, textAlign: "center"}}>View More</Typography>
+              
             </AccordionSummary>
-            <AccordionDetails>
-              <Typography variant="h6" sx={{mb: "1.5rem"}}>Notes </Typography>
+            <Divider />
+            <AccordionDetails sx={{mt: 0, display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            justifyContent: "flex-start"}}>
+              <Typography variant="h6" sx={{mb: "1rem", fontWeight: 550}}>Notes </Typography>
               <Typography sx={{mb: "1.5rem"}}>{workoutNotes} </Typography>
-              <Typography variant="h6" sx={{mb: "1.5rem"}}>Exercises </Typography>
+              <Typography variant="h6" sx={{mb: "1rem", fontWeight: 550}}>Exercises </Typography>
+              <Box sx={{mb:0 }}>
+
               {workoutExerciseGroups.map((exerciseGroup, index) => (
-                <Box key={index} sx={{ pb: 5 }}>
-                    <Typography variant="subtitle1">{exerciseGroup}</Typography>
-    
-                    {groupedWorkoutDetails[exerciseGroup.toUpperCase()].map((exerciseInformation, i) => (
+                <Box key={index} sx={{ mb: 2, display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+                    <Typography fontWeight={450} sx={{fontSize: "1.3em"}}>
+                    {exerciseGroup}
+                    </Typography>
+
+                    {groupedWorkoutDetails[exerciseGroup.toUpperCase()].map((exercise, i) => (
                     <Box key={i} sx={{ pl: 2, mb: 1 }}>
-                        <Typography>{exerciseInformation.exerciseName}</Typography>
-    
-                        {exerciseInformation.sets.map((set, j) => (
-                        <Typography key={j} variant="body2" sx={{ ml: 2 }}>
+                        <Typography sx={{fontSize: "1.1em", mb:".3em"}} fontWeight={500}>
+                        {exercise.exerciseName}
+                        </Typography>
+
+                        {exercise.sets.map((set, j) => (
+                        <Typography
+                            key={j}
+                            sx={{ ml: 2, fontSize: "1.1em", mb: ".3em" }}
+                        >
                             {formatSet(set, j)}
                         </Typography>
                         ))}
@@ -101,6 +121,8 @@ export default function WorkoutAccordion({workoutNotes, workoutExerciseDetails, 
                     ))}
                 </Box>
                 ))}
+              </Box>
+
             </AccordionDetails>
           </Accordion>
             : ""

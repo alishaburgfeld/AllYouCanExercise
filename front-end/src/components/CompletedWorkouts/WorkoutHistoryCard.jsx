@@ -67,25 +67,29 @@ export default function WorkoutHistoryCard({workout}) {
       <>
       {workoutExerciseGroups !== null ?
 
-        <Box sx={{ minWidth: 8/10, maxWidth:9/10, mt:"1rem", maxHeight: 3/10, display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center', 
-            }}>
+        <Box sx={{
+                display: "flex",
+                justifyContent: "center",
+                mt: 2,
+                px: 1,
+              }}>
             
-          <Card variant="outlined" className= "workoutHistoryCard" sx={{borderRadius:7, display: 'flex',
-            flexDirection: 'column', borderColor: theme.palette.secondary.main,
-            borderWidth: 2,
-            borderStyle: 'solid', 
-            alignItems: 'center',
-            justifyContent: 'center',
-            mb:0,
-            backgroundColor: "transparent"
+          <Card variant="outlined" className= "workoutHistoryCard" 
+          sx={{
+              width: "100%",       // card always full width of parent
+              maxWidth: 600,       // consistent max size across all cards
+              borderRadius: 3,
+              borderColor: theme.palette.secondary.main,
+              borderWidth: 2,
+              borderStyle: 'solid',
+              mb: 2,
+              backgroundColor: "rgba(255,255,255,0.02)", // slight contrast
+              boxShadow: 2,        // subtle elevation
             }}>
             <>
             
             <CardContent>
-            <Typography variant="h5" component="div" sx={{mb: 1.5}}>
+            <Typography variant="h5" component="div" sx={{mb: 1.5, fontWeight: 550}}>
                 {workoutTitle}
             </Typography>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center' }}>
@@ -94,21 +98,11 @@ export default function WorkoutHistoryCard({workout}) {
             </Box>
             
             <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', mb: 1 }}>
-              <Typography sx={{ color: 'text.primary', mb: 1.5, mr:"5px" }}>Targeted: </Typography>
-              <Typography sx={{ color: 'text.primary', mb: 1.5 }}>{joinedExerciseGroups}</Typography>
+              <Typography sx={{ color: 'text.primary', mb: 0, mr:"5px" }}>Targeted: </Typography>
+              <Typography sx={{ color: 'text.primary', mb: 0 }}>{joinedExerciseGroups}</Typography>
             </Box>
-            {/* <Divider sx={{ mb: 0 }} /> */}
             </CardContent>
-            {/* <CardActions sx={{ pt: 0 }}> */}
-                {/* <Button 
-                size="small"
-                onClick={handleWorkoutClick}
-                sx={{ textTransform: 'none' }}
-                >
-                  <Typography variant="h5" component="div" sx={{ color: theme.palette.primary.dark}}>View Details</Typography>    
-                </Button> */}
                 <WorkoutAccordion workoutNotes={workoutNotes} workoutExerciseDetails={workoutExerciseDetails} workoutExerciseGroups={workoutExerciseGroups}/>
-            {/* </CardActions> */}
             </>
           </Card>
         </Box>
