@@ -93,9 +93,25 @@ export const toTitleCase = (str) => {
   });
 };
 
+export const convertToJavaTime = (dateTime) => {
+  const timeFormattedForJava = dateTime
+    .toLocaleString("en-US", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false, // 24-hour format (matches Java LocalDateTime format)
+    })
+    .replace(",", ""); // Remove comma for Java compatibility
+  return timeFormattedForJava;
+};
+
 export const convertJavaLocalDateTimeToUserLocalTime = (
   javaLocalDateTimeString,
 ) => {
+  console.log("javalocaltime is", javaLocalDateTimeString);
   const dateObject = new Date(javaLocalDateTimeString);
   const formatter = new Intl.DateTimeFormat("en-US", {
     year: "numeric",
@@ -111,9 +127,14 @@ export const convertJavaLocalDateTimeToUserLocalTime = (
 export const formatExerciseDurationIntoMinutesAndSeconds = (
   durationInSeconds,
 ) => {
-  const minutes = Math.floor(durationInSeconds / 60);
+  const hours = Math.floor(durationInSeconds / 3600);
+  const minutes = Math.floor((durationInSeconds % 3600) / 60);
   const seconds = durationInSeconds % 60;
-  return `${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
+
+  const paddedMinutes = minutes.toString().padStart(2, "0");
+  const paddedSeconds = seconds.toString().padStart(2, "0");
+
+  return `${hours}:${paddedMinutes}:${paddedSeconds}`;
 };
 
 export const convertFromSeconds = (totalSeconds) => {

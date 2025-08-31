@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useTheme } from '@mui/material/styles';
 import { toTitleCase, convertJavaLocalDateTimeToUserLocalTime } from "../../utils/HelperFunctions"
-import WorkoutAccordion from './WorkoutAccordion';
+import WorkoutAccordion from './WorkoutExerciseDetails';
 
 
 export default function WorkoutHistoryCard({workout}) {

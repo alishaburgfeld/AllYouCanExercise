@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { Typography, Box } from "@mui/material";
+import {formatExerciseDurationIntoMinutesAndSeconds} from "../../utils/HelperFunctions"
 
 export default function ExerciseRecord({exerciseRecord}) {
 
@@ -19,7 +20,9 @@ export default function ExerciseRecord({exerciseRecord}) {
         setMaxWeight(exerciseRecord.maxWeight);
         setMaxVolume(exerciseRecord.maxVolume);
         setMaxDistance(exerciseRecord.maxDistanceMeters);
-        setMaxDuration(exerciseRecord.maxDurationSeconds);
+        const duration = formatExerciseDurationIntoMinutesAndSeconds(exerciseRecord.maxDurationSeconds)
+        console.log('er duration is', duration)
+        setMaxDuration(duration);
         setMaxPacePerMile(exerciseRecord.maxPacePerMile);
     }
 

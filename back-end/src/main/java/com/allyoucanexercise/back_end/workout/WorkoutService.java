@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.persistence.EntityNotFoundException;
 
+import com.allyoucanexercise.back_end.exerciseSet.DistanceMeasurement;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSet;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetDTO;
 import com.allyoucanexercise.back_end.user.User;
@@ -163,12 +164,13 @@ public class WorkoutService {
             for (int j = 0; j < exerciseSetDTOs.size(); j++) {
                 Integer setOrder = j + 1;
                 ExerciseSetDTO setDTO = exerciseSetDTOs.get(j);
+                Float pace = calculatePace(setDTO.getDistanceMeters(), setDTO.getDurationSeconds());
                 // log.error("inside ex serv. workout save. exercise set is {}", setDTO);
                 try {
                     exerciseSetService.saveExerciseSet(workoutExercise, setOrder,
                             setDTO.getReps(), setDTO.getWeight(),
                             setDTO.getDurationSeconds(), setDTO.getDistanceMeters(), setDTO.getDistanceMeasurement(),
-                            setDTO.getPacePerMile());
+                            pace);
                 } catch (Exception e) {
                     log.error("Error saving exercise set: {}", setDTO, e);
                     throw e; // rethrow to preserve behavior
@@ -209,5 +211,15 @@ public class WorkoutService {
         exerciseSetDTODetails.setDistanceMeters(exerciseSet.getDistanceMeters());
         exerciseSetDTODetails.setDistanceMeasurement(exerciseSet.getDistanceMeasurement());
         return exerciseSetDTODetails;
+    }
+
+    public Float calculatePace(Float distanceMeters, Integer durationSeconds) {
+        Float pace;
+        if (distanceMeters != 0 && durationSeconds != 0) {
+            pace = ((float) (durationSeconds / 60)) / ((float) (distanceMeters / 1609.34));
+        } else {
+            pace = (float) 0;
+        }
+        return pace;
     }
 }

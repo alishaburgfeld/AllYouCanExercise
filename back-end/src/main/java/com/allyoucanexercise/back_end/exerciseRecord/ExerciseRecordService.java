@@ -103,10 +103,11 @@ public class ExerciseRecordService {
         for (ExerciseSetDTO set : exerciseSetDTOs) {
             if (set.getReps() != null && set.getWeight() != null) {
                 volumeInWorkout += (set.getReps() * set.getWeight());
+                maxRepsInWorkout = setMaxValueForWorkoutIfCurrentSetValueIsHigher(set.getReps(), maxRepsInWorkout);
+                maxWeightInWorkout = setMaxValueForWorkoutIfCurrentSetValueIsHigher((float) set.getWeight(),
+                        (float) maxWeightInWorkout);
             }
-            maxRepsInWorkout = setMaxValueForWorkoutIfCurrentSetValueIsHigher(set.getReps(), maxRepsInWorkout);
-            maxWeightInWorkout = setMaxValueForWorkoutIfCurrentSetValueIsHigher((float) set.getWeight(),
-                    (float) maxWeightInWorkout);
+
             maxDurationInWorkout = setMaxValueForWorkoutIfCurrentSetValueIsHigher(set.getDurationSeconds(),
                     maxDurationInWorkout);
             maxDistanceInWorkout = setMaxValueForWorkoutIfCurrentSetValueIsHigher(set.getDistanceMeters(),

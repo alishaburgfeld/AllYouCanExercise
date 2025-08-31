@@ -1,7 +1,7 @@
 import { Button, Box, Typography, Dialog, DialogActions, DialogContent, DialogTitle, TextField, DialogContentText } from "@mui/material";
 import { useTheme } from '@mui/material/styles';
 import SetsRepsDuration from "./SetsRepsDuration"
-import { postAxiosCall, toMeters, convertToSeconds } from "../../utils/HelperFunctions";
+import { postAxiosCall, toMeters, convertToSeconds, convertToJavaTime } from "../../utils/HelperFunctions";
 import { useState, useEffect } from 'react';
 import DateTimeComponent from "./DateTimeComponent";
 
@@ -17,7 +17,7 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
 
     
     const defineWorkoutDetails = () => {
-        const timeFormattedForJava = selectedDateTime.toISOString().slice(0, 19);
+        const timeFormattedForJava = convertToJavaTime(selectedDateTime);
 
         // console.log('in complete workout modal, active workout is', activeWorkout)
         let workoutExerciseDetails = [];
