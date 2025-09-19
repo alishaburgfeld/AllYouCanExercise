@@ -446,10 +446,6 @@ need to not return user credentials and all the workout details with the record 
 
 # BUGS BUGS BUGS
 
-P2: If you hit save on a cardio exercise when you haven't edited anything on the active workout it clears out all the values.
-
-P2: If you try to add an exercise to an active workout that already had one it will replace the entire active workout with that exercise
-
 P3: titles and buttons on exercises look weird on desktop
 
 <!-- should take a look at this to hopefully be able to downgrade to a smaller ec2 instance type (serve react files in S3):
