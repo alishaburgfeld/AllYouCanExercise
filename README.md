@@ -149,6 +149,18 @@ This method compares the workoutValue to the existing value in the record using 
 
 The issue appeared as Axios logging two responses: one with an empty string and one with the correct DTO, even though only one real HTTP request was made. The root cause was a backend HttpLoggingFilter that used ContentCachingResponseWrapper to log the response, but did not flush the response buffer before logging. This caused the logging code to capture the response body before it was written, leading to an empty string being logged and misinterpreted on the frontend. The fix was to call responseWrapper.flushBuffer() before logging the response body and ensure responseWrapper.copyBodyToResponse() is called afterward to properly forward the buffered response to the client. On the frontend, Axios was logging every response globally in the helper function, which included unrelated or empty responses (like preflight calls or other API responses), creating the illusion of a duplicate or faulty response. Once we moved the relevant console log to the getWorkoutById() function and filtered out the global logging noise, we confirmed everything was working correctly. Final changes: updated the logging filter to flush the buffer before reading the response, and removed or scoped Axios console logs to avoid confusion.
 
+When you terminate your ec2 and start it again it changes your private ip4 address, which means I need to edit it on route 53 as well.
+
+Issues with caching and having my ec2 display old build and files:
+https://chatgpt.com/share/68b5e810-e2ec-800f-93b6-3f4d3106f627
+
+If a flyway migration fails and you get errors that indicate your version is off - then you can delete the failed migration from the flyway_schema_history table.
+Exec into the mysql container, use the exercise-database table, then run these:
+SELECT \* FROM flyway_schema_history;
+
+if need to delete a migration gone bad:
+DELETE FROM flyway_schema_history WHERE version = '2.0.1';
+
 <!-- Helpful Videos and Tutorials-->
 
 Create React App: -https://www.freecodecamp.org/news/how-to-build-a-react-project-with-create-react-app-in-10-steps/
@@ -241,7 +253,7 @@ https://chatgpt.com/share/6840ef16-d8c4-800f-8648-ff8f17d04206
 
 Connect to my ec2 instance:
 cd Documents/AllYouCanExercise
-ssh -i all-you-can-exercise-key-pair.pem ec2-user@44.208.25.2
+ssh -i all-you-can-exercise-key-pair.pem ec2-user@44.201.165.158
 
 sudo su (puts you in sudo so you don't have to write sudo in front of all the following commands)
 
@@ -249,7 +261,7 @@ sudo su (puts you in sudo so you don't have to write sudo in front of all the fo
     single command to use:
     scp -i all-you-can-exercise-key-pair.pem \
     ./front-end/nginx.conf \
-    ec2-user@44.208.25.2:/home/ec2-user/front-end -->
+    ec2-user@44.201.165.158:/home/ec2-user/front-end -->
 
 -d does it in detached mode, if I need to see the logs because something is not working then remove the -d.
 
@@ -261,10 +273,14 @@ docker stop all containers: docker stop $(docker ps -q)
 # start ec2
 
 1. cd Documents/AllYouCanExercise
-2. ssh -i all-you-can-exercise-key-pair.pem ec2-user@44.208.25.2
+2. ssh -i all-you-can-exercise-key-pair.pem ec2-user@44.201.165.158
 3. sudo su
 4. service docker start
 5. docker-compose up --build OR docker-compose up --build -d
+
+If made a bunch of changes to front-end files, run this to make sure its not caching my old files:
+docker compose build --no-cache frontend
+docker compose up -d
 
 <!-- steps to take when having made front-end changes -->
 
@@ -281,13 +297,13 @@ cd .. -->
 # copy over all front-end files on vscode:
 
 If I don't have front-end and src and public folders yet:
-ssh -i all-you-can-exercise-key-pair.pem ec2-user@44.208.25.2 "mkdir -p /home/ec2-user/front-end/src"
+ssh -i all-you-can-exercise-key-pair.pem ec2-user@44.201.165.158 "mkdir -p /home/ec2-user/front-end/src"
 
-ssh -i all-you-can-exercise-key-pair.pem ec2-user@44.208.25.2 "mkdir -p /home/ec2-user/front-end/public"
+ssh -i all-you-can-exercise-key-pair.pem ec2-user@44.201.165.158 "mkdir -p /home/ec2-user/front-end/public"
 
 scp -i all-you-can-exercise-key-pair.pem \
  -r ./front-end/src \
- ec2-user@44.208.25.2:/home/ec2-user/front-end/
+ ec2-user@44.201.165.158:/home/ec2-user/front-end/
 
 scp -i all-you-can-exercise-key-pair.pem \
  ./front-end/package.json \
@@ -296,15 +312,15 @@ scp -i all-you-can-exercise-key-pair.pem \
  ./front-end/Dockerfile \
  ./front-end/index.html \
  ./front-end/vite.config.js \
- ec2-user@44.208.25.2:/home/ec2-user/front-end
+ ec2-user@44.201.165.158:/home/ec2-user/front-end
 
  <!-- scp -i all-you-can-exercise-key-pair.pem \
  ./front-end/nginx.conf \
- ec2-user@44.208.25.2:/home/ec2-user/front-end -->
+ ec2-user@44.201.165.158:/home/ec2-user/front-end -->
 
 scp -i all-you-can-exercise-key-pair.pem \
  -r ./front-end/public \
- ec2-user@44.208.25.2:/home/ec2-user/front-end
+ ec2-user@44.201.165.158:/home/ec2-user/front-end
 
 <!-- steps to take when having made root level compose.yml/.env files: -->
 
@@ -317,11 +333,11 @@ rm -rf docker-compose.yml
 
 scp -i all-you-can-exercise-key-pair.pem \
  ./.env.production \
- ec2-user@44.208.25.2:/home/ec2-user
+ ec2-user@44.201.165.158:/home/ec2-user
 
 scp -i all-you-can-exercise-key-pair.pem \
  ./docker-compose.prod.yml \
- ec2-user@44.208.25.2:/home/ec2-user
+ ec2-user@44.201.165.158:/home/ec2-user
 
 # rename production files inside ec2:
 
@@ -339,17 +355,17 @@ rm -rf ./back-end/Dockerfile
 
 1. run in back-end in vscode: mvn clean package -DskipTests
 
-If I don't have back-end and target folders yet: ssh -i all-you-can-exercise-key-pair.pem ec2-user@44.208.25.2 "mkdir -p /home/ec2-user/back-end/target"
+2. If I don't have back-end and target folders yet:
+
+ssh -i all-you-can-exercise-key-pair.pem ec2-user@44.201.165.158 "mkdir -p /home/ec2-user/back-end/target"
 
 scp -i all-you-can-exercise-key-pair.pem \
  ./back-end/Dockerfile \
- ec2-user@44.208.25.2:/home/ec2-user/back-end/
+ ec2-user@44.201.165.158:/home/ec2-user/back-end/
 
 scp -i all-you-can-exercise-key-pair.pem \
  ./back-end/target/back-end-0.0.1-SNAPSHOT.jar \
- ec2-user@44.208.25.2:/home/ec2-user/back-end/target/
-
-<!-- its not building my secrets at run-time. ask chat gpt for a smooth dockerfile, env, nginx.conf, compose.yml set up - send all files -->
+ ec2-user@44.201.165.158:/home/ec2-user/back-end/target/
 
 # local workflow w/o using docker:
 
@@ -374,6 +390,8 @@ cd back-end
 cd ..
 docker compose up --build
 docker compose logs -f
+
+logs for just one container: docker logs <container_id_or_name>
 
 # Migrations
 
@@ -428,8 +446,10 @@ need to not return user credentials and all the workout details with the record 
 
 # BUGS BUGS BUGS
 
-P2: If you hit save on a cardio exercise when you haven't edited anything on the active workout it clears out all the values.
-
-P2: If you try to add an exercise to an active workout that already had one it will replace the entire active workout with that exercise
-
 P3: titles and buttons on exercises look weird on desktop
+
+<!-- should take a look at this to hopefully be able to downgrade to a smaller ec2 instance type (serve react files in S3):
+https://www.youtube.com/watch?v=YC7NBNICGeY -->
+
+got this error:
+Out of range value for column 'max_volume' at row 1. Need to change it from 5,2 to 6,2

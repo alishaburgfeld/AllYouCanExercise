@@ -1,5 +1,6 @@
 package com.allyoucanexercise.back_end.helpers;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -30,6 +31,9 @@ import java.util.function.Supplier;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+        // @Value("${frontend_url}")
+        // String frontendUrl;
 
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http, UserDetailsService userDetailsService)

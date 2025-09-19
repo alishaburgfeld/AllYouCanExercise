@@ -83,18 +83,28 @@ function App() {
     setActiveWorkout(updatedActiveWorkout);
   };
 
-const existingWorkoutDoesNotContainCurrentExercise = (exercise) => {
+const existingWorkoutDoesNotContainCurrentExercise = (exerciseToBeAdded) => {
+  console.log("*****activeWorkout in check if existing is", activeWorkout)
   if (activeWorkout && !activeWorkout.some(exercise => exercise.exerciseId === exerciseToBeAdded.id))
     return true
 }
 
 const addToActiveWorkout = (exerciseToBeAdded) => {
+  console.log('*****ex to be added in addToActiveWorkout is:', exerciseToBeAdded)
   let updatedActiveWorkout;
-  
+  if (activeWorkout) {
     if (existingWorkoutDoesNotContainCurrentExercise(exerciseToBeAdded)) {
+      console.log("~~returned true -exercise does not contain current")
       updatedActiveWorkout = [...activeWorkout, setExerciseInfo(exerciseToBeAdded)];
-    } else {
+    } 
+    else {
+      return;
+    }
+  }
+  else {
+      // expect it to go here
     updatedActiveWorkout = [setExerciseInfo(exerciseToBeAdded)]
+    console.log("****updated workout in addToActiveWorkout is", updatedActiveWorkout)
   }
 
   // console.log('updatedActiveWorkout is', updatedActiveWorkout);
