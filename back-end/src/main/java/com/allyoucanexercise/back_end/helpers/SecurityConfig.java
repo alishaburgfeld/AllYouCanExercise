@@ -1,5 +1,6 @@
 package com.allyoucanexercise.back_end.helpers;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -31,6 +32,9 @@ import java.util.function.Supplier;
 @EnableWebSecurity
 public class SecurityConfig {
 
+        @Value("${frontend_url}")
+        String frontendUrl;
+
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http, UserDetailsService userDetailsService)
                         throws Exception {
@@ -38,8 +42,7 @@ public class SecurityConfig {
                                 .cors(cors -> cors.configurationSource(request -> {
                                         CorsConfiguration config = new CorsConfiguration();
                                         config.setAllowCredentials(true);
-                                        config.setAllowedOrigins(List.of("http://localhost:3000",
-                                                        "http://www.allyoucanexercise.com"));
+                                        config.setAllowedOrigins(List.of(frontendUrl));
                                         config.addAllowedHeader("*");
                                         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                                         return config;
