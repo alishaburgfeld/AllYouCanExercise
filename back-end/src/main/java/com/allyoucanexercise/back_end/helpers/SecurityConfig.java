@@ -32,8 +32,8 @@ import java.util.function.Supplier;
 @EnableWebSecurity
 public class SecurityConfig {
 
-        @Value("${frontend_url}")
-        String frontendUrl;
+        // @Value("${frontend_url}")
+        // String frontendUrl;
 
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http, UserDetailsService userDetailsService)
@@ -42,7 +42,8 @@ public class SecurityConfig {
                                 .cors(cors -> cors.configurationSource(request -> {
                                         CorsConfiguration config = new CorsConfiguration();
                                         config.setAllowCredentials(true);
-                                        config.setAllowedOrigins(List.of(frontendUrl));
+                                        config.setAllowedOrigins(List.of("http://localhost:3000",
+                                                        "http://www.allyoucanexercise.com"));
                                         config.addAllowedHeader("*");
                                         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                                         return config;
