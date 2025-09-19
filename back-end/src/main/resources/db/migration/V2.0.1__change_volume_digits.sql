@@ -1,0 +1,1 @@
+ALTER TABLE exercise_record MODIFY COLUMN max_volume DECIMAL(7,2) UNSIGNED;
