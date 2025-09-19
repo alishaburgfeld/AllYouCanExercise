@@ -15,7 +15,8 @@ const getUserWorkouts = async () => {
     const response = await getAxiosCall(`${VITE_API_BASE_URL}/workouts/user/${activeUsername}`)
     if (response) {
         // console.log('response for get User workouts', response)
-        setUserWorkouts(response)
+        const sortedWorkouts = sortWorkouts(response);
+        setUserWorkouts(sortedWorkouts)
         // console.log(
         //     'response in getUserWorkouts is', response
         // )
@@ -23,6 +24,16 @@ const getUserWorkouts = async () => {
     else {
         // console.log("no response for get user workouts")
     }
+}
+
+const sortWorkouts =(workouts)=> {
+  const sortedWorkouts = [...workouts].sort((a, b) => {
+      const dateA = new Date(a.workoutDetails?.completedAt);
+      const dateB = new Date(b.workoutDetails?.completedAt);
+      return dateB - dateA; // descending: most recent first
+    });
+    // console.log('sortedWorkouts are', sortedWorkouts)
+    return sortedWorkouts;
 }
 
 useEffect(()=> {
