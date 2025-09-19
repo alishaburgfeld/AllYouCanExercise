@@ -56,7 +56,7 @@ useEffect(()=> {
       }}>
           {userWorkouts?.length > 0 ? (
             userWorkouts.map((workout, index) => (
-                <WorkoutHistoryCard workout = {workout}/>
+                <WorkoutHistoryCard workout = {workout} key={index}/>
             ))
           ) : (
             <p>Complete a workout to see your history!</p>

@@ -4,7 +4,7 @@ import { Typography, Box} from "@mui/material";
 export default function CompletedExercise({exercise, index}) {
 
     function formatSet(set, index) {
-            if (set.reps && set.weight) {
+            if (set.reps || set.weight) {
                 return `Set ${index + 1}: ${set.reps} reps at ${set.weight} lbs`;
             }
             if (set.durationSeconds && set.distanceMeters) {

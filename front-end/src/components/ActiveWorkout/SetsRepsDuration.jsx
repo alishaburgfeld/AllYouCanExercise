@@ -37,6 +37,7 @@ export default function SetsRepsDuration({ exercise, updateActiveWorkoutWithNewS
 
   const displayRepSets = () => {
     let combinedSets = displayReps(exercise);
+    const fontSize = getFontSize(combinedSets.length);
     return (
       <Box sx={{ alignItems: "center" }}>
         {combinedSets.map((item, index) => {
@@ -44,6 +45,7 @@ export default function SetsRepsDuration({ exercise, updateActiveWorkoutWithNewS
             <Typography
               key={index}
               align="center"
+              sx={{ fontSize }}
               className="activeWorkout_exerciseDetails"
             >
               {item}
@@ -53,6 +55,12 @@ export default function SetsRepsDuration({ exercise, updateActiveWorkoutWithNewS
       </Box>
     );
   }
+
+  const getFontSize = (length) => {
+    if (length <= 2) return "1rem";
+    if (length === 3) return "0.8rem";
+    if (length >= 4) return "0.7rem";
+  };
 
   return (
     <Box sx={{ position: "absolute", bottom: 4, right: 0, left: 0, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>

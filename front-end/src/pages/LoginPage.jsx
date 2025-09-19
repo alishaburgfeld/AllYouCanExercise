@@ -16,6 +16,7 @@ export default function LoginPage({setActiveUsername}) {
   const navigate = useNavigate();
 
   const handleLoginSuccess = () => {
+    setLoginError(null)
     setLoggedIn(true)
     // setTimeout(navigate("/"), 3000)
     // the way above was making the navigation happens instantly — before the timeout starts
@@ -36,7 +37,7 @@ export default function LoginPage({setActiveUsername}) {
       if (response.error === "Unauthorized") {
         // Show specific error message to user
         console.error("Login failed: Invalid credentials");
-        setLoginError("Invalid username or password.");
+        setLoginError("Invalid username or password");
       } else {
         console.error("Login failed:", response.error);
         setLoginError("An unexpected error occurred. Please try again.");
