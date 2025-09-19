@@ -154,6 +154,13 @@ When you terminate your ec2 and start it again it changes your private ip4 addre
 Issues with caching and having my ec2 display old build and files:
 https://chatgpt.com/share/68b5e810-e2ec-800f-93b6-3f4d3106f627
 
+If a flyway migration fails and you get errors that indicate your version is off - then you can delete the failed migration from the flyway_schema_history table.
+Exec into the mysql container, use the exercise-database table, then run these:
+SELECT \* FROM flyway_schema_history;
+
+if need to delete a migration gone bad:
+DELETE FROM flyway_schema_history WHERE version = '2.0.1';
+
 <!-- Helpful Videos and Tutorials-->
 
 Create React App: -https://www.freecodecamp.org/news/how-to-build-a-react-project-with-create-react-app-in-10-steps/

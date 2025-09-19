@@ -49,6 +49,7 @@ export default function ActiveWorkoutPage({ activeWorkout, setActiveWorkout, act
             <p>Add an exercise to see your workout!</p>
           )}
         </Box>
+        {activeWorkout?.length > 0 ? (
         <Button
           type="submit"
           variant="contained"
@@ -58,6 +59,7 @@ export default function ActiveWorkoutPage({ activeWorkout, setActiveWorkout, act
         >
           Complete Workout
         </Button>
+        ): "" }
         {isWorkoutSaved ?
                 <Alert severity="success">You have saved your workout!</Alert>
                 : ""}

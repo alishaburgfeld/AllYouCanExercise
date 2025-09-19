@@ -12,8 +12,12 @@ export default function CardioSet ({exercise, setInputDistance, setInputDistance
   const [temporaryMinutes, setTemporaryMinutes] = useState(exercise?.sets?.[0]?.duration?.minutes || 0)
   const [temporarySeconds, setTemporarySeconds] = useState(exercise?.sets?.[0]?.duration?.seconds || 0)
   // console.log('distanceinput is', distanceInput)
+  
   const handleDurationChange = (hours, minutes, seconds) => {
-    setInputDuration({"hours": hours, "minutes": minutes, "seconds": seconds});
+    const parsedHours = Number(hours);
+    const parsedMinutes = Number(minutes);
+    const parsedSeconds = Number(seconds);
+    setInputDuration({"hours": parsedHours, "minutes": parsedMinutes, "seconds": parsedSeconds});
   };
 
   const handleDistanceInputChange = (distanceValue, distanceMeasurement) => {
