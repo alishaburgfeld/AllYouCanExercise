@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.allyoucanexercise.back_end.workoutExercise.WorkoutExercise;
-import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -32,18 +31,10 @@ public class ExerciseSetService {
         return exerciseSetRepository.save(exerciseSet);
     }
 
-    public ExerciseSet saveExerciseSet(WorkoutExercise workoutExercise, Integer setOrder, Integer reps, Float weight,
-            Integer durationSeconds, Float distanceMeters, DistanceMeasurement distanceMeasurement, Float pacePerMile) {
+    public ExerciseSet saveExerciseSet(WorkoutExercise workoutExercise, Integer setOrder) {
         ExerciseSet exerciseSet = new ExerciseSet();
         exerciseSet.setWorkoutExercise(workoutExercise);
         exerciseSet.setSetOrder(setOrder);
-        exerciseSet.setReps(reps);
-        exerciseSet.setWeight(weight);
-        exerciseSet.setDurationSeconds(durationSeconds);
-        exerciseSet.setDistanceMeters(distanceMeters);
-        exerciseSet.setDistanceMeasurement(distanceMeasurement);
-        // System.out.println("🏋️‍♀️ iside ex set save, pace is" + pacePerMile);
-        exerciseSet.setPacePerMile(pacePerMile);
         return exerciseSetRepository.save(exerciseSet);
     }
 

@@ -450,6 +450,3 @@ P3: titles and buttons on exercises look weird on desktop
 
 <!-- should take a look at this to hopefully be able to downgrade to a smaller ec2 instance type (serve react files in S3):
 https://www.youtube.com/watch?v=YC7NBNICGeY -->
-
-got this error:
-Out of range value for column 'max_volume' at row 1. Need to change it from 5,2 to 6,2

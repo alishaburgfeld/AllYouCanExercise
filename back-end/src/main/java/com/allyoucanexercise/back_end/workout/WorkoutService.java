@@ -17,7 +17,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.persistence.EntityNotFoundException;
 
-import com.allyoucanexercise.back_end.exerciseSet.DistanceMeasurement;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSet;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetDTO;
 import com.allyoucanexercise.back_end.user.User;
@@ -26,6 +25,7 @@ import com.allyoucanexercise.back_end.exercise.ExerciseService;
 import com.allyoucanexercise.back_end.exerciseRecord.ExerciseRecord;
 import com.allyoucanexercise.back_end.exerciseRecord.ExerciseRecordService;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetService;
+import com.allyoucanexercise.back_end.SetSegment.DistanceMeasurement;
 import com.allyoucanexercise.back_end.exercise.Exercise;
 import com.allyoucanexercise.back_end.workoutExercise.WorkoutExercise;
 import com.allyoucanexercise.back_end.workoutExercise.WorkoutExerciseDetailsDTO;
