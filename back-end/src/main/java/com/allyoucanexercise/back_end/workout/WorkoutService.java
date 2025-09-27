@@ -25,7 +25,9 @@ import com.allyoucanexercise.back_end.exercise.ExerciseService;
 import com.allyoucanexercise.back_end.exerciseRecord.ExerciseRecord;
 import com.allyoucanexercise.back_end.exerciseRecord.ExerciseRecordService;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetService;
-import com.allyoucanexercise.back_end.SetSegment.DistanceMeasurement;
+import com.allyoucanexercise.back_end.setSegment.SetSegmentService;
+import com.allyoucanexercise.back_end.setSegment.DistanceMeasurement;
+import com.allyoucanexercise.back_end.setSegment.SetSegmentDTO;
 import com.allyoucanexercise.back_end.exercise.Exercise;
 import com.allyoucanexercise.back_end.workoutExercise.WorkoutExercise;
 import com.allyoucanexercise.back_end.workoutExercise.WorkoutExerciseDetailsDTO;
@@ -39,17 +41,20 @@ public class WorkoutService {
     private final ExerciseService exerciseService;
     private final ExerciseRecordService exerciseRecordService;
     private final ExerciseSetService exerciseSetService;
+    private final SetSegmentService setSegmentService;
     private static final Logger log = LoggerFactory.getLogger(WorkoutService.class);
 
     public WorkoutService(WorkoutRepository workoutRepository, UserService userService,
             WorkoutExerciseService workoutExerciseService, ExerciseService exerciseService,
-            ExerciseSetService exerciseSetService, ExerciseRecordService exerciseRecordService) {
+            ExerciseSetService exerciseSetService, ExerciseRecordService exerciseRecordService,
+            SetSegmentService setSegmentService) {
         this.workoutRepository = workoutRepository;
         this.userService = userService;
         this.exerciseService = exerciseService;
         this.exerciseRecordService = exerciseRecordService;
         this.exerciseSetService = exerciseSetService;
         this.workoutExerciseService = workoutExerciseService;
+        this.setSegmentService = setSegmentService;
     }
 
     public List<Workout> getAllWorkouts() {
@@ -164,13 +169,26 @@ public class WorkoutService {
             for (int j = 0; j < exerciseSetDTOs.size(); j++) {
                 Integer setOrder = j + 1;
                 ExerciseSetDTO setDTO = exerciseSetDTOs.get(j);
-                Float pace = calculatePace(setDTO.getDistanceMeters(), setDTO.getDurationSeconds());
+                List<SetSegmentDTO> segmentDTOs = setDTO.getSegments();
                 // log.error("inside ex serv. workout save. exercise set is {}", setDTO);
                 try {
-                    exerciseSetService.saveExerciseSet(workoutExercise, setOrder,
-                            setDTO.getReps(), setDTO.getWeight(),
-                            setDTO.getDurationSeconds(), setDTO.getDistanceMeters(), setDTO.getDistanceMeasurement(),
-                            pace);
+                    ExerciseSet exerciseSet = exerciseSetService.saveExerciseSet(workoutExercise, setOrder);
+                    for (int k = 0; k < segmentDTOs.size(); k++) {
+                        SetSegmentDTO segmentDTO = segmentDTOs.get(k);
+                        Integer segmentOrder = k + 1;
+                        Float pace = calculatePace(segmentDTO.getDistanceMeters(), segmentDTO.getDurationSeconds());
+                        try {
+                            setSegmentService.saveSetSegment(exerciseSet, segmentOrder,
+                                    segmentDTO.getReps(), segmentDTO.getWeight(),
+                                    segmentDTO.getDurationSeconds(), segmentDTO.getDistanceMeters(),
+                                    segmentDTO.getDistanceMeasurement(),
+                                    pace);
+                        } catch (Exception e) {
+                            log.error("Error saving set segment: {}", segmentDTO, e);
+                            throw e;
+                        }
+                    }
+
                 } catch (Exception e) {
                     log.error("Error saving exercise set: {}", setDTO, e);
                     throw e; // rethrow to preserve behavior

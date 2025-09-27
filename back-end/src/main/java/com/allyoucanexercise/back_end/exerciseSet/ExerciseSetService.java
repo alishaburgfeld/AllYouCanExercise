@@ -20,7 +20,7 @@ public class ExerciseSetService {
 
     public ExerciseSet getExerciseSetById(Long id) {
         return exerciseSetRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Workout Exercise not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Exercise Set not found"));
     }
 
     public List<ExerciseSet> getAllExerciseSetsByWorkoutExercise(WorkoutExercise workoutExercise) {
@@ -40,7 +40,7 @@ public class ExerciseSetService {
 
     public ExerciseSet updateExerciseSet(ExerciseSet exerciseSet, Long id) {
         if (!exerciseSetRepository.existsById(id)) {
-            throw new EntityNotFoundException("Exercise with id " + id + " not found");
+            throw new EntityNotFoundException("Set with id " + id + " not found");
         }
 
         exerciseSet.setId(id); // Make sure the entity has the correct ID. This ensures that the JPA context
@@ -50,7 +50,7 @@ public class ExerciseSetService {
 
     public void deleteExerciseSet(Long id) {
         if (!exerciseSetRepository.existsById(id)) {
-            throw new EntityNotFoundException("Exercise with id " + id + " not found");
+            throw new EntityNotFoundException("Set with id " + id + " not found");
         }
         exerciseSetRepository.deleteById(id);
     }

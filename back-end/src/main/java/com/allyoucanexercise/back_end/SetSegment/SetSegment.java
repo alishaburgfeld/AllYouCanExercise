@@ -1,4 +1,4 @@
-package com.allyoucanexercise.back_end.SetSegment;
+package com.allyoucanexercise.back_end.setSegment;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -69,11 +69,11 @@ public class SetSegment {
         this.exerciseSet = exerciseSet;
     }
 
-    public Integer getSetOrder() {
+    public Integer getSegmentOrder() {
         return segmentOrder;
     }
 
-    public void setSetOrder(Integer segmentOrder) {
+    public void setSegmentOrder(Integer segmentOrder) {
         this.segmentOrder = segmentOrder;
     }
 

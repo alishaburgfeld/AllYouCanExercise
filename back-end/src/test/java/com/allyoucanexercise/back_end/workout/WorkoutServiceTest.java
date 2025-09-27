@@ -8,7 +8,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.dao.DataIntegrityViolationException;
 
-import com.allyoucanexercise.back_end.SetSegment.DistanceMeasurement;
 import com.allyoucanexercise.back_end.exercise.Exercise;
 import com.allyoucanexercise.back_end.exercise.ExerciseGroup;
 import com.allyoucanexercise.back_end.exercise.ExerciseService;
@@ -16,6 +15,7 @@ import com.allyoucanexercise.back_end.exercise.ExerciseType;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSet;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetDTO;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetService;
+import com.allyoucanexercise.back_end.setSegment.DistanceMeasurement;
 import com.allyoucanexercise.back_end.user.User;
 import com.allyoucanexercise.back_end.user.UserService;
 import com.allyoucanexercise.back_end.workoutExercise.WorkoutExercise;

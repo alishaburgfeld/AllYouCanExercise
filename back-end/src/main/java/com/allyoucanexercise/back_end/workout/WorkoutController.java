@@ -1,6 +1,5 @@
 package com.allyoucanexercise.back_end.workout;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,8 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,10 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.allyoucanexercise.back_end.ExerciseApplication;
-import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetDTO;
-import com.allyoucanexercise.back_end.workoutExercise.WorkoutExerciseDetailsDTO;
 
 import jakarta.validation.Valid;
 
@@ -116,3 +109,12 @@ public class WorkoutController {
 // }
 // ]
 // }
+
+// now with set segments it needs to come in as:
+// {
+// "exerciseId": 1,
+// "sets": [
+// [{ "reps": 10, "weight": 50.0}],
+// [{ "reps": 8, "weight": 55.0 }, {"reps": 2, "weight": 50.0}]
+// ]
+// },
