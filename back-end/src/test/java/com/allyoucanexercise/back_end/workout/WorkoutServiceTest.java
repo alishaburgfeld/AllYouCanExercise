@@ -12,10 +12,15 @@ import com.allyoucanexercise.back_end.exercise.Exercise;
 import com.allyoucanexercise.back_end.exercise.ExerciseGroup;
 import com.allyoucanexercise.back_end.exercise.ExerciseService;
 import com.allyoucanexercise.back_end.exercise.ExerciseType;
+import com.allyoucanexercise.back_end.exerciseRecord.ExerciseRecord;
+import com.allyoucanexercise.back_end.exerciseRecord.ExerciseRecordService;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSet;
+import com.allyoucanexercise.back_end.setSegment.SetSegment;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetDTO;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetService;
 import com.allyoucanexercise.back_end.setSegment.DistanceMeasurement;
+import com.allyoucanexercise.back_end.setSegment.SetSegmentDTO;
+import com.allyoucanexercise.back_end.setSegment.SetSegmentService;
 import com.allyoucanexercise.back_end.user.User;
 import com.allyoucanexercise.back_end.user.UserService;
 import com.allyoucanexercise.back_end.workoutExercise.WorkoutExercise;
@@ -52,12 +57,22 @@ class WorkoutServiceTest {
     @Mock
     private ExerciseSetService exerciseSetService;
 
+    @Mock
+    private SetSegmentService setSegmentService;
+
+    @Mock
+    private ExerciseRecordService exerciseRecordService;
+
     @InjectMocks
     private WorkoutService workoutService;
 
     private Workout workout;
     private Workout workout2;
+    private Exercise chestExercise;
+    private Exercise cardioExercise;
     private User user;
+    private ExerciseRecord cardioExerciseRecord;
+    private ExerciseRecord pushUpExerciseRecord;
     private final String fixedTimeString = "2025-04-02 10:30:00";
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     LocalDateTime time = LocalDateTime.parse(fixedTimeString, formatter);
@@ -79,6 +94,24 @@ class WorkoutServiceTest {
 
         workout = setupCompletedWorkout(user, "Test Title1", time, "Workout Notes");
         workout2 = setupCompletedWorkout(user, "Test Title2", time, "Workout2 Notes");
+
+        chestExercise = new Exercise(
+                "Push Up",
+                ExerciseGroup.CHEST,
+                ExerciseType.UPPERBODY,
+                "A basic push up");
+
+        cardioExercise = new Exercise(
+                "Run",
+                ExerciseGroup.CARDIO,
+                ExerciseType.CARDIO,
+                "Run fast");
+
+        cardioExerciseRecord = new ExerciseRecord(cardioExercise, user, time, workout, null, workout, null, workout,
+                null, workout, null, workout, 120, workout, (float) 900, workout, (float) 3.58, workout);
+        pushUpExerciseRecord = new ExerciseRecord(chestExercise, user, time, workout, 2, workout, 10, workout,
+                (float) 15.00, workout, (float) 215, workout, null, workout, null, workout, null, workout);
+
         MockitoAnnotations.openMocks(this);
     }
 
@@ -218,31 +251,25 @@ class WorkoutServiceTest {
 
         WorkoutDetailsDTO workoutDetailsDTO = setupWorkoutDetailsDTO("username1", "Test Title1", time, "Workout Notes");
 
-        ExerciseSetDTO set1 = setupExerciseSetDTO(10, weight, null, null, null, null);
-        ExerciseSetDTO set2 = setupExerciseSetDTO(10, weight, null, null, null, null);
-        ExerciseSetDTO set3 = setupExerciseSetDTO(null, null, 120, (float) 900, DistanceMeasurement.METERS,
+        SetSegmentDTO set1Segment1DTO = setupSetSegmentDTO(7, weight, null, null, null, null);
+        SetSegmentDTO set1Segment2DTO = setupSetSegmentDTO(3, (float) 15, null, null, null, null);
+        SetSegmentDTO set2Segment1DTO = setupSetSegmentDTO(10, weight, null, null, null, null);
+        SetSegmentDTO cardioSetSegmentDTO = setupSetSegmentDTO(null, null, 120, (float) 900, DistanceMeasurement.METERS,
                 (float) 3.58);
 
-        WorkoutExerciseDetailsDTO workoutExerciseDetails1 = setupWorkoutExerciseDetailsDTO(id, List.of(set1, set2));
-        WorkoutExerciseDetailsDTO workoutExerciseDetails2 = setupWorkoutExerciseDetailsDTO((long) 2,
-                List.of(set3));
+        ExerciseSetDTO set1DTO = setupExerciseSetDTO(List.of(set1Segment1DTO, set1Segment2DTO));
+        ExerciseSetDTO set2DTO = setupExerciseSetDTO(List.of(set2Segment1DTO));
+        ExerciseSetDTO cardioSetDTO = setupExerciseSetDTO(List.of(cardioSetSegmentDTO));
+
+        WorkoutExerciseDetailsDTO workoutExerciseDetailsDTO1 = setupWorkoutExerciseDetailsDTO(id,
+                List.of(set1DTO, set2DTO));
+        WorkoutExerciseDetailsDTO workoutExerciseDetailsDTO2 = setupWorkoutExerciseDetailsDTO((long) 2,
+                List.of(cardioSetDTO));
 
         WorkoutRequestDTO workoutRequestDTO = new WorkoutRequestDTO();
 
         workoutRequestDTO.setWorkoutDetails(workoutDetailsDTO);
-        workoutRequestDTO.setWorkoutExerciseDetails(List.of(workoutExerciseDetails1, workoutExerciseDetails2));
-
-        Exercise chestExercise = new Exercise(
-                "Push Up",
-                ExerciseGroup.CHEST,
-                ExerciseType.UPPERBODY,
-                "A basic push up");
-
-        Exercise cardioExercise = new Exercise(
-                "Run",
-                ExerciseGroup.CARDIO,
-                ExerciseType.CARDIO,
-                "Run fast");
+        workoutRequestDTO.setWorkoutExerciseDetails(List.of(workoutExerciseDetailsDTO1, workoutExerciseDetailsDTO2));
 
         chestExercise.setId(id);
         cardioExercise.setId(id2);
@@ -274,54 +301,107 @@ class WorkoutServiceTest {
         when(workoutExerciseService.saveWorkoutExercise(any(Workout.class), eq(cardioExercise), eq(2)))
                 .thenReturn(workoutExercise2);
 
-        ExerciseSet savedSet1 = new ExerciseSet(workoutExercise, 1, set1.getReps(), set1.getWeight(),
-                set1.getDurationSeconds(),
-                set1.getDistanceMeters(), set1.getDistanceMeasurement(), set1.getPacePerMile());
+        ExerciseSet savedSet1 = new ExerciseSet(workoutExercise, 1);
+        ExerciseSet savedSet2 = new ExerciseSet(workoutExercise, 2);
+        ExerciseSet savedCardioSet = new ExerciseSet(workoutExercise2, 1);
 
-        ExerciseSet savedSet2 = new ExerciseSet(workoutExercise, 2, set2.getReps(), set2.getWeight(),
-                set2.getDurationSeconds(),
-                set2.getDistanceMeters(), set2.getDistanceMeasurement(), set2.getPacePerMile());
+        SetSegment savedSet1Segment1 = new SetSegment(savedSet1, 1,
+                set1Segment1DTO.getReps(),
+                set1Segment1DTO.getWeight(),
+                set1Segment1DTO.getDurationSeconds(),
+                set1Segment1DTO.getDistanceMeters(), set1Segment1DTO.getDistanceMeasurement(),
+                set1Segment1DTO.getPacePerMile());
 
-        ExerciseSet savedSet3 = new ExerciseSet(workoutExercise2, 1, set3.getReps(), set3.getWeight(),
-                set3.getDurationSeconds(),
-                set3.getDistanceMeters(), set3.getDistanceMeasurement(), set3.getPacePerMile());
+        SetSegment savedSet1Segment2 = new SetSegment(savedSet1, 2, set1Segment2DTO.getReps(),
+                set1Segment2DTO.getWeight(),
+                set1Segment2DTO.getDurationSeconds(),
+                set1Segment2DTO.getDistanceMeters(), set1Segment2DTO.getDistanceMeasurement(),
+                set1Segment2DTO.getPacePerMile());
 
-        when(exerciseSetService.saveExerciseSet(workoutExercise, 1, set1.getReps(), set1.getWeight(),
-                set1.getDurationSeconds(), set1.getDistanceMeters(), set1.getDistanceMeasurement(),
-                set1.getPacePerMile()))
-                .thenReturn(savedSet1);
+        SetSegment savedSet2Segment1 = new SetSegment(savedSet2, 1, set2Segment1DTO.getReps(),
+                set2Segment1DTO.getWeight(),
+                set2Segment1DTO.getDurationSeconds(),
+                set2Segment1DTO.getDistanceMeters(), set2Segment1DTO.getDistanceMeasurement(),
+                set2Segment1DTO.getPacePerMile());
 
-        when(exerciseSetService.saveExerciseSet(workoutExercise, 2, set2.getReps(), set2.getWeight(),
-                set2.getDurationSeconds(), set2.getDistanceMeters(), set2.getDistanceMeasurement(),
-                set2.getPacePerMile()))
-                .thenReturn(savedSet2);
+        SetSegment savedCardioSegment = new SetSegment(savedCardioSet, 1, cardioSetSegmentDTO.getReps(),
+                cardioSetSegmentDTO.getWeight(),
+                cardioSetSegmentDTO.getDurationSeconds(),
+                cardioSetSegmentDTO.getDistanceMeters(), cardioSetSegmentDTO.getDistanceMeasurement(),
+                cardioSetSegmentDTO.getPacePerMile());
 
-        when(exerciseSetService.saveExerciseSet(workoutExercise2, 1, set3.getReps(), set3.getWeight(),
-                set3.getDurationSeconds(), set3.getDistanceMeters(), set3.getDistanceMeasurement(),
-                set3.getPacePerMile()))
-                .thenReturn(savedSet3);
+        when(exerciseSetService.saveExerciseSet(workoutExercise, 1)).thenReturn(savedSet1);
+        when(exerciseSetService.saveExerciseSet(workoutExercise, 2)).thenReturn(savedSet2);
+        when(exerciseSetService.saveExerciseSet(workoutExercise2, 1)).thenReturn(savedCardioSet);
+
+        when(setSegmentService.saveSetSegment(savedSet1, 1, set1Segment1DTO.getReps(), set1Segment1DTO.getWeight(),
+                set1Segment1DTO.getDurationSeconds(), set1Segment1DTO.getDistanceMeters(),
+                set1Segment1DTO.getDistanceMeasurement(),
+                set1Segment1DTO.getPacePerMile()))
+                .thenReturn(savedSet1Segment1);
+
+        when(setSegmentService.saveSetSegment(savedSet1, 2, set1Segment2DTO.getReps(), set1Segment2DTO.getWeight(),
+                set1Segment2DTO.getDurationSeconds(), set1Segment2DTO.getDistanceMeters(),
+                set1Segment2DTO.getDistanceMeasurement(),
+                set1Segment2DTO.getPacePerMile()))
+                .thenReturn(savedSet1Segment2);
+
+        when(setSegmentService.saveSetSegment(savedSet2, 1, set2Segment1DTO.getReps(), set2Segment1DTO.getWeight(),
+                set2Segment1DTO.getDurationSeconds(), set2Segment1DTO.getDistanceMeters(),
+                set2Segment1DTO.getDistanceMeasurement(),
+                set2Segment1DTO.getPacePerMile()))
+                .thenReturn(savedSet2Segment1);
+
+        when(setSegmentService.saveSetSegment(savedCardioSet, 1, cardioSetSegmentDTO.getReps(),
+                cardioSetSegmentDTO.getWeight(),
+                cardioSetSegmentDTO.getDurationSeconds(), cardioSetSegmentDTO.getDistanceMeters(),
+                cardioSetSegmentDTO.getDistanceMeasurement(),
+                cardioSetSegmentDTO.getPacePerMile()))
+                .thenReturn(savedCardioSegment);
+
+        // would not exactly return this exercise record, but I need a different test
+        // for that
+        when(exerciseRecordService.saveExerciseRecord(any(ExerciseRecord.class))).thenReturn(pushUpExerciseRecord);
 
         workoutService.saveFullWorkout(workoutRequestDTO);
 
         verify(userService).getUserByUsername(user.getUsername());
-        verify(exerciseService, times(1)).getExerciseById((long) 1);
-        verify(exerciseService, times(1)).getExerciseById((long) 2);
+        // also called when doing exercise Record
+        verify(exerciseService, times(2)).getExerciseById((long) 1);
+        verify(exerciseService, times(2)).getExerciseById((long) 2);
         // verify(workoutService).saveWorkout(any(Workout.class));
         verify(workoutExerciseService, times(1)).saveWorkoutExercise(any(Workout.class), eq(chestExercise), eq(1));
 
         verify(workoutExerciseService, times(1)).saveWorkoutExercise(any(Workout.class), eq(cardioExercise), eq(2));
 
-        verify(exerciseSetService, times(1)).saveExerciseSet(workoutExercise, 1, set1.getReps(), set1.getWeight(),
-                set1.getDurationSeconds(), set1.getDistanceMeters(), set1.getDistanceMeasurement(),
-                set1.getPacePerMile());
+        verify(exerciseSetService, times(1)).saveExerciseSet(workoutExercise, 1);
+        verify(exerciseSetService, times(1)).saveExerciseSet(workoutExercise, 2);
+        verify(exerciseSetService, times(1)).saveExerciseSet(workoutExercise2, 1);
 
-        verify(exerciseSetService, times(1)).saveExerciseSet(workoutExercise, 2, set2.getReps(), set2.getWeight(),
-                set2.getDurationSeconds(), set2.getDistanceMeters(), set2.getDistanceMeasurement(),
-                set2.getPacePerMile());
+        verify(setSegmentService, times(1)).saveSetSegment(savedSet1, 1, set1Segment1DTO.getReps(),
+                set1Segment1DTO.getWeight(),
+                set1Segment1DTO.getDurationSeconds(), set1Segment1DTO.getDistanceMeters(),
+                set1Segment1DTO.getDistanceMeasurement(),
+                set1Segment1DTO.getPacePerMile());
 
-        verify(exerciseSetService, times(1)).saveExerciseSet(workoutExercise2, 1, set3.getReps(), set3.getWeight(),
-                set3.getDurationSeconds(), set3.getDistanceMeters(), set3.getDistanceMeasurement(),
-                set3.getPacePerMile());
+        verify(setSegmentService, times(1)).saveSetSegment(savedSet1, 2, set1Segment2DTO.getReps(),
+                set1Segment2DTO.getWeight(),
+                set1Segment2DTO.getDurationSeconds(), set1Segment2DTO.getDistanceMeters(),
+                set1Segment2DTO.getDistanceMeasurement(),
+                set1Segment2DTO.getPacePerMile());
+
+        verify(setSegmentService, times(1)).saveSetSegment(savedSet2, 1, set2Segment1DTO.getReps(),
+                set2Segment1DTO.getWeight(),
+                set2Segment1DTO.getDurationSeconds(), set2Segment1DTO.getDistanceMeters(),
+                set2Segment1DTO.getDistanceMeasurement(),
+                set2Segment1DTO.getPacePerMile());
+
+        verify(setSegmentService, times(1)).saveSetSegment(savedCardioSet, 1, cardioSetSegmentDTO.getReps(),
+                cardioSetSegmentDTO.getWeight(),
+                cardioSetSegmentDTO.getDurationSeconds(), cardioSetSegmentDTO.getDistanceMeters(),
+                cardioSetSegmentDTO.getDistanceMeasurement(),
+                cardioSetSegmentDTO.getPacePerMile());
+
     }
 
     private WorkoutDetailsDTO setupWorkoutDetailsDTO(String username, String title, LocalDateTime completedAt,
@@ -341,16 +421,22 @@ class WorkoutServiceTest {
         return workoutExerciseDetails;
     }
 
-    private ExerciseSetDTO setupExerciseSetDTO(Integer reps, Float weight, Integer durationSeconds,
-            Float distanceMeters, DistanceMeasurement distanceMeasurement, Float pacePerMile) {
+    private ExerciseSetDTO setupExerciseSetDTO(List<SetSegmentDTO> segmentDTOs) {
         ExerciseSetDTO exerciseSetDTO = new ExerciseSetDTO();
-        exerciseSetDTO.setReps(reps);
-        exerciseSetDTO.setWeight(weight);
-        exerciseSetDTO.setDurationSeconds(durationSeconds);
-        exerciseSetDTO.setDistanceMeters(distanceMeters);
-        exerciseSetDTO.setDistanceMeasurement(distanceMeasurement);
-        exerciseSetDTO.setPacePerMile(pacePerMile);
+        exerciseSetDTO.setSegments(segmentDTOs);
         return exerciseSetDTO;
+    }
+
+    private SetSegmentDTO setupSetSegmentDTO(Integer reps, Float weight, Integer durationSeconds,
+            Float distanceMeters, DistanceMeasurement distanceMeasurement, Float pacePerMile) {
+        SetSegmentDTO setSegmentDTO = new SetSegmentDTO();
+        setSegmentDTO.setReps(reps);
+        setSegmentDTO.setWeight(weight);
+        setSegmentDTO.setDurationSeconds(durationSeconds);
+        setSegmentDTO.setDistanceMeters(distanceMeters);
+        setSegmentDTO.setDistanceMeasurement(distanceMeasurement);
+        setSegmentDTO.setPacePerMile(pacePerMile);
+        return setSegmentDTO;
     }
 
 }

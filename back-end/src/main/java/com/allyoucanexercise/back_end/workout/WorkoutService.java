@@ -1,5 +1,7 @@
 package com.allyoucanexercise.back_end.workout;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -177,7 +179,8 @@ public class WorkoutService {
                     for (int k = 0; k < segmentDTOs.size(); k++) {
                         SetSegmentDTO segmentDTO = segmentDTOs.get(k);
                         Integer segmentOrder = k + 1;
-                        Float pace = calculatePace(segmentDTO.getDistanceMeters(), segmentDTO.getDurationSeconds());
+                        Float pace = setPaceForWorkout(segmentDTO.getDistanceMeters(), segmentDTO.getDurationSeconds());
+
                         try {
                             setSegmentService.saveSetSegment(exerciseSet, segmentOrder,
                                     segmentDTO.getReps(), segmentDTO.getWeight(),
@@ -213,6 +216,18 @@ public class WorkoutService {
             // System.out.println("🏋️‍♀️ ********* Workout service - exercise record is" +
             // exerciseRecord);
         }
+    }
+
+    private Float setPaceForWorkout(Float distanceMeters, Integer durationSeconds) {
+        float pace;
+
+        if (distanceMeters == null || durationSeconds == null || durationSeconds == 0) {
+            return null;
+        }
+        pace = calculatePace(distanceMeters, durationSeconds);
+        // Round to 2 decimal places
+        BigDecimal roundedPace = new BigDecimal(pace).setScale(2, RoundingMode.HALF_UP);
+        return roundedPace.floatValue();
     }
 
     WorkoutDetailsDTO addValuesToWorkoutDetailsDTO(Workout workout) {
