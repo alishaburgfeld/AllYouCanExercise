@@ -27,6 +27,7 @@ import com.allyoucanexercise.back_end.exerciseRecord.ExerciseRecordService;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetService;
 import com.allyoucanexercise.back_end.setSegment.SetSegmentService;
 import com.allyoucanexercise.back_end.setSegment.DistanceMeasurement;
+import com.allyoucanexercise.back_end.setSegment.SetSegment;
 import com.allyoucanexercise.back_end.setSegment.SetSegmentDTO;
 import com.allyoucanexercise.back_end.exercise.Exercise;
 import com.allyoucanexercise.back_end.workoutExercise.WorkoutExercise;
@@ -225,12 +226,24 @@ public class WorkoutService {
 
     ExerciseSetDTO addValuesToExerciseSetDTO(ExerciseSet exerciseSet) {
         ExerciseSetDTO exerciseSetDTODetails = new ExerciseSetDTO();
-        exerciseSetDTODetails.setReps(exerciseSet.getReps());
-        exerciseSetDTODetails.setWeight(exerciseSet.getWeight());
-        exerciseSetDTODetails.setDurationSeconds(exerciseSet.getDurationSeconds());
-        exerciseSetDTODetails.setDistanceMeters(exerciseSet.getDistanceMeters());
-        exerciseSetDTODetails.setDistanceMeasurement(exerciseSet.getDistanceMeasurement());
+        List<SetSegment> segments = setSegmentService.getAllSetSegmentsByExerciseSet(exerciseSet);
+        List<SetSegmentDTO> segmentDTOs = new ArrayList<>();
+        for (SetSegment segment : segments) {
+            SetSegmentDTO setSegmentDTO = addValuesToSetSegmentDTO(segment);
+            segmentDTOs.add(setSegmentDTO);
+        }
+        exerciseSetDTODetails.setSegments(segmentDTOs);
         return exerciseSetDTODetails;
+    }
+
+    SetSegmentDTO addValuesToSetSegmentDTO(SetSegment setSegment) {
+        SetSegmentDTO setSegmentDTODetails = new SetSegmentDTO();
+        setSegmentDTODetails.setReps(setSegment.getReps());
+        setSegmentDTODetails.setWeight(setSegment.getWeight());
+        setSegmentDTODetails.setDurationSeconds(setSegment.getDurationSeconds());
+        setSegmentDTODetails.setDistanceMeters(setSegment.getDistanceMeters());
+        setSegmentDTODetails.setDistanceMeasurement(setSegment.getDistanceMeasurement());
+        return setSegmentDTODetails;
     }
 
     public Float calculatePace(Float distanceMeters, Integer durationSeconds) {
