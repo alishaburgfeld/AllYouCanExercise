@@ -225,7 +225,8 @@ public class ExerciseRecordService {
             }
             existingExerciseRecord.setLastExercised(lastExercised);
             existingExerciseRecord.setLastExercisedWorkout(workout);
-            return existingExerciseRecord;
+
+            return exerciseRecordRepository.save(existingExerciseRecord);
         }
     }
 
