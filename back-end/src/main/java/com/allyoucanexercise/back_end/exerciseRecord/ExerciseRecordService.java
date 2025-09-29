@@ -132,7 +132,8 @@ public class ExerciseRecordService {
                             maxDurationInWorkout);
                     maxDistanceInWorkout = setMaxValueForWorkoutIfCurrentSetValueIsHigher(segment.getDistanceMeters(),
                             maxDistanceInWorkout);
-                    maxPaceInWorkout = setMaxValueForWorkoutIfCurrentSetValueIsHigher(segment.getPacePerMile(),
+                    // for pace you actually want the lowest value
+                    maxPaceInWorkout = setMaxPaceForWorkoutIfCurrentSetValueIsLower(segment.getPacePerMile(),
                             maxPaceInWorkout);
                 }
             }
@@ -214,7 +215,8 @@ public class ExerciseRecordService {
                         workout);
             }
 
-            if (isWorkoutValueHigherThanExistingExerciseRecordValue(maxPaceInWorkout,
+            // for pace you set a record if the pace is a smaller value
+            if (!isWorkoutValueHigherThanExistingExerciseRecordValue(maxPaceInWorkout,
                     existingExerciseRecord.getMaxPacePerMile())) {
                 updateRecordWithHigherValue(
                         maxPaceInWorkout,
@@ -260,17 +262,31 @@ public class ExerciseRecordService {
     }
 
     public Integer setMaxValueForWorkoutIfCurrentSetValueIsHigher(Integer setValue, Integer maxWorkoutValue) {
+        Integer max = maxWorkoutValue;
         if (setValue != null && setValue > maxWorkoutValue) {
-            maxWorkoutValue = setValue;
+            max = setValue;
         }
-        return maxWorkoutValue;
+        return max;
     }
 
     public Float setMaxValueForWorkoutIfCurrentSetValueIsHigher(Float setValue, Float maxWorkoutValue) {
+        Float max = maxWorkoutValue;
         if (setValue != null && setValue > maxWorkoutValue) {
-            maxWorkoutValue = setValue;
+            max = setValue;
         }
-        return maxWorkoutValue;
+        return max;
+    };
+
+    public Float setMaxPaceForWorkoutIfCurrentSetValueIsLower(Float setValue, Float maxWorkoutValue) {
+        Float max = maxWorkoutValue;
+        if (setValue != null) {
+            if (maxWorkoutValue == (float) 0) {
+                max = setValue;
+            } else if (setValue < maxWorkoutValue) {
+                max = setValue;
+            }
+        }
+        return max;
     };
 
     // if no exerciseRecord then automatically save the exerciseRecord.
