@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 import com.allyoucanexercise.back_end.workoutExercise.WorkoutExerciseDetailsDTO;
-import com.allyoucanexercise.back_end.workout.WorkoutDetailsDTO;
 // To parse that JSON into Java objects automatically in your Spring Boot 
 // controller (@RequestBody), you need a class that matches the structure 
 // of that top-level JSON object.

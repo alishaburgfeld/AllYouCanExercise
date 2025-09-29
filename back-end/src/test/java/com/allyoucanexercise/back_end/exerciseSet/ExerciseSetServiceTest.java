@@ -54,52 +54,45 @@ public class ExerciseSetServiceTest {
     }
 
     @Test
-    @DisplayName("save works on all weight workouts")
+    @DisplayName("save")
     void testSave() {
 
-        ExerciseSet exerciseSet = new ExerciseSet(workoutExercise, 1, 10, (float) 20, null, null, null, null);
+        ExerciseSet exerciseSet = new ExerciseSet(workoutExercise, 1);
         when(exerciseSetRepository.save(exerciseSet)).thenReturn(exerciseSet);
         ExerciseSet result = exerciseSetService.saveExerciseSet(exerciseSet);
 
         assertEquals(exerciseSet, result);
         assertEquals(result.getWorkoutExercise(), workoutExercise);
         assertEquals(result.getSetOrder(), 1);
-        assertEquals(result.getReps(), 10);
-        assertEquals(result.getWeight(), (float) 20);
-        verify(exerciseSetRepository).save(exerciseSet);
-    }
-
-    @Test
-    @DisplayName("save works on all cardio workouts with distance and time")
-    void testSaveCardioExercise() {
-
-        ExerciseSet exerciseSet = new ExerciseSet(workoutExercise, 1, null, null, 160, (float) 800,
-                DistanceMeasurement.METERS,
-                (float) 5.36);
-        when(exerciseSetRepository.save(exerciseSet)).thenReturn(exerciseSet);
-        ExerciseSet result = exerciseSetService.saveExerciseSet(exerciseSet);
-
-        assertEquals(exerciseSet, result);
-        assertEquals(result.getWorkoutExercise(), workoutExercise);
-        assertEquals(result.getSetOrder(), 1);
-        assertEquals(result.getDurationSeconds(), 160);
-        assertEquals(result.getDistanceMeters(), 800);
-        assertEquals(result.getDistanceMeasurement(), "METERS");
-        assertEquals((float) result.getPacePerMile(), (float) 5.36);
         verify(exerciseSetRepository).save(exerciseSet);
     }
 
     @Test
     @DisplayName("save fails if set order is missing")
     void testSaveFailsOnNullSetOrder() {
-        ExerciseSet invalidExerciseSet = new ExerciseSet(workoutExercise, 1, null, null, 160, (float) 800,
-                DistanceMeasurement.MILES,
-                (float) 5.36);
+        ExerciseSet invalidExerciseSet = new ExerciseSet(workoutExercise, 1);
         invalidExerciseSet.setSetOrder(null);
 
         // this is the type of exception thrown when you don't follow @NotNull, etc
         when(exerciseSetRepository.save(invalidExerciseSet))
                 .thenThrow(new DataIntegrityViolationException("SetOrder cannot be null"));
+
+        assertThrows(DataIntegrityViolationException.class, () -> {
+            exerciseSetService.saveExerciseSet(invalidExerciseSet);
+        });
+
+        verify(exerciseSetRepository).save(invalidExerciseSet);
+    }
+
+    @Test
+    @DisplayName("save fails if workout Exercise is missing")
+    void testSaveFailsOnNullWorkoutExercise() {
+        ExerciseSet invalidExerciseSet = new ExerciseSet(workoutExercise, 1);
+        invalidExerciseSet.setWorkoutExercise(null);
+
+        // this is the type of exception thrown when you don't follow @NotNull, etc
+        when(exerciseSetRepository.save(invalidExerciseSet))
+                .thenThrow(new DataIntegrityViolationException("Workout Exercise cannot be null"));
 
         assertThrows(DataIntegrityViolationException.class, () -> {
             exerciseSetService.saveExerciseSet(invalidExerciseSet);

@@ -1,5 +1,7 @@
 package com.allyoucanexercise.back_end.workout;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +19,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.persistence.EntityNotFoundException;
 
-import com.allyoucanexercise.back_end.exerciseSet.DistanceMeasurement;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSet;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetDTO;
 import com.allyoucanexercise.back_end.user.User;
@@ -26,6 +27,10 @@ import com.allyoucanexercise.back_end.exercise.ExerciseService;
 import com.allyoucanexercise.back_end.exerciseRecord.ExerciseRecord;
 import com.allyoucanexercise.back_end.exerciseRecord.ExerciseRecordService;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetService;
+import com.allyoucanexercise.back_end.setSegment.SetSegmentService;
+import com.allyoucanexercise.back_end.setSegment.DistanceMeasurement;
+import com.allyoucanexercise.back_end.setSegment.SetSegment;
+import com.allyoucanexercise.back_end.setSegment.SetSegmentDTO;
 import com.allyoucanexercise.back_end.exercise.Exercise;
 import com.allyoucanexercise.back_end.workoutExercise.WorkoutExercise;
 import com.allyoucanexercise.back_end.workoutExercise.WorkoutExerciseDetailsDTO;
@@ -39,17 +44,20 @@ public class WorkoutService {
     private final ExerciseService exerciseService;
     private final ExerciseRecordService exerciseRecordService;
     private final ExerciseSetService exerciseSetService;
+    private final SetSegmentService setSegmentService;
     private static final Logger log = LoggerFactory.getLogger(WorkoutService.class);
 
     public WorkoutService(WorkoutRepository workoutRepository, UserService userService,
             WorkoutExerciseService workoutExerciseService, ExerciseService exerciseService,
-            ExerciseSetService exerciseSetService, ExerciseRecordService exerciseRecordService) {
+            ExerciseSetService exerciseSetService, ExerciseRecordService exerciseRecordService,
+            SetSegmentService setSegmentService) {
         this.workoutRepository = workoutRepository;
         this.userService = userService;
         this.exerciseService = exerciseService;
         this.exerciseRecordService = exerciseRecordService;
         this.exerciseSetService = exerciseSetService;
         this.workoutExerciseService = workoutExerciseService;
+        this.setSegmentService = setSegmentService;
     }
 
     public List<Workout> getAllWorkouts() {
@@ -164,13 +172,27 @@ public class WorkoutService {
             for (int j = 0; j < exerciseSetDTOs.size(); j++) {
                 Integer setOrder = j + 1;
                 ExerciseSetDTO setDTO = exerciseSetDTOs.get(j);
-                Float pace = calculatePace(setDTO.getDistanceMeters(), setDTO.getDurationSeconds());
+                List<SetSegmentDTO> segmentDTOs = setDTO.getSegments();
                 // log.error("inside ex serv. workout save. exercise set is {}", setDTO);
                 try {
-                    exerciseSetService.saveExerciseSet(workoutExercise, setOrder,
-                            setDTO.getReps(), setDTO.getWeight(),
-                            setDTO.getDurationSeconds(), setDTO.getDistanceMeters(), setDTO.getDistanceMeasurement(),
-                            pace);
+                    ExerciseSet exerciseSet = exerciseSetService.saveExerciseSet(workoutExercise, setOrder);
+                    for (int k = 0; k < segmentDTOs.size(); k++) {
+                        SetSegmentDTO segmentDTO = segmentDTOs.get(k);
+                        Integer segmentOrder = k + 1;
+                        Float pace = setPaceForWorkout(segmentDTO.getDistanceMeters(), segmentDTO.getDurationSeconds());
+
+                        try {
+                            setSegmentService.saveSetSegment(exerciseSet, segmentOrder,
+                                    segmentDTO.getReps(), segmentDTO.getWeight(),
+                                    segmentDTO.getDurationSeconds(), segmentDTO.getDistanceMeters(),
+                                    segmentDTO.getDistanceMeasurement(),
+                                    pace);
+                        } catch (Exception e) {
+                            log.error("Error saving set segment: {}", segmentDTO, e);
+                            throw e;
+                        }
+                    }
+
                 } catch (Exception e) {
                     log.error("Error saving exercise set: {}", setDTO, e);
                     throw e; // rethrow to preserve behavior
@@ -196,6 +218,18 @@ public class WorkoutService {
         }
     }
 
+    private Float setPaceForWorkout(Float distanceMeters, Integer durationSeconds) {
+        float pace;
+
+        if (distanceMeters == null || durationSeconds == null || durationSeconds == 0) {
+            return null;
+        }
+        pace = calculatePace(distanceMeters, durationSeconds);
+        // Round to 2 decimal places
+        BigDecimal roundedPace = new BigDecimal(pace).setScale(2, RoundingMode.HALF_UP);
+        return roundedPace.floatValue();
+    }
+
     WorkoutDetailsDTO addValuesToWorkoutDetailsDTO(Workout workout) {
         WorkoutDetailsDTO workoutDetailsDTO = new WorkoutDetailsDTO();
         workoutDetailsDTO.setUsername(workout.getUser().getUsername());
@@ -207,12 +241,24 @@ public class WorkoutService {
 
     ExerciseSetDTO addValuesToExerciseSetDTO(ExerciseSet exerciseSet) {
         ExerciseSetDTO exerciseSetDTODetails = new ExerciseSetDTO();
-        exerciseSetDTODetails.setReps(exerciseSet.getReps());
-        exerciseSetDTODetails.setWeight(exerciseSet.getWeight());
-        exerciseSetDTODetails.setDurationSeconds(exerciseSet.getDurationSeconds());
-        exerciseSetDTODetails.setDistanceMeters(exerciseSet.getDistanceMeters());
-        exerciseSetDTODetails.setDistanceMeasurement(exerciseSet.getDistanceMeasurement());
+        List<SetSegment> segments = setSegmentService.getAllSetSegmentsByExerciseSet(exerciseSet);
+        List<SetSegmentDTO> segmentDTOs = new ArrayList<>();
+        for (SetSegment segment : segments) {
+            SetSegmentDTO setSegmentDTO = addValuesToSetSegmentDTO(segment);
+            segmentDTOs.add(setSegmentDTO);
+        }
+        exerciseSetDTODetails.setSegments(segmentDTOs);
         return exerciseSetDTODetails;
+    }
+
+    SetSegmentDTO addValuesToSetSegmentDTO(SetSegment setSegment) {
+        SetSegmentDTO setSegmentDTODetails = new SetSegmentDTO();
+        setSegmentDTODetails.setReps(setSegment.getReps());
+        setSegmentDTODetails.setWeight(setSegment.getWeight());
+        setSegmentDTODetails.setDurationSeconds(setSegment.getDurationSeconds());
+        setSegmentDTODetails.setDistanceMeters(setSegment.getDistanceMeters());
+        setSegmentDTODetails.setDistanceMeasurement(setSegment.getDistanceMeasurement());
+        return setSegmentDTODetails;
     }
 
     public Float calculatePace(Float distanceMeters, Integer durationSeconds) {

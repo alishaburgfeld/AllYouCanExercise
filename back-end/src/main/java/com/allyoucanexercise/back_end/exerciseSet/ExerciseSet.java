@@ -1,10 +1,8 @@
 package com.allyoucanexercise.back_end.exerciseSet;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
-import com.allyoucanexercise.back_end.exercise.ExerciseGroup;
 import com.allyoucanexercise.back_end.workoutExercise.WorkoutExercise;
 
 @Entity
@@ -23,32 +21,9 @@ public class ExerciseSet {
     @Column(nullable = false)
     private Integer setOrder;
 
-    private Integer reps;
-    private Float weight;
-
-    @Column(name = "duration_seconds")
-    private Integer durationSeconds;
-
-    @Column(name = "distance_meters")
-    private Float distanceMeters;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "distance_measurement")
-    private DistanceMeasurement distanceMeasurement;
-
-    @Column(name = "pace_per_mile")
-    private Float pacePerMile;
-
-    public ExerciseSet(WorkoutExercise workoutExercise, Integer setOrder, Integer reps, Float weight,
-            Integer durationSeconds, Float distanceMeters, DistanceMeasurement distanceMeasurement, Float pacePerMile) {
+    public ExerciseSet(WorkoutExercise workoutExercise, Integer setOrder) {
         this.workoutExercise = workoutExercise;
         this.setOrder = setOrder;
-        this.reps = reps;
-        this.weight = weight;
-        this.durationSeconds = durationSeconds;
-        this.distanceMeters = distanceMeters;
-        this.distanceMeasurement = distanceMeasurement;
-        this.pacePerMile = pacePerMile;
     }
 
     protected ExerciseSet() {
@@ -79,51 +54,4 @@ public class ExerciseSet {
         this.setOrder = setOrder;
     }
 
-    public Integer getReps() {
-        return reps;
-    }
-
-    public void setReps(Integer reps) {
-        this.reps = reps;
-    }
-
-    public Float getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Float weight) {
-        this.weight = weight;
-    }
-
-    public Integer getDurationSeconds() {
-        return durationSeconds;
-    }
-
-    public void setDurationSeconds(Integer durationSeconds) {
-        this.durationSeconds = durationSeconds;
-    }
-
-    public Float getDistanceMeters() {
-        return distanceMeters;
-    }
-
-    public void setDistanceMeters(Float distanceMeters) {
-        this.distanceMeters = distanceMeters;
-    }
-
-    public DistanceMeasurement getDistanceMeasurement() {
-        return distanceMeasurement;
-    }
-
-    public void setDistanceMeasurement(DistanceMeasurement distanceMeasurement) {
-        this.distanceMeasurement = distanceMeasurement;
-    }
-
-    public Float getPacePerMile() {
-        return pacePerMile;
-    }
-
-    public void setPacePerMile(Float pacePerMile) {
-        this.pacePerMile = pacePerMile;
-    }
 }
