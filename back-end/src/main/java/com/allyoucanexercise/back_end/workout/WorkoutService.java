@@ -168,7 +168,7 @@ public class WorkoutService {
                     exerciseOrder);
 
             List<ExerciseSetDTO> exerciseSetDTOs = workoutExerciseDetailsDTO.getSets();
-            String exerciseSetDistanceMeasurement;
+
             for (int j = 0; j < exerciseSetDTOs.size(); j++) {
                 Integer setOrder = j + 1;
                 ExerciseSetDTO setDTO = exerciseSetDTOs.get(j);
@@ -197,11 +197,6 @@ public class WorkoutService {
                     log.error("Error saving exercise set: {}", setDTO, e);
                     throw e; // rethrow to preserve behavior
                 }
-
-                // exerciseSetService.saveExerciseSet(workoutExercise, setOrder,
-                // setDTO.getReps(), setDTO.getWeight(),
-                // setDTO.getDurationSeconds(), setDTO.getDistanceMeters());
-
             }
         }
         // wait to do this after everything has been saved so you have the latest for
@@ -222,7 +217,7 @@ public class WorkoutService {
         float pace;
 
         if (distanceMeters == null || durationSeconds == null || durationSeconds == 0) {
-            return null;
+            return (float) 0;
         }
         pace = calculatePace(distanceMeters, durationSeconds);
         // Round to 2 decimal places
@@ -258,6 +253,7 @@ public class WorkoutService {
         setSegmentDTODetails.setDurationSeconds(setSegment.getDurationSeconds());
         setSegmentDTODetails.setDistanceMeters(setSegment.getDistanceMeters());
         setSegmentDTODetails.setDistanceMeasurement(setSegment.getDistanceMeasurement());
+        setSegmentDTODetails.setPacePerMile(setSegment.getPacePerMile());
         return setSegmentDTODetails;
     }
 
