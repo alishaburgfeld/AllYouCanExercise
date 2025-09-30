@@ -40,6 +40,8 @@ its not working with the security dependency, so for now I comment that out when
 
 # exec into the container: docker exec -it allyoucanexercise-mysql-1 sh
 
+# exec into the container: docker exec -it mysql-local sh
+
 docker exec -it allyoucanexercise-mysql sh
 
 <!-- After I dockerized it became allyoucanexercise-mysql sh
@@ -56,6 +58,7 @@ Also other containers are: docker exec -it allyoucanexercise-frontend-1 sh -->
 # show tables
 
 <!-- if need to drop tables: follow this order:
+drop table set_segment;
 drop table exercise_set;
 drop table workout_exercise;
 drop table workout;
@@ -63,6 +66,7 @@ drop table user;
 drop table exercise_equipment;
 drop table equipment;
 drop table exercise;
+drop table exercise_record;
 
 <!-- App Information -->
 
@@ -160,6 +164,12 @@ SELECT \* FROM flyway_schema_history;
 
 if need to delete a migration gone bad:
 DELETE FROM flyway_schema_history WHERE version = '2.0.1';
+
+If I need to drop the entire schema/ all tables: mvnw flyway:clean
+
+If a migration worked partially, can try a repair for it to try and reset what it did:
+mvn flyway repair
+mvn flyway:migrate
 
 <!-- Helpful Videos and Tutorials-->
 

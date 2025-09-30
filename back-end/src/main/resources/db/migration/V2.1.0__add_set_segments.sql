@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS set_segment (
     weight DECIMAL(5,2) UNSIGNED,
     duration_seconds INT DEFAULT NULL,
     distance_meters DECIMAL(10,2) UNSIGNED DEFAULT NULL,
-    distance_measurement ENUM('MILES', 'YARDS', 'METERS') DEFAULT NULL;
-    pace_per_mile DECIMAL(5,2) UNSIGNED DEFAULT NULL;
+    distance_measurement ENUM('MILES', 'YARDS', 'METERS') DEFAULT NULL,
+    pace_per_mile DECIMAL(5,2) UNSIGNED DEFAULT NULL,
     FOREIGN KEY (exercise_set_id) REFERENCES exercise_set(id)
 );
