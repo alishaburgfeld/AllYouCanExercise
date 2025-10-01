@@ -33,6 +33,15 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
         activeWorkout?.forEach((exercise)=> {
             let sets = prepareSetsForBackend(exercise.sets);
             workoutExerciseDetails.push({"exerciseId": exercise.exerciseId, "sets": sets})
+
+            // now with set segments it needs to come in as:
+            // {
+            // "exerciseId": 1,
+            // "sets": [
+            // [{ "reps": 10, "weight": 50.0}],
+            // [{ "reps": 8, "weight": 55.0 }, {"reps": 2, "weight": 50.0}]
+            // ]
+            // },
         })
         finalWorkoutDetails["workoutExerciseDetails"] = workoutExerciseDetails
         // console.log('finalWorkoutDetails are', finalWorkoutDetails)
@@ -49,26 +58,51 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
 
     const prepareSetsForBackend = (sets) => {
         let finalSets=[]
+        // let segments=[]
         sets.forEach((set)=> {
-            let convertedSet = {...set}
+            let newSet = {"segments":[]}
+            // this is all temporary until I fully enable segments.
+            
+            let convertedSegment = {...set}
             if (set.duration) {
-                convertedSet.durationSeconds = convertToSeconds(set.duration)
-                delete convertedSet.duration;
+                convertedSegment.durationSeconds = convertToSeconds(set.duration)
+                delete convertedSegment.duration;
             }
             if (set.distance) {
                 let meters = toMeters(set.distance, set.distanceMeasurement)
                 let formattedMeters = Math.round(meters * 100) / 100
-                convertedSet.distanceMeters = formattedMeters
+                convertedSegment.distanceMeters = formattedMeters
                 // delete convertedSet.distanceMeasurement;
-                delete convertedSet.distance;
+                delete convertedSegment.distance;
             }
-            finalSets.push(convertedSet)
+            // segments.push(convertedSegment)
+            newSet["segments"].push(convertedSegment)
+            finalSets.push(newSet);
+            // for right now I am just making this an array to see if my set segments work. eventually need to account for segments.
+            // now with set segments it needs to come in as:
+            // {
+            // "exerciseId": 1,
+            // "sets": [
+            // {
+            //     "segments": [
+            //     {"reps":"10","weight":"5"}
+            //     ]
+            // },
+            // {
+            //     "segments": [
+            //     {"reps":"2","weight":"15"},
+            //     {"reps":"8","weight":"10"}
+            //     ]
+            // }
+            // ]
+            
         })
+
         return finalSets
     }
 
     const handleSave = async () => {
-        // console.log('in handle save, workout details are', workoutDetails, "title is", title)
+        console.log('&^*** in handle save, workout details are', workoutDetails)
         const response = await postAxiosCall(`${VITE_API_BASE_URL}/workouts/full/save`, workoutDetails);
             if (response.success) {
             console.log('handleworkoutsave response', response)

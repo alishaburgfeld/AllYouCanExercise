@@ -109,15 +109,13 @@ export const convertToJavaTime = (dateTime) => {
       /(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2}):(\d{2})/,
       "$3-$1-$2T$4:$5:$6",
     );
-
-  console.log("time formated for java", timeFormattedForJava);
   return timeFormattedForJava;
 };
 
 export const convertJavaLocalDateTimeToUserLocalTime = (
   javaLocalDateTimeString,
 ) => {
-  console.log("javalocaltime is", javaLocalDateTimeString);
+  // console.log("javalocaltime is", javaLocalDateTimeString);
   const dateObject = new Date(javaLocalDateTimeString);
   const formatter = new Intl.DateTimeFormat("en-US", {
     year: "numeric",

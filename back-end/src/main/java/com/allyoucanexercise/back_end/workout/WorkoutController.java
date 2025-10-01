@@ -114,7 +114,15 @@ public class WorkoutController {
 // {
 // "exerciseId": 1,
 // "sets": [
-// [{ "reps": 10, "weight": 50.0}],
-// [{ "reps": 8, "weight": 55.0 }, {"reps": 2, "weight": 50.0}]
+// {
+// "segments": [
+// {"reps":"10","weight":"5"}
 // ]
 // },
+// {
+// "segments": [
+// {"reps":"2","weight":"15"},
+// {"reps":"8","weight":"10"}
+// ]
+// }
+// ]

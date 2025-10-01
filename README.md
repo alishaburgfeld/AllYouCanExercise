@@ -165,11 +165,14 @@ SELECT \* FROM flyway_schema_history;
 if need to delete a migration gone bad:
 DELETE FROM flyway_schema_history WHERE version = '2.0.1';
 
-If I need to drop the entire schema/ all tables: mvnw flyway:clean
+If I need to drop the entire schema/ all tables:
+mvn flyway:clean -Dflyway.cleanDisabled=false -Dflyway.url="jdbc:mysql://localhost:3306/exercise-database" -Dflyway.user="alisha" -Dflyway.password="secret"
 
 If a migration worked partially, can try a repair for it to try and reset what it did:
-mvn flyway repair
-mvn flyway:migrate
+
+mvn flyway:repair -Dflyway.url="jdbc:mysql://localhost:3306/exercise-database" -Dflyway.user="alisha" -Dflyway.password="secret"
+
+mvn flyway:migrate -Dflyway.url="jdbc:mysql://localhost:3306/exercise-database" -Dflyway.user="alisha" -Dflyway.password="secret"
 
 <!-- Helpful Videos and Tutorials-->
 
