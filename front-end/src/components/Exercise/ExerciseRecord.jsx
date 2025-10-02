@@ -12,7 +12,7 @@ export default function ExerciseRecord({exerciseRecord}) {
     const [maxDuration, setMaxDuration] = useState(null);
     const [maxPacePerMile, setMaxPacePerMile] = useState(null);
 
-    console.log('on exerciseRecord, exrec is', exerciseRecord)
+    // console.log('on exerciseRecord, exrec is', exerciseRecord)
 
     const setMaxValues =() =>{
         setMaxSets(exerciseRecord.maxSets);

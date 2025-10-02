@@ -42,18 +42,45 @@ function App() {
 
   const setExerciseInfo = (exercise) => {
     let repSets = [
-      {"reps": 10, "weight": 10.0},
-      {"reps": 10, "weight": 10.0},
-      {"reps": 10, "weight": 10.0},
-      {"reps": 10, "weight": 10.0}
+      {
+        "segments":
+        [
+          {"reps": 10, "weight": 10.0},
+        ]
+      },
+      {
+        "segments":
+        [
+          {"reps": 10, "weight": 10.0},
+        ]
+      },
+      {
+        "segments":
+        [
+          {"reps": 10, "weight": 10.0},
+        ]
+      },
+      {
+        "segments":
+        [
+          {"reps": 10, "weight": 10.0},
+        ]
+      }
     ];
 
     let cardioSets = [
-      {"duration": {
-        "hours": 0,
-        "minutes": 15,
-        "seconds": 0
-      }, "distance": 1, "distanceMeasurement": "MILES"},
+      {
+        "segments":
+        [
+          {
+            "duration": {
+            "hours": 0,
+            "minutes": 15,
+            "seconds": 0
+          }, "distance": 1, "distanceMeasurement": "MILES"
+          }
+        ]
+      }
     ]
     if (exercise) {
       let exerciseInfo = {

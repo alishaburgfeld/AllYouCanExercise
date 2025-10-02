@@ -422,31 +422,6 @@ pace_per_mile = (duration_in_seconds / 60) / (distance_in_meters / 1609.34)
 
 // System.out.println("**\*\***\*\*\***\*\*** FULLWORKOUTdetails = " + fullWorkout);
 
-<!-- used to test my dto response:
-
-@GetMapping("/test")
-    WorkoutResponseDTO test() {
-        WorkoutResponseDTO dto = new WorkoutResponseDTO();
-        WorkoutDetailsDTO wddto = new WorkoutDetailsDTO();
-        wddto.setCompletedAt(LocalDateTime.now());
-        wddto.setTitle("test title");
-        wddto.setUsername("alb");
-        wddto.setWorkoutNotes("test notes");
-
-        dto.setWorkoutDetails(wddto);
-        WorkoutExerciseDetailsDTO wedto1 = new WorkoutExerciseDetailsDTO();
-        ExerciseSetDTO esdto1 = new ExerciseSetDTO();
-        esdto1.setReps(10);
-        esdto1.setWeight(20f);
-
-        List<ExerciseSetDTO> exerciseSetDTOs = List.of(esdto1);
-        List<WorkoutExerciseDetailsDTO> workoutExerciseDetailDTOs = List.of(wedto1);
-        wedto1.setExerciseId(1l);
-        wedto1.setSets(exerciseSetDTOs);
-        dto.setWorkoutExerciseDetails(workoutExerciseDetailDTOs);
-        return dto;
-    } -->
-
 <!-- count how many times a function is used in the useeffect:
 console.count("💥 useEffect - getWorkoutById called"); -->
 
@@ -459,7 +434,10 @@ need to not return user credentials and all the workout details with the record 
 
 # BUGS BUGS BUGS
 
+P2: pace per mile is not being saved correctly.
 P3: titles and buttons on exercises look weird on desktop
+P3: Workout History cards are different widths
+P3: Title on exercises look weird on mobile.
 
 <!-- should take a look at this to hopefully be able to downgrade to a smaller ec2 instance type (serve react files in S3):
 https://www.youtube.com/watch?v=YC7NBNICGeY -->

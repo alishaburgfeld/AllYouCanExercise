@@ -104,7 +104,7 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
     const handleSave = async () => {
         console.log('&^*** in handle save, workout details are', workoutDetails)
         const response = await postAxiosCall(`${VITE_API_BASE_URL}/workouts/full/save`, workoutDetails);
-            if (response.success) {
+        if (response.success) {
             console.log('handleworkoutsave response', response)
             handleSaveSuccess();
             } else {

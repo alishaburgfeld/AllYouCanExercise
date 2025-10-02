@@ -9,9 +9,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import CompleteWorkoutModal from "../components/ActiveWorkout/CompleteWorkoutModal";
 import SetsRepsDuration from "../components/ActiveWorkout/SetsRepsDuration";
 import Alert from '@mui/material/Alert';
+import { useNavigate } from "react-router-dom";
 
 export default function ActiveWorkoutPage({ activeWorkout, setActiveWorkout, activeUsername, updateActiveWorkoutWithNewStats}) {
     const theme = useTheme();
+    const navigate = useNavigate();
     const [openCompleteWorkoutModal, setOpenCompleteWorkoutModal] = useState(false);
     const [isWorkoutSaved, setIsWorkoutSaved] = useState(false);
     const [saveWorkoutError, setSaveWorkoutError] = useState(null);

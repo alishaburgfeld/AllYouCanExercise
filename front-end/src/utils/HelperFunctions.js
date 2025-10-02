@@ -177,7 +177,8 @@ export const displayCardioText = (exercise) => {
   const cardioSet = exercise?.sets?.[0];
   if (!cardioSet) return null;
 
-  const { distance, distanceMeasurement, duration } = cardioSet;
+  const { distance, distanceMeasurement, duration } =
+    cardioSet["segments"][0];
   const { hours, minutes, seconds } = duration || {};
 
   let cardioValues = {};
@@ -197,6 +198,20 @@ export const displayCardioText = (exercise) => {
   // console.log("1) in display cardio sets, displaydistance is", displayDistance, "displayduration is", displayDuration)
 };
 
+export const areArrayValuesEqual = (arr1, arr2) => {
+  if (arr1.length !== arr2.length) {
+    return false;
+  }
+
+  for (let i = 0; i < arr1.length; i++) {
+    if (JSON.stringify(arr1[i]) !== JSON.stringify(arr2[i])) {
+      return false; // Objects at index i are not the same
+    }
+  }
+
+  return true;
+};
+
 export const displayReps = (exercise) => {
   const sets = exercise.sets;
   // console.log('in display rep sets, sets are', sets)
@@ -208,19 +223,31 @@ export const displayReps = (exercise) => {
   for (let i = 1; i <= sets.length; i++) {
     const current = sets[i];
     const prev = sets[i - 1];
-
-    if (
-      current &&
-      prev &&
-      current.reps === prev.reps &&
-      current.weight === prev.weight
-    ) {
+    const currentSegments = current["segments"]; //array of segments
+    const prevSegments = prev["segments"];
+    if (areArrayValuesEqual(currentSegments, prevSegments)) {
       count++;
     } else {
-      combinedSets.push(`${count}x${prev.reps}:${prev.weight} lbs`);
+      const setString = createSetString(count, prevSegments);
+      combinedSets.push(setString);
+      // combinedSets.push(`${count}x${prev.reps}:${prev.weight} lbs`);
       count = 1;
     }
   }
   // console.log("combinedSets are", combinedSets);
   return combinedSets;
+};
+
+export const createSetString = (count, segments) => {
+  let setString;
+  segments.forEach((segment) => {
+    const segmentReps = segment.reps;
+    const segmentWeight = segment.weight;
+    if (count > 1) {
+      setString = `${count} Sets: ${segmentReps} reps @ ${segmentWeight} lbs`;
+    } else {
+      setString = `${count} Set: ${segmentReps} reps @ ${segmentWeight} lbs`;
+    }
+  });
+  return setString;
 };
