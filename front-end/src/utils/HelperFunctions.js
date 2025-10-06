@@ -223,11 +223,16 @@ export const displayReps = (exercise) => {
   let count = 1;
 
   for (let i = 1; i <= sets.length; i++) {
-    const current = sets[i];
+    const current = sets[i] || null;
     const prev = sets[i - 1];
-    const currentSegments = current["segments"]; //array of segments
-    const prevSegments = prev["segments"];
-    if (areArrayValuesEqual(currentSegments, prevSegments)) {
+    console.log("current 228 is", current, "i is", i);
+    const currentSegments = current?.segments || null; //array of segments
+    const prevSegments = prev?.segments || null;
+    if (
+      current &&
+      areArrayValuesEqual(currentSegments, prevSegments)
+    ) {
+      console.log("currentsegments and prevSegments are equal");
       count++;
     } else {
       const setString = createSetString(count, prevSegments);
@@ -236,11 +241,16 @@ export const displayReps = (exercise) => {
       count = 1;
     }
   }
-  // console.log("combinedSets are", combinedSets);
+  console.log("combinedSets 239 are", combinedSets);
   return combinedSets;
 };
 
 export const createSetString = (count, segments) => {
+  console.log(
+    "count and segments n createsetstring are",
+    count,
+    segments,
+  );
   let setString;
   segments.forEach((segment) => {
     const segmentReps = segment.reps;
@@ -251,5 +261,6 @@ export const createSetString = (count, segments) => {
       setString = `${count} Set: ${segmentReps} reps @ ${segmentWeight} lbs`;
     }
   });
+  console.log("setString 259 is", setString);
   return setString;
 };

@@ -1,5 +1,5 @@
 import { Button, Box, Typography, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
-import { Add} from '@mui/icons-material';
+import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { useState, useEffect } from "react";
 
