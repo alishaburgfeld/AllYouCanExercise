@@ -22,7 +22,6 @@ export default function WorkoutHistoryCard({workout}) {
   const [workoutExerciseDetails, setWorkoutExerciseDetails] = useState(null);
   const [joinedExerciseGroups, setJoinedExerciseGroups] = useState(null);
 
-  console.log('workoutEx group on history card', workoutExerciseGroups)
   const handleWorkoutClick = () => {
     navigate(`/workout/${workout.workoutId}`);
   }

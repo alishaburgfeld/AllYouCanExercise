@@ -27,21 +27,11 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
                 "title": title,
                 "completedAt": timeFormattedForJava,
                 "workoutNotes": notes
-                
             }
         }
         activeWorkout?.forEach((exercise)=> {
             let sets = prepareSetsForBackend(exercise.sets);
             workoutExerciseDetails.push({"exerciseId": exercise.exerciseId, "sets": sets})
-
-            // now with set segments it needs to come in as:
-            // {
-            // "exerciseId": 1,
-            // "sets": [
-            // [{ "reps": 10, "weight": 50.0}],
-            // [{ "reps": 8, "weight": 55.0 }, {"reps": 2, "weight": 50.0}]
-            // ]
-            // },
         })
         finalWorkoutDetails["workoutExerciseDetails"] = workoutExerciseDetails
         // console.log('finalWorkoutDetails are', finalWorkoutDetails)
@@ -56,50 +46,34 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
         // probably need to set the activeworkout to null and then redirect to homepage
       };
 
-    const prepareSetsForBackend = (sets) => {
-        let finalSets=[]
-        // let segments=[]
-        sets.forEach((set)=> {
-            let newSet = {"segments":[]}
-            // this is all temporary until I fully enable segments.
-            
-            let convertedSegment = {...set}
-            if (set.duration) {
-                convertedSegment.durationSeconds = convertToSeconds(set.duration)
-                delete convertedSegment.duration;
-            }
-            if (set.distance) {
-                let meters = toMeters(set.distance, set.distanceMeasurement)
-                let formattedMeters = Math.round(meters * 100) / 100
-                convertedSegment.distanceMeters = formattedMeters
-                // delete convertedSet.distanceMeasurement;
-                delete convertedSegment.distance;
-            }
-            // segments.push(convertedSegment)
-            newSet["segments"].push(convertedSegment)
-            finalSets.push(newSet);
-            // for right now I am just making this an array to see if my set segments work. eventually need to account for segments.
-            // now with set segments it needs to come in as:
-            // {
-            // "exerciseId": 1,
-            // "sets": [
-            // {
-            //     "segments": [
-            //     {"reps":"10","weight":"5"}
-            //     ]
-            // },
-            // {
-            //     "segments": [
-            //     {"reps":"2","weight":"15"},
-            //     {"reps":"8","weight":"10"}
-            //     ]
-            // }
-            // ]
-            
-        })
+      const prepareSetsForBackend = (sets) => {
+        console.log("666666 I'm in prepareSets for backend")
+        const finalSets = [];
 
-        return finalSets
-    }
+        sets.forEach((set) => {
+            const finalSegments = set.segments.map((segment) => {
+            const clonedSegment = { ...segment }; // shallow clone
+
+            if (clonedSegment.duration) {
+                clonedSegment.durationSeconds = convertToSeconds(clonedSegment.duration);
+                delete clonedSegment.duration;
+            }
+
+            if (clonedSegment.distance) {
+                const meters = toMeters(clonedSegment.distance, clonedSegment.distanceMeasurement);
+                clonedSegment.distanceMeters = Math.round(meters * 100) / 100;
+                delete clonedSegment.distance;
+            }
+
+            return clonedSegment;
+            });
+
+            finalSets.push({ segments: finalSegments });
+        });
+
+        return finalSets;
+    };
+
 
     const handleSave = async () => {
         console.log('&^*** in handle save, workout details are', workoutDetails)
@@ -113,9 +87,12 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
               }
     }
 
-    useEffect(()=> {
-        defineWorkoutDetails();
-      }, [activeWorkout, title, selectedDateTime, notes])
+    useEffect(() => {
+        if (openCompleteWorkoutModal) {
+            defineWorkoutDetails();
+        }
+    }, [activeWorkout, title, selectedDateTime, notes, openCompleteWorkoutModal]);
+
 
     return(
         <>

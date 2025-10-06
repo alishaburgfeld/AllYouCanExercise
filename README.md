@@ -434,6 +434,8 @@ need to not return user credentials and all the workout details with the record 
 
 # BUGS BUGS BUGS
 
+P1: This was allowed to be saved as a workout:
+payload={"workoutDetails":{"username":"alb","title":"run on treadmill-1","completedAt":"2025-10-02T18:06:45","workoutNotes":"notes"},"workoutExerciseDetails":[{"exerciseId":54,"sets":[{"segments":[{"segments":[{"distance":"3200","duration":{"hours":1,"minutes":10,"seconds":1},"distanceMeasurement":"METERS"}]}]}]}]}
 P2: pace per mile is not being saved correctly.
 P3: titles and buttons on exercises look weird on desktop
 P3: Workout History cards are different widths
@@ -441,3 +443,8 @@ P3: Title on exercises look weird on mobile.
 
 <!-- should take a look at this to hopefully be able to downgrade to a smaller ec2 instance type (serve react files in S3):
 https://www.youtube.com/watch?v=YC7NBNICGeY -->
+
+
+
+You are a senior Software Developer with experience in Java, Javascript, and React. I'm having something weird happen in my application where when I add a cardio exercise to an ActiveWorkout that already contains a cardio exercise (I have not tested this with my strength exercises), sometimes on my ActiveWorkout page it will only display the distance and duration for the most recently added exercise. There have been ocassional times where it does show the correct values on both exercises, but is more common that it only shows the value for the most recently added. Additionally, if I delete an exercise from my ActiveWorkout, the remaining exercises no longer display the distance and duration I have already confirmed that the ActiveWorkout variable has the correct values, and that the exercise in this console log: console.log("on setsrepdur", 'exercise is',exercise) contains the distance and duration. Additionally, this console.log is appropriately showing: {"segments": [
+console.log("cardioSet in displayCardiotext is", cardioSet);

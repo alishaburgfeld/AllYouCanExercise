@@ -175,6 +175,7 @@ export const fromMeters = (meters, toUnit) => {
 
 export const displayCardioText = (exercise) => {
   const cardioSet = exercise?.sets?.[0];
+  console.log("44444444cardioSet in displayCardiotext is", cardioSet);
   if (!cardioSet) return null;
 
   const { distance, distanceMeasurement, duration } =
@@ -194,6 +195,7 @@ export const displayCardioText = (exercise) => {
   }
   cardioValues["displayDistance"] = displayDistance;
   cardioValues["displayDuration"] = displayDuration;
+  console.log("5555555cardiovalues are", cardioValues);
   return cardioValues;
   // console.log("1) in display cardio sets, displaydistance is", displayDistance, "displayduration is", displayDuration)
 };

@@ -8,9 +8,7 @@ import { convertFromSeconds } from '../../utils/HelperFunctions';
 
 export default function EditExerciseModal({ openEditExerciseModal, setOpenEditExerciseModal, exercise, updateActiveWorkoutWithNewStats }) {
 
-    const [sets, setSets] = useState([1]);
-    const [allReps, setAllReps] = useState([""]);
-    const [allWeights, setAllWeights] = useState([""]);
+    const [sets, setSets] = useState(exercise.sets);
     const [inputDistance, setInputDistance] = useState(null);
     const [inputDistanceMeasurement, setInputDistanceMeasurement] = useState(null);
     const [inputDuration, setInputDuration] = useState(null);
@@ -26,34 +24,44 @@ export default function EditExerciseModal({ openEditExerciseModal, setOpenEditEx
 
     const saveCardioEdits = () => {
         let updatedExerciseDetail = {...exercise}
-        const newSets = [{
-            "distance": inputDistance !== null ? inputDistance : exercise.sets[0].distance, 
-            "duration": inputDuration || exercise.sets[0].duration, 
-            "distanceMeasurement": inputDistanceMeasurement || exercise.sets[0].distanceMeasurement}]
-        // console.log('3) in savecardio edits newsets are', newSets)
+
+        const newSets =
+        [{"segments":
+            [
+                {
+                "distance": inputDistance !== null ? inputDistance : exercise.sets[0]["segments"][0].distance, 
+                "duration": inputDuration || exercise.sets[0]["segments"][0].duration, 
+                "distanceMeasurement": inputDistanceMeasurement || exercise.sets[0]["segments"][0].distanceMeasurement
+                }
+            ]
+        }]
+        console.log('3) in savecardio edits newsets are', newSets)
         updatedExerciseDetail["sets"] = newSets;
         updateActiveWorkoutWithNewStats(updatedExerciseDetail)
         setOpenEditExerciseModal(false);
+        // setInputDuration({"hours": parsedHours, "minutes": parsedMinutes, "seconds": parsedSeconds});
     }
 
     const saveRepEdits = () => {
         let updatedExerciseDetail = {...exercise}
-            const newSets = [];
-            for(let i=0; i<allReps.length; i++) {
-                newSets[i] = {"reps": allReps[i], "weight": allWeights[i]}
-            }
-            updatedExerciseDetail["sets"] = newSets;
-        // console.log('4) EEM updatedexdetails are', updatedExerciseDetail)
+            updatedExerciseDetail["sets"] = sets;
+        console.log('4) EEM SaveReps updatedexdetails are', updatedExerciseDetail)
         updateActiveWorkoutWithNewStats(updatedExerciseDetail)
         setOpenEditExerciseModal(false);
     };
 
-    
+
+    const updateSets = (setIndex, segments) =>{
+        const newSets = [...sets];
+        const updatedSet = sets[setIndex];
+        updatedSet.segments = segments;
+        newSets[setIndex] = updatedSet;
+        console.log('newSets in EEM are', newSets);
+        setSets(newSets);
+    }
 
     const addSet = () => {
         setSets([...sets, sets.length + 1]); 
-        setAllReps((prev) => [...prev, allReps[allReps.length - 1] || ""]);
-        setAllWeights((prev) => [...prev, allWeights[allWeights.length - 1] || ""]);
         // duplicates the previous value into the new set value
     };
 
@@ -72,8 +80,11 @@ export default function EditExerciseModal({ openEditExerciseModal, setOpenEditEx
                 </DialogTitle>
                     {exercise.exerciseType !== "CARDIO" ?
                         <>
-                            {sets.map((setCount) => (
-                                <RepSet key={setCount} setCount={setCount} allReps={allReps} allWeights={allWeights} setAllReps={setAllReps} setAllWeights={setAllWeights}/>
+                            {sets.map((set, index) => (
+                                <>
+                                <Typography sx={{pl: 2}}>Set {index +1}: </Typography> 
+                                <RepSet set={set} key={index} setIndex={index} updateSets={updateSets} />
+                                </>
                             ))}
                             <AddIcon onClick={addSet} sx={{ cursor: 'pointer' }} />
                         </>

@@ -26,7 +26,11 @@ export default function ActiveWorkoutPage({ activeWorkout, setActiveWorkout, act
   
     const handleRemoveExercise = (exerciseId) => {
       // Remove exercise by filtering out the one with matching id
-      const updatedActiveWorkout = activeWorkout.filter(exercise => exercise.exerciseId !== exerciseId);
+      let updatedActiveWorkout = activeWorkout.filter(exercise => exercise.exerciseId !== exerciseId);
+      if (updatedActiveWorkout.length===0) {
+        updatedActiveWorkout=null;
+      }
+      console.log('updatedActiveWorkout in handleRemove is', updatedActiveWorkout)
       setActiveWorkout(updatedActiveWorkout);
     };
   
@@ -72,31 +76,3 @@ export default function ActiveWorkoutPage({ activeWorkout, setActiveWorkout, act
       </Box>
     );
 }
-  
-
-
-// need to send:
-// {
-// "workoutDetails": {
-// "username": "xusername",
-// "title": "xtitle",
-// "completedAt": "2025-04-13T14:00:00",
-// "notes": "xnotes"
-// },
-// "workoutExerciseDetails": [
-// {
-// "exerciseId": 1,
-// "sets": [
-// { "reps": 10, "weight": 50.0, "duration": 0, "distance": 0 },
-// { "reps": 8, "weight": 55.0, "duration": 0, "distance": 0 }
-// ]
-// },
-// {
-// "id": 2,
-// "sets": [
-// { "reps": 15, "weight": 0.0, "duration": 900, "distance": 2000 },
-// { "reps": 10, "weight": 0.0, "duration": 600, "distance": 1500 }
-// ]
-// }
-// ]
-// }

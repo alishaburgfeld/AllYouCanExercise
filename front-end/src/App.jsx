@@ -27,8 +27,11 @@ const getInitialUsername = () => {
 
 const getInitialActiveWorkout = () => {
   const activeWorkout = sessionStorage.getItem("activeWorkout");
-  return activeWorkout ? JSON.parse(activeWorkout) : null
-}
+  const parsed = activeWorkout ? JSON.parse(activeWorkout) : null;
+  
+  return parsed && Object.keys(parsed).length > 0 ? parsed : null;
+};
+
 
 function App() {
 
@@ -99,7 +102,7 @@ function App() {
   };
 
   const updateActiveWorkoutWithNewStats = (updatedExerciseInfo) => {
-    // console.log('on app.jsx, updatedExerciseInfo is', updatedExerciseInfo)
+    console.log('on app.jsx, updatedExerciseInfo is', updatedExerciseInfo)
     const updatedActiveWorkout = activeWorkout.map(exerciseDetail => {
       if (exerciseDetail.exerciseId === updatedExerciseInfo.exerciseId) {
         return updatedExerciseInfo;  // Replace the exercise with updated one
@@ -111,27 +114,28 @@ function App() {
   };
 
 const existingWorkoutDoesNotContainCurrentExercise = (exerciseToBeAdded) => {
-  console.log("*****activeWorkout in check if existing is", activeWorkout)
+  // console.log("*****activeWorkout in check if existing is", activeWorkout)
   if (activeWorkout && !activeWorkout.some(exercise => exercise.exerciseId === exerciseToBeAdded.id))
     return true
 }
 
 const addToActiveWorkout = (exerciseToBeAdded) => {
-  console.log('*****ex to be added in addToActiveWorkout is:', exerciseToBeAdded)
+  console.log('2222222222 ex to be added in addToActiveWorkout is:', exerciseToBeAdded, "current activeWorkout is", activeWorkout)
   let updatedActiveWorkout;
-  if (activeWorkout) {
+  // console.log('activeworkoutlength', activeWorkout.length, "type", typeof(activeWorkout))
+  if (activeWorkout!==null) {
     if (existingWorkoutDoesNotContainCurrentExercise(exerciseToBeAdded)) {
-      console.log("~~returned true -exercise does not contain current")
+      // console.log("~~returned true -exercise does not contain current")
       updatedActiveWorkout = [...activeWorkout, setExerciseInfo(exerciseToBeAdded)];
+      console.log("3333333 there is an active workout and now I've added the workout, updatedActiveWorkout is", updatedActiveWorkout)
     } 
     else {
       return;
     }
   }
   else {
-      // expect it to go here
     updatedActiveWorkout = [setExerciseInfo(exerciseToBeAdded)]
-    console.log("****updated workout in addToActiveWorkout is", updatedActiveWorkout)
+    console.log("333333 no active workout - updated workout in addToActiveWorkout is", updatedActiveWorkout)
   }
 
   // console.log('updatedActiveWorkout is', updatedActiveWorkout);
@@ -159,8 +163,11 @@ useEffect(()=> {
   }, [activeUsername])
 
   useEffect(() => {
-    sessionStorage.setItem("activeWorkout", JSON.stringify(activeWorkout))
-  }, [activeWorkout])
+  if (activeWorkout && Object.keys(activeWorkout).length > 0) {
+    sessionStorage.setItem("activeWorkout", JSON.stringify(activeWorkout));
+  }
+}, [activeWorkout]);
+
 
   useEffect(() => {
     // only run this function if exerciseToBeAdded has a value, not on first render when its null
