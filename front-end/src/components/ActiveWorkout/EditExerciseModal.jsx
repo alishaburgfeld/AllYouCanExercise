@@ -61,7 +61,9 @@ export default function EditExerciseModal({ openEditExerciseModal, setOpenEditEx
     }
 
     const addSet = () => {
-        setSets([...sets, sets.length + 1]); 
+        const lastSet = sets[sets.length - 1] || {};
+        const newSet = { ...lastSet }; // shallow copy
+        setSets([...sets, newSet]);
         // duplicates the previous value into the new set value
     };
 

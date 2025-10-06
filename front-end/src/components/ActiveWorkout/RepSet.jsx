@@ -20,9 +20,12 @@ export default function RepSet ({set, setIndex, updateSets}) {
   };
 
   const addSegment = () => {
-        setSegments([...segments, segments.length + 1]); 
-        // duplicates the previous value into the new segment value
-  };
+    const lastSegment = segments[segments.length - 1] || {};
+    const newSegment = { ...lastSegment }; // shallow copy
+    setSegments([...segments, newSegment]);
+    // duplicates the previous value into the new segment value
+};
+
 
   const removeSegment = (index) => {
     const newSegments = [...segments]
