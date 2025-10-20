@@ -15,8 +15,8 @@ import com.allyoucanexercise.back_end.exercise.ExerciseGroup;
 import com.allyoucanexercise.back_end.exercise.ExerciseService;
 import com.allyoucanexercise.back_end.exercise.ExerciseType;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetDTO;
-import com.allyoucanexercise.back_end.setSegment.DistanceMeasurement;
-import com.allyoucanexercise.back_end.setSegment.SetSegmentDTO;
+import com.allyoucanexercise.back_end.SetSegment.DistanceMeasurement;
+import com.allyoucanexercise.back_end.SetSegment.SetSegmentDTO;
 import com.allyoucanexercise.back_end.user.User;
 import com.allyoucanexercise.back_end.user.UserService;
 

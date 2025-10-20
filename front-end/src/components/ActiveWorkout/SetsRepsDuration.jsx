@@ -1,7 +1,7 @@
 import { Box, Typography, IconButton } from "@mui/material";
 import { Edit } from '@mui/icons-material';
 import { convertFromSeconds, formatExerciseDurationIntoMinutesAndSeconds, fromMeters, displayCardioText, displayReps } from "../../utils/HelperFunctions";
-import EditExerciseModal from "./EditExerciseModal";
+import NewEditExerciseModal from "./NewEditExerciseModal";
 import { useEffect, useState } from "react";
 import { useMemo } from "react";
 
@@ -68,7 +68,7 @@ export default function SetsRepsDuration({ exercise, updateActiveWorkoutWithNewS
       <IconButton onClick={handleEditClick}>
         <Edit />
       </IconButton>
-      <EditExerciseModal
+      <NewEditExerciseModal
         openEditExerciseModal={openEditExerciseModal}
         setOpenEditExerciseModal={setOpenEditExerciseModal}
         exercise={exercise}

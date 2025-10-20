@@ -1,4 +1,4 @@
-package com.allyoucanexercise.back_end.setSegment;
+package com.allyoucanexercise.back_end.SetSegment;
 
 public class SetSegmentDTO {
     private Integer reps;

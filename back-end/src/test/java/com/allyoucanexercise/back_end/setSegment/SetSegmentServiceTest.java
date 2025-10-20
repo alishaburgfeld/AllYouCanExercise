@@ -8,6 +8,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import com.allyoucanexercise.back_end.SetSegment.DistanceMeasurement;
+import com.allyoucanexercise.back_end.SetSegment.SetSegment;
+import com.allyoucanexercise.back_end.SetSegment.SetSegmentRepository;
+import com.allyoucanexercise.back_end.SetSegment.SetSegmentService;
 import com.allyoucanexercise.back_end.exercise.Exercise;
 import com.allyoucanexercise.back_end.exercise.ExerciseGroup;
 import com.allyoucanexercise.back_end.exercise.ExerciseType;

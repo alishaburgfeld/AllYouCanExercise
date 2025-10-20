@@ -1,4 +1,4 @@
-package com.allyoucanexercise.back_end.setSegment;
+package com.allyoucanexercise.back_end.SetSegment;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

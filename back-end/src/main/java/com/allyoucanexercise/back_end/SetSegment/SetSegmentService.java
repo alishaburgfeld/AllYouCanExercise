@@ -1,4 +1,4 @@
-package com.allyoucanexercise.back_end.setSegment;
+package com.allyoucanexercise.back_end.SetSegment;
 
 import java.util.List;
 
@@ -31,7 +31,8 @@ public class SetSegmentService {
         return setSegmentRepository.save(setSegment);
     }
 
-    public SetSegment saveSetSegment(ExerciseSet exerciseSet, Integer segmentOrder, Integer reps, Float weight, Integer durationSeconds, Float distanceMeters, DistanceMeasurement distanceMeasurement, Float pacePerMile) {
+    public SetSegment saveSetSegment(ExerciseSet exerciseSet, Integer segmentOrder, Integer reps, Float weight,
+            Integer durationSeconds, Float distanceMeters, DistanceMeasurement distanceMeasurement, Float pacePerMile) {
         SetSegment setSegment = new SetSegment();
         setSegment.setExerciseSet(exerciseSet);
         setSegment.setSegmentOrder(segmentOrder);

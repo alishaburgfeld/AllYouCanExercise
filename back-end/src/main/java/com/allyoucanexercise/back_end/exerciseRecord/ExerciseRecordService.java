@@ -17,7 +17,7 @@ import com.allyoucanexercise.back_end.user.UserService;
 import com.allyoucanexercise.back_end.workout.Workout;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetDTO;
 
-import com.allyoucanexercise.back_end.setSegment.SetSegmentDTO;
+import com.allyoucanexercise.back_end.SetSegment.SetSegmentDTO;
 import com.allyoucanexercise.back_end.workoutExercise.WorkoutExerciseDetailsDTO;
 
 @Service
