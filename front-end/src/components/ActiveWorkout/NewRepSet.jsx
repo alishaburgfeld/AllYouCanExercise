@@ -77,7 +77,7 @@ export default function NewRepSet ({set, setIndex, updateSets}) {
                 variant="standard"
                 onChange={(e) => {
                     setCurrentSegmentReps(Number(e.target.value));
-                    updateSegments(segmentIndex, Number(e.target.value), currentSegmentWeight)
+                    updateSegments(segmentIndex, Number(e.target.value), segment.weight)
                 }}
                 value={segment.reps || ""}
                 size="small"
@@ -96,7 +96,7 @@ export default function NewRepSet ({set, setIndex, updateSets}) {
                     variant="standard"
                     onChange={(e) => {
                         setCurrentSegmentWeight(Number(e.target.value));
-                        updateSegments(segmentIndex, currentSegmentReps, Number(e.target.value));
+                        updateSegments(segmentIndex, segment.reps, Number(e.target.value));
                     }}
                     value={segment.weight || ""}
                     size="small"

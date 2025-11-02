@@ -251,16 +251,16 @@ export const createSetString = (count, segments) => {
     count,
     segments,
   );
-  let setString;
-  segments.forEach((segment) => {
-    const segmentReps = segment.reps;
-    const segmentWeight = segment.weight;
-    if (count > 1) {
-      setString = `${count} Sets: ${segmentReps} reps @ ${segmentWeight} lbs`;
+  let setString = count > 1 ? `${count} Sets:` : `${count} Set:`;
+
+  for (let i = 0; i < segments.length; i++) {
+    if (i !== 0) {
+      setString += `, ${segments[i].reps} reps @ ${segments[i].weight} lbs`;
     } else {
-      setString = `${count} Set: ${segmentReps} reps @ ${segmentWeight} lbs`;
+      setString += ` ${segments[i].reps} reps @ ${segments[i].weight} lbs`;
     }
-  });
+  }
+
   console.log("setString 259 is", setString);
   return setString;
 };
