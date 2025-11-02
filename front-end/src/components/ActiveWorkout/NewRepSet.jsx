@@ -8,7 +8,7 @@ import {
 } from "@mui/material"
 import AddIcon from "@mui/icons-material/Add"
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline"
-
+import { preventMouseScroll } from "../../utils/HelperFunctions";
 import { useState, useEffect } from "react";
 
 
@@ -18,12 +18,14 @@ export default function NewRepSet ({set, setIndex, updateSets}) {
     const [currentSegmentReps, setCurrentSegmentReps] = useState(null);
     const [currentSegmentWeight, setCurrentSegmentWeight] = useState(null);
     
-    console.log("showing new rep set, segments are are", segments)
     const updateSegments = (index, reps, weight) =>{
+        console.log("in new rep set, setIndex is", setIndex)
+        console.log("in update segments, segments are", segments)
+        console.log('in update segments, index is', index)
+    const updatedSegments = [...segments];
       const updatedSegment = segments[index]
       updatedSegment.reps = reps;
       updatedSegment.weight = weight;
-      const updatedSegments = [...segments];
       updatedSegments[index] = updatedSegment;
       console.log('udpated segments are', updatedSegments)
       setSegments(updatedSegments);
@@ -71,11 +73,13 @@ export default function NewRepSet ({set, setIndex, updateSets}) {
                 <TextField
                 required
                 label="Reps"
-                type="number"
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 variant="standard"
                 onChange={(e) => {
-                    setCurrentSegmentReps(e.target.value);
-                    updateSegments(segmentIndex, e.target.value, currentSegmentWeight)
+                    setCurrentSegmentReps(Number(e.target.value));
+                    updateSegments(segmentIndex, Number(e.target.value), currentSegmentWeight)
                 }}
                 value={segment.reps || ""}
                 size="small"
@@ -88,11 +92,13 @@ export default function NewRepSet ({set, setIndex, updateSets}) {
                 <TextField
                     required
                     label="Weight"
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
                     variant="standard"
                     onChange={(e) => {
-                        setCurrentSegmentWeight(e.target.value);
-                        updateSegments(segmentIndex, currentSegmentReps, e.target.value);
+                        setCurrentSegmentWeight(Number(e.target.value));
+                        updateSegments(segmentIndex, currentSegmentReps, Number(e.target.value));
                     }}
                     value={segment.weight || ""}
                     size="small"
@@ -135,53 +141,6 @@ export default function NewRepSet ({set, setIndex, updateSets}) {
             Add Segment
         </Button> 
         </>
-        // return(
-        //   <>
-        //   <Typography sx={{pl: 2}}>Segment {segmentIndex + 1}: </Typography>    
-        //   <Box sx={{ width: '90%', maxWidth: 400, display: 'flex', flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-        //     <TextField
-        //       required
-        //       label="Reps"
-        //       type="number"
-        //       variant="standard"
-        //       onChange={(e) => {
-        //         setCurrentSegmentReps(e.target.value);
-        //         updateSegments(segmentIndex, e.target.value, currentSegmentWeight)
-        //       }}
-        //       value={segment.reps || ""}
-        //       sx={{ width: "30%" }}
-        //       slotProps={{
-        //         inputLabel: {
-        //           shrink: true,
-        //         },
-        //       }}
-        //     />
-
-        //     <TextField
-        //       required
-        //       label="Weight"
-        //       type="number"
-        //       variant="standard"
-        //       onChange={(e) => {
-        //         setCurrentSegmentWeight(e.target.value);
-        //         updateSegments(segmentIndex, currentSegmentReps, e.target.value);
-        //       }}
-        //       value={segment.weight || ""}
-        //       sx={{ width: "30%" }}
-        //       slotProps={{
-        //         inputLabel: {
-        //           shrink: true,
-        //         },
-        //       }}
-        //     />
-        //     <>
-        //     <AddIcon onClick={addSegment} sx={{ cursor: 'pointer' }} />
-        //     <RemoveIcon onClick={removeSegment} sx={{ cursor: 'pointer' }} />
-        //     </>
-        //   </Box>
-        //   </>
-        // )
-      
       
   )
 }

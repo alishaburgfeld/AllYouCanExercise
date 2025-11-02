@@ -264,3 +264,7 @@ export const createSetString = (count, segments) => {
   console.log("setString 259 is", setString);
   return setString;
 };
+
+export const preventMouseScroll = (event) => {
+  event.preventDefault();
+};

@@ -446,3 +446,10 @@ https://www.youtube.com/watch?v=YC7NBNICGeY -->
 
 <!-- edit exercise modal:
 https://v0.app/chat/exercise-data-modal-jU5ufFyJt5T -->
+
+<!-- preventing the scrolling is not working, so I need to do this:
+<TextField
+  type="text"
+  inputMode="numeric"
+  pattern="[0-9]*"
+/> -->

@@ -154,6 +154,7 @@ export default function NewEditExerciseModal({ openEditExerciseModal, setOpenEdi
                         
                                 </Paper>
                             ))}
+                            {exercise.exerciseType !== "CARDIO" ? (
                             <Button
                                 startIcon={<AddIcon />}
                                 onClick={addSet}
@@ -166,19 +167,21 @@ export default function NewEditExerciseModal({ openEditExerciseModal, setOpenEdi
                             >
                                 Add Set
                             </Button>
+                            ) : ""}
                     </Box>
                 </DialogContent>
-                <DialogActions
+                <DialogActions disableSpacing
                     sx={{
                     p: { xs: 1.5, sm: 2 },
                     gap: { xs: 0.5, sm: 1 },
                     flexDirection: { xs: "column-reverse", sm: "row" },
+                    
                     }}
                 >
-                    <Button onClick={handleClose} variant="outlined" fullWidth={true} sx={{ width: { xs: "100%", sm: "auto" } }}>
+                    <Button onClick={handleClose} variant="outlined" fullWidth={true} sx={{ width: { xs: "100%", sm: "100%" } }}>
                     Cancel
                     </Button>
-                    <Button onClick={() => (exerciseType === "CARDIO" ? saveCardioEdits() : saveRepEdits())} autoFocus>
+                    <Button onClick={() => (exerciseType === "CARDIO" ? saveCardioEdits() : saveRepEdits())} autoFocus variant="outlined" fullWidth={true} sx={{ ml: 0, width: { xs: "100%", sm: "100%" } }}>
                     Save
                     </Button>
                 </DialogActions>

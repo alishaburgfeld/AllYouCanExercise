@@ -2,6 +2,7 @@ import { Button, Box, Typography, Dialog, DialogActions, DialogContent, DialogTi
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { useState, useEffect } from "react";
+import { preventMouseScroll } from "../../utils/HelperFunctions";
 
 
 export default function RepSet ({set, setIndex, updateSets}) {
@@ -60,6 +61,9 @@ export default function RepSet ({set, setIndex, updateSets}) {
                 inputLabel: {
                   shrink: true,
                 },
+                input: {
+                  onWheel: preventMouseScroll,
+                },
               }}
             />
 
@@ -78,11 +82,14 @@ export default function RepSet ({set, setIndex, updateSets}) {
                 inputLabel: {
                   shrink: true,
                 },
+                input: {
+                  onWheel: preventMouseScroll,
+                },
               }}
             />
             <>
             <AddIcon onClick={addSegment} sx={{ cursor: 'pointer' }} />
-            <RemoveIcon onClick={removeSegment} sx={{ cursor: 'pointer' }} />
+            
             </>
           </Box>
           </>
