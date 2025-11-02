@@ -155,6 +155,9 @@ The issue appeared as Axios logging two responses: one with an empty string and 
 
 When you terminate your ec2 and start it again it changes your private ip4 address, which means I need to edit it on route 53 as well.
 
+In Javascript when you do something like: const newSet = { ...lastSet };
+This creates a new object (newSet), but it does not create new copies of the inner objects or arrays — it just copies their references... this can lead to issues where if you attempt to edit the any values to the inner objects within lastSet/newSet, since they reference the same array/object it will update both of them.
+
 Issues with caching and having my ec2 display old build and files:
 https://chatgpt.com/share/68b5e810-e2ec-800f-93b6-3f4d3106f627
 

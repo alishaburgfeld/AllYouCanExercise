@@ -19,21 +19,19 @@ export default function NewRepSet ({set, setIndex, updateSets}) {
     const [currentSegmentWeight, setCurrentSegmentWeight] = useState(null);
     
     const updateSegments = (index, reps, weight) =>{
-        console.log("in new rep set, setIndex is", setIndex)
-        console.log("in update segments, segments are", segments)
-        console.log('in update segments, index is', index)
-    const updatedSegments = [...segments];
-      const updatedSegment = segments[index]
-      updatedSegment.reps = reps;
-      updatedSegment.weight = weight;
-      updatedSegments[index] = updatedSegment;
-      console.log('udpated segments are', updatedSegments)
-      setSegments(updatedSegments);
-  };
+    setSegments(prevSegments=> prevSegments.map((seg,i)=>
+        i === index ? { ...seg, reps: reps, weight: weight} : seg))
+    };
 
   const addSegment = () => {
     const lastSegment = segments[segments.length - 1] || {};
-    const newSegment = { ...lastSegment }; // shallow copy
+    const newSegment = {
+        ...lastSegment,
+        reps: lastSegment.reps ?? 0,
+        weight: lastSegment.weight ?? 0,
+        };
+    // (?? is the nullish coalescing operator — it only uses 0 if reps or weight are null or undefined, not if they’re 0.)
+    
     setSegments([...segments, newSegment]);
     // duplicates the previous value into the new segment value
 };

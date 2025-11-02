@@ -62,21 +62,26 @@ export default function NewEditExerciseModal({ openEditExerciseModal, setOpenEdi
     };
 
 
-    const updateSets = (setIndex, segments) =>{
-        const newSets = [...sets];
-        const updatedSet = sets[setIndex];
-        updatedSet.segments = segments;
-        newSets[setIndex] = updatedSet;
-        // console.log('newSets in EEM are', newSets);
-        setSets(newSets);
-    }
+    const updateSets = (setIndex, segments) => {
+        // Make a new copy of each segment so changes don’t affect other sets (avoid shared references)
+        setSets(prevSets =>
+            prevSets.map((s, i) =>
+            i === setIndex ? { ...s, segments: segments.map(seg => ({ ...seg })) } : s
+            )
+        );
+    };
+
 
     const addSet = () => {
         const lastSet = sets[sets.length - 1] || {};
-        const newSet = { ...lastSet }; // shallow copy
+        // this copies over the last set, but then replaces the inner segments array with a new array (same values, but now a different memory reference so the inner values can be changed independtly on the two sets)
+        const newSet = {
+            ...lastSet,
+            segments: lastSet.segments ? lastSet.segments.map(seg => ({ ...seg })) : []
+        };
         setSets([...sets, newSet]);
-        // duplicates the previous value into the new set value
     };
+
 
     const removeSet = (setIndex) => {
     const newSets = [...sets]
