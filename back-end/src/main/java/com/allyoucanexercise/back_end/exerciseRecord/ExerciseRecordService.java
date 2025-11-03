@@ -4,28 +4,21 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
-import java.util.function.Supplier;
 
 // import java.util.Optional;
 // import org.slf4j.Logger;
 // import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.allyoucanexercise.back_end.exercise.Exercise;
 import com.allyoucanexercise.back_end.exercise.ExerciseService;
-import com.allyoucanexercise.back_end.exerciseRecord.ExerciseRecordRepository;
-import com.allyoucanexercise.back_end.exerciseSet.ExerciseSet;
 import com.allyoucanexercise.back_end.user.User;
 import com.allyoucanexercise.back_end.user.UserService;
 import com.allyoucanexercise.back_end.workout.Workout;
 import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetDTO;
-import com.allyoucanexercise.back_end.exerciseSet.ExerciseSetRepository;
-import com.allyoucanexercise.back_end.workoutExercise.WorkoutExercise;
-import com.allyoucanexercise.back_end.workoutExercise.WorkoutExerciseDetailsDTO;
 
-import jakarta.persistence.EntityNotFoundException;
+import com.allyoucanexercise.back_end.SetSegment.SetSegmentDTO;
+import com.allyoucanexercise.back_end.workoutExercise.WorkoutExerciseDetailsDTO;
 
 @Service
 public class ExerciseRecordService {
@@ -113,6 +106,7 @@ public class ExerciseRecordService {
             User user) {
         // always save last_exercised
         List<ExerciseSetDTO> exerciseSetDTOs = workoutExerciseDetailsDTO.getSets();
+
         LocalDateTime lastExercised = workout.getCompletedAt();
         Integer totalSets = exerciseSetDTOs.size();
         Integer maxRepsInWorkout = 0;
@@ -123,18 +117,30 @@ public class ExerciseRecordService {
         Float volumeInWorkout = 0f;
 
         for (ExerciseSetDTO set : exerciseSetDTOs) {
-            if (set.getReps() != null && set.getWeight() != null) {
-                volumeInWorkout += (set.getReps() * set.getWeight());
-                maxRepsInWorkout = setMaxValueForWorkoutIfCurrentSetValueIsHigher(set.getReps(), maxRepsInWorkout);
-                maxWeightInWorkout = setMaxValueForWorkoutIfCurrentSetValueIsHigher((float) set.getWeight(),
-                        (float) maxWeightInWorkout);
+            Integer totalSetReps = 0;
+            List<SetSegmentDTO> segments = set.getSegments();
+            Boolean isCardio = false;
+            for (SetSegmentDTO segment : segments) {
+                if (segment.getReps() != null || segment.getWeight() != null) {
+                    volumeInWorkout += (segment.getReps() * segment.getWeight());
+                    totalSetReps += segment.getReps();
+                    maxWeightInWorkout = setMaxValueForWorkoutIfCurrentSetValueIsHigher((float) segment.getWeight(),
+                            (float) maxWeightInWorkout);
+                } else {
+                    isCardio = true;
+                    maxDurationInWorkout = setMaxValueForWorkoutIfCurrentSetValueIsHigher(segment.getDurationSeconds(),
+                            maxDurationInWorkout);
+                    maxDistanceInWorkout = setMaxValueForWorkoutIfCurrentSetValueIsHigher(segment.getDistanceMeters(),
+                            maxDistanceInWorkout);
+                    // for pace you actually want the lowest value
+                    maxPaceInWorkout = setMaxPaceForWorkoutIfCurrentSetValueIsLower(segment.getPacePerMile(),
+                            maxPaceInWorkout);
+                }
+            }
+            if (!isCardio) {
+                maxRepsInWorkout = setMaxValueForWorkoutIfCurrentSetValueIsHigher(totalSetReps, maxRepsInWorkout);
             }
 
-            maxDurationInWorkout = setMaxValueForWorkoutIfCurrentSetValueIsHigher(set.getDurationSeconds(),
-                    maxDurationInWorkout);
-            maxDistanceInWorkout = setMaxValueForWorkoutIfCurrentSetValueIsHigher(set.getDistanceMeters(),
-                    maxDistanceInWorkout);
-            maxPaceInWorkout = setMaxValueForWorkoutIfCurrentSetValueIsHigher(set.getPacePerMile(), maxPaceInWorkout);
         }
 
         Optional<ExerciseRecord> existingExerciseRecordOpt = getExerciseRecord(user, exercise);
@@ -209,7 +215,8 @@ public class ExerciseRecordService {
                         workout);
             }
 
-            if (isWorkoutValueHigherThanExistingExerciseRecordValue(maxPaceInWorkout,
+            // for pace you set a record if the pace is a smaller value
+            if (!isWorkoutValueHigherThanExistingExerciseRecordValue(maxPaceInWorkout,
                     existingExerciseRecord.getMaxPacePerMile())) {
                 updateRecordWithHigherValue(
                         maxPaceInWorkout,
@@ -220,7 +227,8 @@ public class ExerciseRecordService {
             }
             existingExerciseRecord.setLastExercised(lastExercised);
             existingExerciseRecord.setLastExercisedWorkout(workout);
-            return existingExerciseRecord;
+
+            return exerciseRecordRepository.save(existingExerciseRecord);
         }
     }
 
@@ -254,17 +262,31 @@ public class ExerciseRecordService {
     }
 
     public Integer setMaxValueForWorkoutIfCurrentSetValueIsHigher(Integer setValue, Integer maxWorkoutValue) {
+        Integer max = maxWorkoutValue;
         if (setValue != null && setValue > maxWorkoutValue) {
-            maxWorkoutValue = setValue;
+            max = setValue;
         }
-        return maxWorkoutValue;
+        return max;
     }
 
     public Float setMaxValueForWorkoutIfCurrentSetValueIsHigher(Float setValue, Float maxWorkoutValue) {
+        Float max = maxWorkoutValue;
         if (setValue != null && setValue > maxWorkoutValue) {
-            maxWorkoutValue = setValue;
+            max = setValue;
         }
-        return maxWorkoutValue;
+        return max;
+    };
+
+    public Float setMaxPaceForWorkoutIfCurrentSetValueIsLower(Float setValue, Float maxWorkoutValue) {
+        Float max = maxWorkoutValue;
+        if (setValue != null) {
+            if (maxWorkoutValue == (float) 0) {
+                max = setValue;
+            } else if (setValue < maxWorkoutValue) {
+                max = setValue;
+            }
+        }
+        return max;
     };
 
     // if no exerciseRecord then automatically save the exerciseRecord.

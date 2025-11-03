@@ -1,71 +1,18 @@
 package com.allyoucanexercise.back_end.exerciseSet;
 
+import java.util.List;
+
+import com.allyoucanexercise.back_end.SetSegment.SetSegmentDTO;
+
 public class ExerciseSetDTO {
-    private Integer reps;
-    private Float weight;
-    private Integer durationSeconds; // durationSeconds in seconds
-    private Float distanceMeters; // distanceMeters in meters
-    private DistanceMeasurement distanceMeasurement;
-    private Float pacePerMile;
+    private List<SetSegmentDTO> segments;
 
-    public Integer getReps() {
-        return reps;
+    public List<SetSegmentDTO> getSegments() {
+        return segments;
     }
 
-    public void setReps(Integer reps) {
-        this.reps = reps;
-    }
-
-    public Float getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Float weight) {
-        this.weight = weight;
-    }
-
-    public Integer getDurationSeconds() {
-        return durationSeconds;
-    }
-
-    public void setDurationSeconds(Integer durationSeconds) {
-        this.durationSeconds = durationSeconds;
-    }
-
-    public Float getPacePerMile() {
-        return pacePerMile;
-    }
-
-    public void setPacePerMile(Float pacePerMile) {
-        this.pacePerMile = pacePerMile;
-    }
-
-    public Float getDistanceMeters() {
-        return distanceMeters;
-    }
-
-    public void setDistanceMeters(Float distanceMeters) {
-        this.distanceMeters = distanceMeters;
-    }
-
-    public DistanceMeasurement getDistanceMeasurement() {
-        return distanceMeasurement;
-    }
-
-    public void setDistanceMeasurement(DistanceMeasurement distanceMeasurement) {
-        this.distanceMeasurement = distanceMeasurement;
-    }
-
-    @Override
-    public String toString() {
-        return "ExerciseSetDTO{" +
-                "reps=" + reps +
-                ", weight=" + weight +
-                ", durationSeconds=" + durationSeconds +
-                ", distanceMeters=" + distanceMeters +
-                ", distanceMeasurement=" + distanceMeasurement +
-                ", pacePerMile=" + pacePerMile +
-                '}';
+    public void setSegments(List<SetSegmentDTO> segments) {
+        this.segments = segments;
     }
 
 }

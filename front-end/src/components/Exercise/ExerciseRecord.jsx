@@ -12,7 +12,7 @@ export default function ExerciseRecord({exerciseRecord}) {
     const [maxDuration, setMaxDuration] = useState(null);
     const [maxPacePerMile, setMaxPacePerMile] = useState(null);
 
-    console.log('on exerciseRecord, exrec is', exerciseRecord)
+    // console.log('on exerciseRecord, exrec is', exerciseRecord)
 
     const setMaxValues =() =>{
         setMaxSets(exerciseRecord.maxSets);
@@ -32,7 +32,7 @@ export default function ExerciseRecord({exerciseRecord}) {
 
     return (
     <Box sx={{ display: 'flex', flexDirection: "column", alignItems: "flex-start"}}> 
-        {console.log('maxDistance is', maxDistance, 'type', typeof(maxDistance))}
+        {/* {console.log('maxDistance is', maxDistance, 'type', typeof(maxDistance))} */}
         {maxDistance==0?
         <>
         <Box sx={{ display: 'flex', flexWrap: 'wrap'}}>

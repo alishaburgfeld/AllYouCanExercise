@@ -6,11 +6,11 @@ import { useState, useEffect } from "react";
 
 
 export default function CardioSet ({exercise, setInputDistance, setInputDistanceMeasurement, setInputDuration}) {
-  const [temporaryUnit, setTemporaryUnit] = useState(exercise?.sets?.[0]?.distanceMeasurement|| ""); // selected unit
-  const [temporaryDistance, setTemporaryDistance] = useState(exercise?.sets?.[0]?.distance || "")
-  const [temporaryHours, setTemporaryHours] = useState(exercise?.sets?.[0]?.duration?.hours || 0)
-  const [temporaryMinutes, setTemporaryMinutes] = useState(exercise?.sets?.[0]?.duration?.minutes || 0)
-  const [temporarySeconds, setTemporarySeconds] = useState(exercise?.sets?.[0]?.duration?.seconds || 0)
+  const [temporaryUnit, setTemporaryUnit] = useState(exercise?.sets?.[0]?.segments?.[0]?.distanceMeasurement|| ""); // selected unit
+  const [temporaryDistance, setTemporaryDistance] = useState(exercise?.sets?.[0]?.segments?.[0]?.distance || "")
+  const [temporaryHours, setTemporaryHours] = useState(exercise?.sets?.[0]?.segments?.[0]?.duration?.hours || 0)
+  const [temporaryMinutes, setTemporaryMinutes] = useState(exercise?.sets?.[0]?.segments?.[0]?.duration?.minutes || 0)
+  const [temporarySeconds, setTemporarySeconds] = useState(exercise?.sets?.[0]?.segments?.[0]?.duration?.seconds || 0)
   // console.log('distanceinput is', distanceInput)
   
   const handleDurationChange = (hours, minutes, seconds) => {

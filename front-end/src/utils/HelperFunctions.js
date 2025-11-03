@@ -109,15 +109,13 @@ export const convertToJavaTime = (dateTime) => {
       /(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2}):(\d{2})/,
       "$3-$1-$2T$4:$5:$6",
     );
-
-  console.log("time formated for java", timeFormattedForJava);
   return timeFormattedForJava;
 };
 
 export const convertJavaLocalDateTimeToUserLocalTime = (
   javaLocalDateTimeString,
 ) => {
-  console.log("javalocaltime is", javaLocalDateTimeString);
+  // console.log("javalocaltime is", javaLocalDateTimeString);
   const dateObject = new Date(javaLocalDateTimeString);
   const formatter = new Intl.DateTimeFormat("en-US", {
     year: "numeric",
@@ -179,7 +177,8 @@ export const displayCardioText = (exercise) => {
   const cardioSet = exercise?.sets?.[0];
   if (!cardioSet) return null;
 
-  const { distance, distanceMeasurement, duration } = cardioSet;
+  const { distance, distanceMeasurement, duration } =
+    cardioSet["segments"][0];
   const { hours, minutes, seconds } = duration || {};
 
   let cardioValues = {};
@@ -199,6 +198,20 @@ export const displayCardioText = (exercise) => {
   // console.log("1) in display cardio sets, displaydistance is", displayDistance, "displayduration is", displayDuration)
 };
 
+export const areArrayValuesEqual = (arr1, arr2) => {
+  if (arr1.length !== arr2.length) {
+    return false;
+  }
+
+  for (let i = 0; i < arr1.length; i++) {
+    if (JSON.stringify(arr1[i]) !== JSON.stringify(arr2[i])) {
+      return false; // Objects at index i are not the same
+    }
+  }
+
+  return true;
+};
+
 export const displayReps = (exercise) => {
   const sets = exercise.sets;
   // console.log('in display rep sets, sets are', sets)
@@ -208,21 +221,39 @@ export const displayReps = (exercise) => {
   let count = 1;
 
   for (let i = 1; i <= sets.length; i++) {
-    const current = sets[i];
+    const current = sets[i] || null;
     const prev = sets[i - 1];
-
+    const currentSegments = current?.segments || null; //array of segments
+    const prevSegments = prev?.segments || null;
     if (
       current &&
-      prev &&
-      current.reps === prev.reps &&
-      current.weight === prev.weight
+      areArrayValuesEqual(currentSegments, prevSegments)
     ) {
       count++;
     } else {
-      combinedSets.push(`${count}x${prev.reps}:${prev.weight} lbs`);
+      const setString = createSetString(count, prevSegments);
+      combinedSets.push(setString);
+      // combinedSets.push(`${count}x${prev.reps}:${prev.weight} lbs`);
       count = 1;
     }
   }
-  // console.log("combinedSets are", combinedSets);
   return combinedSets;
+};
+
+export const createSetString = (count, segments) => {
+  let setString = count > 1 ? `${count} Sets:` : `${count} Set:`;
+
+  for (let i = 0; i < segments.length; i++) {
+    if (i !== 0) {
+      setString += `, ${segments[i].reps} reps @ ${segments[i].weight} lbs`;
+    } else {
+      setString += ` ${segments[i].reps} reps @ ${segments[i].weight} lbs`;
+    }
+  }
+
+  return setString;
+};
+
+export const preventMouseScroll = (event) => {
+  event.preventDefault();
 };

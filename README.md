@@ -40,6 +40,8 @@ its not working with the security dependency, so for now I comment that out when
 
 # exec into the container: docker exec -it allyoucanexercise-mysql-1 sh
 
+# exec into the container: docker exec -it mysql-local sh
+
 docker exec -it allyoucanexercise-mysql sh
 
 <!-- After I dockerized it became allyoucanexercise-mysql sh
@@ -56,6 +58,7 @@ Also other containers are: docker exec -it allyoucanexercise-frontend-1 sh -->
 # show tables
 
 <!-- if need to drop tables: follow this order:
+drop table set_segment;
 drop table exercise_set;
 drop table workout_exercise;
 drop table workout;
@@ -63,6 +66,7 @@ drop table user;
 drop table exercise_equipment;
 drop table equipment;
 drop table exercise;
+drop table exercise_record;
 
 <!-- App Information -->
 
@@ -151,6 +155,9 @@ The issue appeared as Axios logging two responses: one with an empty string and 
 
 When you terminate your ec2 and start it again it changes your private ip4 address, which means I need to edit it on route 53 as well.
 
+In Javascript when you do something like: const newSet = { ...lastSet };
+This creates a new object (newSet), but it does not create new copies of the inner objects or arrays — it just copies their references... this can lead to issues where if you attempt to edit the any values to the inner objects within lastSet/newSet, since they reference the same array/object it will update both of them.
+
 Issues with caching and having my ec2 display old build and files:
 https://chatgpt.com/share/68b5e810-e2ec-800f-93b6-3f4d3106f627
 
@@ -160,6 +167,15 @@ SELECT \* FROM flyway_schema_history;
 
 if need to delete a migration gone bad:
 DELETE FROM flyway_schema_history WHERE version = '2.0.1';
+
+If I need to drop the entire schema/ all tables:
+mvn flyway:clean -Dflyway.cleanDisabled=false -Dflyway.url="jdbc:mysql://localhost:3306/exercise-database" -Dflyway.user="alisha" -Dflyway.password="secret"
+
+If a migration worked partially, can try a repair for it to try and reset what it did:
+
+mvn flyway:repair -Dflyway.url="jdbc:mysql://localhost:3306/exercise-database" -Dflyway.user="alisha" -Dflyway.password="secret"
+
+mvn flyway:migrate -Dflyway.url="jdbc:mysql://localhost:3306/exercise-database" -Dflyway.user="alisha" -Dflyway.password="secret"
 
 <!-- Helpful Videos and Tutorials-->
 
@@ -409,31 +425,6 @@ pace_per_mile = (duration_in_seconds / 60) / (distance_in_meters / 1609.34)
 
 // System.out.println("**\*\***\*\*\***\*\*** FULLWORKOUTdetails = " + fullWorkout);
 
-<!-- used to test my dto response:
-
-@GetMapping("/test")
-    WorkoutResponseDTO test() {
-        WorkoutResponseDTO dto = new WorkoutResponseDTO();
-        WorkoutDetailsDTO wddto = new WorkoutDetailsDTO();
-        wddto.setCompletedAt(LocalDateTime.now());
-        wddto.setTitle("test title");
-        wddto.setUsername("alb");
-        wddto.setWorkoutNotes("test notes");
-
-        dto.setWorkoutDetails(wddto);
-        WorkoutExerciseDetailsDTO wedto1 = new WorkoutExerciseDetailsDTO();
-        ExerciseSetDTO esdto1 = new ExerciseSetDTO();
-        esdto1.setReps(10);
-        esdto1.setWeight(20f);
-
-        List<ExerciseSetDTO> exerciseSetDTOs = List.of(esdto1);
-        List<WorkoutExerciseDetailsDTO> workoutExerciseDetailDTOs = List.of(wedto1);
-        wedto1.setExerciseId(1l);
-        wedto1.setSets(exerciseSetDTOs);
-        dto.setWorkoutExerciseDetails(workoutExerciseDetailDTOs);
-        return dto;
-    } -->
-
 <!-- count how many times a function is used in the useeffect:
 console.count("💥 useEffect - getWorkoutById called"); -->
 
@@ -446,10 +437,22 @@ need to not return user credentials and all the workout details with the record 
 
 # BUGS BUGS BUGS
 
+P1: This was allowed to be saved as a workout:
+payload={"workoutDetails":{"username":"alb","title":"run on treadmill-1","completedAt":"2025-10-02T18:06:45","workoutNotes":"notes"},"workoutExerciseDetails":[{"exerciseId":54,"sets":[{"segments":[{"segments":[{"distance":"3200","duration":{"hours":1,"minutes":10,"seconds":1},"distanceMeasurement":"METERS"}]}]}]}]}
+P2: pace per mile is not being saved correctly.
 P3: titles and buttons on exercises look weird on desktop
+P3: Workout History cards are different widths
+P3: Title on exercises look weird on mobile.
 
 <!-- should take a look at this to hopefully be able to downgrade to a smaller ec2 instance type (serve react files in S3):
 https://www.youtube.com/watch?v=YC7NBNICGeY -->
 
-got this error:
-Out of range value for column 'max_volume' at row 1. Need to change it from 5,2 to 6,2
+<!-- edit exercise modal:
+https://v0.app/chat/exercise-data-modal-jU5ufFyJt5T -->
+
+<!-- preventing the scrolling is not working, so I need to do this:
+<TextField
+  type="text"
+  inputMode="numeric"
+  pattern="[0-9]*"
+/> -->

@@ -27,8 +27,11 @@ const getInitialUsername = () => {
 
 const getInitialActiveWorkout = () => {
   const activeWorkout = sessionStorage.getItem("activeWorkout");
-  return activeWorkout ? JSON.parse(activeWorkout) : null
-}
+  const parsed = activeWorkout ? JSON.parse(activeWorkout) : null;
+  
+  return parsed && Object.keys(parsed).length > 0 ? parsed : null;
+};
+
 
 function App() {
 
@@ -37,23 +40,49 @@ function App() {
   const [exerciseToBeAdded, setExerciseToBeAdded] = useState(null);
   const [activeUsername, setActiveUsername] =useState(getInitialUsername());
 
-  // console.log('active username, active workout,on app,jsx', activeUsername, activeWorkout)
   // explains why strict mode causes this console log to render twice: https://chatgpt.com/share/67f3d8fb-12f8-800f-9475-560f78c153f4
 
   const setExerciseInfo = (exercise) => {
     let repSets = [
-      {"reps": 10, "weight": 10.0},
-      {"reps": 10, "weight": 10.0},
-      {"reps": 10, "weight": 10.0},
-      {"reps": 10, "weight": 10.0}
+      {
+        "segments":
+        [
+          {"reps": 10, "weight": 10.0},
+        ]
+      },
+      {
+        "segments":
+        [
+          {"reps": 10, "weight": 10.0},
+        ]
+      },
+      {
+        "segments":
+        [
+          {"reps": 10, "weight": 10.0},
+        ]
+      },
+      {
+        "segments":
+        [
+          {"reps": 10, "weight": 10.0},
+        ]
+      }
     ];
 
     let cardioSets = [
-      {"duration": {
-        "hours": 0,
-        "minutes": 15,
-        "seconds": 0
-      }, "distance": 1, "distanceMeasurement": "MILES"},
+      {
+        "segments":
+        [
+          {
+            "duration": {
+            "hours": 0,
+            "minutes": 15,
+            "seconds": 0
+          }, "distance": 1, "distanceMeasurement": "MILES"
+          }
+        ]
+      }
     ]
     if (exercise) {
       let exerciseInfo = {
@@ -65,14 +94,12 @@ function App() {
         // Set values based on whether the exercise is cardio or not
         sets: exercise.exerciseType === "CARDIO" ? cardioSets : repSets
       };
-      // console.log('exerciseInfo is', exerciseInfo);
       
       return exerciseInfo;
     }
   };
 
   const updateActiveWorkoutWithNewStats = (updatedExerciseInfo) => {
-    // console.log('on app.jsx, updatedExerciseInfo is', updatedExerciseInfo)
     const updatedActiveWorkout = activeWorkout.map(exerciseDetail => {
       if (exerciseDetail.exerciseId === updatedExerciseInfo.exerciseId) {
         return updatedExerciseInfo;  // Replace the exercise with updated one
@@ -84,17 +111,16 @@ function App() {
   };
 
 const existingWorkoutDoesNotContainCurrentExercise = (exerciseToBeAdded) => {
-  console.log("*****activeWorkout in check if existing is", activeWorkout)
+  // console.log("*****activeWorkout in check if existing is", activeWorkout)
   if (activeWorkout && !activeWorkout.some(exercise => exercise.exerciseId === exerciseToBeAdded.id))
     return true
 }
 
 const addToActiveWorkout = (exerciseToBeAdded) => {
-  console.log('*****ex to be added in addToActiveWorkout is:', exerciseToBeAdded)
   let updatedActiveWorkout;
-  if (activeWorkout) {
+  if (activeWorkout!==null) {
     if (existingWorkoutDoesNotContainCurrentExercise(exerciseToBeAdded)) {
-      console.log("~~returned true -exercise does not contain current")
+      // console.log("~~returned true -exercise does not contain current")
       updatedActiveWorkout = [...activeWorkout, setExerciseInfo(exerciseToBeAdded)];
     } 
     else {
@@ -102,9 +128,7 @@ const addToActiveWorkout = (exerciseToBeAdded) => {
     }
   }
   else {
-      // expect it to go here
     updatedActiveWorkout = [setExerciseInfo(exerciseToBeAdded)]
-    console.log("****updated workout in addToActiveWorkout is", updatedActiveWorkout)
   }
 
   // console.log('updatedActiveWorkout is', updatedActiveWorkout);
@@ -132,8 +156,11 @@ useEffect(()=> {
   }, [activeUsername])
 
   useEffect(() => {
-    sessionStorage.setItem("activeWorkout", JSON.stringify(activeWorkout))
-  }, [activeWorkout])
+  if (activeWorkout && Object.keys(activeWorkout).length > 0) {
+    sessionStorage.setItem("activeWorkout", JSON.stringify(activeWorkout));
+  }
+}, [activeWorkout]);
+
 
   useEffect(() => {
     // only run this function if exerciseToBeAdded has a value, not on first render when its null

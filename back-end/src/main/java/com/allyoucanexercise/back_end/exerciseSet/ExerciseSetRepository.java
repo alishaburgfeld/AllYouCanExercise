@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.allyoucanexercise.back_end.exerciseSet.ExerciseSet;
 import com.allyoucanexercise.back_end.workoutExercise.WorkoutExercise;
 
 public interface ExerciseSetRepository extends JpaRepository<ExerciseSet, Long> {

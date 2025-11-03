@@ -27,7 +27,6 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
                 "title": title,
                 "completedAt": timeFormattedForJava,
                 "workoutNotes": notes
-                
             }
         }
         activeWorkout?.forEach((exercise)=> {
@@ -47,30 +46,37 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
         // probably need to set the activeworkout to null and then redirect to homepage
       };
 
-    const prepareSetsForBackend = (sets) => {
-        let finalSets=[]
-        sets.forEach((set)=> {
-            let convertedSet = {...set}
-            if (set.duration) {
-                convertedSet.durationSeconds = convertToSeconds(set.duration)
-                delete convertedSet.duration;
+      const prepareSetsForBackend = (sets) => {
+        const finalSets = [];
+
+        sets.forEach((set) => {
+            const finalSegments = set.segments.map((segment) => {
+            const clonedSegment = { ...segment }; // shallow clone
+
+            if (clonedSegment.duration) {
+                clonedSegment.durationSeconds = convertToSeconds(clonedSegment.duration);
+                delete clonedSegment.duration;
             }
-            if (set.distance) {
-                let meters = toMeters(set.distance, set.distanceMeasurement)
-                let formattedMeters = Math.round(meters * 100) / 100
-                convertedSet.distanceMeters = formattedMeters
-                // delete convertedSet.distanceMeasurement;
-                delete convertedSet.distance;
+
+            if (clonedSegment.distance) {
+                const meters = toMeters(clonedSegment.distance, clonedSegment.distanceMeasurement);
+                clonedSegment.distanceMeters = Math.round(meters * 100) / 100;
+                delete clonedSegment.distance;
             }
-            finalSets.push(convertedSet)
-        })
-        return finalSets
-    }
+
+            return clonedSegment;
+            });
+
+            finalSets.push({ segments: finalSegments });
+        });
+
+        return finalSets;
+    };
+
 
     const handleSave = async () => {
-        // console.log('in handle save, workout details are', workoutDetails, "title is", title)
         const response = await postAxiosCall(`${VITE_API_BASE_URL}/workouts/full/save`, workoutDetails);
-            if (response.success) {
+        if (response.success) {
             console.log('handleworkoutsave response', response)
             handleSaveSuccess();
             } else {
@@ -79,9 +85,12 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
               }
     }
 
-    useEffect(()=> {
-        defineWorkoutDetails();
-      }, [activeWorkout, title, selectedDateTime, notes])
+    useEffect(() => {
+        if (openCompleteWorkoutModal) {
+            defineWorkoutDetails();
+        }
+    }, [activeWorkout, title, selectedDateTime, notes, openCompleteWorkoutModal]);
+
 
     return(
         <>

@@ -7,9 +7,6 @@ import { useMemo } from "react";
 
 export default function SetsRepsDuration({ exercise, updateActiveWorkoutWithNewStats }) {
   const [openEditExerciseModal, setOpenEditExerciseModal] = useState(false);
-  // console.log("on setsrepdur", 'exercise is',exercise)
-
-  
 
   const handleEditClick = () => {
     setOpenEditExerciseModal(true);

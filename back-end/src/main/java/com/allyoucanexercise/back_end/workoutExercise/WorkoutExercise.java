@@ -1,9 +1,6 @@
 package com.allyoucanexercise.back_end.workoutExercise;
 
-import com.allyoucanexercise.back_end.user.User;
-
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 import com.allyoucanexercise.back_end.workout.Workout;

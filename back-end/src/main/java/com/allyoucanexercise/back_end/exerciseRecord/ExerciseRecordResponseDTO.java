@@ -2,8 +2,6 @@ package com.allyoucanexercise.back_end.exerciseRecord;
 
 import java.time.LocalDateTime;
 
-import java.time.LocalDateTime;
-
 public class ExerciseRecordResponseDTO {
 
     private Long exerciseId;
