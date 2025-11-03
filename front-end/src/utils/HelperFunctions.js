@@ -175,7 +175,6 @@ export const fromMeters = (meters, toUnit) => {
 
 export const displayCardioText = (exercise) => {
   const cardioSet = exercise?.sets?.[0];
-  console.log("44444444cardioSet in displayCardiotext is", cardioSet);
   if (!cardioSet) return null;
 
   const { distance, distanceMeasurement, duration } =
@@ -195,7 +194,6 @@ export const displayCardioText = (exercise) => {
   }
   cardioValues["displayDistance"] = displayDistance;
   cardioValues["displayDuration"] = displayDuration;
-  console.log("5555555cardiovalues are", cardioValues);
   return cardioValues;
   // console.log("1) in display cardio sets, displaydistance is", displayDistance, "displayduration is", displayDuration)
 };
@@ -225,14 +223,12 @@ export const displayReps = (exercise) => {
   for (let i = 1; i <= sets.length; i++) {
     const current = sets[i] || null;
     const prev = sets[i - 1];
-    console.log("current 228 is", current, "i is", i);
     const currentSegments = current?.segments || null; //array of segments
     const prevSegments = prev?.segments || null;
     if (
       current &&
       areArrayValuesEqual(currentSegments, prevSegments)
     ) {
-      console.log("currentsegments and prevSegments are equal");
       count++;
     } else {
       const setString = createSetString(count, prevSegments);
@@ -241,16 +237,10 @@ export const displayReps = (exercise) => {
       count = 1;
     }
   }
-  console.log("combinedSets 239 are", combinedSets);
   return combinedSets;
 };
 
 export const createSetString = (count, segments) => {
-  console.log(
-    "count and segments n createsetstring are",
-    count,
-    segments,
-  );
   let setString = count > 1 ? `${count} Sets:` : `${count} Set:`;
 
   for (let i = 0; i < segments.length; i++) {
@@ -261,7 +251,6 @@ export const createSetString = (count, segments) => {
     }
   }
 
-  console.log("setString 259 is", setString);
   return setString;
 };
 

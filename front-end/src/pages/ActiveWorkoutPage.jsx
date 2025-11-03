@@ -30,7 +30,6 @@ export default function ActiveWorkoutPage({ activeWorkout, setActiveWorkout, act
       if (updatedActiveWorkout.length===0) {
         updatedActiveWorkout=null;
       }
-      console.log('updatedActiveWorkout in handleRemove is', updatedActiveWorkout)
       setActiveWorkout(updatedActiveWorkout);
     };
   

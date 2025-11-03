@@ -47,7 +47,6 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
       };
 
       const prepareSetsForBackend = (sets) => {
-        console.log("666666 I'm in prepareSets for backend")
         const finalSets = [];
 
         sets.forEach((set) => {
@@ -76,7 +75,6 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
 
 
     const handleSave = async () => {
-        console.log('&^*** in handle save, workout details are', workoutDetails)
         const response = await postAxiosCall(`${VITE_API_BASE_URL}/workouts/full/save`, workoutDetails);
         if (response.success) {
             console.log('handleworkoutsave response', response)

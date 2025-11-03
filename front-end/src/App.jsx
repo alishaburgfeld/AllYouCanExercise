@@ -40,7 +40,6 @@ function App() {
   const [exerciseToBeAdded, setExerciseToBeAdded] = useState(null);
   const [activeUsername, setActiveUsername] =useState(getInitialUsername());
 
-  // console.log('active username, active workout,on app,jsx', activeUsername, activeWorkout)
   // explains why strict mode causes this console log to render twice: https://chatgpt.com/share/67f3d8fb-12f8-800f-9475-560f78c153f4
 
   const setExerciseInfo = (exercise) => {
@@ -95,14 +94,12 @@ function App() {
         // Set values based on whether the exercise is cardio or not
         sets: exercise.exerciseType === "CARDIO" ? cardioSets : repSets
       };
-      // console.log('exerciseInfo is', exerciseInfo);
       
       return exerciseInfo;
     }
   };
 
   const updateActiveWorkoutWithNewStats = (updatedExerciseInfo) => {
-    console.log('on app.jsx, updatedExerciseInfo is', updatedExerciseInfo)
     const updatedActiveWorkout = activeWorkout.map(exerciseDetail => {
       if (exerciseDetail.exerciseId === updatedExerciseInfo.exerciseId) {
         return updatedExerciseInfo;  // Replace the exercise with updated one
@@ -120,14 +117,11 @@ const existingWorkoutDoesNotContainCurrentExercise = (exerciseToBeAdded) => {
 }
 
 const addToActiveWorkout = (exerciseToBeAdded) => {
-  console.log('2222222222 ex to be added in addToActiveWorkout is:', exerciseToBeAdded, "current activeWorkout is", activeWorkout)
   let updatedActiveWorkout;
-  // console.log('activeworkoutlength', activeWorkout.length, "type", typeof(activeWorkout))
   if (activeWorkout!==null) {
     if (existingWorkoutDoesNotContainCurrentExercise(exerciseToBeAdded)) {
       // console.log("~~returned true -exercise does not contain current")
       updatedActiveWorkout = [...activeWorkout, setExerciseInfo(exerciseToBeAdded)];
-      console.log("3333333 there is an active workout and now I've added the workout, updatedActiveWorkout is", updatedActiveWorkout)
     } 
     else {
       return;
@@ -135,7 +129,6 @@ const addToActiveWorkout = (exerciseToBeAdded) => {
   }
   else {
     updatedActiveWorkout = [setExerciseInfo(exerciseToBeAdded)]
-    console.log("333333 no active workout - updated workout in addToActiveWorkout is", updatedActiveWorkout)
   }
 
   // console.log('updatedActiveWorkout is', updatedActiveWorkout);

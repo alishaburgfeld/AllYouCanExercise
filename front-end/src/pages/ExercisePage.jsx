@@ -40,7 +40,6 @@ function ExercisePage({ setExerciseToBeAdded, activeUsername }) {
     }
   
     const handleClickToAddWorkout = (exercise) => {
-      console.log('111111111 - exercise in handle add is', exercise)
       setExerciseToBeAdded(exercise); // Add the entire exercise object
       setOpenExerciseAddedAlert(true);
     };

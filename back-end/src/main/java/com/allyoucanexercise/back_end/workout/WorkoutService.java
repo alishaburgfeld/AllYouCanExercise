@@ -87,8 +87,9 @@ public class WorkoutService {
                 ExerciseSetDTO exerciseSetDTODetails = addValuesToExerciseSetDTO(exerciseSet);
                 exerciseSetDTOs.add(exerciseSetDTODetails);
             }
-            System.err.println("workoutExercise line 81 is" + workoutExercise);
-            System.err.println("workoutExercise line 81 is" + workoutExercise.getExercise());
+            // System.err.println("workoutExercise line 81 is" + workoutExercise);
+            // System.err.println("workoutExercise line 81 is" +
+            // workoutExercise.getExercise());
             workoutExerciseDetailsDTO.setExerciseId(workoutExercise.getExercise().getId());
             workoutExerciseDetailsDTO.setExerciseName(workoutExercise.getExercise().getName());
             workoutExerciseDetailsDTO.setExerciseGroup(workoutExercise.getExercise().getExerciseGroup());
