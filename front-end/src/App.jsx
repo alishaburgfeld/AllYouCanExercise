@@ -112,6 +112,7 @@ function App() {
 
 const existingWorkoutDoesNotContainCurrentExercise = (exerciseToBeAdded) => {
   // console.log("*****activeWorkout in check if existing is", activeWorkout)
+  
   if (activeWorkout && !activeWorkout.some(exercise => exercise.exerciseId === exerciseToBeAdded.id))
     return true
 }
@@ -183,7 +184,7 @@ useEffect(()=> {
             <Route path="/signup" element={<SignUpPage />} />
             <Route
               path="/exercises/:exerciseGroup"
-              element={<ExerciseGroupPage />}
+              element={<ExerciseGroupPage  setExerciseToBeAdded={setExerciseToBeAdded} activeUsername={activeUsername} setActiveWorkout={setActiveWorkout} activeWorkout={activeWorkout} existingWorkoutDoesNotContainCurrentExercise={existingWorkoutDoesNotContainCurrentExercise}/>}
             />
             <Route path="/exercise/:exerciseId" element={<ExercisePage setExerciseToBeAdded= {setExerciseToBeAdded} activeUsername={activeUsername}/>} />
             <Route path="/workout" element={<ActiveWorkoutPage activeWorkout={activeWorkout} activeUsername={activeUsername} setActiveWorkout={setActiveWorkout} updateActiveWorkoutWithNewStats={updateActiveWorkoutWithNewStats}/>} />

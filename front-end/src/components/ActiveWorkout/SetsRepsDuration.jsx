@@ -1,6 +1,6 @@
 import { Box, Typography, IconButton } from "@mui/material";
 import { Edit } from '@mui/icons-material';
-import { convertFromSeconds, formatExerciseDurationIntoMinutesAndSeconds, fromMeters, displayCardioText, displayReps } from "../../utils/HelperFunctions";
+import { convertFromSeconds, formatExerciseDurationIntoMinutesAndSeconds, fromMeters, displayCardioText, displayReps } from "../../utils/HelperFunctions"
 import EditExerciseModal from "./EditExerciseModal";
 import { useEffect, useState } from "react";
 import { useMemo } from "react";
@@ -33,8 +33,10 @@ export default function SetsRepsDuration({ exercise, updateActiveWorkoutWithNewS
   }
 
   const displayRepSets = () => {
+    console.log(" in display rep sets")
     let combinedSets = displayReps(exercise);
     const fontSize = getFontSize(combinedSets.length);
+
     return (
       <Box sx={{ alignItems: "center" }}>
         {combinedSets.map((item, index) => {
@@ -59,8 +61,10 @@ export default function SetsRepsDuration({ exercise, updateActiveWorkoutWithNewS
     if (length >= 4) return "0.7rem";
   };
 
+  console.log('in sets resps ex is', exercise)
+
   return (
-    <Box sx={{ position: "absolute", bottom: 4, right: 0, left: 0, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
       {exercise.exerciseType === 'CARDIO' ? displayCardioSets() : displayRepSets()}
       <IconButton onClick={handleEditClick}>
         <Edit />
