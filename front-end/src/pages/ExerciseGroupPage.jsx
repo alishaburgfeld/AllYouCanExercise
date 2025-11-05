@@ -41,20 +41,70 @@ function ExerciseGroupPage() {
   
     return (
         
-        <Box className="exerciseGroup">
-            <ArrowBackIosIcon sx={{
-                color: theme.palette.secondary.main,
-                fill: theme.palette.secondary.main, // force fill color
-                // stroke: theme.palette.secondary.main,
-                fontSize: "2rem",
-                position: "absolute",
-                top: "8%",
-                left: "4%",}}
-            onClick={() => handleBackClick()}/>
-            <Typography className="exerciseGroup_title" sx={{fontSize:"1.8rem", pt:"4rem", color: theme.palette.secondary.main}}>
-                {exerciseGroup}
-            </Typography>
-            <Box className="exerciseGroup_ItemContainer">
+        <Box className="exerciseGroup" sx={{ minHeight: "100vh",
+         pt:12
+
+         }}>
+            <Box
+                sx={{
+                position: "fixed",
+                top: 55,
+                left: 0,
+                right: 0,
+                // bgcolor: "background.default",
+                // bgcolor: "red",
+                borderBottom: "1px solid",
+                borderColor: "divider",
+                zIndex: 1000,
+                py: 1,
+                pt: 1.5,
+                px: { xs: 2, sm: 3, lg: 4 },
+                }}
+            >   
+                <Box sx={{
+                    position: "relative",
+                    maxWidth: "1280px",
+                    mx: "auto",
+                    display: "flex",
+                    justifyContent: "center", // centers the title horizontally
+                    alignItems: "center",     // vertically aligns both
+                    // py: 2,
+                    }}
+                >
+                    <ArrowBackIosIcon sx={{
+                    color: theme.palette.secondary.main,
+                    fill: theme.palette.secondary.main, // force fill color
+                    // stroke: theme.palette.secondary.main,
+                    fontSize: "2rem",
+                    position: "absolute",
+                    left: 0,
+                    }}
+                    onClick={() => handleBackClick()}
+                    />
+                    <Typography className="exerciseGroup_title" sx={{fontSize:"1.8rem", color: theme.palette.secondary.main, textWrap: "balance",}}>
+                        {exerciseGroup}
+                    </Typography>
+                    {/* <SearchBar 
+                        sx={{
+                        position: "absolute",
+                        right:0,
+                        }}
+                        value={searchQuery} onChange={setSearchQuery} 
+                    /> */}
+                </Box>
+                
+            </Box>
+            <Box className="exerciseGroup_ItemContainer"
+            sx={{ px: { xs: 2, sm: 3, lg: 4 }, py: 4, pt: 6,
+                display: "grid",
+                gap: 2,
+                gridTemplateColumns: {
+                xs: "repeat(2, 1fr)", // 2 columns by default
+                md: "repeat(3, 1fr)", // 3 columns on medium+
+                lg: "repeat(4, 1fr)", // 4 columns on large+
+                },
+            }}
+            >
 
                 {exercisesByGroup.map((exercise)=> (
                     <Box key={exercise.id} className="exerciseGroup_items" onClick={() => handleClick(exercise.id)} sx={{borderRadius: 1, border:2, borderColor: theme.palette.secondary.main}}>

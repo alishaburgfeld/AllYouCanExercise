@@ -10,7 +10,7 @@ import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import MenuIcon from '@mui/icons-material/Menu';
 import { IconButton, Menu, MenuItem, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
-import "../../css/Navbar.css"
+// import "../../css/Navbar.css"
 import axios from 'axios'
 import Cookies from 'js-cookie';
 
@@ -72,16 +72,22 @@ export default function Navbar({ activeUsername, setActiveUsername, setActiveWor
   }
 
   return (
-    <Box sx={{ flexGrow: 1 }} className="navbar">
-      <AppBar position="static" sx={{ backgroundColor: theme.palette.primary.mix }} role="navigation">
-        <Toolbar>
+    // <Box sx={{ flexGrow: 1 }} className="navbar">
+      <AppBar position="fixed" sx={{ backgroundColor: theme.palette.primary.mix, boxShadow: "0 2px 4px rgba(0,0,0,0.1)", top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 1100,}} role="navigation">
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <Link to="/">
             <FitnessCenterIcon
               className= "fitnessIcon"
               
               edge="start"
               color="inherit"
-              sx={{ pt:1, mr: 2, color: theme.palette.secondary.main, fontSize: "2.3rem" }}
+              sx={{ pt:1, 
+                mr: 2, 
+                color: theme.palette.secondary.main, 
+                fontSize: "2.3rem" }}
             >
               <MenuIcon />
             </FitnessCenterIcon>
@@ -129,6 +135,6 @@ export default function Navbar({ activeUsername, setActiveUsername, setActiveWor
           )}
         </Toolbar>
       </AppBar>
-    </Box>
+    // </Box>
   );
 }
