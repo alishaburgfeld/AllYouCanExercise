@@ -67,8 +67,10 @@ export default function WorkoutHistoryCard({workout}) {
         <Box sx={{
                 display: "flex",
                 justifyContent: "center",
+                alignItems: "center",
                 mt: 2,
                 px: 1,
+                width:"100%"
               }}>
             
           <Card variant="outlined" className= "workoutHistoryCard" 

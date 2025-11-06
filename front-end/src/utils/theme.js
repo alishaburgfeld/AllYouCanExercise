@@ -15,6 +15,9 @@ const theme = createTheme({
       light: "#ffa500",
       dark: "#eb330c",
     },
+    background: {
+      default: "#BDBDBD",
+    },
   },
   fontSize: {
     primary: [".9rem", "1.2rem", "1.4rem"],

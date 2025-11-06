@@ -2,14 +2,15 @@ import { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom";
 import { getAxiosCall } from "../utils/HelperFunctions"
 import Box from '@mui/material/Box';
-import "../css/ExerciseGroupPage.css";
 import { Typography} from "@mui/material";
 import { useTheme } from '@mui/material/styles';
 import { getImageSource } from "../utils/HelperFunctions";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ExerciseCard from "../components/Exercise/ExerciseCard";
+import Header from "../components/Shared/Header.jsx";
 
-// TO-DO: Eventually I can create a component for "records" etc. each of these components can be querying different tables in my database so that I don't have to worry about everything being on one record
-function ExerciseGroupPage() {
+
+function ExerciseGroupPage({setExerciseToBeAdded, activeUsername, setActiveWorkout, activeWorkout,}) {
 
     const theme = useTheme();
     const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -27,10 +28,6 @@ function ExerciseGroupPage() {
         }
     };
 
-    const handleClick= (exerciseId) => {
-        navigate(`/exercise/${exerciseId}`);
-    }
-
     const handleBackClick= () => {
         navigate(`/`);
     }
@@ -39,28 +36,45 @@ function ExerciseGroupPage() {
     getExercisesByGroup();
   }, [exerciseGroup])
   
-    return (
+return (
         
-        <Box className="exerciseGroup">
-            <ArrowBackIosIcon sx={{
-                color: theme.palette.secondary.main,
-                fill: theme.palette.secondary.main, // force fill color
-                // stroke: theme.palette.secondary.main,
-                fontSize: "2rem",
-                position: "absolute",
-                top: "8%",
-                left: "4%",}}
-            onClick={() => handleBackClick()}/>
-            <Typography className="exerciseGroup_title" sx={{fontSize:"1.8rem", pt:"4rem", color: theme.palette.secondary.main}}>
-                {exerciseGroup}
-            </Typography>
-            <Box className="exerciseGroup_ItemContainer">
+        <Box className="exerciseGroup" sx={{ minHeight: "100vh",
+         pt:12
+
+         }}>
+            <Header 
+                title={exerciseGroup} 
+                icon={ <ArrowBackIosIcon sx={{
+                    color: theme.palette.secondary.main,
+                    fill: theme.palette.secondary.main,
+                    fontSize: "2rem",
+                    }}/>
+                    } 
+                onIconClick={() => handleBackClick()}
+                typographyClassName={"exerciseGroup_title"}
+            />
+                    {/* <SearchBar 
+                        sx={{
+                        position: "absolute",
+                        right:0,
+                        }}
+                        value={searchQuery} onChange={setSearchQuery} 
+                    /> */}
+                
+            <Box className="exerciseGroup_ItemContainer"
+            sx={{ px: { xs: 2, sm: 3, lg: 4 }, py: 4, pt: 6,
+                display: "grid",
+                gap: 2,
+                gridTemplateColumns: {
+                xs: "repeat(2, 1fr)", // 2 columns by default
+                md: "repeat(3, 1fr)", // 3 columns on medium+
+                lg: "repeat(4, 1fr)", // 4 columns on large+
+                },
+            }}
+            >
 
                 {exercisesByGroup.map((exercise)=> (
-                    <Box key={exercise.id} className="exerciseGroup_items" onClick={() => handleClick(exercise.id)} sx={{borderRadius: 1, border:2, borderColor: theme.palette.secondary.main}}>
-                        <img src={getImageSource(exercise.name)} className="exerciseGroup_photo" alt={exercise.name}/>
-                        <Typography align="center" className="exerciseGroup_name"> {exercise.name}</Typography>
-                    </Box>
+                    <ExerciseCard exercise={exercise} setExerciseToBeAdded={setExerciseToBeAdded} activeUsername={activeUsername} activeWorkout={activeWorkout} setActiveWorkout={setActiveWorkout} />
                 ))}
             </Box>
             

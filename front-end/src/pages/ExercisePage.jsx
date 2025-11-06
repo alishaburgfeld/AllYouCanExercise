@@ -8,12 +8,11 @@ import { Typography } from "@mui/material";
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
 import { IconButton } from "@mui/material";
-import "../css/ExercisePage.css"
 import Alert from '@mui/material/Alert';
 import ExerciseAddedAlert from "../components/Exercise/ExerciseAddedAlert";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ExerciseRecord from "../components/Exercise/ExerciseRecord";
-
+import Header from "../components/Shared/Header"
 
 function ExercisePage({ setExerciseToBeAdded, activeUsername }) {
     const theme = useTheme();
@@ -65,41 +64,56 @@ function ExercisePage({ setExerciseToBeAdded, activeUsername }) {
     }, [exerciseId]);
   
     return (
-      <Box className="exercisePage">
-        <ArrowBackIosIcon sx={{
-                color: theme.palette.secondary.main,
-                fill: theme.palette.secondary.main, // force fill color
-                // stroke: theme.palette.secondary.main,
-                fontSize: "2rem",
-                position: "absolute",
-                top: "8%",
-                left: "6%",}}
-            onClick={() => handleBackClick()}/>
-        <Typography className="exercisePage_title" sx={{ fontSize: "1.2rem", pr: "1rem", pl: "1rem", pt: "5rem", mb: "1rem", color: theme.palette.secondary.main }}>
-          {exercise.name}
-        </Typography>
-        {activeUsername !== null ? (
-          <>
-            <IconButton
+      <Box className="exercisePage" sx={{ minHeight: "100vh",
+         pt:12, backgroundColor: theme.palette.background.default, justifyContent: "center", alignItems: "center",
+          width: "100vw"
+         }}>
+        <Header 
+          title={exercise.name} 
+          icon={ <ArrowBackIosIcon sx={{
+              color: theme.palette.secondary.main,
+              fill: theme.palette.secondary.main,
+              fontSize: "2rem",
+              }}/>
+              } 
+          onIconClick={() => handleBackClick()}
+          typographyClassName={"exercise_title"}
+          rightContent={
+            <PlaylistAddIcon
+              fontSize="large"
+              sx={{
+                color: theme.palette.secondary.main
+              }}
               className="exercisePage_addToWorkout"
               aria-label="add-to-workout"
-              sx={{
-                color: theme.palette.secondary.main,
-                position: "absolute",
-                top: "7%",
-                right: "1%",
-              }}
               onClick={() => handleClickToAddWorkout(exercise)}
-            >
-              <PlaylistAddIcon fontSize="large" />
-            </IconButton>
+            />
+          }
+        />
+        {activeUsername !== null ? (
+          <>
             <ExerciseAddedAlert openExerciseAddedAlert={openExerciseAddedAlert} setOpenExerciseAddedAlert={setOpenExerciseAddedAlert} />
           </>
         ) : (
           <span>Login to add workout</span>
         )}
         <Box className="exercisePage_ItemContainer" sx={{ padding: '1rem' }}>
-                <img src={getImageSource(exercise.name)} className="exercisePage_image" alt={exercise.name}/>
+                <Box
+                  component="img"
+                  src={getImageSource(exercise.name)}
+                  alt={exercise.name}
+                  className="exercisePage_image"
+                  sx={{
+                    pt: 5,
+                    width: {xs:"40vw", s: "30vw", m:"30vw"},
+                    height: {xs:"40vh", s: "40vh", m:"30vh"},
+                    objectFit: "cover",
+                    borderRadius: "8px",
+                    transition: "transform 0.3s ease",
+                    "&:hover": { transform: "scale(1.05)" },
+                  }}
+                />
+
                 <Box className="exercisePage_description" sx={{mt:"1rem", borderRadius: 1, border:2, borderColor: theme.palette.secondary.main }}>
                     <Typography className = "exercisePage_description_title" sx={{fontSize:"1.2rem",fontWeight: "600", mt:".5rem", mb:".5rem"}}> Description </Typography>
                     <Typography className = "exercisePage_description_text"> {exercise.description} </Typography>

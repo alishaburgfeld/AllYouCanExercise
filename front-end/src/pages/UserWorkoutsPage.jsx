@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react"
 import { getAxiosCall } from "../utils/HelperFunctions";
 import { useParams, useNavigate } from "react-router-dom";
-import "../css/UserWorkoutsPage.css";
+// import "../css/UserWorkoutsPage.css";
 import { Box, Button, Typography, IconButton} from "@mui/material";
 import { useTheme } from '@mui/material/styles';
 import WorkoutHistoryCard from "../components/CompletedWorkouts/WorkoutHistoryCard";
+import Header from "../components/Shared/Header";
 
 export default function UserWorkoutsPage({activeUsername}) {
     const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -41,18 +42,17 @@ useEffect(()=> {
   }, [])
 
   return (
-      <Box className="userWorkouts">
-        <Typography className="userWorkouts_title" sx={{ fontSize: "1.8rem", pt: "4rem", color: theme.palette.secondary.main }}>
-          Workout History
-        </Typography>
+      <Box className="userWorkouts" sx={{ minHeight: "100vh", pt:12, justifyContent: "center", position: "relative"}} >
+        <Header title={"Workout History"} typographyClassName={"userWorkouts_title"} />
         <Box className="userWorkouts_ItemContainer"
         sx={{
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        // minHeight: '100vh',
-        // padding: 1,
+        width: {xs: "90vw", m: "60vw", l: "50vw"},
+        py: 3,
+        mx: "auto"
       }}>
           {userWorkouts?.length > 0 ? (
             userWorkouts.map((workout, index) => (
