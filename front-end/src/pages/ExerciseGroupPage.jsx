@@ -7,6 +7,7 @@ import { useTheme } from '@mui/material/styles';
 import { getImageSource } from "../utils/HelperFunctions";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ExerciseCard from "../components/Exercise/ExerciseCard";
+import Header from "../components/Shared/Header.jsx";
 
 
 function ExerciseGroupPage({setExerciseToBeAdded, activeUsername, setActiveWorkout, activeWorkout,}) {
@@ -41,45 +42,17 @@ return (
          pt:12
 
          }}>
-            <Box
-                sx={{
-                position: "fixed",
-                top: 55,
-                left: 0,
-                right: 0,
-                bgcolor: "background.default",
-                // bgcolor: "red",
-                borderBottom: "1px solid",
-                borderColor: "divider",
-                zIndex: 1000,
-                py: 1,
-                pt: 1.5,
-                px: { xs: 2, sm: 3, lg: 4 },
-                }}
-            >   
-                <Box sx={{
-                    position: "relative",
-                    maxWidth: "1280px",
-                    mx: "auto",
-                    display: "flex",
-                    justifyContent: "center", // centers the title horizontally
-                    alignItems: "center",     // vertically aligns both
-                    // py: 2,
-                    }}
-                >
-                    <ArrowBackIosIcon sx={{
+            <Header 
+                title={exerciseGroup} 
+                icon={ <ArrowBackIosIcon sx={{
                     color: theme.palette.secondary.main,
-                    fill: theme.palette.secondary.main, // force fill color
-                    // stroke: theme.palette.secondary.main,
+                    fill: theme.palette.secondary.main,
                     fontSize: "2rem",
-                    position: "absolute",
-                    left: 0,
-                    }}
-                    onClick={() => handleBackClick()}
-                    />
-                    <Typography className="exerciseGroup_title" sx={{fontSize:"1.8rem", color: theme.palette.secondary.main, textWrap: "balance",}}>
-                        {exerciseGroup}
-                    </Typography>
+                    }}/>
+                    } 
+                onIconClick={() => handleBackClick()}
+                typographyClassName={"exerciseGroup_title"}
+            />
                     {/* <SearchBar 
                         sx={{
                         position: "absolute",
@@ -87,9 +60,7 @@ return (
                         }}
                         value={searchQuery} onChange={setSearchQuery} 
                     /> */}
-                </Box>
                 
-            </Box>
             <Box className="exerciseGroup_ItemContainer"
             sx={{ px: { xs: 2, sm: 3, lg: 4 }, py: 4, pt: 6,
                 display: "grid",

@@ -10,7 +10,6 @@ import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import MenuIcon from '@mui/icons-material/Menu';
 import { IconButton, Menu, MenuItem, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
-// import "../../css/Navbar.css"
 import axios from 'axios'
 import Cookies from 'js-cookie';
 
@@ -86,7 +85,8 @@ export default function Navbar({ activeUsername, setActiveUsername, setActiveWor
               sx={{ pt:1, 
                 mr: 2, 
                 color: theme.palette.secondary.main, 
-                fontSize: "2.3rem" }}
+                fontSize: "2.4rem", 
+                transform: "rotate(315deg)"}}
             >
               <MenuIcon />
             </FitnessCenterIcon>
