@@ -269,7 +269,7 @@ https://chatgpt.com/share/6840ef16-d8c4-800f-8648-ff8f17d04206
 
 Connect to my ec2 instance:
 cd Documents/AllYouCanExercise
-ssh -i all-you-can-exercise-key-pair.pem ec2-user@44.201.165.158
+ssh -i all-you-can-exercise-key-pair.pem ec2-user@13.220.154.149
 
 sudo su (puts you in sudo so you don't have to write sudo in front of all the following commands)
 
@@ -277,7 +277,7 @@ sudo su (puts you in sudo so you don't have to write sudo in front of all the fo
     single command to use:
     scp -i all-you-can-exercise-key-pair.pem \
     ./front-end/nginx.conf \
-    ec2-user@44.201.165.158:/home/ec2-user/front-end -->
+    ec2-user@13.220.154.149:/home/ec2-user/front-end -->
 
 -d does it in detached mode, if I need to see the logs because something is not working then remove the -d.
 
@@ -289,14 +289,14 @@ docker stop all containers: docker stop $(docker ps -q)
 # start ec2
 
 1. cd Documents/AllYouCanExercise
-2. ssh -i all-you-can-exercise-key-pair.pem ec2-user@44.201.165.158
+2. ssh -i all-you-can-exercise-key-pair.pem ec2-user@13.220.154.149
 3. sudo su
 4. service docker start
 5. docker-compose up --build OR docker-compose up --build -d
 
 If made a bunch of changes to front-end files, run this to make sure its not caching my old files:
-docker compose build --no-cache frontend
-docker compose up -d
+docker-compose build --no-cache frontend
+docker-compose up -d
 
 <!-- steps to take when having made front-end changes -->
 
@@ -313,13 +313,13 @@ cd .. -->
 # copy over all front-end files on vscode:
 
 If I don't have front-end and src and public folders yet:
-ssh -i all-you-can-exercise-key-pair.pem ec2-user@44.201.165.158 "mkdir -p /home/ec2-user/front-end/src"
+ssh -i all-you-can-exercise-key-pair.pem ec2-user@13.220.154.149 "mkdir -p /home/ec2-user/front-end/src"
 
-ssh -i all-you-can-exercise-key-pair.pem ec2-user@44.201.165.158 "mkdir -p /home/ec2-user/front-end/public"
+ssh -i all-you-can-exercise-key-pair.pem ec2-user@13.220.154.149 "mkdir -p /home/ec2-user/front-end/public"
 
 scp -i all-you-can-exercise-key-pair.pem \
  -r ./front-end/src \
- ec2-user@44.201.165.158:/home/ec2-user/front-end/
+ ec2-user@13.220.154.149:/home/ec2-user/front-end/
 
 scp -i all-you-can-exercise-key-pair.pem \
  ./front-end/package.json \
@@ -328,15 +328,15 @@ scp -i all-you-can-exercise-key-pair.pem \
  ./front-end/Dockerfile \
  ./front-end/index.html \
  ./front-end/vite.config.js \
- ec2-user@44.201.165.158:/home/ec2-user/front-end
+ ec2-user@13.220.154.149:/home/ec2-user/front-end
 
  <!-- scp -i all-you-can-exercise-key-pair.pem \
  ./front-end/nginx.conf \
- ec2-user@44.201.165.158:/home/ec2-user/front-end -->
+ ec2-user@13.220.154.149:/home/ec2-user/front-end -->
 
 scp -i all-you-can-exercise-key-pair.pem \
  -r ./front-end/public \
- ec2-user@44.201.165.158:/home/ec2-user/front-end
+ ec2-user@13.220.154.149:/home/ec2-user/front-end
 
 <!-- steps to take when having made root level compose.yml/.env files: -->
 
@@ -349,11 +349,11 @@ rm -rf docker-compose.yml
 
 scp -i all-you-can-exercise-key-pair.pem \
  ./.env.production \
- ec2-user@44.201.165.158:/home/ec2-user
+ ec2-user@13.220.154.149:/home/ec2-user
 
 scp -i all-you-can-exercise-key-pair.pem \
  ./docker-compose.prod.yml \
- ec2-user@44.201.165.158:/home/ec2-user
+ ec2-user@13.220.154.149:/home/ec2-user
 
 # rename production files inside ec2:
 
@@ -373,15 +373,15 @@ rm -rf ./back-end/Dockerfile
 
 2. If I don't have back-end and target folders yet:
 
-ssh -i all-you-can-exercise-key-pair.pem ec2-user@44.201.165.158 "mkdir -p /home/ec2-user/back-end/target"
+ssh -i all-you-can-exercise-key-pair.pem ec2-user@13.220.154.149 "mkdir -p /home/ec2-user/back-end/target"
 
 scp -i all-you-can-exercise-key-pair.pem \
  ./back-end/Dockerfile \
- ec2-user@44.201.165.158:/home/ec2-user/back-end/
+ ec2-user@13.220.154.149:/home/ec2-user/back-end/
 
 scp -i all-you-can-exercise-key-pair.pem \
  ./back-end/target/back-end-0.0.1-SNAPSHOT.jar \
- ec2-user@44.201.165.158:/home/ec2-user/back-end/target/
+ ec2-user@13.220.154.149:/home/ec2-user/back-end/target/
 
 # local workflow w/o using docker:
 
@@ -441,8 +441,9 @@ P1: This was allowed to be saved as a workout:
 payload={"workoutDetails":{"username":"alb","title":"run on treadmill-1","completedAt":"2025-10-02T18:06:45","workoutNotes":"notes"},"workoutExerciseDetails":[{"exerciseId":54,"sets":[{"segments":[{"segments":[{"distance":"3200","duration":{"hours":1,"minutes":10,"seconds":1},"distanceMeasurement":"METERS"}]}]}]}]}
 P2: pace per mile is not being saved correctly.
 P3: titles and buttons on exercises look weird on desktop
-P3: Workout History cards are different widths
 P3: Title on exercises look weird on mobile.
+Image size and text size on exercise page
+add exercise button is still showing up on exercise page when logged out.
 
 <!-- should take a look at this to hopefully be able to downgrade to a smaller ec2 instance type (serve react files in S3):
 https://www.youtube.com/watch?v=YC7NBNICGeY -->
@@ -456,3 +457,20 @@ https://v0.app/chat/exercise-data-modal-jU5ufFyJt5T -->
   inputMode="numeric"
   pattern="[0-9]*"
 /> -->
+
+<!-- my npm install failed on ec2: I added this tag to my frontend dockerfile: RUN npm install --verbose
+then inside my ec2 frontend folder ran docker build . -t npm-test --no-cache
+and was able to determine it was failing because it was running out of space
+I either need to:
+In AWS Console → EC2 → Volumes → select your instance’s EBS volume.
+
+Modify volume → increase size (e.g. to 30 GB).
+
+or figure out a different way to render front end.
+
+for now I ran a
+docker system df
+docker system prune -a --volumes
+but I think that will wipe out my database -->
+
+<!-- after that the build did work -->
