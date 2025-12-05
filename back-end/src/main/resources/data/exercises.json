@@ -906,6 +906,13 @@
     "picture": ""
   },
   {
+    "name": "Behind the Neck Barbell Shrugs",
+    "exerciseGroup": "TRAPS",
+    "exerciseType": "UPPERBODY",
+    "description": "Hold a barbell behind your thighs with an overhand grip. Shrug your shoulders straight up toward your ears as high as possible. Pause briefly, then slowly lower back down.",
+    "picture": ""
+  },
+  {
     "name": "Standing Dumbbell Shrugs",
     "exerciseGroup": "TRAPS",
     "exerciseType": "UPPERBODY",
@@ -1057,6 +1064,13 @@
   "exerciseGroup": "LOWER_BACK",
   "exerciseType": "LOWERBODY",
   "description": "Lie face down with arms and legs extended. Simultaneously lift your arms, chest, and legs off the floor. Hold briefly, then lower back down.",
+  "picture": ""
+},
+{
+  "name": "Floor Back Extensions",
+  "exerciseGroup": "LOWER_BACK",
+  "exerciseType": "LOWERBODY",
+  "description": "Lie face down with legs extended and your hands touching behind your head. Lift your chest off the floor. Hold briefly, then lower back down.",
   "picture": ""
 },
 
