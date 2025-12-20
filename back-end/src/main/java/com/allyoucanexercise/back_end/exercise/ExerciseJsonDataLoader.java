@@ -25,20 +25,21 @@ public class ExerciseJsonDataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if(exerciseRepository.count() == 0) {
-            try (InputStream inputStream = TypeReference.class.getResourceAsStream("/data/exercises.json")) {
+        try (InputStream inputStream = TypeReference.class.getResourceAsStream("/data/exercises.json")) {
+            Exercises allExercises = objectMapper.readValue(inputStream, Exercises.class);
+            if (exerciseRepository.count() < allExercises.exercises().size()) {
                 // need to look up inputStream and TypeReference
-                Exercises allExercises = objectMapper.readValue(inputStream, Exercises.class);
-                log.info("Reading {} exercises from JSON data and saving to MySQL Database.", allExercises.exercises().size());
+                log.info("Reading {} exercises from JSON data and saving to MySQL Database.",
+                        allExercises.exercises().size());
                 // how does this know how many exercises to put in the {}
-                // thats the format of the log function. you can put a variable after the comma and it will fill in the  {}. Very similar to string format.
+                // thats the format of the log function. you can put a variable after the comma
+                // and it will fill in the {}. Very similar to string format.
                 exerciseRepository.saveAll(allExercises.exercises());
-            } catch (IOException e) {
-                throw new RuntimeException("Failed to read JSON data", e);
+            } else {
+                log.info("Not loading Exercises from JSON data because the collection contains data.");
             }
-        } else {
-            log.info("Not loading Exercises from JSON data because the collection contains data.");
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read JSON data", e);
         }
     }
-
 }
