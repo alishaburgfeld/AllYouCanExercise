@@ -101,6 +101,9 @@ function ExercisePage({ setExerciseToBeAdded, activeUsername }) {
                 <Box
                   component="img"
                   src={getImageSource(exercise.name)}
+                  onError={(e) => {
+                        e.currentTarget.src = "/images/noexerciseimage.png";
+                    }}
                   alt={exercise.name}
                   className="exercisePage_image"
                   sx={{
