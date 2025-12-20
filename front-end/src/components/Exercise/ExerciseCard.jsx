@@ -65,6 +65,9 @@ function ExerciseCard ({activeWorkout, exercise, setExerciseToBeAdded, activeUse
 
             
                 <CardMedia src={getImageSource(exercise.name)} 
+                    onError={(e) => {
+                        e.currentTarget.src = "/images/noexerciseimage.png";
+                    }}
                     onClick={() => handleClick(exercise.id)} 
                     className="exerciseGroup_photo" 
                     alt={exercise.name}
