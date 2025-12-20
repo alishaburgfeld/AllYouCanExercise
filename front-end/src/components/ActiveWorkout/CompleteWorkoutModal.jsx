@@ -54,7 +54,7 @@ export default function CompleteWorkoutModal({ openCompleteWorkoutModal, setOpen
             const clonedSegment = { ...segment }; // shallow clone
 
             if (clonedSegment.duration) {
-                clonedSegment.durationSeconds = convertToSeconds(clonedSegment.duration);
+                clonedSegment.durationSeconds = convertToSeconds(clonedSegment.duration) || 0;
                 delete clonedSegment.duration;
             }
 

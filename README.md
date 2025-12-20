@@ -269,7 +269,7 @@ https://chatgpt.com/share/6840ef16-d8c4-800f-8648-ff8f17d04206
 
 Connect to my ec2 instance:
 cd Documents/AllYouCanExercise
-ssh -i all-you-can-exercise-key-pair.pem ec2-user@13.220.154.149
+ssh -i all-you-can-exercise-key-pair.pem ec2-user@3.82.235.117
 
 sudo su (puts you in sudo so you don't have to write sudo in front of all the following commands)
 
@@ -277,7 +277,7 @@ sudo su (puts you in sudo so you don't have to write sudo in front of all the fo
     single command to use:
     scp -i all-you-can-exercise-key-pair.pem \
     ./front-end/nginx.conf \
-    ec2-user@13.220.154.149:/home/ec2-user/front-end -->
+    ec2-user@3.82.235.117:/home/ec2-user/front-end -->
 
 -d does it in detached mode, if I need to see the logs because something is not working then remove the -d.
 
@@ -289,9 +289,10 @@ docker stop all containers: docker stop $(docker ps -q)
 # start ec2
 
 1. cd Documents/AllYouCanExercise
-2. ssh -i all-you-can-exercise-key-pair.pem ec2-user@13.220.154.149
+2. ssh -i all-you-can-exercise-key-pair.pem ec2-user@3.82.235.117
 3. sudo su
 4. service docker start
+   docker-compose down
 5. docker-compose up --build OR docker-compose up --build -d
 
 If made a bunch of changes to front-end files, run this to make sure its not caching my old files:
@@ -313,13 +314,13 @@ cd .. -->
 # copy over all front-end files on vscode:
 
 If I don't have front-end and src and public folders yet:
-ssh -i all-you-can-exercise-key-pair.pem ec2-user@13.220.154.149 "mkdir -p /home/ec2-user/front-end/src"
+ssh -i all-you-can-exercise-key-pair.pem ec2-user@3.82.235.117 "mkdir -p /home/ec2-user/front-end/src"
 
-ssh -i all-you-can-exercise-key-pair.pem ec2-user@13.220.154.149 "mkdir -p /home/ec2-user/front-end/public"
+ssh -i all-you-can-exercise-key-pair.pem ec2-user@3.82.235.117 "mkdir -p /home/ec2-user/front-end/public"
 
 scp -i all-you-can-exercise-key-pair.pem \
  -r ./front-end/src \
- ec2-user@13.220.154.149:/home/ec2-user/front-end/
+ ec2-user@3.82.235.117:/home/ec2-user/front-end/
 
 scp -i all-you-can-exercise-key-pair.pem \
  ./front-end/package.json \
@@ -328,15 +329,15 @@ scp -i all-you-can-exercise-key-pair.pem \
  ./front-end/Dockerfile \
  ./front-end/index.html \
  ./front-end/vite.config.js \
- ec2-user@13.220.154.149:/home/ec2-user/front-end
+ ec2-user@3.82.235.117:/home/ec2-user/front-end
 
  <!-- scp -i all-you-can-exercise-key-pair.pem \
  ./front-end/nginx.conf \
- ec2-user@13.220.154.149:/home/ec2-user/front-end -->
+ ec2-user@3.82.235.117:/home/ec2-user/front-end -->
 
 scp -i all-you-can-exercise-key-pair.pem \
  -r ./front-end/public \
- ec2-user@13.220.154.149:/home/ec2-user/front-end
+ ec2-user@3.82.235.117:/home/ec2-user/front-end
 
 <!-- steps to take when having made root level compose.yml/.env files: -->
 
@@ -349,11 +350,11 @@ rm -rf docker-compose.yml
 
 scp -i all-you-can-exercise-key-pair.pem \
  ./.env.production \
- ec2-user@13.220.154.149:/home/ec2-user
+ ec2-user@3.82.235.117:/home/ec2-user
 
 scp -i all-you-can-exercise-key-pair.pem \
  ./docker-compose.prod.yml \
- ec2-user@13.220.154.149:/home/ec2-user
+ ec2-user@3.82.235.117:/home/ec2-user
 
 # rename production files inside ec2:
 
@@ -373,15 +374,15 @@ rm -rf ./back-end/Dockerfile
 
 2. If I don't have back-end and target folders yet:
 
-ssh -i all-you-can-exercise-key-pair.pem ec2-user@13.220.154.149 "mkdir -p /home/ec2-user/back-end/target"
+ssh -i all-you-can-exercise-key-pair.pem ec2-user@3.82.235.117 "mkdir -p /home/ec2-user/back-end/target"
 
 scp -i all-you-can-exercise-key-pair.pem \
  ./back-end/Dockerfile \
- ec2-user@13.220.154.149:/home/ec2-user/back-end/
+ ec2-user@3.82.235.117:/home/ec2-user/back-end/
 
 scp -i all-you-can-exercise-key-pair.pem \
  ./back-end/target/back-end-0.0.1-SNAPSHOT.jar \
- ec2-user@13.220.154.149:/home/ec2-user/back-end/target/
+ ec2-user@3.82.235.117:/home/ec2-user/back-end/target/
 
 # local workflow w/o using docker:
 
@@ -470,7 +471,8 @@ or figure out a different way to render front end.
 
 for now I ran a
 docker system df
-docker system prune -a --volumes
-but I think that will wipe out my database -->
+docker system prune -a --volumes -->
 
 <!-- after that the build did work -->
+
+df -hT command shows how much of my EBS volume I'm using

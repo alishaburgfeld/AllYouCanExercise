@@ -20,8 +20,8 @@ export default function CompletedExercise({exercise, index}) {
 
 
     function formatCardioSet(set, index) {
-        const durationSeconds = set.segments[0].durationSeconds || null;
-        const distanceMeters = set.segments[0].distanceMeters || null;
+        const durationSeconds = set?.segments?.[0]?.durationSeconds || null;
+        const distanceMeters = set?.segments?.[0]?.distanceMeters || null;
         
             if ((durationSeconds !==null)  && (distanceMeters !== null)) {
                 const hours = Math.floor(durationSeconds / 3600);

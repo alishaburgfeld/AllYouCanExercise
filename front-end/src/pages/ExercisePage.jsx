@@ -97,7 +97,7 @@ function ExercisePage({ setExerciseToBeAdded, activeUsername }) {
         ) : (
           <span>Login to add workout</span>
         )}
-        <Box className="exercisePage_ItemContainer" sx={{ padding: '1rem' }}>
+        <Box className="exercisePage_ItemContainer" sx={{ padding: '1rem', width: { m:"80vw"}}}>
                 <Box
                   component="img"
                   src={getImageSource(exercise.name)}
@@ -105,7 +105,8 @@ function ExercisePage({ setExerciseToBeAdded, activeUsername }) {
                   className="exercisePage_image"
                   sx={{
                     pt: 5,
-                    width: {xs:"40vw", s: "30vw", m:"30vw"},
+                    // width: {xs:"40vw", s: "30vw", m:"30vw"},
+                    width: "100%",
                     height: {xs:"40vh", s: "40vh", m:"30vh"},
                     objectFit: "cover",
                     borderRadius: "8px",
