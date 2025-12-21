@@ -55,7 +55,7 @@ function AWExerciseCard ({exercise, setActiveWorkout, activeWorkout, updateActiv
                     sx={{
                         width: "100%",
                         height: { xs: 180, sm: 220, md: 260, lg: 300 },
-                        objectFit: "cover",
+                        objectFit: "contain",
                         transition: "transform 0.3s ease",
                         "&:hover": { transform: "scale(1.05)" },
                     }}

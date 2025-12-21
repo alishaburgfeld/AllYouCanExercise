@@ -62,6 +62,8 @@ export default function Header({
             fontSize: "1.8rem",
             color: theme.palette.secondary.main,
             textWrap: "balance",
+            px: "3rem",
+            wordBreak: "break-word"
           }}
         >
           {title}
