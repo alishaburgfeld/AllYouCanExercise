@@ -97,18 +97,22 @@ function ExercisePage({ setExerciseToBeAdded, activeUsername }) {
         ) : (
           <span>Login to add workout</span>
         )}
-        <Box className="exercisePage_ItemContainer" sx={{ padding: '1rem', width: { m:"80vw"}}}>
+        <Box className="exercisePage_ItemContainer" sx={{ padding: '1rem', width: { xs: "90vw", sm:"80vw", md: "70vw"}, mx: "auto"}}>
                 <Box
                   component="img"
                   src={getImageSource(exercise.name)}
+                  onError={(e) => {
+                        e.currentTarget.src = "/images/noexerciseimage.png";
+                    }}
                   alt={exercise.name}
                   className="exercisePage_image"
                   sx={{
                     pt: 5,
                     // width: {xs:"40vw", s: "30vw", m:"30vw"},
-                    width: "100%",
-                    height: {xs:"40vh", s: "40vh", m:"30vh"},
-                    objectFit: "cover",
+                    width: {xs: "100%", sm: "40vw"},
+                    // height: {xs:"40vh", sm: "40vh", md:"50vh"},
+                    height: { xs: "40vh", sm: 220, md: 300, lg: 360 },
+                    objectFit: "contain",
                     borderRadius: "8px",
                     transition: "transform 0.3s ease",
                     "&:hover": { transform: "scale(1.05)" },

@@ -45,6 +45,9 @@ function AWExerciseCard ({exercise, setActiveWorkout, activeWorkout, updateActiv
             <Box sx={{position: "relative", width: "100%", borderBottom: "1px solid",
                 borderColor: "divider",}}>
                 <CardMedia src={getImageSource(exercise.name)} 
+                    onError={(e) => {
+                        e.currentTarget.src = "/images/noexerciseimage.png";
+                    }}
                     onClick={() => handleExerciseClick(exercise.exerciseId)} 
                     className="active_exercise_photo" 
                     alt={exercise.name}
@@ -52,7 +55,7 @@ function AWExerciseCard ({exercise, setActiveWorkout, activeWorkout, updateActiv
                     sx={{
                         width: "100%",
                         height: { xs: 180, sm: 220, md: 260, lg: 300 },
-                        objectFit: "cover",
+                        objectFit: "contain",
                         transition: "transform 0.3s ease",
                         "&:hover": { transform: "scale(1.05)" },
                     }}
