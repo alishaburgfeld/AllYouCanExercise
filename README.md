@@ -213,20 +213,28 @@ How to handle CSRF configuration: https://chatgpt.com/share/67992954-c8e0-800f-b
 
 <!----------------- TODOS ----------->
 
-1. M ake a wider navbar on big screens
 2. Figure out how to grab all the core exercises AND any custom user created exercises. (not allowing custom exercises for now)
-3. Verify the way I'm doing CORS exception is a secure way
-4. Database variables for mysql container
-5. context load - probably not working because security dependency is disabled.
-6. Look into using CreateContext to store react user data so I don't have to keep passing user to all my pages.
-7. Need to add logic to logout to reset the active workout. Also have a problem with the sets/reps showing. Also alert the user when they've added an exercise to a workout, and alert them if they're trying to add one that is already in the workout.
+3. Database variables for mysql container
+4. context load - probably not working because security dependency is disabled.
+5. Look into using CreateContext to store react user data so I don't have to keep passing user to all my pages
+6. Need to add logic to logout to reset the active workout. Also have a problem with the sets/reps showing. Also alert the user when they've added an exercise to a workout, and alert them if they're trying to add one that is already in the workout.
    https://dev.to/jucheng925/react-persisting-data-on-page-refresh-1jhk
-8. Refactor session setting/getting on my react pages:
+7. Refactor session setting/getting on my react pages:
    // a way to potentially refactor these session states into one function:
    // search for "custom hook" https://chatgpt.com/share/67f3d8fb-12f8-800f-9475-560f78c153f4
 
-9. need to figure out how I want to view my workouts and exercises. also, do I want to clear the active workout upon saving the workout?
-10. Create deployment script
+8. Need to figure out a production-healthy way to add new exercises to the database. (and how to allow for user created exercises.)
+   Here is a possible migration to try:
+   -- V3\_\_update_exercises.sql
+   DELETE FROM exercise
+   WHERE name = 'Old Exercise Name';
+
+UPDATE exercise
+SET description = 'New description'
+WHERE name = 'Around the World';
+
+INSERT INTO exercise (name, exercise_group, exercise_type, description, picture)
+VALUES ('New Exercise', 'CHEST', 'UPPERBODY', '...', '');
 
 May need to read this with testing with MUI Material UI:
 https://jskim1991.medium.com/react-dont-give-up-on-testing-when-using-material-ui-with-react-ff737969eec7
